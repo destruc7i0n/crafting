@@ -5,7 +5,7 @@
 a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
 
 @font-face {
-  font-family: "minecraft";
+  font-family: 'minecraft';
   src: url(http://hydra-media.cursecdn.com/hydra/fonts/minecraft.woff);
 }
 
@@ -16,13 +16,17 @@ body {
   color: #404040;
 }
 
-.clearfix:before,.clearfix:after{content:"";display:table}
+.clearfix:before,.clearfix:after{content:'';display:table}
 .clearfix:after{clear:both}
 
 .crafting-holder {
-  float:left;
+  display:                 flex;
+  display:                 -webkit-flex; /* Safari 8 */
+  flex-wrap:               wrap;
+  -webkit-flex-wrap:       wrap;         /* Safari 8 */
+  justify-content:         center;
+  -webkit-justify-content: center;       /* Safari 8 */
   padding: 10px;
-  margin-top: 10px;
   background: #C6C6C6;
   border: 2px solid #373737;
   border-right-color: #FFF;
@@ -30,7 +34,7 @@ body {
 }
 
 .crafting {
-  width: 230px;
+  max-width: 230px;
   margin: 0 auto;
 }
 
@@ -60,6 +64,11 @@ body {
   width: 32px;
   height: 32px;
 }
+
+.grid:hover, .grid-large:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
 .grid-large {;
   width: 48px;
   height: 48px;
@@ -69,15 +78,16 @@ body {
   float: left;
   width: 110px;
 }
+
 .crafting .arrow {
   width: 32px;
   height: 27px;
-  margin: 57px 15px 0;
+  margin: 50px 15px 0 0px;
   float: left;
   background: url('https://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_layout_Arrow_%28small%29.png');
 }
 
 #crafting-table-output {
   float: left;
-  padding-top: 45px;
+  padding-top: 40px;
 }
