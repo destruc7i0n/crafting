@@ -2,92 +2,215 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit
+}
 
-@font-face {
-  font-family: 'minecraft';
-  src: url(http://hydra-media.cursecdn.com/hydra/fonts/minecraft.woff);
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block
 }
 
 body {
-  background: #eee;
-  font-family: minecraft;
-  padding: 10px;
-  color: #404040;
+    line-height: 1
 }
 
-.clearfix:before,.clearfix:after{content:'';display:table}
-.clearfix:after{clear:both}
+ol, ul {
+    list-style: none
+}
 
-.crafting-holder {
-  display:                 flex;
-  display:                 -webkit-flex; /* Safari 8 */
-  flex-wrap:               wrap;
-  -webkit-flex-wrap:       wrap;         /* Safari 8 */
-  justify-content:         center;
-  -webkit-justify-content: center;       /* Safari 8 */
-  padding: 10px;
-  background: #C6C6C6;
-  border: 2px solid #373737;
-  border-right-color: #FFF;
-  border-bottom-color: #FFF;
+blockquote, q {
+    quotes: none
+}
+
+blockquote:after, blockquote:before, q:after, q:before {
+    content: '';
+    content: none
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+@font-face {
+    font-family: 'Minecraft';
+    src: url(http://hydra-media.cursecdn.com/hydra/fonts/minecraft.woff);
+}
+
+body {
+    background: #eee;
+    font-family: Minecraft;
+    padding: 10px;
+    color: #404040;
+}
+
+.crafting-holder, .ingredients {
+    display: flex;
+    display: -webkit-flex; /* Safari 8 */
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap; /* Safari 8 */
+    padding: 10px;
+    margin-top: 10px;
+    background: #C6C6C6;
+    border: 2px solid #373737;
+    border-right-color: #FFF;
+    border-bottom-color: #FFF;
+}
+
+.ingredients {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.ingredients::-webkit-scrollbar {
+    width: auto;
+}
+
+.ingredients::-webkit-scrollbar-track {
+    background-color: #8B8B8B;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+    height: 10px;
+    background-color: #C6C6C6;
+    border: 2px solid #373737;
+    border-right-color: #FFF;
+    border-bottom-color: #FFF;
 }
 
 .crafting {
-  max-width: 230px;
-  margin: 0 auto;
+    max-width: 230px;
+    margin: 0 auto;
 }
 
 .crafting-table {
-  background: #C6C6C6;
-  text-align: left !important;
-  margin-left: 2px;
-  line-height: 42px;
+    background: #C6C6C6;
+    text-align: left !important;
+    margin-left: 2px;
+    line-height: 42px;
 }
 
 .grid, .grid-large {
-  float: left;
-  display: block;
-  text-align: center !important;
-  background-color: #8B8B8B;
-  border: 2px solid #373737;
-  border-right-color: #FFF;
-  border-bottom-color: #FFF;
-  vertical-align: middle;
+    float: left;
+    display: block;
+    text-align: center !important;
+    background-color: #8B8B8B;
+    border: 2px solid #373737;
+    border-right-color: #FFF;
+    border-bottom-color: #FFF;
+    vertical-align: middle;
+}
+
+.grid img, .grid-large img {
+    cursor: move;
 }
 
 .grid-large img {
-  margin-top: 8px;
+    z-index: -1;
+    margin-top: 8px;
 }
 
 .grid {
-  width: 32px;
-  height: 32px;
+    width: 36px;
+    height: 36px;
 }
 
 .grid:hover, .grid-large:hover {
-  background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
-.grid-large {;
-  width: 48px;
-  height: 48px;
+.grid-large {
+    width: 48px;
+    height: 48px;
 }
 
 .crafting .recipe {
-  float: left;
-  width: 110px;
+    float: left;
+    width: 110px;
 }
 
 .crafting .arrow {
-  width: 32px;
-  height: 27px;
-  margin: 50px 15px 0 0px;
-  float: left;
-  background: url('https://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_layout_Arrow_%28small%29.png');
+    width: 32px;
+    height: 27px;
+    margin: 50px 15px 0 15px;
+    float: left;
+    background: url('https://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_layout_Arrow_%28small%29.png');
 }
 
-#crafting-table-output {
-  float: left;
-  padding-top: 40px;
+.crafting-table-output {
+    float: left;
+    padding-top: 40px;
+}
+
+input[type="text"] {
+    font-family: Minecraft;
+    font-size: 1em;
+    border: 2px solid #404040;
+    background: #8B8B8B;
+    padding: 2px;
+    color: #FFFFFF;
+}
+
+.search-box {
+    display: inline-flex;
+    flex: 0 0 100%;
+    margin-bottom: 5px;
+}
+
+.search-box input {
+    flex: 2;
+    margin-left: 10px;
+}
+
+.mc-tooltip {
+    text-align: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #100010;
+    background-color: rgba(16, 0, 16, 0.94);
+    color: #FFF;
+    padding: 0.375em;
+    font-family: Minecraft;
+    font-size: 16px;
+    word-spacing: 4px;
+    white-space: nowrap;
+    line-height: 1.25em;
+    text-shadow: 0.125em 0.125em 0 #3F3F3F;
+    margin: 0.125em 0.25em;
+    pointer-events: none;
+    z-index: 99;
+}
+
+.mc-tooltip:before {
+    content: "";
+    position: absolute;
+    top: 0.125em;
+    right: -0.125em;
+    bottom: 0.125em;
+    left: -0.125em;
+    border: 0.125em solid #100010;
+    border-style: none solid;
+    border-color: rgba(16, 0, 16, 0.94);
+}
+
+.mc-tooltip:after {
+    content: "";
+    position: absolute;
+    top: 0.125em;
+    right: 0;
+    bottom: 0.125em;
+    left: 0;
+    border: 0.125em solid #2D0A63;
+    border-image: -webkit-linear-gradient(rgba(80, 0, 255, 0.31), rgba(40, 0, 127, 0.31)) 1;
+    border-image: linear-gradient(rgba(80, 0, 255, 0.31), rgba(40, 0, 127, 0.31)) 1;
+}
+
+.mc-tooltip > .mc-tooltip-description {
+    font-size: 12px;
+    display: block;
+    margin-top: 0.25em
 }

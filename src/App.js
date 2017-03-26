@@ -1,26 +1,25 @@
-import React, { Component } from 'react'
+import React  from 'react'
 import { Col, Row } from 'react-bootstrap'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
-import CraftingTable from './CraftingTable'
-import Navbar from './Navbar'
+import Navbar from './components/Navbar'
+import CraftingTable from './components/CraftingTable'
+import Ingredients from './components/Ingredients'
 
 import './App.css'
 
-class App extends Component {
-  render() {
-    return (
-      <div className='container'>
-        <Navbar />
-        <Row>
-          <Col md={6}>
-            <CraftingTable />
-          </Col>
-          <Col md={6}>
-          </Col>
-        </Row>
-      </div>
-    )
-  }
-}
+const App = (props) =>
+  <div className="container">
+    <Navbar />
+    <Row>
+      <Col md={6}>
+        <CraftingTable />
+      </Col>
+      <Col md={6}>
+        <Ingredients />
+      </Col>
+    </Row>
+  </div>
 
-export default App
+export default DragDropContext(HTML5Backend)(App)
