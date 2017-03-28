@@ -85,8 +85,7 @@ class Ingredient extends Component {
       <span className={size === "large" ? "grid-large" : "grid"}
             onMouseMove={this.onMouseMove}
             onMouseOut={this.onMouseOut}>
-        {connectDragSource(<div className="faker" />)}
-        <img src={ingredient.texture} alt="" />
+        {connectDragSource(<img src={ingredient.texture} alt=""/>)}
         <Tooltip title={ingredient.readable} id={ingredient.id} style={this.state.mouse} />
       </span>
     )
@@ -103,6 +102,6 @@ export default compose(
   connect(),
   DragSource('ingredient', ingredientSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging(),
+    isDragging: monitor.isDragging()
   }))
 )(Ingredient)

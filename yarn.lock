@@ -2550,7 +2550,7 @@ interpret@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.0.1.tgz#d579fb7f693b858004947af39fa0db49f795602c"
 
-invariant@^2.0.0, invariant@^2.1.0, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
+invariant@^2.0.0, invariant@^2.1.0, invariant@^2.1.1, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -4200,7 +4200,14 @@ react-dnd-html5-backend@^2.3.0:
   dependencies:
     lodash "^4.2.0"
 
-react-dnd@^2.3.0:
+react-dnd-touch-backend@^0.3.6:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-0.3.6.tgz#44adeb0dd302004ce737d18d3ddbe7445fcd93e2"
+  dependencies:
+    invariant "^2.1.1"
+    react-dnd "^2.0.0"
+
+react-dnd@^2.0.0, react-dnd@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-2.3.0.tgz#aede61c06b968554dcf2a2445657cdbb3100be49"
   dependencies:

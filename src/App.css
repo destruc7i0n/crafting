@@ -62,7 +62,7 @@ body {
 
 .ingredients {
     max-height: 500px;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .ingredients::-webkit-scrollbar {
@@ -104,14 +104,6 @@ body {
     vertical-align: middle;
 }
 
-.grid div.faker, .grid-large div.faker {
-    position: absolute;
-    z-index: 1000;
-    width: 32px;
-    height: 32px;
-    cursor: move;
-}
-
 .grid-large img {
     z-index: -1;
     margin-top: 8px;
@@ -129,6 +121,9 @@ body {
 .grid-large {
     width: 48px;
     height: 48px;
+}
+
+.faker {
 }
 
 .crafting .recipe {
@@ -234,6 +229,7 @@ input[type="text"] {
 }
 
 .item-shake {
+    z-index: 10000;
     width: 125%;
     height: 125%;
     -webkit-animation-name: shake;
