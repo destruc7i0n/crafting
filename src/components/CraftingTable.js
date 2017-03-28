@@ -6,7 +6,7 @@ import CraftingGrid from './CraftingGrid'
 
 class CraftingTable extends Component {
   render () {
-    const {output} = this.props
+    const {crafting, output} = this.props
     return (
       <Panel header="Crafting Table">
         <div className="crafting-holder">
@@ -14,7 +14,7 @@ class CraftingTable extends Component {
             <div className="recipe">
               <h6>Crafting</h6>
               <div id="crafting-table">
-                {this.props.crafting.map((key, index) => {
+                {crafting.map((key, index) => {
                   return (
                     <CraftingGrid key={index} index={index} ingredient={key} size="normal" />
                   )

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { DragSource } from 'react-dnd'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
 
 import Tooltip from './Tooltip'
@@ -84,7 +85,8 @@ class Ingredient extends Component {
       <span className={size === "large" ? "grid-large" : "grid"}
             onMouseMove={this.onMouseMove}
             onMouseOut={this.onMouseOut}>
-        {connectDragSource(<img src={ingredient.texture} alt="" />)}
+        {connectDragSource(<div className="faker" />)}
+        <img src={ingredient.texture} alt="" />
         <Tooltip title={ingredient.readable} id={ingredient.id} style={this.state.mouse} />
       </span>
     )
@@ -97,9 +99,10 @@ Ingredient.propTypes = {
   size: PropTypes.string
 }
 
-Ingredient = DragSource('ingredient', ingredientSource, (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging(),
-}))(Ingredient)
-
-export default connect()(Ingredient)
+export default compose(
+  connect(),
+  DragSource('ingredient', ingredientSource, (connect, monitor) => ({
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging(),
+  }))
+)(Ingredient)

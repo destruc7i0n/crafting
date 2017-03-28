@@ -1,18 +1,11 @@
 import Ingredient from '../classes/Ingredient'
 
 export default function Data(state = {
-    ingredients: [],
-    crafting: new Array(9).fill(null).map(i => new Ingredient()),
+    crafting: [...new Array(9)].map(i => new Ingredient()),
     output: new Ingredient()
   }, action) {
   let newCrafting, newOutput
   switch (action.type) {
-    case 'SET_INGREDIENTS':
-      // create array of ingredients
-      return {
-        ...state,
-        ingredients: action.payload.map((ingredient) => new Ingredient(ingredient.id, ingredient.readable, ingredient.texture))
-      }
     case 'SET_CRAFTING_SLOT':
       // clone crafting
       newCrafting = [...state.crafting]

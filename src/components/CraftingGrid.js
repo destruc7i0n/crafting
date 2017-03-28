@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { DropTarget } from 'react-dnd'
 
@@ -38,14 +39,15 @@ CraftingGrid.propTypes = {
   size: PropTypes.string
 }
 
-CraftingGrid = DropTarget('ingredient', craftingTarget, (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver(),
-  canDrop: monitor.canDrop(),
-}))(CraftingGrid)
-
-export default connect((store, ownProps) => {
-  return {
-    ...store.Data.crafting[ownProps.index]
-  }
-})(CraftingGrid)
+export default compose(
+  connect((store, ownProps) => {
+    return {
+      ...store.Data.crafting[ownProps.index]
+    }
+  }),
+  DropTarget('ingredient', craftingTarget, (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
+  }))
+)(CraftingGrid)

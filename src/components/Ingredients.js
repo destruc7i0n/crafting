@@ -1,38 +1,31 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from 'react'
 import { Panel } from 'react-bootstrap'
 import DebounceInput from 'react-debounce-input';
 
 import Ingredient from './Ingredient'
+import IngredientClass from '../classes/Ingredient'
 
 class Ingredients extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
+      ingredients: [],
       search: ''
     }
   }
 
-  componentDidMount () {
-    this.props.dispatch(async (dispatch) => {
-      let response = await fetch('https://i.thedestruc7i0n.ca/assets/textures.json')
-      let json = await response.json()
+  async componentDidMount () {
+    let response = await fetch('https://i.thedestruc7i0n.ca/assets/textures.json')
+    let json = await response.json()
 
-      let items = json.items.sort((a,b) => {
-        if (a.id < b.id) {
-          return -1 // sort string ascending
-        }
-        if (a.id > b.id) {
-          return 1
-        }
-        return 0 // default return value (no sorting)
-      })
+    // remove the unnecessary air
+    json.items.shift()
 
-      dispatch({
-        type: 'SET_INGREDIENTS',
-        payload: items
-      })
+    const ingredients = json.items.map((ingredient) => new IngredientClass(ingredient.id, ingredient.readable, ingredient.texture))
+
+    this.setState({
+      ingredients: ingredients
     })
   }
 
@@ -48,7 +41,7 @@ class Ingredients extends Component {
               debounceTimeout={200}
               onChange={e => this.setState({ search: e.target.value })} />
           </span>
-          {this.props.ingredients.map((key, index) => {
+          {this.state.ingredients.map((key, index) => {
             if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {
               return (
                 <Ingredient key={index} ingredient={key} size="normal" />
@@ -63,12 +56,4 @@ class Ingredients extends Component {
   }
 }
 
-Ingredients.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.object)
-}
-
-export default connect((store) => {
-  return {
-    ingredients: store.Data.ingredients
-  }
-})(Ingredients)
+export default Ingredients
