@@ -14,8 +14,8 @@ const layerStyles = {
 }
 
 function getItemStyles (props) {
-  const { initialOffset, currentOffset } = props
-  if (!initialOffset || !currentOffset) {
+  const { currentOffset } = props
+  if (!currentOffset) {
     return {
       display: 'none'
     }
@@ -62,10 +62,6 @@ class IngredientDragLayer extends Component {
 IngredientDragLayer.propTypes = {
   item: PropTypes.object,
   itemType: PropTypes.string,
-  initialOffset: PropTypes.shape({
-    x: PropTypes.number,
-    y: PropTypes.number
-  }),
   currentOffset: PropTypes.shape({
     x: PropTypes.number,
     y: PropTypes.number

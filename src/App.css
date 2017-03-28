@@ -229,7 +229,6 @@ input[type="text"] {
 }
 
 .item-shake {
-    z-index: 10000;
     width: 125%;
     height: 125%;
     -webkit-animation-name: shake;

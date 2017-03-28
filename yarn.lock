@@ -4194,20 +4194,28 @@ react-dev-utils@^0.5.2:
     sockjs-client "1.0.1"
     strip-ansi "3.0.1"
 
-react-dnd-html5-backend@^2.3.0:
+react-dnd-html5-backend@*, react-dnd-html5-backend@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-2.3.0.tgz#a45ce593f5c6944aa01114b368117c56c954804e"
   dependencies:
     lodash "^4.2.0"
 
-react-dnd-touch-backend@^0.3.6:
+react-dnd-multi-backend@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/react-dnd-multi-backend/-/react-dnd-multi-backend-2.3.6.tgz#e17b4679aa18bb41eb538c5a7de02e04554ad9b6"
+  dependencies:
+    react-dnd "*"
+    react-dnd-html5-backend "*"
+    react-dnd-touch-backend "*"
+
+react-dnd-touch-backend@*, react-dnd-touch-backend@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-0.3.6.tgz#44adeb0dd302004ce737d18d3ddbe7445fcd93e2"
   dependencies:
     invariant "^2.1.1"
     react-dnd "^2.0.0"
 
-react-dnd@^2.0.0, react-dnd@^2.3.0:
+react-dnd@*, react-dnd@^2.0.0, react-dnd@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-2.3.0.tgz#aede61c06b968554dcf2a2445657cdbb3100be49"
   dependencies:

@@ -1,7 +1,8 @@
 import React  from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { DragDropContext } from 'react-dnd'
-import TouchBackend from 'react-dnd-touch-backend'
+import MultiBackend from 'react-dnd-multi-backend'
+import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
 
 import Navbar from './components/Navbar'
 import CraftingTable from './components/CraftingTable'
@@ -29,4 +30,4 @@ const App = () =>
     </Row>
   </div>
 
-export default DragDropContext(TouchBackend({ enableMouseEvents: true }))(App)
+export default DragDropContext(MultiBackend(HTML5toTouch))(App)

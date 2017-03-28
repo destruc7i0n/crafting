@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { DragSource } from 'react-dnd'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import Tooltip from './Tooltip'
 import IngredientClass from '../classes/Ingredient'
@@ -55,6 +56,12 @@ class Ingredient extends Component {
     this.onMouseOut = this.onMouseOut.bind(this)
   }
 
+  componentDidMount() {
+    const { connectDragPreview } = this.props
+    // use empty pixel
+    connectDragPreview(getEmptyImage())
+  }
+
   getCursorPos (e) {
     // don't show if no ingredient inside
     if (!this.props.ingredient.id) {
@@ -102,6 +109,7 @@ export default compose(
   connect(),
   DragSource('ingredient', ingredientSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
   }))
 )(Ingredient)

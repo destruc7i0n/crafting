@@ -10,7 +10,7 @@ export default function Data(state = {
       // clone crafting
       newCrafting = [...state.crafting]
       // update ingredient
-      newCrafting[action.payload.index].update(
+      newCrafting[action.payload.index] = new Ingredient(
         action.payload.ingredient.id,
         action.payload.ingredient.readable,
         action.payload.ingredient.texture
@@ -23,7 +23,7 @@ export default function Data(state = {
       // clone crafting
       newCrafting = [...state.crafting]
       // reset ingredient
-      newCrafting[action.payload.index].reset()
+      newCrafting[action.payload.index] = new Ingredient()
       return {
         ...state,
         crafting: newCrafting

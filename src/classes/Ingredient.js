@@ -1,3 +1,4 @@
+// this class is not really needed, may add functions in future
 class Ingredient {
   /**
    * Contructs a new ingredient
@@ -9,27 +10,6 @@ class Ingredient {
     this.id = id || ''
     this.readable = readable || ''
     this.texture = texture || ''
-  }
-
-  /**
-   * Updates ingredient
-   * @param id
-   * @param readable
-   * @param texture
-   */
-  update(id, readable, texture) {
-    this.id = id
-    this.readable = readable
-    this.texture = texture
-  }
-
-  /**
-   * Resets ingredient
-   */
-  reset() {
-    this.id = ''
-    this.readable = ''
-    this.texture = ''
   }
 }
 
