@@ -109,7 +109,6 @@ export default compose(
   connect(),
   DragSource('ingredient', ingredientSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
-    isDragging: monitor.isDragging()
+    connectDragPreview: connect.dragPreview()
   }))
 )(Ingredient)

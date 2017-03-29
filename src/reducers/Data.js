@@ -1,9 +1,12 @@
 import Ingredient from '../classes/Ingredient'
 
+import ingredients from '../resources/textures.json'
+
 export default function Data(state = {
     crafting: [...new Array(9)].map(i => new Ingredient()),
     output: new Ingredient(),
-    shape: 'shapeless'
+    shape: 'shaped',
+    ingredients: ingredients.items.map((ingredient) => new Ingredient(ingredient.id, ingredient.readable, ingredient.texture))
   }, action) {
   let newCrafting, newOutput
   switch (action.type) {

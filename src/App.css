@@ -47,6 +47,31 @@ body {
     color: #404040;
 }
 
+/* only for small */
+@media screen and (device-aspect-ratio: 40/71) {
+    .crafting .arrow {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* only desktop */
+@media only screen and (min-width : 992px) {
+    .navbar-right li:last-child {
+        padding-right: 10px;
+    }
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand > img {
+    max-width: 64px;
+    padding: 0 10px;
+}
+
 .crafting-holder, .ingredients {
     display: flex;
     display: -webkit-flex; /* Safari 8 */
