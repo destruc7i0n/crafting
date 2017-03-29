@@ -2,7 +2,8 @@ import Ingredient from '../classes/Ingredient'
 
 export default function Data(state = {
     crafting: [...new Array(9)].map(i => new Ingredient()),
-    output: new Ingredient()
+    output: new Ingredient(),
+    shape: 'shapeless'
   }, action) {
   let newCrafting, newOutput
   switch (action.type) {
@@ -45,6 +46,11 @@ export default function Data(state = {
       return {
         ...state,
         output: newOutput
+      }
+    case 'SET_SHAPE':
+      return {
+        ...state,
+        shape: action.payload
       }
     case 'DYNAMIC':
       return {

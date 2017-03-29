@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-polyfill": "^6.23.0",
     "bootstrap": "^3.3.7",
+    "lodash": "^4.17.4",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.8",
     "react-debounce-input": "^2.4.2",
@@ -13,6 +15,7 @@
     "react-dnd-touch-backend": "^0.3.6",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
+    "react-syntax-highlighter": "^5.1.2",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.0",
     "redux-thunk": "^2.2.0"

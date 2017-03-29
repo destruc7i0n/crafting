@@ -4,9 +4,13 @@ import { DragDropContext } from 'react-dnd'
 import MultiBackend from 'react-dnd-multi-backend'
 import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
 
+// polyfill misc stuff
+import 'babel-polyfill'
+
 import Navbar from './components/Navbar'
 import CraftingTable from './components/CraftingTable'
 import Ingredients from './components/Ingredients'
+import Output from './components/Output'
 
 import IngredientDragLayer from './components/IngredientDragLayer'
 
@@ -23,6 +27,7 @@ const App = () =>
     <Row>
       <Col md={6}>
         <CraftingTable />
+        <Output />
       </Col>
       <Col md={6}>
         <Ingredients />

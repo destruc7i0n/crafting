@@ -123,7 +123,8 @@ body {
     height: 48px;
 }
 
-.faker {
+.grid img {
+    cursor: move;
 }
 
 .crafting .recipe {
@@ -236,4 +237,9 @@ input[type="text"] {
     /*-webkit-transform-origin:50% 50%;*/
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-timing-function: linear;
+}
+
+pre {
+    font-family: monospace;
+    overflow: hidden;
 }

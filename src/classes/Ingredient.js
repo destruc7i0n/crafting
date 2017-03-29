@@ -11,6 +11,14 @@ class Ingredient {
     this.readable = readable || ''
     this.texture = texture || ''
   }
+
+  /**
+   * Checks if the ingredient is populated
+   * @returns {*|string}
+   */
+  isPopulated() {
+    return this.id && this.readable && this.texture
+  }
 }
 
 export default Ingredient
