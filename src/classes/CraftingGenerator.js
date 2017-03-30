@@ -46,6 +46,10 @@ class CraftingGenerator {
     // time for that, this should do... pls dinnerbone
     const stickTypes = ['minecraft:end_rod', 'minecraft:blaze_rod', 'minecraft:stick']
     const slabCheck = (item) => item.indexOf('slab') !== -1
+    const ingotCheck = (item) => item.indexOf('ingot') !== -1
+
+    // remove minecraft
+    let name = item.replace('minecraft:', '')
 
     if (stickTypes.indexOf(item) !== -1) {
       return '/'
@@ -55,8 +59,10 @@ class CraftingGenerator {
       return '_'
     }
 
-    // remove minecraft
-    let name = item.replace('minecraft:', '')
+    if (ingotCheck(item)) {
+      return name[0].toLowerCase()
+    }
+
     return name[0].toUpperCase()
   }
 
