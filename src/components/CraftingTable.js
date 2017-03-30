@@ -7,6 +7,7 @@ import CraftingGrid from './CraftingGrid'
 class CraftingTable extends Component {
   render () {
     const {crafting, dispatch, output, shape} = this.props
+
     return (
       <Panel header="Crafting Table">
         <div className="crafting-holder">

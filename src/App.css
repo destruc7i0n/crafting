@@ -47,21 +47,6 @@ body {
     color: #404040;
 }
 
-/* only for small */
-@media screen and (device-aspect-ratio: 40/71) {
-    .crafting .arrow {
-        margin-left: 0;
-        margin-right: 0;
-    }
-}
-
-/* only desktop */
-@media only screen and (min-width : 992px) {
-    .navbar-right li:last-child {
-        padding-right: 10px;
-    }
-}
-
 .navbar-brand {
     display: flex;
     align-items: center;
@@ -148,7 +133,7 @@ body {
     height: 48px;
 }
 
-.grid img {
+.grid img, .grid-large img {
     cursor: move;
 }
 
@@ -198,14 +183,14 @@ input[type="text"] {
     background-color: #100010;
     background-color: rgba(16, 0, 16, 0.94);
     color: #FFF;
-    padding: 0.375em;
+    padding: 6px;
     font-family: Minecraft;
     font-size: 16px;
     word-spacing: 4px;
     white-space: nowrap;
-    line-height: 1.25em;
-    text-shadow: 0.125em 0.125em 0 #3F3F3F;
-    margin: 0.125em 0.25em;
+    line-height: 20px;
+    text-shadow: 2px 2px 0 #3F3F3F;
+    margin: 2px 4px;
     pointer-events: none;
     z-index: 99;
 }
@@ -213,11 +198,10 @@ input[type="text"] {
 .mc-tooltip:before {
     content: "";
     position: absolute;
-    top: 0.125em;
-    right: -0.125em;
-    bottom: 0.125em;
-    left: -0.125em;
-    border: 0.125em solid #100010;
+    top: 2px;
+    right: -2px;
+    bottom: 2px;
+    left: -2px;
     border-style: none solid;
     border-color: rgba(16, 0, 16, 0.94);
 }
@@ -225,11 +209,11 @@ input[type="text"] {
 .mc-tooltip:after {
     content: "";
     position: absolute;
-    top: 0.125em;
+    top: 2px;
     right: 0;
-    bottom: 0.125em;
+    bottom: 2px;
     left: 0;
-    border: 0.125em solid #2D0A63;
+    border: 2px solid #2D0A63;
     border-image: -webkit-linear-gradient(rgba(80, 0, 255, 0.31), rgba(40, 0, 127, 0.31)) 1;
     border-image: linear-gradient(rgba(80, 0, 255, 0.31), rgba(40, 0, 127, 0.31)) 1;
 }
@@ -237,7 +221,7 @@ input[type="text"] {
 .mc-tooltip > .mc-tooltip-description {
     font-size: 12px;
     display: block;
-    margin-top: 0.25em
+    margin-top: 4px
 }
 
 @-webkit-keyframes shake {
@@ -266,5 +250,20 @@ input[type="text"] {
 
 pre {
     font-family: monospace;
-    overflow: hidden;
+    overflow: visible;
+}
+
+/* only for small */
+@media screen and (max-device-width : 400px) {
+    .crafting .arrow {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* only desktop */
+@media only screen and (min-width : 992px) {
+    .navbar-right li:last-child {
+        padding-right: 10px;
+    }
 }

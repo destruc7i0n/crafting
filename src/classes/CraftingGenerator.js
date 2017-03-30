@@ -41,6 +41,25 @@ class CraftingGenerator {
     }
   }
 
+  dinnerboneChallenge(item) {
+    // dinnerbone actually said for an 'ascii to item chart', while I probs don't have enough
+    // time for that, this should do... pls dinnerbone
+    const stickTypes = ['minecraft:end_rod', 'minecraft:blaze_rod', 'minecraft:stick']
+    const slabCheck = (item) => item.indexOf('slab') !== -1
+
+    if (stickTypes.indexOf(item) !== -1) {
+      return '/'
+    }
+
+    if (slabCheck(item)) {
+      return '_'
+    }
+
+    // remove minecraft
+    let name = item.replace('minecraft:', '')
+    return name[0].toUpperCase()
+  }
+
   getItemType(item, data, ...rest) {
     const { itemType } = this
     if (data === 0) {
@@ -145,10 +164,10 @@ class CraftingGenerator {
     }
 
     const keyExists = (key) => Object.keys(keyMap).indexOf(key) !== -1
-    const getKey = () => {
-      let key = '#'
+    const getKey = (name) => {
+      let key = this.dinnerboneChallenge(name)
 
-      // choose a random key
+      // choose a key if the special ones don't work
       while (keyExists(key)) {
         key = patternCharacters[Math.floor(patternCharacters.length * Math.random())]
       }
@@ -165,7 +184,7 @@ class CraftingGenerator {
         if (key) {
           keysString += key
         } else {
-          let key = getKey()
+          let key = getKey(name)
           // only add data if needed
           keyMap[key] = {
             ...this.getItemType(name, data)
