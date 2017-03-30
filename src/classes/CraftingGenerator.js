@@ -1,4 +1,5 @@
 import { trimEnd } from 'lodash'
+import leftPad from 'left-pad'
 
 class CraftingGenerator {
   constructor (input, output) {
@@ -219,8 +220,14 @@ class CraftingGenerator {
     // split into groups of three
     let splitKeys = keysString.match(/.{1,3}/g)
 
-    // append the mapping, no trailing spaces
-    shape.pattern = splitKeys.map((key) => trimEnd(key))
+    // no trailing spaces
+    let trimmedEnd = splitKeys.map((key) => trimEnd(key))
+
+    // get the longest string and its length
+    let longest = trimmedEnd.reduce((a, b) => a.length > b.length ? a : b).length
+
+    // append the mapping, all the same length
+    shape.pattern = trimmedEnd.map((key) => leftPad(key, longest))
 
     return shape
   }
