@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Checkbox, Panel } from 'react-bootstrap'
+import { Panel } from 'react-bootstrap'
 
 import CraftingGrid from './CraftingGrid'
 
 class CraftingTable extends Component {
   render () {
-    const {crafting, dispatch, output, shape} = this.props
+    const {crafting, output} = this.props
 
     return (
       <Panel header="Crafting Table">
@@ -28,11 +28,6 @@ class CraftingTable extends Component {
             </div>
           </div>
         </div>
-        <Checkbox
-          inline
-          checked={shape === 'shapeless'}
-          onChange={(e) => dispatch({type: 'SET_SHAPE', payload: e.target.checked ? 'shapeless' : 'shaped'})}
-        >Shapeless?</Checkbox>
       </Panel>
     )
   }
@@ -41,7 +36,6 @@ class CraftingTable extends Component {
 export default connect((store) => {
   return {
     crafting: store.Data.crafting,
-    output: store.Data.output,
-    shape: store.Data.shape
+    output: store.Data.output
   }
 })(CraftingTable)

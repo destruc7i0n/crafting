@@ -1,5 +1,4 @@
 import { trimEnd } from 'lodash'
-import leftPad from 'left-pad'
 
 class CraftingGenerator {
   constructor (input, output) {
@@ -42,7 +41,7 @@ class CraftingGenerator {
     }
   }
 
-  dinnerboneChallenge(item) {
+  dinnerboneChallenge(item, keyMap) {
     // dinnerbone actually said for an 'ascii to item chart', while I probs don't have enough
     // time for that, this should do... pls dinnerbone
     const stickTypes = ['minecraft:end_rod', 'minecraft:blaze_rod', 'minecraft:stick']
@@ -62,6 +61,11 @@ class CraftingGenerator {
 
     if (ingotCheck(item)) {
       return name[0].toLowerCase()
+    }
+
+    // I need to stay with the original eh?
+    if (Object.keys(keyMap).length === 0) {
+      return '#'
     }
 
     return name[0].toUpperCase()
@@ -144,7 +148,7 @@ class CraftingGenerator {
     return shape
   }
 
-  shaped() {
+  shaped(removeEmptySpace = false) {
     // clone element
     const { input, output, patternCharacters } = this
 
@@ -172,7 +176,7 @@ class CraftingGenerator {
 
     const keyExists = (key) => Object.keys(keyMap).indexOf(key) !== -1
     const getKey = (name) => {
-      let key = this.dinnerboneChallenge(name)
+      let key = this.dinnerboneChallenge(name, keyMap)
 
       // choose a key if the special ones don't work
       while (keyExists(key)) {
@@ -220,14 +224,25 @@ class CraftingGenerator {
     // split into groups of three
     let splitKeys = keysString.match(/.{1,3}/g)
 
-    // no trailing spaces
-    let trimmedEnd = splitKeys.map((key) => trimEnd(key))
+    let noTrailing = splitKeys.map((line) => trimEnd(line))
 
-    // get the longest string and its length
-    let longest = trimmedEnd.reduce((a, b) => a.length > b.length ? a : b).length
+    // get longest string
+    let longest = Math.max(...noTrailing.map(({length}) => length))
 
-    // append the mapping, all the same length
-    shape.pattern = trimmedEnd.map((key) => leftPad(key, longest))
+    // trim until longest
+    let trimmed = splitKeys.map((line) => {
+      return line.substring(0, longest)
+    })
+
+    // init lines
+    let lines = trimmed
+
+    if (removeEmptySpace) {
+      lines = trimmed.filter((line) =>/\S/.test(line))
+    }
+
+    // append mapping
+    shape.pattern = lines
 
     return shape
   }

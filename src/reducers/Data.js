@@ -5,7 +5,6 @@ import ingredients from '../resources/textures.json'
 export default function Data(state = {
     crafting: [...new Array(9)].map(i => new Ingredient()),
     output: new Ingredient(),
-    shape: 'shaped',
     ingredients: ingredients.items.map((ingredient) => new Ingredient(ingredient.id, ingredient.readable, ingredient.texture))
   }, action) {
   let newCrafting, newOutput
@@ -49,16 +48,6 @@ export default function Data(state = {
       return {
         ...state,
         output: newOutput
-      }
-    case 'SET_SHAPE':
-      return {
-        ...state,
-        shape: action.payload
-      }
-    case 'DYNAMIC':
-      return {
-        ...state,
-        [action.name]: action.value
       }
     default:
       return state
