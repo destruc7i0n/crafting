@@ -253,6 +253,10 @@ pre {
     overflow: visible;
 }
 
+.download-button {
+    margin-top: 10px;
+}
+
 /* only for small */
 @media screen and (max-device-width : 400px) {
     .crafting .arrow {

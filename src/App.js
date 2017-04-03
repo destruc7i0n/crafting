@@ -10,6 +10,7 @@ import 'babel-polyfill'
 import Navbar from './components/Navbar'
 import CraftingTable from './components/CraftingTable'
 import Ingredients from './components/Ingredients'
+import Options from './components/Options'
 import Output from './components/Output'
 
 import IngredientDragLayer from './components/IngredientDragLayer'
@@ -27,6 +28,7 @@ const App = () =>
     <Row>
       <Col md={6}>
         <CraftingTable />
+        <Options />
         <Output />
       </Col>
       <Col md={6}>
