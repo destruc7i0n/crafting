@@ -12,7 +12,6 @@ import defaultStyle from 'react-syntax-highlighter/dist/styles/default'
 registerLanguage('json', codeStyle)
 
 import CraftingGenerator from '../classes/CraftingGenerator'
-
 import RecipeNames from '../resources/recipe-names.json'
 
 class Output extends Component {
@@ -26,10 +25,17 @@ class Output extends Component {
   }
 
   render() {
-    const {input, output, emptySpace, shape} = this.props
-    let fileSaveName = 'crafting_recipe.json'
+    const {input, output, outputRecipe, emptySpace, shape} = this.props
 
-    if (output.isPopulated()) {
+    let fileSaveName
+    if (outputRecipe === 'auto') {
+      fileSaveName = 'crafting_recipe.json'
+    } else {
+      fileSaveName = outputRecipe + '.json'
+    }
+
+    // check if the output is populated and the output is recipe
+    if (output.isPopulated() && outputRecipe === 'auto') {
       // remove the minecraft: and any trailing
       let name = output.id.match(/minecraft:(\w+)(:\d+)?/)[1]
       // if the recipe is in the recipe names
@@ -60,7 +66,6 @@ class Output extends Component {
           bsStyle="primary"
           block
         >Download {fileSaveName}</Button>
-        <p style={{fontSize: '10px', marginTop: '5px'}}>Note: The above download is WIP, all names aren't implemented yet.</p>
       </Panel>
     )
   }
@@ -72,6 +77,7 @@ export default connect((store) => {
     output: store.Data.output,
 
     shape: store.Options.shape,
-    emptySpace: store.Options.emptySpace
+    emptySpace: store.Options.emptySpace,
+    outputRecipe: store.Options.outputRecipe
   }
 })(Output)

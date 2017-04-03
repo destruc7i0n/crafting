@@ -1,6 +1,7 @@
 export default function Options(state = {
     shape: 'shaped',
-    emptySpace: true
+    emptySpace: true,
+    outputRecipe: 'auto'
   }, action) {
   switch (action.type) {
     case 'SET_SHAPE':
@@ -12,6 +13,11 @@ export default function Options(state = {
       return {
         ...state,
         emptySpace: action.payload
+      }
+    case 'SET_OUTPUT_RECIPE':
+      return {
+        ...state,
+        outputRecipe: action.payload
       }
     default:
       return state
