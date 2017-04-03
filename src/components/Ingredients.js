@@ -16,6 +16,7 @@ class Ingredients extends Component {
 
   render () {
     const { search } = this.state
+    const { dispatch } = this.props
     return (
       <Panel header="Ingredients">
         <div className="ingredients">
@@ -29,7 +30,10 @@ class Ingredients extends Component {
           {this.props.ingredients.map((key, index) => {
             if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {
               return (
-                <Ingredient key={index} ingredient={key} size="normal" />
+                <div key={index}
+                     onDoubleClick={() => dispatch({type: 'SET_FIRST_EMPTY_CRAFTING_SLOT', payload: { ingredient: key }})}>
+                  <Ingredient ingredient={key} size="normal" />
+                </div>
               )
             } else {
               return null

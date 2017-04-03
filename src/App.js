@@ -28,11 +28,13 @@ const App = () =>
     <Row>
       <Col md={6}>
         <CraftingTable />
-        <Options />
-        <Output />
+      </Col>
+      <Col md={6} className="ingredients-col">
+        <Ingredients />
       </Col>
       <Col md={6}>
-        <Ingredients />
+        <Options />
+        <Output />
       </Col>
     </Row>
   </div>

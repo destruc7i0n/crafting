@@ -270,4 +270,8 @@ pre {
     .navbar-right li:last-child {
         padding-right: 10px;
     }
+
+    .ingredients-col {
+        float: right;
+    }
 }

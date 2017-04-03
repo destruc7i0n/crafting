@@ -31,6 +31,27 @@ export default function Data(state = {
         ...state,
         crafting: newCrafting
       }
+    case 'SET_FIRST_EMPTY_CRAFTING_SLOT':
+      // clone crafting
+      newCrafting = [...state.crafting]
+      // find the first empty slot and update it
+      for (let [index, slot] of newCrafting.entries()) {
+        // if the slot is not populated
+        if (!slot.isPopulated()) {
+          // update ingredient
+          newCrafting[index] = new Ingredient(
+            action.payload.ingredient.id,
+            action.payload.ingredient.readable,
+            action.payload.ingredient.texture
+          )
+          // stop loop
+          break
+        }
+      }
+      return {
+        ...state,
+        crafting: newCrafting
+      }
     case 'SET_OUTPUT_SLOT':
       // update output slot with new instance
       newOutput = new Ingredient(
