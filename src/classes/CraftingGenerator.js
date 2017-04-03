@@ -1,4 +1,4 @@
-import { trimEnd } from 'lodash'
+import { trimStart, trimEnd } from 'lodash'
 
 class CraftingGenerator {
   constructor (input, output) {
@@ -174,13 +174,20 @@ class CraftingGenerator {
       return false
     }
 
+    // checks if all keys are equal
+    const allEqual = (arr) => arr.every( (i) => i === arr[0] )
     const keyExists = (key) => Object.keys(keyMap).indexOf(key) !== -1
     const getKey = (name) => {
       let key = this.dinnerboneChallenge(name, keyMap)
 
       // choose a key if the special ones don't work
-      while (keyExists(key)) {
-        key = patternCharacters[Math.floor(patternCharacters.length * Math.random())]
+      let flag = true
+      while (flag) {
+        if (keyExists(key)) {
+          key = patternCharacters[Math.floor(patternCharacters.length * Math.random())]
+        } else {
+          flag = false
+        }
       }
 
       return key
@@ -238,7 +245,17 @@ class CraftingGenerator {
     let lines = trimmed
 
     if (removeEmptySpace) {
+      // remove empty line
       lines = trimmed.filter((line) =>/\S/.test(line))
+
+      // trim all the start
+      let trimmedStart = lines.map((line) => trimStart(line))
+      // get the length of all
+      let trimmedStartLengths = trimmedStart.map(({length}) => length)
+      // if all equal, trim the start
+      if (allEqual(trimmedStartLengths)) {
+        lines = trimmedStart
+      }
     }
 
     // append mapping
