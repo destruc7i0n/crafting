@@ -6,7 +6,7 @@ import infoCircle from '../assets/info-circle.png'
 
 class Options extends Component {
   render () {
-    const {dispatch, emptySpace, output, shape} = this.props
+    const {dispatch, emptySpace, shape} = this.props
 
     const shapelessTooltip = (
       <Tooltip id="shapeless">This will allow the items to be placed in anywhere in the crafting table to get the output.</Tooltip>
