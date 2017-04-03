@@ -5,11 +5,13 @@ class Ingredient {
    * @param id
    * @param readable
    * @param texture
+   * @param count
    */
-  constructor (id, readable, texture) {
+  constructor (id, readable, texture, count) {
     this.id = id || ''
     this.readable = readable || ''
     this.texture = texture || ''
+    this.count = count || 1
   }
 
   /**
@@ -18,6 +20,19 @@ class Ingredient {
    */
   isPopulated() {
     return this.id && this.readable && this.texture
+  }
+
+  /**
+   * Gets a JSON object of the class
+   * @returns {{id: (*|string), readable: (*|string), texture: (*|string), count: (*|number)}}
+   */
+  toJSON() {
+    return {
+      id: this.id,
+      readable: this.readable,
+      texture: this.texture,
+      count: this.count
+    }
   }
 }
 

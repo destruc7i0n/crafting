@@ -57,7 +57,8 @@ export default function Data(state = {
       newOutput = new Ingredient(
         action.payload.ingredient.id,
         action.payload.ingredient.readable,
-        action.payload.ingredient.texture
+        action.payload.ingredient.texture,
+        action.payload.ingredient.count
       )
       return {
         ...state,

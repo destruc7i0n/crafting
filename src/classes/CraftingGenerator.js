@@ -216,15 +216,6 @@ class CraftingGenerator {
       }
     }
 
-    if (output.isPopulated()) {
-      const { name, data } = this.separateNameAndData(output.id)
-
-      // only add data if needed
-      shape.result = {
-        ...this.getItemType(name, data)
-      }
-    }
-
     // append the keymap
     shape.key = keyMap
 
@@ -244,12 +235,13 @@ class CraftingGenerator {
     // init lines
     let lines = trimmed
 
+
     if (removeEmptySpace) {
       // remove empty line
       lines = trimmed.filter((line) =>/\S/.test(line))
-
       // trim all the start
       let trimmedStart = lines.map((line) => trimStart(line))
+
       // get the length of all
       let trimmedStartLengths = trimmedStart.map(({length}) => length)
       // if all equal, trim the start
@@ -257,9 +249,18 @@ class CraftingGenerator {
         lines = trimmedStart
       }
     }
-
     // append mapping
     shape.pattern = lines
+
+    // result
+    if (output.isPopulated()) {
+      const { name, data } = this.separateNameAndData(output.id)
+
+      // only add data if needed
+      shape.result = {
+        ...this.getItemType(name, data)
+      }
+    }
 
     return shape
   }

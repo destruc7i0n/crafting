@@ -25,7 +25,7 @@ class Output extends Component {
   }
 
   render() {
-    const {input, output, outputRecipe, emptySpace, shape} = this.props
+    const {input, output, outputRecipe, outputCount, emptySpace, shape} = this.props
 
     let fileSaveName
     if (outputRecipe === 'auto') {
@@ -51,6 +51,12 @@ class Output extends Component {
     } else {
       json = generator.shaped(emptySpace)
     }
+
+    // temp hotfix until context menu
+    if (json.result.item) {
+      json.result.count = outputCount
+    }
+
     let toCopy = JSON.stringify(json, null, 4)
     let blob = new Blob([toCopy], {type: 'text/plain;charset=utf-8'})
 
@@ -78,6 +84,7 @@ export default connect((store) => {
 
     shape: store.Options.shape,
     emptySpace: store.Options.emptySpace,
-    outputRecipe: store.Options.outputRecipe
+    outputRecipe: store.Options.outputRecipe,
+    outputCount: store.Options.outputCount
   }
 })(Output)
