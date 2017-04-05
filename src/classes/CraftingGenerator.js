@@ -1,4 +1,4 @@
-import { trimStart, trimEnd } from 'lodash'
+import { trimEnd } from 'lodash'
 
 class CraftingGenerator {
   constructor (input, output) {
@@ -174,8 +174,6 @@ class CraftingGenerator {
       return false
     }
 
-    // checks if all keys are equal
-    const allEqual = (arr) => arr.every( (i) => i === arr[0] )
     const keyExists = (key) => Object.keys(keyMap).indexOf(key) !== -1
     const getKey = (name) => {
       let key = this.dinnerboneChallenge(name, keyMap)
@@ -239,15 +237,14 @@ class CraftingGenerator {
     if (removeEmptySpace) {
       // remove empty line
       lines = trimmed.filter((line) =>/\S/.test(line))
-      // trim all the start
-      let trimmedStart = lines.map((line) => trimStart(line))
+      // get amount of leading whitespace
+      let leadingWhitespace = lines.map((line) => line.search(/\S/))
 
-      // get the length of all
-      let trimmedStartLengths = trimmedStart.map(({length}) => length)
-      // if all equal, trim the start
-      if (allEqual(trimmedStartLengths)) {
-        lines = trimmedStart
-      }
+      // get shortest amount
+      let leadingWhitespaceAmount = Math.min(...leadingWhitespace)
+
+      // trim the start
+      lines = lines.map((line) => line.substring(leadingWhitespaceAmount))
     }
     // append mapping
     shape.pattern = lines

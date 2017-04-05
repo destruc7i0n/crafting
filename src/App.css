@@ -270,8 +270,4 @@ pre {
     .navbar-right li:last-child {
         padding-right: 10px;
     }
-
-    .options-output-col {
-        float: left;
-    }
 }
