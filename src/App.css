@@ -271,7 +271,7 @@ pre {
         padding-right: 10px;
     }
 
-    .ingredients-col {
-        float: right;
+    .options-output-col {
+        float: left;
     }
 }
