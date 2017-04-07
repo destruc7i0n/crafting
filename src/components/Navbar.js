@@ -12,7 +12,7 @@ const CraftingNav = (props) => {
     <Navbar inverse>
       <Navbar.Header>
         <Navbar.Brand>
-          <img src="/favicon.ico" alt=""/>
+          <img src="/assets/crafting_table.png" alt=""/>
           Crafting
         </Navbar.Brand>
         <Navbar.Toggle />

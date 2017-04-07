@@ -2,6 +2,7 @@
   "name": "crafting",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://crafting.thedestruc7i0n.ca/",
   "dependencies": {
     "babel-polyfill": "^6.23.0",
     "bootstrap": "^3.3.7",
