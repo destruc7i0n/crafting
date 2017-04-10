@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Button, Panel } from 'react-bootstrap'
 
@@ -15,6 +16,16 @@ import CraftingGenerator from '../classes/CraftingGenerator'
 import RecipeNames from '../resources/recipe-names.json'
 
 class Output extends Component {
+  static propTypes = {
+    input: PropTypes.array,
+    output: PropTypes.object,
+
+    shape: PropTypes.string,
+    emptySpace: PropTypes.bool,
+    outputRecipe: PropTypes.string,
+    outputCount: PropTypes.number
+  }
+
   constructor (props) {
     super(props)
 

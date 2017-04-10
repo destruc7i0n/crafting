@@ -15,7 +15,7 @@ import Ingredients from './components/Ingredients'
 import Options from './components/Options'
 import Output from './components/Output'
 
-import IngredientDragLayer from './components/IngredientDragLayer'
+import IngredientDragLayer from './components/ingredient/IngredientDragLayer'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
