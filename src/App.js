@@ -14,6 +14,7 @@ import CraftingTable from './components/CraftingTable'
 import Ingredients from './components/Ingredients'
 import Options from './components/Options'
 import Output from './components/Output'
+import CraftingModal from './components/crafting/CraftingModal'
 
 import IngredientDragLayer from './components/ingredient/IngredientDragLayer'
 
@@ -62,6 +63,7 @@ class App extends Component {
             { !isMobile ? <Ingredients /> : null }
           </Col>
         </Row>
+        <CraftingModal />
       </div>
     )
   }

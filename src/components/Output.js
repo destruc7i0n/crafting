@@ -22,8 +22,7 @@ class Output extends Component {
 
     shape: PropTypes.string,
     emptySpace: PropTypes.bool,
-    outputRecipe: PropTypes.string,
-    outputCount: PropTypes.number
+    outputRecipe: PropTypes.string
   }
 
   constructor (props) {
@@ -36,7 +35,7 @@ class Output extends Component {
   }
 
   render() {
-    const {input, output, outputRecipe, outputCount, emptySpace, shape} = this.props
+    const {input, output, outputRecipe, emptySpace, shape} = this.props
 
     let fileSaveName
     if (outputRecipe === 'auto') {
@@ -63,9 +62,8 @@ class Output extends Component {
       json = generator.shaped(emptySpace)
     }
 
-    // temp hotfix until context menu
     if (json.result.item) {
-      json.result.count = outputCount
+      json.result.count = output.count
     }
 
     let toCopy = JSON.stringify(json, null, 4)
@@ -95,7 +93,6 @@ export default connect((store) => {
 
     shape: store.Options.shape,
     emptySpace: store.Options.emptySpace,
-    outputRecipe: store.Options.outputRecipe,
-    outputCount: store.Options.outputCount
+    outputRecipe: store.Options.outputRecipe
   }
 })(Output)

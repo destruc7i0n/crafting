@@ -76,8 +76,8 @@ class Ingredient extends Component {
     if (!this.props.ingredient.id) {
       return
     }
-    const cursorX = e.pageX
-    const cursorY = e.pageY
+    const cursorX = e.clientX
+    const cursorY = e.clientY
     let updatedStyles = {display: 'block', x: cursorX, y: cursorY}
 
     this.setState({
