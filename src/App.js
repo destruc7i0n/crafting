@@ -10,6 +10,7 @@ import 'babel-polyfill'
 import { debounce } from 'lodash'
 
 import Navbar from './components/Navbar'
+import HelpAlert from './components/HelpAlert'
 import CraftingTable from './components/CraftingTable'
 import Ingredients from './components/Ingredients'
 import Options from './components/Options'
@@ -31,7 +32,7 @@ class App extends Component {
     this.handleResize = this.handleResize.bind(this)
   }
 
-  // bad hack, remove soon
+  // bad hack, remove sometime
   handleResize() {
     return debounce(() => this.forceUpdate(), 100)
   }
@@ -53,6 +54,9 @@ class App extends Component {
         <Navbar />
         <IngredientDragLayer />
         <Row>
+          <Col md={12}>
+            <HelpAlert />
+          </Col>
           <Col md={6} sm={12}>
             <CraftingTable />
             { isMobile ? <Ingredients /> : null }

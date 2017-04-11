@@ -67,6 +67,7 @@ class CraftingModal extends Component {
                       value={outputCount}
                       onChange={this.handleOutputCountNumberChange}
                       placeholder="Enter amount"
+                      autoFocus
         />
       )
       show = showingCountModal
