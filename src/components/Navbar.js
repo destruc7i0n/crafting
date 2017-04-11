@@ -1,7 +1,7 @@
 import React from 'react'
 import { MenuItem, Nav, Navbar, NavDropdown, NavItem, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
-const CraftingNav = (props) => {
+const CraftingNav = () => {
   const creatorTooltip = (
     <Tooltip id="creator">Site made by TheDestruc7i0n.</Tooltip>
   )

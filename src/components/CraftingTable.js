@@ -8,7 +8,8 @@ import CraftingGrid from './crafting/CraftingGrid'
 class CraftingTable extends Component {
   static propTypes = {
     crafting: PropTypes.array,
-    output: PropTypes.object
+    output: PropTypes.object,
+    dispatch: PropTypes.func
   }
 
   render () {

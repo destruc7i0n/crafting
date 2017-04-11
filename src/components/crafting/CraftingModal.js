@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { SET_OUTPUT_SLOT, TOGGLE_SHOWING_COUNT_MENU } from '../../actionTypes'
 import PropTypes from 'prop-types'
 import { Button, Modal } from 'react-bootstrap'
 
@@ -8,7 +9,8 @@ import NumericInput from 'react-numeric-input'
 class CraftingModal extends Component {
   static propTypes = {
     output: PropTypes.object,
-    showingCountModal: PropTypes.bool
+    showingCountModal: PropTypes.bool,
+    dispatch: PropTypes.func
   }
 
   constructor (props) {
@@ -43,7 +45,7 @@ class CraftingModal extends Component {
 
     // check if number is valid and then set the output slot
     if (number >= 1 && number <= 64) {
-      dispatch({type: 'SET_OUTPUT_SLOT', payload: {ingredient: {...output.toJSON(), count: number}}})
+      dispatch({type: SET_OUTPUT_SLOT, payload: {ingredient: {...output.toJSON(), count: number}}})
     }
   }
 
@@ -71,7 +73,7 @@ class CraftingModal extends Component {
         />
       )
       show = showingCountModal
-      hide = () => dispatch({type: 'TOGGLE_SHOWING_COUNT_MENU'})
+      hide = () => dispatch({type: TOGGLE_SHOWING_COUNT_MENU})
     }
 
     return (

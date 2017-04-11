@@ -22,7 +22,8 @@ class Output extends Component {
 
     shape: PropTypes.string,
     emptySpace: PropTypes.bool,
-    outputRecipe: PropTypes.string
+    outputRecipe: PropTypes.string,
+    dispatch: PropTypes.func
   }
 
   constructor (props) {

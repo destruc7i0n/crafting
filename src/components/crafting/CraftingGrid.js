@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { SET_CRAFTING_SLOT, SET_OUTPUT_SLOT } from '../../actionTypes'
 import { DropTarget } from 'react-dnd'
 import { ContextMenuTrigger } from 'react-contextmenu'
 
@@ -10,6 +11,8 @@ import CraftingContextMenu from '../crafting/CraftingContextMenu'
 
 const craftingTarget = {
   drop(props, monitor) {
+    const { dispatch, size, index } = props
+
     if (monitor.didDrop()) {
       return
     }
@@ -18,10 +21,10 @@ const craftingTarget = {
     const item = monitor.getItem()
 
     // update store
-    if (props.size === 'large') {
-      props.dispatch({type: 'SET_OUTPUT_SLOT', payload: {ingredient: item}})
+    if (size === 'large') {
+      dispatch({type: SET_OUTPUT_SLOT, payload: {ingredient: item}})
     } else {
-      props.dispatch({type: 'SET_CRAFTING_SLOT', payload: {index: props.index, ingredient: item}})
+      dispatch({type: SET_CRAFTING_SLOT, payload: {index: index, ingredient: item}})
     }
   },
 }
@@ -31,7 +34,8 @@ class CraftingGrid extends Component {
     connectDropTarget: PropTypes.func,
     ingredient: PropTypes.object,
     size: PropTypes.string,
-    craftingSlot: PropTypes.number
+    craftingSlot: PropTypes.number,
+    dispatch: PropTypes.func
   }
 
   render () {
@@ -66,8 +70,10 @@ class CraftingGrid extends Component {
 
 export default compose(
   connect((store, ownProps) => {
+    const { index } = ownProps
+
     return {
-      ...store.Data.crafting[ownProps.index]
+      ...store.Data.crafting[index]
     }
   }),
   DropTarget('ingredient', craftingTarget, (connect, monitor) => ({

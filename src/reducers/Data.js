@@ -1,6 +1,13 @@
 import Ingredient from '../classes/Ingredient'
-
 import Ingredients from '../resources/textures.json'
+
+import {
+  RESET_CRAFTING_SLOT,
+  RESET_OUTPUT_SLOT,
+  SET_CRAFTING_SLOT,
+  SET_FIRST_EMPTY_CRAFTING_SLOT,
+  SET_OUTPUT_SLOT
+} from '../actionTypes'
 
 export default function Data(state = {
     crafting: [...new Array(9)].map(i => new Ingredient()),
@@ -9,7 +16,7 @@ export default function Data(state = {
   }, action) {
   let newCrafting, newOutput
   switch (action.type) {
-    case 'SET_CRAFTING_SLOT':
+    case SET_CRAFTING_SLOT:
       // clone crafting
       newCrafting = [...state.crafting]
       // update ingredient
@@ -22,7 +29,7 @@ export default function Data(state = {
         ...state,
         crafting: newCrafting
       }
-    case 'RESET_CRAFTING_SLOT':
+    case RESET_CRAFTING_SLOT:
       // clone crafting
       newCrafting = [...state.crafting]
       // reset ingredient
@@ -31,7 +38,7 @@ export default function Data(state = {
         ...state,
         crafting: newCrafting
       }
-    case 'SET_FIRST_EMPTY_CRAFTING_SLOT':
+    case SET_FIRST_EMPTY_CRAFTING_SLOT:
       // clone crafting
       newCrafting = [...state.crafting]
       // find the first empty slot and update it
@@ -52,7 +59,7 @@ export default function Data(state = {
         ...state,
         crafting: newCrafting
       }
-    case 'SET_OUTPUT_SLOT':
+    case SET_OUTPUT_SLOT:
       // update output slot with new instance
       newOutput = new Ingredient(
         action.payload.ingredient.id,
@@ -65,7 +72,7 @@ export default function Data(state = {
         ...state,
         output: newOutput
       }
-    case 'RESET_OUTPUT_SLOT':
+    case RESET_OUTPUT_SLOT:
       // reset output slot with new instance
       newOutput = new Ingredient()
       return {

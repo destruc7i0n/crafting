@@ -1,40 +1,45 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { DragSource } from 'react-dnd'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { RESET_CRAFTING_SLOT, RESET_OUTPUT_SLOT } from '../../actionTypes'
+
+import { DragSource } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import Tooltip from '../Tooltip'
 
 const ingredientSource = {
   beginDrag(props, monitor, component) {
+    const { ingredient } = props
     // hide while dragging
     component.setState({
       mouse: { ...component.state.mouse, display: 'none' }
     })
     // what will be passed on drop
     return {
-      id: props.ingredient.id,
-      readable: props.ingredient.readable,
-      texture: props.ingredient.texture
+      id: ingredient.id,
+      readable: ingredient.readable,
+      texture: ingredient.texture
     }
   },
 
   endDrag(props) {
+    const { dispatch, size, craftingSlot } = props
+
     // clear slot if in crafting table already before drop
-    if (props.craftingSlot !== undefined) {
-      props.dispatch({
-        type: 'RESET_CRAFTING_SLOT',
+    if (craftingSlot !== undefined) {
+      dispatch({
+        type: RESET_CRAFTING_SLOT,
         payload: {
-          index: props.craftingSlot
+          index: craftingSlot
         }
       })
     }
 
-    if (props.size === 'large') {
-      props.dispatch({
-        type: 'RESET_OUTPUT_SLOT'
+    if (size === 'large') {
+      dispatch({
+        type: RESET_OUTPUT_SLOT
       })
     }
   }
@@ -47,7 +52,8 @@ class Ingredient extends Component {
     contextMenu: PropTypes.bool,
     connectDragSource: PropTypes.func,
     connectDragPreview: PropTypes.func,
-    craftingSlot: PropTypes.number
+    craftingSlot: PropTypes.number,
+    dispatch: PropTypes.func
   }
 
   constructor (props) {
@@ -72,8 +78,9 @@ class Ingredient extends Component {
   }
 
   getCursorPos (e) {
+    const { ingredient } = this.props
     // don't show if no ingredient inside
-    if (!this.props.ingredient.id) {
+    if (!ingredient.id) {
       return
     }
     const cursorX = e.clientX

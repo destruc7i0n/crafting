@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import {
+  RESET_CRAFTING_SLOT,
+  RESET_OUTPUT_SLOT,
+  TOGGLE_SHOWING_CONTEXT_MENU,
+  TOGGLE_SHOWING_COUNT_MENU
+} from '../../actionTypes'
 import { ContextMenu, MenuItem } from 'react-contextmenu'
 
 class CraftingContextMenu extends Component {
   static propTypes = {
-    id: PropTypes.string
+    id: PropTypes.string,
+    dispatch: PropTypes.func
   }
 
   constructor (props) {
@@ -21,22 +28,22 @@ class CraftingContextMenu extends Component {
 
     // if output slot
     if (item === 9) {
-      dispatch({type: 'RESET_OUTPUT_SLOT'})
+      dispatch({type: RESET_OUTPUT_SLOT})
     } else {
-      dispatch({type: 'RESET_CRAFTING_SLOT', payload: {index: item}})
+      dispatch({type: RESET_CRAFTING_SLOT, payload: {index: item}})
     }
   }
 
   toggleContextMenu () {
     const {dispatch} = this.props
 
-    dispatch({type: 'TOGGLE_SHOWING_CONTEXT_MENU'})
+    dispatch({type: TOGGLE_SHOWING_CONTEXT_MENU})
   }
 
   toggleCountModal() {
     const {dispatch} = this.props
 
-    dispatch({type: 'TOGGLE_SHOWING_COUNT_MENU'})
+    dispatch({type: TOGGLE_SHOWING_COUNT_MENU})
   }
 
   render () {

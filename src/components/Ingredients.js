@@ -8,7 +8,8 @@ import Ingredient from './ingredient/Ingredient'
 
 class Ingredients extends Component {
   static propTypes = {
-    ingredients: PropTypes.array
+    ingredients: PropTypes.array,
+    dispatch: PropTypes.func
   }
 
   constructor (props) {
@@ -21,7 +22,7 @@ class Ingredients extends Component {
 
   render () {
     const { search } = this.state
-    const { dispatch } = this.props
+    const { dispatch, ingredients } = this.props
     return (
       <Panel header="Ingredients">
         <div className="ingredients">
@@ -32,7 +33,7 @@ class Ingredients extends Component {
               debounceTimeout={200}
               onChange={e => this.setState({ search: e.target.value })} />
           </span>
-          {this.props.ingredients.map((key, index) => {
+          {ingredients.map((key, index) => {
             if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {
               return (
                 <div key={index}
