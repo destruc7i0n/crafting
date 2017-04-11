@@ -10,12 +10,14 @@ import 'babel-polyfill'
 import { debounce } from 'lodash'
 
 import Navbar from './components/Navbar'
+import HelpAlert from './components/HelpAlert'
 import CraftingTable from './components/CraftingTable'
 import Ingredients from './components/Ingredients'
 import Options from './components/Options'
 import Output from './components/Output'
+import CraftingModal from './components/crafting/CraftingModal'
 
-import IngredientDragLayer from './components/IngredientDragLayer'
+import IngredientDragLayer from './components/ingredient/IngredientDragLayer'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
@@ -30,7 +32,7 @@ class App extends Component {
     this.handleResize = this.handleResize.bind(this)
   }
 
-  // bad hack, remove soon
+  // bad hack, remove sometime
   handleResize() {
     return debounce(() => this.forceUpdate(), 100)
   }
@@ -52,6 +54,9 @@ class App extends Component {
         <Navbar />
         <IngredientDragLayer />
         <Row>
+          <Col md={12}>
+            <HelpAlert />
+          </Col>
           <Col md={6} sm={12}>
             <CraftingTable />
             { isMobile ? <Ingredients /> : null }
@@ -62,6 +67,7 @@ class App extends Component {
             { !isMobile ? <Ingredients /> : null }
           </Col>
         </Row>
+        <CraftingModal />
       </div>
     )
   }

@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { DragSource } from 'react-dnd'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 
-import Tooltip from './Tooltip'
-import IngredientClass from '../classes/Ingredient'
+import Tooltip from '../Tooltip'
 
 const ingredientSource = {
   beginDrag(props, monitor, component) {
@@ -41,6 +41,15 @@ const ingredientSource = {
 }
 
 class Ingredient extends Component {
+  static propTypes = {
+    ingredient: PropTypes.object,
+    size: PropTypes.string,
+    contextMenu: PropTypes.bool,
+    connectDragSource: PropTypes.func,
+    connectDragPreview: PropTypes.func,
+    craftingSlot: PropTypes.number
+  }
+
   constructor (props) {
     super(props)
 
@@ -67,8 +76,8 @@ class Ingredient extends Component {
     if (!this.props.ingredient.id) {
       return
     }
-    const cursorX = e.pageX
-    const cursorY = e.pageY
+    const cursorX = e.clientX
+    const cursorY = e.clientY
     let updatedStyles = {display: 'block', x: cursorX, y: cursorY}
 
     this.setState({
@@ -87,26 +96,25 @@ class Ingredient extends Component {
   }
 
   render () {
-    const { connectDragSource, ingredient, size } = this.props
+    const { contextMenu, connectDragSource, ingredient, size } = this.props
+    // only allow tooltip and dragging while no context menu
     return (
-      <span className={size === "large" ? "grid-large" : "grid"}
+      <span className={size === 'large' ? 'grid-large' : 'grid'}
             onMouseMove={this.onMouseMove}
             onMouseOut={this.onMouseOut}>
-        {connectDragSource(<img src={ingredient.texture} alt=""/>)}
-        <Tooltip title={ingredient.readable} id={ingredient.id} style={this.state.mouse} />
+        {!contextMenu ? connectDragSource(<img src={ingredient.texture} alt=""/>) : <img src={ingredient.texture} alt=""/>}
+        {!contextMenu ? <Tooltip title={ingredient.readable} id={ingredient.id} style={this.state.mouse} /> : null}
       </span>
     )
   }
 }
 
-Ingredient.propTypes = {
-  ingredient: PropTypes.instanceOf(IngredientClass),
-  craftingSlot: PropTypes.number,
-  size: PropTypes.string
-}
-
 export default compose(
-  connect(),
+  connect((state) => {
+    return {
+      contextMenu: state.Private.showingContextMenu
+    }
+  }),
   DragSource('ingredient', ingredientSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview()

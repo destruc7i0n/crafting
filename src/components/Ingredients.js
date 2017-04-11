@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Panel } from 'react-bootstrap'
 import DebounceInput from 'react-debounce-input';
 
-import Ingredient from './Ingredient'
+import Ingredient from './ingredient/Ingredient'
 
 class Ingredients extends Component {
+  static propTypes = {
+    ingredients: PropTypes.array
+  }
+
   constructor (props) {
     super(props)
 

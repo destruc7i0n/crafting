@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Panel } from 'react-bootstrap'
 
-import CraftingGrid from './CraftingGrid'
+import CraftingGrid from './crafting/CraftingGrid'
 
 class CraftingTable extends Component {
+  static propTypes = {
+    crafting: PropTypes.array,
+    output: PropTypes.object
+  }
+
   render () {
     const {crafting, output} = this.props
 

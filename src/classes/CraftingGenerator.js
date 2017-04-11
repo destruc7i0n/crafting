@@ -141,7 +141,8 @@ class CraftingGenerator {
 
       // only add data if needed
       shape.result = {
-        ...this.getItemType(name, data)
+        ...this.getItemType(name, data),
+        count: output.count
       }
     }
 
@@ -255,7 +256,8 @@ class CraftingGenerator {
 
       // only add data if needed
       shape.result = {
-        ...this.getItemType(name, data)
+        ...this.getItemType(name, data),
+        count: output.count
       }
     }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
   Checkbox,
@@ -17,26 +18,14 @@ import infoCircle from '../assets/info-circle.png'
 import RecipeNames from '../resources/recipe-names.json'
 
 class Options extends Component {
-  constructor (props) {
-    super(props)
-
-    // bindings
-    this.handleNumberChange = this.handleNumberChange.bind(this)
-  }
-
-  handleNumberChange(e) {
-    const { dispatch } = this.props
-
-    let value = e.target.value
-    let number = parseInt(value, 10)
-
-    if (number => 1 && number <= 64) {
-      dispatch({ type: 'SET_OUTPUT_COUNT', payload: number })
-    }
+  static propTypes = {
+    shape: PropTypes.string,
+    emptySpace: PropTypes.bool,
+    outputRecipe: PropTypes.string
   }
 
   render () {
-    const {dispatch, emptySpace, shape, outputRecipe, outputCount} = this.props
+    const {dispatch, emptySpace, shape, outputRecipe} = this.props
 
     const shapelessTooltip = (
       <Tooltip id="shapeless">This will allow the items to be placed in anywhere in the crafting table to get the
@@ -120,27 +109,6 @@ class Options extends Component {
             </Form>
           </Col>
 
-          <Col md={12}>
-            <Form horizontal onSubmit={(e) => e.preventDefault()}>
-              <FormGroup controlId="recipe">
-                <Col md={2}>
-                  <ControlLabel>Output Quantity:</ControlLabel>
-                </Col>
-                {' '}
-                <Col md={10}>
-                  <FormControl componentClass="input"
-                               placeholder="1"
-                               min={1}
-                               max={64}
-                               value={outputCount}
-                               onChange={this.handleNumberChange}
-                               type="number" />
-                </Col>
-              </FormGroup>
-              <p style={{fontSize: '10px', marginTop: '5px'}}>The amount of items to output.</p>
-            </Form>
-          </Col>
-
         </Row>
       </Panel>
     )
@@ -151,7 +119,6 @@ export default connect((store) => {
   return {
     shape: store.Options.shape,
     emptySpace: store.Options.emptySpace,
-    outputRecipe: store.Options.outputRecipe,
-    outputCount: store.Options.outputCount
+    outputRecipe: store.Options.outputRecipe
   }
 })(Options)

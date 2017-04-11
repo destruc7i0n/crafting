@@ -1,13 +1,11 @@
-import React, { PropTypes } from 'react'
+import React  from 'react'
 
 const Tooltip = (props) => {
-  const transform = `translate(${props.style.x}px, ${props.style.y}px)`
-
   return (
     <div className="mc-tooltip" style={{
       display: props.style.display,
-      WebkitTransform: transform,
-      transform
+      top: props.style.y,
+      left: props.style.x
     }}>
       <div className="mc-tooltip-title">
         {props.title}
@@ -17,15 +15,6 @@ const Tooltip = (props) => {
       </div>
     </div>
   )
-}
-
-Tooltip.propTypes = {
-  title: PropTypes.string,
-  style: PropTypes.shape({
-    display: PropTypes.string,
-    top: PropTypes.number,
-    left: PropTypes.number
-  })
 }
 
 export default Tooltip

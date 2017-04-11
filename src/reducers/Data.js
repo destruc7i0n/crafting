@@ -58,7 +58,8 @@ export default function Data(state = {
         action.payload.ingredient.id,
         action.payload.ingredient.readable,
         action.payload.ingredient.texture,
-        action.payload.ingredient.count
+        // set the next output count to the previous on item change
+        action.payload.ingredient.count || state.output.count
       )
       return {
         ...state,
