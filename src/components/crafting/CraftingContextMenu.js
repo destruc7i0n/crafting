@@ -9,6 +9,8 @@ import {
 } from '../../actionTypes'
 import { ContextMenu, MenuItem } from 'react-contextmenu'
 
+import './CraftingContextMenu.css'
+
 class CraftingContextMenu extends Component {
   static propTypes = {
     id: PropTypes.string,

@@ -28,7 +28,9 @@ class HelpAlert extends Component {
   }
 
   render () {
-    if (!this.state.shown) {
+    const { shown } = this.state
+
+    if (!shown) {
       return (
         <Alert bsStyle="info" onDismiss={() => this.setState({ shown: true })}>
           <p style={{ fontSize: '1.2em' }}>Information</p>

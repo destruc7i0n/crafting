@@ -1,0 +1,14 @@
+pre {
+    font-family: monospace !important;
+    overflow: visible !important;
+}
+
+.download-button {
+    margin-top: 10px;
+}
+
+@media screen and (max-device-width: 400px) {
+    .download-button {
+        overflow: hidden;
+    }
+}

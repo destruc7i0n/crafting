@@ -54,7 +54,7 @@ class CraftingGrid extends Component {
     if (ingredient.isPopulated()) {
       ingredientTarget = (
         <div>
-          <ContextMenuTrigger id={contextMenuId}>
+          <ContextMenuTrigger id={contextMenuId} holdToDisplay={-1}>
             <Ingredient ingredient={ingredient} craftingSlot={index} size={size} />
           </ContextMenuTrigger>
           <CraftingContextMenu id={contextMenuId} />

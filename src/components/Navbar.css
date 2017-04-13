@@ -1,0 +1,16 @@
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand > img {
+    max-width: 64px;
+    padding: 0 10px;
+}
+
+/* only desktop */
+@media only screen and (min-width: 992px) {
+    .navbar-right li:last-child {
+        padding-right: 10px;
+    }
+}

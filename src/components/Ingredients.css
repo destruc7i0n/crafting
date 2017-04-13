@@ -1,0 +1,54 @@
+.crafting-holder, .ingredients {
+    display: flex;
+    display: -webkit-flex; /* Safari 8 */
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap; /* Safari 8 */
+    padding: 10px;
+    margin-top: 10px;
+    background: #C6C6C6;
+    border: 2px solid #373737;
+    border-right-color: #FFF;
+    border-bottom-color: #FFF;
+}
+
+.ingredients {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+.ingredients::-webkit-scrollbar {
+    width: auto;
+}
+
+.ingredients::-webkit-scrollbar-track {
+    background-color: #8B8B8B;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+    height: 10px;
+    background-color: #C6C6C6;
+    border: 2px solid #373737;
+    border-right-color: #FFF;
+    border-bottom-color: #FFF;
+}
+
+input[type="text"]:not(.form-control) {
+    font-family: Minecraft;
+    font-size: 1em;
+    border: 2px solid #404040;
+    background: #8B8B8B;
+    padding: 2px;
+    color: #FFFFFF;
+}
+
+.search-box {
+    display: flex;
+    flex: 0 0 100%;
+    margin-bottom: 5px;
+    overflow-x: auto;
+}
+
+.search-box input {
+    flex: 2;
+    margin-left: 10px;
+}

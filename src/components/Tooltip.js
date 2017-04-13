@@ -1,4 +1,6 @@
-import React  from 'react'
+import React from 'react'
+
+import './Tooltip.css'
 
 const Tooltip = (props) => {
   const { style, id, title } = props

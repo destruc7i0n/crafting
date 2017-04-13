@@ -1,0 +1,48 @@
+.mc-tooltip {
+    text-align: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #100010;
+    background-color: rgba(16, 0, 16, 0.94);
+    color: #FFF;
+    padding: 6px;
+    font-family: Minecraft;
+    font-size: 16px;
+    word-spacing: 4px;
+    white-space: nowrap;
+    line-height: 20px;
+    text-shadow: 2px 2px 0 #3F3F3F;
+    margin: 2px 4px;
+    pointer-events: none;
+    z-index: 99;
+}
+
+.mc-tooltip:before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: -2px;
+    bottom: 2px;
+    left: -2px;
+    border-style: none solid;
+    border-color: rgba(16, 0, 16, 0.94);
+}
+
+.mc-tooltip:after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 0;
+    bottom: 2px;
+    left: 0;
+    border: 2px solid #2D0A63;
+    border-image: -webkit-linear-gradient(rgba(80, 0, 255, 0.31), rgba(40, 0, 127, 0.31)) 1;
+    border-image: linear-gradient(rgba(80, 0, 255, 0.31), rgba(40, 0, 127, 0.31)) 1;
+}
+
+.mc-tooltip > .mc-tooltip-description {
+    font-size: 12px;
+    display: block;
+    margin-top: 4px
+}

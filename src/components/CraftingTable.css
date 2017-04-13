@@ -1,0 +1,71 @@
+.crafting {
+    max-width: 230px;
+    margin: 0 auto;
+}
+
+.crafting-table {
+    background: #C6C6C6;
+    text-align: left !important;
+    margin-left: 2px;
+    line-height: 42px;
+}
+
+.grid, .grid-large {
+    float: left;
+    display: block;
+    text-align: center !important;
+    background-color: #8B8B8B;
+    border: 2px solid #373737;
+    border-right-color: #FFF;
+    border-bottom-color: #FFF;
+    vertical-align: middle;
+}
+
+.grid-large img {
+    z-index: -1;
+    margin-top: 8px;
+}
+
+.grid {
+    width: 36px;
+    height: 36px;
+}
+
+.grid:hover, .grid-large:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.grid-large {
+    width: 48px;
+    height: 48px;
+}
+
+.grid img, .grid-large img {
+    cursor: move;
+}
+
+.crafting .recipe {
+    float: left;
+    width: 110px;
+}
+
+.crafting .arrow {
+    width: 32px;
+    height: 27px;
+    margin: 50px 15px 0 15px;
+    float: left;
+    background: url(../assets/arrow.png);
+}
+
+.crafting-table-output {
+    float: left;
+    padding-top: 40px;
+}
+
+/* only for small */
+@media screen and (max-device-width: 400px) {
+    .crafting .arrow {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}

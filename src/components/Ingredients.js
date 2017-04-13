@@ -1,14 +1,20 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { SET_FIRST_EMPTY_CRAFTING_SLOT } from '../actionTypes'
 import { Panel } from 'react-bootstrap'
 import DebounceInput from 'react-debounce-input';
 
 import Ingredient from './ingredient/Ingredient'
+import IngredientClass from '../classes/Ingredient'
+
+// get the items from the JSON file
+import { items as IngredientItems } from '../resources/textures.json'
+
+import './Ingredients.css'
 
 class Ingredients extends Component {
   static propTypes = {
-    ingredients: PropTypes.array,
     dispatch: PropTypes.func
   }
 
@@ -22,7 +28,11 @@ class Ingredients extends Component {
 
   render () {
     const { search } = this.state
-    const { dispatch, ingredients } = this.props
+    const { dispatch } = this.props
+
+    // convert the items to the class
+    const ingredients = IngredientItems.map((ingredient) => new IngredientClass(ingredient.id, ingredient.readable, ingredient.texture))
+
     return (
       <Panel header="Ingredients">
         <div className="ingredients">
@@ -37,7 +47,7 @@ class Ingredients extends Component {
             if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {
               return (
                 <div key={index}
-                     onDoubleClick={() => dispatch({type: 'SET_FIRST_EMPTY_CRAFTING_SLOT', payload: { ingredient: key }})}>
+                     onDoubleClick={() => dispatch({type: SET_FIRST_EMPTY_CRAFTING_SLOT, payload: { ingredient: key }})}>
                   <Ingredient ingredient={key} size="normal" />
                 </div>
               )
@@ -51,8 +61,4 @@ class Ingredients extends Component {
   }
 }
 
-export default connect((store) => {
-  return {
-    ingredients: store.Data.ingredients
-  }
-})(Ingredients)
+export default connect()(Ingredients)

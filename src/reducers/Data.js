@@ -1,5 +1,4 @@
 import Ingredient from '../classes/Ingredient'
-import Ingredients from '../resources/textures.json'
 
 import {
   RESET_CRAFTING_SLOT,
@@ -11,8 +10,7 @@ import {
 
 export default function Data(state = {
     crafting: [...new Array(9)].map(i => new Ingredient()),
-    output: new Ingredient(),
-    ingredients: Ingredients.items.map((ingredient) => new Ingredient(ingredient.id, ingredient.readable, ingredient.texture))
+    output: new Ingredient()
   }, action) {
   let newCrafting, newOutput
   switch (action.type) {

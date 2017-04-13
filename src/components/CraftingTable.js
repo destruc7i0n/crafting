@@ -5,6 +5,8 @@ import { Panel } from 'react-bootstrap'
 
 import CraftingGrid from './crafting/CraftingGrid'
 
+import './CraftingTable.css'
+
 class CraftingTable extends Component {
   static propTypes = {
     crafting: PropTypes.array,

@@ -15,6 +15,8 @@ registerLanguage('json', codeStyle)
 import CraftingGenerator from '../classes/CraftingGenerator'
 import RecipeNames from '../resources/recipe-names.json'
 
+import './Output.css'
+
 class Output extends Component {
   static propTypes = {
     input: PropTypes.array,
