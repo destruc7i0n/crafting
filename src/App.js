@@ -47,7 +47,7 @@ class App extends Component {
   // end bad hack
 
   render () {
-    const isMobile = window.matchMedia && window.matchMedia('only screen and (max-width : 992px)').matches
+    const isMobile = window.matchMedia && window.matchMedia('only screen and (max-width: 992px)').matches
 
     return (
       <div className="container">

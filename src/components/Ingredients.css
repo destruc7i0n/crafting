@@ -1,8 +1,6 @@
 .crafting-holder, .ingredients {
     display: flex;
-    display: -webkit-flex; /* Safari 8 */
     flex-wrap: wrap;
-    -webkit-flex-wrap: wrap; /* Safari 8 */
     padding: 10px;
     margin-top: 10px;
     background: #C6C6C6;
