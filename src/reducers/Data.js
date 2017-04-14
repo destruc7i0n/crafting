@@ -8,10 +8,10 @@ import {
   SET_OUTPUT_SLOT
 } from '../actionTypes'
 
-export default function Data(state = {
-    crafting: [...new Array(9)].map(i => new Ingredient()),
-    output: new Ingredient()
-  }, action) {
+export default function Data (state = {
+  crafting: [...new Array(9)].map(i => new Ingredient()),
+  output: new Ingredient()
+}, action) {
   let newCrafting, newOutput
   switch (action.type) {
     case SET_CRAFTING_SLOT:

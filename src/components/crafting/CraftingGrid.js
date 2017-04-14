@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -10,8 +10,8 @@ import Ingredient from '../ingredient/Ingredient'
 import CraftingContextMenu from '../crafting/CraftingContextMenu'
 
 const craftingTarget = {
-  drop(props, monitor) {
-    const { dispatch, size, index } = props
+  drop (props, monitor) {
+    const {dispatch, size, index} = props
 
     if (monitor.didDrop()) {
       return
@@ -26,51 +26,47 @@ const craftingTarget = {
     } else {
       dispatch({type: SET_CRAFTING_SLOT, payload: {index: index, ingredient: item}})
     }
-  },
+  }
 }
 
-class CraftingGrid extends Component {
-  static propTypes = {
-    connectDropTarget: PropTypes.func,
-    ingredient: PropTypes.object,
-    size: PropTypes.string,
-    craftingSlot: PropTypes.number,
-    dispatch: PropTypes.func
-  }
+const CraftingGrid = ({connectDropTarget, index, ingredient, size}) => {
+  // determine an id for the context menu
+  let contextMenuId = size === 'large' ? 9 : index
+  contextMenuId = contextMenuId.toString()
 
-  render () {
-    const {connectDropTarget, index, ingredient, size} = this.props
+  let ingredientTarget = (
+    <div>
+      <Ingredient ingredient={ingredient} craftingSlot={index} size={size} />
+    </div>
+  )
 
-    // determine an id for the context menu
-    let contextMenuId = size === 'large' ? 9 : index
-    contextMenuId = contextMenuId.toString()
-
-    let ingredientTarget = (
+  if (ingredient.isPopulated()) {
+    ingredientTarget = (
       <div>
-        <Ingredient ingredient={ingredient} craftingSlot={index} size={size} />
+        <ContextMenuTrigger id={contextMenuId} holdToDisplay={-1}>
+          <Ingredient ingredient={ingredient} craftingSlot={index} size={size} />
+        </ContextMenuTrigger>
+        <CraftingContextMenu id={contextMenuId} />
       </div>
     )
-
-    if (ingredient.isPopulated()) {
-      ingredientTarget = (
-        <div>
-          <ContextMenuTrigger id={contextMenuId} holdToDisplay={-1}>
-            <Ingredient ingredient={ingredient} craftingSlot={index} size={size} />
-          </ContextMenuTrigger>
-          <CraftingContextMenu id={contextMenuId} />
-        </div>
-      )
-    }
-
-    return connectDropTarget(
-      ingredientTarget
-    )
   }
+
+  return connectDropTarget(
+    ingredientTarget
+  )
+}
+
+CraftingGrid.propTypes = {
+  connectDropTarget: PropTypes.func,
+  ingredient: PropTypes.object,
+  size: PropTypes.string,
+  craftingSlot: PropTypes.number,
+  dispatch: PropTypes.func
 }
 
 export default compose(
   connect((store, ownProps) => {
-    const { index } = ownProps
+    const {index} = ownProps
 
     return {
       ...store.Data.crafting[index]

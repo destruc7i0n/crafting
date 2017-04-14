@@ -18,7 +18,7 @@ class Ingredient {
    * Checks if the ingredient is populated
    * @returns {*|string}
    */
-  isPopulated() {
+  isPopulated () {
     return this.id && this.readable && this.texture
   }
 
@@ -26,7 +26,7 @@ class Ingredient {
    * Gets a JSON object of the class
    * @returns {{id: (*|string), readable: (*|string), texture: (*|string), count: (*|number)}}
    */
-  toJSON() {
+  toJSON () {
     return {
       id: this.id,
       readable: this.readable,

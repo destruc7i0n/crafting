@@ -6,13 +6,13 @@ import { Button, Modal } from 'react-bootstrap'
 
 import NumericInput from 'react-numeric-input'
 
-class CraftingModal extends Component {
-  static propTypes = {
-    output: PropTypes.object,
-    showingCountModal: PropTypes.bool,
-    dispatch: PropTypes.func
-  }
+const propTypes = {
+  output: PropTypes.object,
+  showingCountModal: PropTypes.bool,
+  dispatch: PropTypes.func
+}
 
+class CraftingModal extends Component {
   constructor (props) {
     super(props)
 
@@ -63,13 +63,14 @@ class CraftingModal extends Component {
     if (showingCountModal) {
       title = 'Set Count'
       body = (
-        <NumericInput className="form-control"
-                      min={0}
-                      max={64}
-                      value={outputCount}
-                      onChange={this.handleOutputCountNumberChange}
-                      placeholder="Enter amount"
-                      autoFocus
+        <NumericInput
+          className="form-control"
+          min={0}
+          max={64}
+          value={outputCount}
+          onChange={this.handleOutputCountNumberChange}
+          placeholder="Enter amount"
+          autoFocus
         />
       )
       show = showingCountModal
@@ -91,6 +92,8 @@ class CraftingModal extends Component {
     )
   }
 }
+
+CraftingModal.propTypes = propTypes
 
 export default connect((store) => {
   return {

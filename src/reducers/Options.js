@@ -1,10 +1,10 @@
 import { SET_EMPTY_SPACE, SET_OUTPUT_RECIPE, SET_SHAPE } from '../actionTypes'
 
-export default function Options(state = {
-    shape: 'shaped',
-    emptySpace: true,
-    outputRecipe: 'auto'
-  }, action) {
+export default function Options (state = {
+  shape: 'shaped',
+  emptySpace: true,
+  outputRecipe: 'auto'
+}, action) {
   switch (action.type) {
     case SET_SHAPE:
       return {

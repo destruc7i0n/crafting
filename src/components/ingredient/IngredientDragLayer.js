@@ -11,7 +11,7 @@ const layerStyles = {
   left: 0,
   top: 0,
   width: '100px',
-  height: '100px',
+  height: '100px'
 }
 
 function getItemStyles (props) {
@@ -31,18 +31,18 @@ function getItemStyles (props) {
   }
 }
 
-class IngredientDragLayer extends Component {
-  static propTypes = {
-    item: PropTypes.object,
-    itemType: PropTypes.string,
-    currentOffset: PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired
-    }),
-    isDragging: PropTypes.bool
-  }
+const propTypes = {
+  item: PropTypes.object,
+  itemType: PropTypes.string,
+  currentOffset: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired
+  }),
+  isDragging: PropTypes.bool
+}
 
-  renderItem(type, item) {
+class IngredientDragLayer extends Component {
+  renderItem (type, item) {
     switch (type) {
       case 'ingredient':
         return (
@@ -53,7 +53,7 @@ class IngredientDragLayer extends Component {
     }
   }
 
-  render() {
+  render () {
     const { item, itemType, isDragging } = this.props
 
     if (!isDragging) {
@@ -69,6 +69,8 @@ class IngredientDragLayer extends Component {
     )
   }
 }
+
+IngredientDragLayer.propTypes = propTypes
 
 export default DragLayer((monitor) => ({
   item: monitor.getItem(),

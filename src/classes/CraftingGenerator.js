@@ -6,20 +6,20 @@ class CraftingGenerator {
     this.output = output || []
   }
 
-  get patternCharacters() {
+  get patternCharacters () {
     return [
       '#',
       ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     ]
   }
 
-  get itemType() {
+  get itemType () {
     return {
       item: ''
     }
   }
 
-  get shapeless_default() {
+  get shapelessDefault () {
     return {
       type: 'crafting_shapeless',
       ingredients: [
@@ -29,7 +29,7 @@ class CraftingGenerator {
     }
   }
 
-  get shaped_default() {
+  get shapedDefault () {
     return {
       type: 'crafting_shaped',
       pattern: [
@@ -41,9 +41,9 @@ class CraftingGenerator {
     }
   }
 
-  dinnerboneChallenge(item, keyMap) {
-    // dinnerbone actually said for an 'ascii to item chart', while I probs don't have enough
-    // time for that, this should do... pls dinnerbone
+  dinnerboneChallenge (item, keyMap) {
+    // dinnerbone actually said for an 'ascii to item chart', http://i.thedestruc7i0n.ca/b4p518.png
+    // while I probs don't have enough time for that, this should do... pls dinnerbone
     const stickTypes = ['minecraft:end_rod', 'minecraft:blaze_rod', 'minecraft:stick']
     const slabCheck = (item) => item.indexOf('slab') !== -1
     const ingotCheck = (item) => item.indexOf('ingot') !== -1
@@ -71,7 +71,7 @@ class CraftingGenerator {
     return name[0].toUpperCase()
   }
 
-  getItemType(item, data, ...rest) {
+  getItemType (item, data, ...rest) {
     const { itemType } = this
     if (data === 0) {
       return {
@@ -89,7 +89,7 @@ class CraftingGenerator {
     }
   }
 
-  separateNameAndData(name) {
+  separateNameAndData (name) {
     if (!name) {
       return {
         name: null,
@@ -118,11 +118,11 @@ class CraftingGenerator {
     }
   }
 
-  shapeless() {
+  shapeless () {
     // clone element
     const { input, output } = this
 
-    let shape = {...this.shapeless_default}
+    let shape = {...this.shapelessDefault}
 
     for (let ingredient of input) {
       const { name, data } = this.separateNameAndData(ingredient.id)
@@ -149,18 +149,17 @@ class CraftingGenerator {
     return shape
   }
 
-  shaped(removeEmptySpace = false) {
+  shaped (removeEmptySpace = false) {
     // clone element
     const { input, output, patternCharacters } = this
 
-    let shape = {...this.shaped_default}
+    let shape = {...this.shapedDefault}
     // key for the characters
     let keyMap = {}
 
     let keysString = ''
 
     const byItem = (item, data) => {
-
       let keys = Object.keys(keyMap)
       for (let key of keys) {
         let mapping = keyMap[key]
@@ -233,11 +232,10 @@ class CraftingGenerator {
 
     // init lines
     let lines = trimmed
-
-
+    // check if needed to remove space
     if (removeEmptySpace) {
       // remove empty line
-      lines = trimmed.filter((line) =>/\S/.test(line))
+      lines = trimmed.filter((line) => /\S/.test(line))
       // get amount of leading whitespace
       let leadingWhitespace = lines.map((line) => line.search(/\S/))
 

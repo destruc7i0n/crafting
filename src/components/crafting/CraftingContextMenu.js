@@ -11,12 +11,12 @@ import { ContextMenu, MenuItem } from 'react-contextmenu'
 
 import './CraftingContextMenu.css'
 
-class CraftingContextMenu extends Component {
-  static propTypes = {
-    id: PropTypes.string,
-    dispatch: PropTypes.func
-  }
+const propTypes = {
+  id: PropTypes.string,
+  dispatch: PropTypes.func
+}
 
+class CraftingContextMenu extends Component {
   constructor (props) {
     super(props)
 
@@ -42,7 +42,7 @@ class CraftingContextMenu extends Component {
     dispatch({type: TOGGLE_SHOWING_CONTEXT_MENU})
   }
 
-  toggleCountModal() {
+  toggleCountModal () {
     const {dispatch} = this.props
 
     dispatch({type: TOGGLE_SHOWING_COUNT_MENU})
@@ -60,7 +60,7 @@ class CraftingContextMenu extends Component {
       menuItems = (
         <div>
           <MenuItem onClick={this.toggleCountModal} data={{item: id}}>Set Count</MenuItem>
-          <MenuItem divider/>
+          <MenuItem divider />
           <MenuItem onClick={this.removeItem} data={{item: id}}>Remove</MenuItem>
         </div>
       )
@@ -76,5 +76,7 @@ class CraftingContextMenu extends Component {
     )
   }
 }
+
+CraftingContextMenu.propTypes = propTypes
 
 export default connect()(CraftingContextMenu)

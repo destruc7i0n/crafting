@@ -14,7 +14,7 @@ const CraftingNav = () => {
     <Navbar inverse>
       <Navbar.Header>
         <Navbar.Brand>
-          <img src="/assets/crafting_table.png" alt=""/>
+          <img src="/assets/crafting_table.png" alt="" />
           Crafting
         </Navbar.Brand>
         <Navbar.Toggle />
@@ -44,6 +44,6 @@ const CraftingNav = () => {
       </Navbar.Collapse>
     </Navbar>
   )
-
 }
+
 export default CraftingNav

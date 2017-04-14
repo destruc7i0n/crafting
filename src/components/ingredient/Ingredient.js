@@ -10,7 +10,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend'
 import Tooltip from '../Tooltip'
 
 const ingredientSource = {
-  beginDrag(props, monitor, component) {
+  beginDrag (props, monitor, component) {
     const { ingredient } = props
     // hide while dragging
     component.setState({
@@ -24,7 +24,7 @@ const ingredientSource = {
     }
   },
 
-  endDrag(props) {
+  endDrag (props) {
     const { dispatch, size, craftingSlot } = props
 
     // clear slot if in crafting table already before drop
@@ -45,17 +45,17 @@ const ingredientSource = {
   }
 }
 
-class Ingredient extends Component {
-  static propTypes = {
-    ingredient: PropTypes.object,
-    size: PropTypes.string,
-    contextMenu: PropTypes.bool,
-    connectDragSource: PropTypes.func,
-    connectDragPreview: PropTypes.func,
-    craftingSlot: PropTypes.number,
-    dispatch: PropTypes.func
-  }
+const propTypes = {
+  ingredient: PropTypes.object,
+  size: PropTypes.string,
+  contextMenu: PropTypes.bool,
+  connectDragSource: PropTypes.func,
+  connectDragPreview: PropTypes.func,
+  craftingSlot: PropTypes.number,
+  dispatch: PropTypes.func
+}
 
+class Ingredient extends Component {
   constructor (props) {
     super(props)
 
@@ -71,7 +71,7 @@ class Ingredient extends Component {
     this.onMouseOut = this.onMouseOut.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { connectDragPreview } = this.props
     // use empty pixel
     connectDragPreview(getEmptyImage())
@@ -106,15 +106,19 @@ class Ingredient extends Component {
     const { contextMenu, connectDragSource, ingredient, size } = this.props
     // only allow tooltip and dragging while no context menu
     return (
-      <span className={size === 'large' ? 'grid-large' : 'grid'}
-            onMouseMove={this.onMouseMove}
-            onMouseOut={this.onMouseOut}>
-        {!contextMenu ? connectDragSource(<img src={ingredient.texture} alt=""/>) : <img src={ingredient.texture} alt=""/>}
+      <span
+        className={size === 'large' ? 'grid-large' : 'grid'}
+        onMouseMove={this.onMouseMove}
+        onMouseOut={this.onMouseOut}
+      >
+        {!contextMenu ? connectDragSource(<img src={ingredient.texture} alt="" />) : <img src={ingredient.texture} alt="" />}
         {!contextMenu ? <Tooltip title={ingredient.readable} id={ingredient.id} style={this.state.mouse} /> : null}
       </span>
     )
   }
 }
+
+Ingredient.propTypes = propTypes
 
 export default compose(
   connect((state) => {

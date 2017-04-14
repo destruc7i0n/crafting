@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { SET_FIRST_EMPTY_CRAFTING_SLOT } from '../actionTypes'
 import { Panel } from 'react-bootstrap'
-import DebounceInput from 'react-debounce-input';
+import { debounce } from 'lodash'
 
 import Ingredient from './ingredient/Ingredient'
 import IngredientClass from '../classes/Ingredient'
@@ -13,17 +13,29 @@ import { items as IngredientItems } from '../resources/textures.json'
 
 import './Ingredients.css'
 
-class Ingredients extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func
-  }
+const propTypes = {
+  dispatch: PropTypes.func
+}
 
+class Ingredients extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
       search: ''
     }
+
+    this.debouncedSearch = this.debouncedSearch.bind(this)
+
+    // the debounced function itself
+    this.debouncedSetSearch = debounce((e) => {
+      this.setState({ search: e.target.value })
+    }, 200)
+  }
+
+  debouncedSearch (e) {
+    e.persist()
+    this.debouncedSetSearch(e)
   }
 
   render () {
@@ -38,16 +50,15 @@ class Ingredients extends Component {
         <div className="ingredients">
           <span className="search-box">
             <p>Search Items:</p>
-            <DebounceInput
-              minLength={1}
-              debounceTimeout={200}
-              onChange={e => this.setState({ search: e.target.value })} />
+            <input type="text" onChange={this.debouncedSearch} />
           </span>
           {ingredients.map((key, index) => {
             if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {
               return (
-                <div key={index}
-                     onDoubleClick={() => dispatch({type: SET_FIRST_EMPTY_CRAFTING_SLOT, payload: { ingredient: key }})}>
+                <div
+                  key={index}
+                  onDoubleClick={() => dispatch({type: SET_FIRST_EMPTY_CRAFTING_SLOT, payload: { ingredient: key }})}
+                >
                   <Ingredient ingredient={key} size="normal" />
                 </div>
               )
@@ -60,5 +71,7 @@ class Ingredients extends Component {
     )
   }
 }
+
+Ingredients.propTypes = propTypes
 
 export default connect()(Ingredients)

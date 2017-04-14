@@ -9,25 +9,25 @@ import SyntaxHighlighter, { registerLanguage } from 'react-syntax-highlighter/di
 import codeStyle from 'highlight.js/lib/languages/json'
 import defaultStyle from 'react-syntax-highlighter/dist/styles/default'
 
-// register the language
-registerLanguage('json', codeStyle)
-
 import CraftingGenerator from '../classes/CraftingGenerator'
 import RecipeNames from '../resources/recipe-names.json'
 
 import './Output.css'
 
+// register the language
+registerLanguage('json', codeStyle)
+
+const propTypes = {
+  input: PropTypes.array,
+  output: PropTypes.object,
+
+  shape: PropTypes.string,
+  emptySpace: PropTypes.bool,
+  outputRecipe: PropTypes.string,
+  dispatch: PropTypes.func
+}
+
 class Output extends Component {
-  static propTypes = {
-    input: PropTypes.array,
-    output: PropTypes.object,
-
-    shape: PropTypes.string,
-    emptySpace: PropTypes.bool,
-    outputRecipe: PropTypes.string,
-    dispatch: PropTypes.func
-  }
-
   constructor (props) {
     super(props)
 
@@ -37,7 +37,7 @@ class Output extends Component {
     }
   }
 
-  render() {
+  render () {
     const {input, output, outputRecipe, emptySpace, shape} = this.props
 
     let fileSaveName
@@ -88,6 +88,8 @@ class Output extends Component {
     )
   }
 }
+
+Output.propTypes = propTypes
 
 export default connect((store) => {
   return {

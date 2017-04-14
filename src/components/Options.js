@@ -19,14 +19,14 @@ import {
 import infoCircle from '../assets/info-circle.png'
 import RecipeNames from '../resources/recipe-names.json'
 
-class Options extends Component {
-  static propTypes = {
-    shape: PropTypes.string,
-    emptySpace: PropTypes.bool,
-    outputRecipe: PropTypes.string,
-    dispatch: PropTypes.func
-  }
+const propTypes = {
+  shape: PropTypes.string,
+  emptySpace: PropTypes.bool,
+  outputRecipe: PropTypes.string,
+  dispatch: PropTypes.func
+}
 
+class Options extends Component {
   render () {
     const {dispatch, emptySpace, shape, outputRecipe} = this.props
 
@@ -43,7 +43,7 @@ class Options extends Component {
           onChange={(e) => dispatch({type: SET_SHAPE, payload: e.target.checked ? 'shapeless' : 'shaped'})}>
           Shapeless?
           <OverlayTrigger placement="bottom" overlay={shapelessTooltip}>
-            <img className="inline" src={infoCircle} alt="info"/>
+            <img className="inline" src={infoCircle} alt="info" />
           </OverlayTrigger>
         </Checkbox>
       </FormGroup>
@@ -53,7 +53,7 @@ class Options extends Component {
       <Tooltip id="removeEmptySpace">
         <strong>If this is checked</strong>, the generator will ensure that the item will be placed exactly where placed
         in the crafting table above.
-        <br/>
+        <br />
         <strong>If this isn't checked</strong>, the generator will make the recipe be able to be placed anywhere in the
         table. (Useful for 2x2 crafting)
       </Tooltip>
@@ -67,7 +67,7 @@ class Options extends Component {
           onChange={(e) => dispatch({type: SET_EMPTY_SPACE, payload: !e.target.checked})}>
           Exactly where placed?
           <OverlayTrigger placement="bottom" overlay={removeEmptySpaceTooltip}>
-            <img className="inline" src={infoCircle} alt="info"/>
+            <img className="inline" src={infoCircle} alt="info" />
           </OverlayTrigger>
         </Checkbox>
       </FormGroup>
@@ -92,10 +92,12 @@ class Options extends Component {
                 </Col>
                 {' '}
                 <Col md={10}>
-                  <FormControl componentClass="select"
-                               placeholder="select"
-                               value={outputRecipe}
-                               onChange={(e) => dispatch({type: SET_OUTPUT_RECIPE, payload: e.target.value})}>
+                  <FormControl
+                    componentClass="select"
+                    placeholder="select"
+                    value={outputRecipe}
+                    onChange={(e) => dispatch({type: SET_OUTPUT_RECIPE, payload: e.target.value})}
+                  >
                     <option value="auto" key={-1}>Auto</option>
                     {RecipeNames.names.map((name, index) => {
                       let nameParts = name.split('_')
@@ -117,6 +119,8 @@ class Options extends Component {
     )
   }
 }
+
+Options.propTypes = propTypes
 
 export default connect((store) => {
   return {

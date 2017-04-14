@@ -1,4 +1,4 @@
-import React, { Component }  from 'react'
+import React, { Component } from 'react'
 import { Col, Row } from 'react-bootstrap'
 
 import { DragDropContext } from 'react-dnd'
@@ -33,7 +33,7 @@ class App extends Component {
   }
 
   // bad hack, remove sometime
-  handleResize() {
+  handleResize () {
     return debounce(() => this.forceUpdate(), 100)
   }
 
@@ -42,7 +42,7 @@ class App extends Component {
   }
 
   componentWillUnmount () {
-    window.removeEventListener('resize', this.handleResize());
+    window.removeEventListener('resize', this.handleResize())
   }
   // end bad hack
 
