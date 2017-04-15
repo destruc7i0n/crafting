@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { SET_OUTPUT_SLOT, TOGGLE_SHOWING_COUNT_MENU } from '../../actionTypes'
+import { setOutputSlot, toggleCountMenu } from '../../actions'
 import PropTypes from 'prop-types'
 import { Button, Modal } from 'react-bootstrap'
 
@@ -45,7 +45,7 @@ class CraftingModal extends Component {
 
     // check if number is valid and then set the output slot
     if (number >= 1 && number <= 64) {
-      dispatch({type: SET_OUTPUT_SLOT, payload: {ingredient: {...output.toJSON(), count: number}}})
+      dispatch(setOutputSlot({...output.toJSON(), count: number}))
     }
   }
 
@@ -74,7 +74,7 @@ class CraftingModal extends Component {
         />
       )
       show = showingCountModal
-      hide = () => dispatch({type: TOGGLE_SHOWING_COUNT_MENU})
+      hide = () => dispatch(toggleCountMenu())
     }
 
     return (

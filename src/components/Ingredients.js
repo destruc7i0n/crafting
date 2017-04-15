@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { SET_FIRST_EMPTY_CRAFTING_SLOT } from '../actionTypes'
+import { setFirstEmptyCraftingSlot } from '../actions'
 import { Panel } from 'react-bootstrap'
 import { debounce } from 'lodash'
 
@@ -57,7 +57,7 @@ class Ingredients extends Component {
               return (
                 <div
                   key={index}
-                  onDoubleClick={() => dispatch({type: SET_FIRST_EMPTY_CRAFTING_SLOT, payload: { ingredient: key }})}
+                  onDoubleClick={() => dispatch(setFirstEmptyCraftingSlot(key))}
                 >
                   <Ingredient ingredient={key} size="normal" />
                 </div>

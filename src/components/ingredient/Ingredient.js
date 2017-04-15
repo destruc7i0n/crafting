@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { RESET_CRAFTING_SLOT, RESET_OUTPUT_SLOT } from '../../actionTypes'
+import { resetCraftingSlot, resetOutputSlot } from '../../actions'
 
 import { DragSource } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
@@ -29,18 +29,11 @@ const ingredientSource = {
 
     // clear slot if in crafting table already before drop
     if (craftingSlot !== undefined) {
-      dispatch({
-        type: RESET_CRAFTING_SLOT,
-        payload: {
-          index: craftingSlot
-        }
-      })
+      dispatch(resetCraftingSlot(craftingSlot))
     }
 
     if (size === 'large') {
-      dispatch({
-        type: RESET_OUTPUT_SLOT
-      })
+      dispatch(resetOutputSlot())
     }
   }
 }

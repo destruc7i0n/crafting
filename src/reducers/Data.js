@@ -6,7 +6,7 @@ import {
   SET_CRAFTING_SLOT,
   SET_FIRST_EMPTY_CRAFTING_SLOT,
   SET_OUTPUT_SLOT
-} from '../actionTypes'
+} from '../actions'
 
 export default function Data (state = {
   crafting: [...new Array(9)].map(i => new Ingredient()),

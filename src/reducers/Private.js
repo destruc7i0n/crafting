@@ -1,4 +1,4 @@
-import { TOGGLE_SHOWING_CONTEXT_MENU, TOGGLE_SHOWING_COUNT_MENU } from '../actionTypes'
+import { TOGGLE_SHOWING_CONTEXT_MENU, TOGGLE_SHOWING_COUNT_MENU } from '../actions'
 
 export default function Private (state = {
   showingContextMenu: false,

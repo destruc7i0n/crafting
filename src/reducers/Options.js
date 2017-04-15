@@ -1,4 +1,4 @@
-import { SET_EMPTY_SPACE, SET_OUTPUT_RECIPE, SET_SHAPE } from '../actionTypes'
+import { SET_EMPTY_SPACE, SET_OUTPUT_RECIPE, SET_SHAPE } from '../actions'
 
 export default function Options (state = {
   shape: 'shaped',

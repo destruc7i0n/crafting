@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { SET_EMPTY_SPACE, SET_OUTPUT_RECIPE, SET_SHAPE } from '../actionTypes'
+import { setEmptySpace, setOutputRecipe, setShape } from '../actions'
 
 import {
   Checkbox,
@@ -40,7 +40,7 @@ class Options extends Component {
         <Checkbox
           inline
           checked={shape === 'shapeless'}
-          onChange={(e) => dispatch({type: SET_SHAPE, payload: e.target.checked ? 'shapeless' : 'shaped'})}>
+          onChange={(e) => dispatch(setShape(e.target.checked ? 'shapeless' : 'shaped'))}>
           Shapeless?
           <OverlayTrigger placement="bottom" overlay={shapelessTooltip}>
             <img className="inline" src={infoCircle} alt="info" />
@@ -64,7 +64,7 @@ class Options extends Component {
         <Checkbox
           inline
           checked={!emptySpace}
-          onChange={(e) => dispatch({type: SET_EMPTY_SPACE, payload: !e.target.checked})}>
+          onChange={(e) => dispatch(setEmptySpace(!e.target.checked))}>
           Exactly where placed?
           <OverlayTrigger placement="bottom" overlay={removeEmptySpaceTooltip}>
             <img className="inline" src={infoCircle} alt="info" />
@@ -96,7 +96,7 @@ class Options extends Component {
                     componentClass="select"
                     placeholder="select"
                     value={outputRecipe}
-                    onChange={(e) => dispatch({type: SET_OUTPUT_RECIPE, payload: e.target.value})}
+                    onChange={(e) => dispatch(setOutputRecipe(e.target.value))}
                   >
                     <option value="auto" key={-1}>Auto</option>
                     {RecipeNames.names.map((name, index) => {

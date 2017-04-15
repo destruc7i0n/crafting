@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { SET_CRAFTING_SLOT, SET_OUTPUT_SLOT } from '../../actionTypes'
+import { setCraftingSlot, setOutputSlot } from '../../actions'
 import { DropTarget } from 'react-dnd'
 import { ContextMenuTrigger } from 'react-contextmenu'
 
@@ -22,9 +22,9 @@ const craftingTarget = {
 
     // update store
     if (size === 'large') {
-      dispatch({type: SET_OUTPUT_SLOT, payload: {ingredient: item}})
+      dispatch(setOutputSlot(item))
     } else {
-      dispatch({type: SET_CRAFTING_SLOT, payload: {index: index, ingredient: item}})
+      dispatch(setCraftingSlot(index, item))
     }
   }
 }
