@@ -1,7 +1,7 @@
 // this class is not really needed, may add functions in future
 class Ingredient {
   /**
-   * Contructs a new ingredient
+   * Constructs a new ingredient
    * @param id
    * @param readable
    * @param texture
@@ -16,7 +16,7 @@ class Ingredient {
 
   /**
    * Checks if the ingredient is populated
-   * @returns {*|string}
+   * @returns {boolean}
    */
   isPopulated () {
     return this.id && this.readable && this.texture

@@ -1,0 +1,345 @@
+exports[`Data Reducer should have a default state 1`] = `
+Object {
+  "crafting": Array [
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+  ],
+  "output": Object {
+    "count": 1,
+    "id": "",
+    "readable": "",
+    "texture": "",
+  },
+}
+`;
+
+exports[`Data Reducer should reset the crafting slot 1`] = `
+Object {
+  "crafting": Array [
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+  ],
+  "output": Object {
+    "count": 1,
+    "id": "",
+    "readable": "",
+    "texture": "",
+  },
+}
+`;
+
+exports[`Data Reducer should reset the output slot 1`] = `
+Object {
+  "output": Object {
+    "count": 1,
+    "id": "",
+    "readable": "",
+    "texture": "",
+  },
+}
+`;
+
+exports[`Data Reducer should set the first empty crafting slot 1`] = `
+Object {
+  "crafting": Array [
+    Object {
+      "count": 1,
+      "id": "minecraft:air",
+      "readable": "Air",
+      "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    },
+    Object {
+      "count": 1,
+      "id": "minecraft:air",
+      "readable": "Air",
+      "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    },
+    Object {
+      "count": 1,
+      "id": "minecraft:air",
+      "readable": "Air",
+      "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    },
+    Object {
+      "count": 1,
+      "id": "minecraft:air",
+      "readable": "Air",
+      "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    },
+    Object {
+      "count": 1,
+      "id": "minecraft:air",
+      "readable": "Air",
+      "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    },
+    Object {
+      "count": 1,
+      "id": "minecraft:air",
+      "readable": "Air",
+      "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    },
+    Object {
+      "count": 1,
+      "id": "minecraft:air",
+      "readable": "Air",
+      "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    },
+    Object {
+      "count": 1,
+      "id": "minecraft:air",
+      "readable": "Air",
+      "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    },
+    Object {
+      "count": 1,
+      "id": "minecraft:stone",
+      "readable": "Stone",
+      "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    },
+  ],
+  "output": Object {
+    "count": 1,
+    "id": "",
+    "readable": "",
+    "texture": "",
+  },
+}
+`;
+
+exports[`Data Reducer should set the output slot 1`] = `
+Object {
+  "crafting": Array [
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+  ],
+  "output": Object {
+    "count": 1,
+    "id": "minecraft:air",
+    "readable": "Air",
+    "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+  },
+}
+`;
+
+exports[`Data Reducer should update the crafting slot 1`] = `
+Object {
+  "crafting": Array [
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "minecraft:air",
+      "readable": "Air",
+      "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+    Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+  ],
+  "output": Object {
+    "count": 1,
+    "id": "",
+    "readable": "",
+    "texture": "",
+  },
+}
+`;

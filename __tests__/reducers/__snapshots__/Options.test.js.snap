@@ -1,0 +1,31 @@
+exports[`Options Reducer should have a default state 1`] = `
+Object {
+  "emptySpace": true,
+  "outputRecipe": "auto",
+  "shape": "shaped",
+}
+`;
+
+exports[`Options Reducer should set empty space 1`] = `
+Object {
+  "emptySpace": false,
+  "outputRecipe": "auto",
+  "shape": "shaped",
+}
+`;
+
+exports[`Options Reducer should set output recipe 1`] = `
+Object {
+  "emptySpace": true,
+  "outputRecipe": "acacia_boat",
+  "shape": "shaped",
+}
+`;
+
+exports[`Options Reducer should set shape 1`] = `
+Object {
+  "emptySpace": true,
+  "outputRecipe": "auto",
+  "shape": "shapeless",
+}
+`;

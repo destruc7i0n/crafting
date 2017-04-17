@@ -1,0 +1,62 @@
+exports[`Crafting Generator Class should output shaped with spaces 1`] = `
+Object {
+  "key": Object {
+    "#": Object {
+      "item": "minecraft:dirt",
+    },
+  },
+  "pattern": Array [
+    "   ",
+    " ##",
+    " ##",
+  ],
+  "result": Object {
+    "count": 1,
+    "item": "minecraft:stone",
+  },
+  "type": "crafting_shaped",
+}
+`;
+
+exports[`Crafting Generator Class should output shaped without spaces 1`] = `
+Object {
+  "key": Object {
+    "#": Object {
+      "item": "minecraft:dirt",
+    },
+  },
+  "pattern": Array [
+    "##",
+    "##",
+  ],
+  "result": Object {
+    "count": 1,
+    "item": "minecraft:stone",
+  },
+  "type": "crafting_shaped",
+}
+`;
+
+exports[`Crafting Generator Class should output shapeless 1`] = `
+Object {
+  "ingredients": Array [
+    Object {
+      "item": "minecraft:dirt",
+    },
+    Object {
+      "item": "minecraft:dirt",
+    },
+    Object {
+      "item": "minecraft:dirt",
+    },
+    Object {
+      "item": "minecraft:dirt",
+    },
+  ],
+  "result": Object {
+    "count": 1,
+    "item": "minecraft:stone",
+  },
+  "type": "crafting_shapeless",
+}
+`;
