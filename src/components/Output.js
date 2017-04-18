@@ -73,15 +73,15 @@ class Output extends Component {
     let blob = new Blob([toCopy], {type: 'text/plain;charset=utf-8'})
 
     return (
-      <Panel header="JSON">
+      <Panel header='JSON'>
         <SyntaxHighlighter
           style={defaultStyle}
         >{toCopy}</SyntaxHighlighter>
 
         <Button
           onClick={() => FileSaver.saveAs(blob, fileSaveName)}
-          className="download-button"
-          bsStyle="primary"
+          className='download-button'
+          bsStyle='primary'
           block
         >Download {fileSaveName}</Button>
       </Panel>

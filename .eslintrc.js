@@ -1,14 +1,8 @@
 module.exports = {
-  "extends": [
-    "standard",
-    "standard-jsx"
-  ],
-  // I personally like having double quotes for my JSX
-  "rules": {
-    "jsx-quotes": "off"
-  },
-  // just to disable for localStorage being undefined
+  "extends": ["standard", "standard-jsx"],
+  // just to disable for localStorage being undefined and jest being undefined
   "env": {
-    "browser": true
+    "browser": true,
+    "jest": true
   }
 }

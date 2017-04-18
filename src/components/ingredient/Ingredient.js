@@ -104,7 +104,7 @@ class Ingredient extends Component {
         onMouseMove={this.onMouseMove}
         onMouseOut={this.onMouseOut}
       >
-        {!contextMenu ? connectDragSource(<img src={ingredient.texture} alt="" />) : <img src={ingredient.texture} alt="" />}
+        {!contextMenu ? connectDragSource(<img src={ingredient.texture} alt='' />) : <img src={ingredient.texture} alt='' />}
         {!contextMenu ? <Tooltip title={ingredient.readable} id={ingredient.id} style={this.state.mouse} /> : null}
       </span>
     )
@@ -114,11 +114,11 @@ class Ingredient extends Component {
 Ingredient.propTypes = propTypes
 
 export default compose(
-  connect((state) => {
+  connect((store) => {
     return {
-      contextMenu: state.Private.showingContextMenu
+      contextMenu: store.Private.showingContextMenu
     }
-  }),
+  }, null, null, { withRef: true }), // get refs for testing
   DragSource('ingredient', ingredientSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview()

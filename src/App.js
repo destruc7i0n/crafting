@@ -25,7 +25,7 @@ import './App.css'
 import './assets/arrow.png'
 import './assets/Minecraft.woff'
 
-class App extends Component {
+export class App extends Component {
   constructor (props) {
     super(props)
 
@@ -50,7 +50,7 @@ class App extends Component {
     const isMobile = window.matchMedia && window.matchMedia('only screen and (max-width: 992px)').matches
 
     return (
-      <div className="container">
+      <div className='container'>
         <Navbar />
         <IngredientDragLayer />
         <Row>
@@ -63,7 +63,7 @@ class App extends Component {
             <Options />
             <Output />
           </Col>
-          <Col md={6} sm={12} className="pull-right">
+          <Col md={6} sm={12} className='pull-right'>
             { !isMobile ? <Ingredients /> : null }
           </Col>
         </Row>

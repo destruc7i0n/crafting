@@ -14,22 +14,22 @@ const propTypes = {
 }
 
 const CraftingTable = ({ crafting, output }) => (
-  <Panel header="Crafting Table">
-    <div className="crafting-holder">
-      <div className="crafting clearfix">
-        <div className="recipe">
+  <Panel header='Crafting Table'>
+    <div className='crafting-holder'>
+      <div className='crafting clearfix'>
+        <div className='recipe'>
           <h6>Crafting</h6>
-          <div id="crafting-table">
+          <div id='crafting-table'>
             {crafting.map((key, index) => {
               return (
-                <CraftingGrid key={index} index={index} ingredient={key} size="normal" />
+                <CraftingGrid key={index} index={index} ingredient={key} size='normal' />
               )
             })}
           </div>
         </div>
-        <div className="arrow" />
-        <div className="crafting-table-output">
-          <CraftingGrid ingredient={output} size="large" />
+        <div className='arrow' />
+        <div className='crafting-table-output'>
+          <CraftingGrid ingredient={output} size='large' />
         </div>
       </div>
     </div>

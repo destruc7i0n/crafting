@@ -31,26 +31,25 @@ class Options extends Component {
     const {dispatch, emptySpace, shape, outputRecipe} = this.props
 
     const shapelessTooltip = (
-      <Tooltip id="shapeless">This will allow the items to be placed in anywhere in the crafting table to get the
-        output.</Tooltip>
+      <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the output.</Tooltip>
     )
 
     const shapelessCheckbox = (
-      <FormGroup controlId="shapeless">
+      <FormGroup controlId='shapeless'>
         <Checkbox
           inline
           checked={shape === 'shapeless'}
           onChange={(e) => dispatch(setShape(e.target.checked ? 'shapeless' : 'shaped'))}>
           Shapeless?
-          <OverlayTrigger placement="bottom" overlay={shapelessTooltip}>
-            <img className="inline" src={infoCircle} alt="info" />
+          <OverlayTrigger placement='bottom' overlay={shapelessTooltip}>
+            <img className='inline' src={infoCircle} alt='info' />
           </OverlayTrigger>
         </Checkbox>
       </FormGroup>
     )
 
     const removeEmptySpaceTooltip = (
-      <Tooltip id="removeEmptySpace">
+      <Tooltip id='removeEmptySpace'>
         <strong>If this is checked</strong>, the generator will ensure that the item will be placed exactly where placed
         in the crafting table above.
         <br />
@@ -60,21 +59,21 @@ class Options extends Component {
     )
 
     const removeEmptySpaceCheckbox = (
-      <FormGroup controlId="emptySpace">
+      <FormGroup controlId='emptySpace'>
         <Checkbox
           inline
           checked={!emptySpace}
           onChange={(e) => dispatch(setEmptySpace(!e.target.checked))}>
           Exactly where placed?
-          <OverlayTrigger placement="bottom" overlay={removeEmptySpaceTooltip}>
-            <img className="inline" src={infoCircle} alt="info" />
+          <OverlayTrigger placement='bottom' overlay={removeEmptySpaceTooltip}>
+            <img className='inline' src={infoCircle} alt='info' />
           </OverlayTrigger>
         </Checkbox>
       </FormGroup>
     )
 
     return (
-      <Panel collapsible defaultExpanded header="Options">
+      <Panel collapsible defaultExpanded header='Options'>
         <Row>
           <Col md={4}>
             { shapelessCheckbox }
@@ -86,19 +85,19 @@ class Options extends Component {
 
           <Col md={12}>
             <Form horizontal onSubmit={(e) => e.preventDefault()}>
-              <FormGroup controlId="recipe">
+              <FormGroup controlId='recipe'>
                 <Col md={2}>
                   <ControlLabel>Output Recipe:</ControlLabel>
                 </Col>
                 {' '}
                 <Col md={10}>
                   <FormControl
-                    componentClass="select"
-                    placeholder="select"
+                    componentClass='select'
+                    placeholder='select'
                     value={outputRecipe}
                     onChange={(e) => dispatch(setOutputRecipe(e.target.value))}
                   >
-                    <option value="auto" key={-1}>Auto</option>
+                    <option value='auto' key={-1}>Auto</option>
                     {RecipeNames.names.map((name, index) => {
                       let nameParts = name.split('_')
                       let namePartsUppercase = nameParts.map((name) => name.charAt(0).toUpperCase() + name.slice(1))

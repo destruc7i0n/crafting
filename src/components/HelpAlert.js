@@ -32,7 +32,7 @@ class HelpAlert extends Component {
 
     if (!shown) {
       return (
-        <Alert bsStyle="info" onDismiss={() => this.setState({ shown: true })}>
+        <Alert bsStyle='info' onDismiss={() => this.setState({ shown: true })}>
           <p style={{ fontSize: '1.2em' }}>Information</p>
           <p>
             Welcome to the crafting generator for Minecraft 1.12+! <br />

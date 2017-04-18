@@ -46,11 +46,11 @@ class Ingredients extends Component {
     const ingredients = IngredientItems.map((ingredient) => new IngredientClass(ingredient.id, ingredient.readable, ingredient.texture))
 
     return (
-      <Panel header="Ingredients">
-        <div className="ingredients">
-          <span className="search-box">
+      <Panel header='Ingredients'>
+        <div className='ingredients'>
+          <span className='search-box'>
             <p>Search Items:</p>
-            <input type="text" onChange={this.debouncedSearch} />
+            <input type='text' onChange={this.debouncedSearch} />
           </span>
           {ingredients.map((key, index) => {
             if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {
@@ -59,7 +59,7 @@ class Ingredients extends Component {
                   key={index}
                   onDoubleClick={() => dispatch(setFirstEmptyCraftingSlot(key))}
                 >
-                  <Ingredient ingredient={key} size="normal" />
+                  <Ingredient ingredient={key} size='normal' />
                 </div>
               )
             } else {

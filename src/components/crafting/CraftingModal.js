@@ -64,12 +64,12 @@ class CraftingModal extends Component {
       title = 'Set Count'
       body = (
         <NumericInput
-          className="form-control"
+          className='form-control'
           min={0}
           max={64}
           value={outputCount}
           onChange={this.handleOutputCountNumberChange}
-          placeholder="Enter amount"
+          placeholder='Enter amount'
           autoFocus
         />
       )

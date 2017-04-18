@@ -4634,6 +4634,12 @@ react-dnd-multi-backend@2.3.6:
     react-dnd-html5-backend "*"
     react-dnd-touch-backend "*"
 
+react-dnd-test-backend@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-dnd-test-backend/-/react-dnd-test-backend-2.3.0.tgz#37b10cd267c6743b4f6723a24f3cec2b58954d71"
+  dependencies:
+    dnd-core "^2.3.0"
+
 react-dnd-touch-backend@*, react-dnd-touch-backend@^0.3.7:
   version "0.3.7"
   resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-0.3.7.tgz#ac178b25506847d791f10d751ff509adf45970ee"
@@ -4850,6 +4856,10 @@ redux-logger@^3.0.1:
   resolved "https://registry.yarnpkg.com/redux-logger/-/redux-logger-3.0.1.tgz#ae8ae4c3c55ed3dd7aa31509f0856c5d3751057a"
   dependencies:
     deep-diff "0.3.4"
+
+redux-mock-store@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/redux-mock-store/-/redux-mock-store-1.2.3.tgz#1b3ad299da91cb41ba30d68e3b6f024475fb9e1b"
 
 redux@^3.2.0, redux@^3.6.0:
   version "3.6.0"
