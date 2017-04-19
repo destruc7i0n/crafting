@@ -92,7 +92,8 @@ describe('<Ingredient />', () => {
     // get react-dnd backend
     const backend = wrapper.get(0).getManager().getBackend()
 
-    // you don't know how long it took me to figure out this line...
+    // I could export the pure component, but then I'd need to export all the components for OCD...
+    // this line took forever to make to, as I had to mod redux too, look at connect in src/components/Ingredient.js
     const draggable = wrapper.find(Ingredient).get(0).wrappedInstance
 
     // now I need to do this hack to get the props

@@ -11,7 +11,7 @@ import Tooltip from '../Tooltip'
 
 const ingredientSource = {
   beginDrag (props, monitor, component) {
-    const { ingredient, craftingSlot } = props
+    const { ingredient, craftingSlot, size } = props
     // hide while dragging
     component.setState({
       mouse: { ...component.state.mouse, display: 'none' }
@@ -21,27 +21,45 @@ const ingredientSource = {
       id: ingredient.id,
       readable: ingredient.readable,
       texture: ingredient.texture,
-      craftingSlot
+      craftingSlot,
+      size
     }
   },
 
   endDrag (props, monitor, component) {
     const { dispatch, size, craftingSlot } = props
-    const newCraftingSlot = monitor.getItem().craftingSlot
+    const resetSlots = (size, craftingSlot) => {
+      if (size === 'large') {
+        dispatch(resetOutputSlot())
+      }
+
+      if (craftingSlot !== undefined) {
+        dispatch(resetCraftingSlot(craftingSlot))
+      }
+    }
+
+    // reset if dropped outside any target
+    if (!monitor.didDrop()) {
+      const { craftingSlot, size } = monitor.getItem()
+      // reset the slot
+      resetSlots(size, craftingSlot)
+
+      return
+    }
+
+    const dropResult = monitor.getDropResult()
+    const { newCraftingSlot, newSize } = dropResult
 
     // if the crafting slot is the same as the one dragged from, don't do any resetting
     if (craftingSlot === newCraftingSlot) {
       return
     }
-
-    // clear slot if in crafting table already before drop
-    if (craftingSlot !== undefined) {
-      dispatch(resetCraftingSlot(craftingSlot))
+    // if dragged from output to output, don't do any resetting
+    if (size === 'large' && newSize === 'large') {
+      return
     }
 
-    if (size === 'large') {
-      dispatch(resetOutputSlot())
-    }
+    resetSlots(size, craftingSlot)
   }
 }
 
@@ -104,8 +122,7 @@ class Ingredient extends Component {
   }
 
   render () {
-    const { contextMenu, connectDragSource, ingredient, size, isDragging } = this.props
-    const image = isDragging ? null : ingredient.texture
+    const { contextMenu, connectDragSource, ingredient, size } = this.props
     // only allow tooltip and dragging while no context menu
     return (
       <span
@@ -113,7 +130,7 @@ class Ingredient extends Component {
         onMouseMove={this.onMouseMove}
         onMouseOut={this.onMouseOut}
       >
-        {!contextMenu ? connectDragSource(<img src={image} alt='' />) : <img src={image} alt='' />}
+        {!contextMenu ? connectDragSource(<img src={ingredient.texture} alt='' />) : <img src={ingredient.texture} alt='' />}
         {!contextMenu ? <Tooltip title={ingredient.readable} id={ingredient.id} style={this.state.mouse} /> : null}
       </span>
     )

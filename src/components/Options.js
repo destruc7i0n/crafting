@@ -57,8 +57,7 @@ class Options extends Component {
     const {emptySpace, shape, outputRecipe} = this.props
 
     const shapelessTooltip = (
-      <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the
-        output.</Tooltip>
+      <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the output.</Tooltip>
     )
 
     const shapelessCheckbox = (
@@ -138,8 +137,7 @@ class Options extends Component {
                   </FormControl>
                 </Col>
               </FormGroup>
-              <p style={{fontSize: '10px', marginTop: '5px'}}>When 'Auto' is selected, the file name will be taken based
-                off of the item name if possible.</p>
+              <p style={{fontSize: '10px', marginTop: '5px'}}>When 'Auto' is selected, the file name will be taken based off of the item name if possible.</p>
             </Form>
           </Col>
 

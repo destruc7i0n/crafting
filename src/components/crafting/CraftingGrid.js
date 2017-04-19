@@ -19,12 +19,27 @@ const craftingTarget = {
 
     // get the item
     const item = monitor.getItem()
+    const newCraftingSlot = item.craftingSlot
+    const newSize = item.size
 
-    // update store
-    if (size === 'large') {
-      dispatch(setOutputSlot(item))
-    } else {
-      dispatch(setCraftingSlot(index, item))
+    // check if the slots are different and update store
+    // if the new crafting slot is not the same as the current slot
+    // OR
+    // the old and new size are not large (output slot):
+    // then only update the slot
+    if (!(newCraftingSlot === index) || !(size === 'large' && newSize === 'large')) {
+      // update store
+      if (size === 'large') {
+        dispatch(setOutputSlot(item))
+      } else {
+        dispatch(setCraftingSlot(index, item))
+      }
+    }
+
+    // return for endDrag handler in Ingredient.js
+    return {
+      newSize: size,
+      newCraftingSlot: index
     }
   }
 }
@@ -60,7 +75,7 @@ CraftingGrid.propTypes = {
   connectDropTarget: PropTypes.func,
   ingredient: PropTypes.object,
   size: PropTypes.string,
-  craftingSlot: PropTypes.number,
+  index: PropTypes.number,
   dispatch: PropTypes.func
 }
 
