@@ -11,7 +11,7 @@ import Tooltip from '../Tooltip'
 
 const ingredientSource = {
   beginDrag (props, monitor, component) {
-    const { ingredient } = props
+    const { ingredient, craftingSlot } = props
     // hide while dragging
     component.setState({
       mouse: { ...component.state.mouse, display: 'none' }
@@ -20,12 +20,19 @@ const ingredientSource = {
     return {
       id: ingredient.id,
       readable: ingredient.readable,
-      texture: ingredient.texture
+      texture: ingredient.texture,
+      craftingSlot
     }
   },
 
-  endDrag (props) {
+  endDrag (props, monitor, component) {
     const { dispatch, size, craftingSlot } = props
+    const newCraftingSlot = monitor.getItem().craftingSlot
+
+    // if the crafting slot is the same as the one dragged from, don't do any resetting
+    if (craftingSlot === newCraftingSlot) {
+      return
+    }
 
     // clear slot if in crafting table already before drop
     if (craftingSlot !== undefined) {
@@ -44,6 +51,7 @@ const propTypes = {
   contextMenu: PropTypes.bool,
   connectDragSource: PropTypes.func,
   connectDragPreview: PropTypes.func,
+  isDragging: PropTypes.bool,
   craftingSlot: PropTypes.number,
   dispatch: PropTypes.func
 }
@@ -96,7 +104,8 @@ class Ingredient extends Component {
   }
 
   render () {
-    const { contextMenu, connectDragSource, ingredient, size } = this.props
+    const { contextMenu, connectDragSource, ingredient, size, isDragging } = this.props
+    const image = isDragging ? null : ingredient.texture
     // only allow tooltip and dragging while no context menu
     return (
       <span
@@ -104,7 +113,7 @@ class Ingredient extends Component {
         onMouseMove={this.onMouseMove}
         onMouseOut={this.onMouseOut}
       >
-        {!contextMenu ? connectDragSource(<img src={ingredient.texture} alt='' />) : <img src={ingredient.texture} alt='' />}
+        {!contextMenu ? connectDragSource(<img src={image} alt='' />) : <img src={image} alt='' />}
         {!contextMenu ? <Tooltip title={ingredient.readable} id={ingredient.id} style={this.state.mouse} /> : null}
       </span>
     )
@@ -121,6 +130,7 @@ export default compose(
   }, null, null, { withRef: true }), // get refs for testing
   DragSource('ingredient', ingredientSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview()
+    connectDragPreview: connect.dragPreview(),
+    isDragging: monitor.isDragging()
   }))
 )(Ingredient)

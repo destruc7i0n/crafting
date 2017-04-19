@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { mount, shallow } from 'enzyme'
 import configureStore from 'redux-mock-store'
 
-import { DragDropContext, DragSource } from 'react-dnd'
+import { DragDropContext } from 'react-dnd'
 import TestBackend from 'react-dnd-test-backend'
 
 import Ingredient from '../../src/components/ingredient/Ingredient'
@@ -89,15 +89,25 @@ describe('<Ingredient />', () => {
     const IngredientContent = wrapInTestContext(Ingredient)
     const wrapper = mount(<IngredientContent store={store} ingredient={stone} />)
 
+    // get react-dnd backend
     const backend = wrapper.get(0).getManager().getBackend()
 
     // you don't know how long it took me to figure out this line...
     const draggable = wrapper.find(Ingredient).get(0).wrappedInstance
 
+    // now I need to do this hack to get the props
+    let draggableProps = draggable.decoratedComponentInstance.props
+
+    // expect it to not be dragging
+    expect(draggableProps.isDragging).toEqual(false)
+
+    // simulate a drag
     backend.simulateBeginDrag([draggable.getHandlerId()])
 
-    const draggableState = draggable.decoratedComponentInstance.state
+    // now to do the hack again
+    draggableProps = draggable.decoratedComponentInstance.props
 
-    expect(draggableState.mouse.display).toEqual('none')
+    // expect it to be dragging
+    expect(draggableProps.isDragging).toEqual(true)
   })
 })

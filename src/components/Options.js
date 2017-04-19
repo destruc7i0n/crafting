@@ -27,11 +27,38 @@ const propTypes = {
 }
 
 class Options extends Component {
+  constructor (props) {
+    super(props)
+
+    this.toggleShape = this.toggleShape.bind(this)
+    this.toggleEmptySpace = this.toggleEmptySpace.bind(this)
+    this.setOutput = this.setOutput.bind(this)
+  }
+
+  toggleShape (e) {
+    const {dispatch} = this.props
+
+    dispatch(setShape(e.target.checked ? 'shapeless' : 'shaped'))
+  }
+
+  toggleEmptySpace (e) {
+    const {dispatch} = this.props
+
+    dispatch(setEmptySpace(!e.target.checked))
+  }
+
+  setOutput (e) {
+    const {dispatch} = this.props
+
+    dispatch(setOutputRecipe(e.target.value))
+  }
+
   render () {
-    const {dispatch, emptySpace, shape, outputRecipe} = this.props
+    const {emptySpace, shape, outputRecipe} = this.props
 
     const shapelessTooltip = (
-      <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the output.</Tooltip>
+      <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the
+        output.</Tooltip>
     )
 
     const shapelessCheckbox = (
@@ -39,7 +66,8 @@ class Options extends Component {
         <Checkbox
           inline
           checked={shape === 'shapeless'}
-          onChange={(e) => dispatch(setShape(e.target.checked ? 'shapeless' : 'shaped'))}>
+          onChange={this.toggleShape}
+        >
           Shapeless?
           <OverlayTrigger placement='bottom' overlay={shapelessTooltip}>
             <img className='inline' src={infoCircle} alt='info' />
@@ -63,7 +91,8 @@ class Options extends Component {
         <Checkbox
           inline
           checked={!emptySpace}
-          onChange={(e) => dispatch(setEmptySpace(!e.target.checked))}>
+          onChange={this.toggleEmptySpace}
+        >
           Exactly where placed?
           <OverlayTrigger placement='bottom' overlay={removeEmptySpaceTooltip}>
             <img className='inline' src={infoCircle} alt='info' />
@@ -95,7 +124,7 @@ class Options extends Component {
                     componentClass='select'
                     placeholder='select'
                     value={outputRecipe}
-                    onChange={(e) => dispatch(setOutputRecipe(e.target.value))}
+                    onChange={this.setOutput}
                   >
                     <option value='auto' key={-1}>Auto</option>
                     {RecipeNames.names.map((name, index) => {
@@ -109,7 +138,8 @@ class Options extends Component {
                   </FormControl>
                 </Col>
               </FormGroup>
-              <p style={{fontSize: '10px', marginTop: '5px'}}>When 'Auto' is selected, the file name will be taken based off of the item name if possible.</p>
+              <p style={{fontSize: '10px', marginTop: '5px'}}>When 'Auto' is selected, the file name will be taken based
+                off of the item name if possible.</p>
             </Form>
           </Col>
 
