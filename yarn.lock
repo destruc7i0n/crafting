@@ -4584,9 +4584,9 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-bootstrap@^0.30.8:
-  version "0.30.8"
-  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.30.8.tgz#4ceca8e138ce2351228c4a58d59db00c003ca9c0"
+react-bootstrap@^0.30.9:
+  version "0.30.9"
+  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.30.9.tgz#acdb20119fac189fd6546257cb741f463d4cd965"
   dependencies:
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
@@ -4598,9 +4598,9 @@ react-bootstrap@^0.30.8:
     uncontrollable "^4.0.1"
     warning "^3.0.0"
 
-react-contextmenu@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.4.1.tgz#7a18089587fd58a0c6c71d423a7a9571e427cd8e"
+react-contextmenu@2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.5.0.tgz#807944e5f0f668f01eed12936cc8e650766fb300"
   dependencies:
     classnames "^2.2.5"
     object-assign "^4.1.0"
@@ -4626,10 +4626,11 @@ react-dnd-html5-backend@*, react-dnd-html5-backend@^2.3.0:
   dependencies:
     lodash "^4.2.0"
 
-react-dnd-multi-backend@2.3.6:
-  version "2.3.6"
-  resolved "https://registry.yarnpkg.com/react-dnd-multi-backend/-/react-dnd-multi-backend-2.3.6.tgz#e17b4679aa18bb41eb538c5a7de02e04554ad9b6"
+react-dnd-multi-backend@2.3.7:
+  version "2.3.7"
+  resolved "https://registry.yarnpkg.com/react-dnd-multi-backend/-/react-dnd-multi-backend-2.3.7.tgz#0f3c8ee213b728a6b055f4ccc3a1d7f5b7cdf642"
   dependencies:
+    prop-types "^15.5.8"
     react-dnd "*"
     react-dnd-html5-backend "*"
     react-dnd-touch-backend "*"
@@ -4640,9 +4641,9 @@ react-dnd-test-backend@^2.3.0:
   dependencies:
     dnd-core "^2.3.0"
 
-react-dnd-touch-backend@*, react-dnd-touch-backend@^0.3.7:
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-0.3.7.tgz#ac178b25506847d791f10d751ff509adf45970ee"
+react-dnd-touch-backend@*, react-dnd-touch-backend@0.3.6:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-0.3.6.tgz#44adeb0dd302004ce737d18d3ddbe7445fcd93e2"
   dependencies:
     invariant "^2.1.1"
     react-dnd "^2.0.0"
