@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { setEmptySpace, setOutputRecipe, setShape } from '../actions'
+import { setEmptySpace, setOutputRecipe, setShape, setGroup } from '../actions'
+
+import DebouncedInput from './DebouncedInput'
 
 import {
   Checkbox,
@@ -33,6 +35,7 @@ class Options extends Component {
     this.toggleShape = this.toggleShape.bind(this)
     this.toggleEmptySpace = this.toggleEmptySpace.bind(this)
     this.setOutput = this.setOutput.bind(this)
+    this.setGroup = this.setGroup.bind(this)
   }
 
   toggleShape (e) {
@@ -51,6 +54,12 @@ class Options extends Component {
     const {dispatch} = this.props
 
     dispatch(setOutputRecipe(e.target.value))
+  }
+
+  setGroup (value) {
+    const {dispatch} = this.props
+
+    dispatch(setGroup(value))
   }
 
   render () {
@@ -138,6 +147,21 @@ class Options extends Component {
                 </Col>
               </FormGroup>
               <p style={{fontSize: '10px', marginTop: '5px'}}>When 'Auto' is selected, the file name will be taken based off of the item name if possible.</p>
+            </Form>
+          </Col>
+
+          <Col md={12}>
+            <Form horizontal onSubmit={(e) => e.preventDefault()}>
+              <FormGroup controlId='groups'>
+                <Col md={2}>
+                  <ControlLabel>Group:</ControlLabel>
+                </Col>
+                {' '}
+                <Col md={10}>
+                  <DebouncedInput debounced={this.setGroup} attributes={{className: 'form-control'}} />
+                </Col>
+              </FormGroup>
+              <p style={{fontSize: '10px', marginTop: '5px'}}>The recommended case is <code>lowercase_with_underscores</code>. This will group items in the recipe book.</p>
             </Form>
           </Col>
 

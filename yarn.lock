@@ -4508,7 +4508,7 @@ promise@7.1.1, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.0.0, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@~15.5.7:
+prop-types@^15.0.0, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@~15.5.7:
   version "15.5.8"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
   dependencies:
@@ -4584,21 +4584,22 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-bootstrap@^0.30.9:
-  version "0.30.9"
-  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.30.9.tgz#acdb20119fac189fd6546257cb741f463d4cd965"
+react-bootstrap@^0.30.10:
+  version "0.30.10"
+  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.30.10.tgz#dbba6909595f2af4d91937db0f96ec8c2df2d1a8"
   dependencies:
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
     dom-helpers "^3.2.0"
     invariant "^2.2.1"
     keycode "^2.1.2"
+    prop-types "^15.5.6"
     react-overlays "^0.6.12"
     react-prop-types "^0.4.0"
     uncontrollable "^4.0.1"
     warning "^3.0.0"
 
-react-contextmenu@2.5.0:
+react-contextmenu@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.5.0.tgz#807944e5f0f668f01eed12936cc8e650766fb300"
   dependencies:
@@ -4626,7 +4627,7 @@ react-dnd-html5-backend@*, react-dnd-html5-backend@^2.3.0:
   dependencies:
     lodash "^4.2.0"
 
-react-dnd-multi-backend@2.3.7:
+react-dnd-multi-backend@^2.3.7:
   version "2.3.7"
   resolved "https://registry.yarnpkg.com/react-dnd-multi-backend/-/react-dnd-multi-backend-2.3.7.tgz#0f3c8ee213b728a6b055f4ccc3a1d7f5b7cdf642"
   dependencies:

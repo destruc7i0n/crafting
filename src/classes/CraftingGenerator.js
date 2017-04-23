@@ -1,46 +1,88 @@
 import { trimEnd } from 'lodash'
 
 class CraftingGenerator {
-  constructor (input, output) {
+  /**
+   * Constructs a new crafting generator
+   * @param input
+   * @param output
+   * @param extras
+   */
+  constructor (input, output, { ...extras }) {
     this.input = input || []
     this.output = output || []
+    this.extras = extras || {}
   }
 
-  get patternCharacters () {
+  /**
+   * Gets the possible characters for the keys
+   * @returns {[string,*]}
+   */
+  getPatternCharacters () {
     return [
       '#',
       ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     ]
   }
 
-  get itemType () {
+  /**
+   * Gets a default item object
+   * @returns {{item: string}}
+   */
+  getItem () {
     return {
       item: ''
     }
   }
 
-  get shapelessDefault () {
-    return {
+  /**
+   * Gets the default for a shapeless crafting
+   * @returns {object}
+   */
+  getShapelessDefault () {
+    const { extras } = this
+    let shapeless = {
       type: 'crafting_shapeless',
-      ingredients: [
-      ],
-      result: {
+      ingredients: [],
+      result: {}
+    }
+    // go through the extras and add to the object
+    for (let extraKey of Object.keys(extras)) {
+      let extra = extras[extraKey]
+      if (extra) {
+        shapeless[extraKey] = extras[extraKey]
       }
     }
+    return shapeless
   }
 
-  get shapedDefault () {
-    return {
+  /**
+   * Gets the default for shaped crafting
+   * @returns {object}
+   */
+  getShapedDefault () {
+    const { extras } = this
+    let shaped = {
       type: 'crafting_shaped',
-      pattern: [
-      ],
-      key: {
-      },
-      result: {
+      pattern: [],
+      key: {},
+      result: {}
+    }
+    // go through the extras and add to the object
+    for (let extraKey of Object.keys(extras)) {
+      let extra = extras[extraKey]
+      if (extra) {
+        shaped[extraKey] = extras[extraKey]
       }
     }
+    return shaped
   }
 
+  /**
+   * Gets a character for an item
+   * @param item
+   * @param keyMap
+   * @returns {string}
+   */
   dinnerboneChallenge (item, keyMap) {
     // dinnerbone actually said for an 'ascii to item chart', http://i.thedestruc7i0n.ca/b4p518.png
     // while I probs don't have enough time for that, this should do... pls dinnerbone
@@ -71,8 +113,15 @@ class CraftingGenerator {
     return name[0].toUpperCase()
   }
 
+  /**
+   * Gets the item based on the item provided
+   * @param item
+   * @param data
+   * @param rest
+   * @returns {object}
+   */
   getItemType (item, data, ...rest) {
-    const { itemType } = this
+    const itemType = this.getItem()
     if (data === 0) {
       return {
         ...itemType,
@@ -89,6 +138,11 @@ class CraftingGenerator {
     }
   }
 
+  /**
+   * Seperates the name and data
+   * @param name
+   * @returns {object}
+   */
   separateNameAndData (name) {
     if (!name) {
       return {
@@ -118,11 +172,15 @@ class CraftingGenerator {
     }
   }
 
+  /**
+   * Returns a shapeless crafting of the input and output provided
+   * @returns {object}
+   */
   shapeless () {
     // clone element
     const { input, output } = this
 
-    let shape = {...this.shapelessDefault}
+    let shape = {...this.getShapelessDefault()}
 
     for (let ingredient of input) {
       const { name, data } = this.separateNameAndData(ingredient.id)
@@ -149,11 +207,17 @@ class CraftingGenerator {
     return shape
   }
 
+  /**
+   * Returns a shaped crafting of the input and output provided
+   * @param removeEmptySpace {boolean}
+   * @returns {object}
+   */
   shaped (removeEmptySpace = false) {
     // clone element
-    const { input, output, patternCharacters } = this
+    const { input, output } = this
+    const patternCharacters = this.getPatternCharacters()
 
-    let shape = {...this.shapedDefault}
+    let shape = {...this.getShapedDefault()}
     // key for the characters
     let keyMap = {}
 

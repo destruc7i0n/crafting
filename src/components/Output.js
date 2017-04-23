@@ -38,7 +38,7 @@ class Output extends Component {
   }
 
   render () {
-    const {input, output, outputRecipe, emptySpace, shape} = this.props
+    const {input, output, group, outputRecipe, emptySpace, shape} = this.props
 
     let fileSaveName
     if (outputRecipe === 'auto') {
@@ -57,7 +57,7 @@ class Output extends Component {
       }
     }
 
-    let generator = new CraftingGenerator(input, output)
+    let generator = new CraftingGenerator(input, output, { group })
     let json
     if (shape === 'shapeless') {
       json = generator.shapeless()
@@ -95,6 +95,7 @@ export default connect((store) => {
   return {
     input: store.Data.crafting,
     output: store.Data.output,
+    group: store.Data.group,
 
     shape: store.Options.shape,
     emptySpace: store.Options.emptySpace,

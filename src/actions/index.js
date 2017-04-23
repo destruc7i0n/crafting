@@ -37,6 +37,12 @@ export const resetOutputSlot = () => ({
   type: RESET_OUTPUT_SLOT
 })
 
+export const SET_GROUP = 'SET_GROUP'
+export const setGroup = (group) => ({
+  type: SET_GROUP,
+  payload: group
+})
+
 // Options reducer
 export const SET_SHAPE = 'SET_SHAPE'
 export const setShape = (shape) => ({

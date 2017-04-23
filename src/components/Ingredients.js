@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setFirstEmptyCraftingSlot } from '../actions'
 import { Panel } from 'react-bootstrap'
-import { debounce } from 'lodash'
+import DebouncedInput from './DebouncedInput'
 
 import Ingredient from './ingredient/Ingredient'
 import IngredientClass from '../classes/Ingredient'
@@ -24,18 +24,6 @@ class Ingredients extends Component {
     this.state = {
       search: ''
     }
-
-    this.debouncedSearch = this.debouncedSearch.bind(this)
-
-    // the debounced function itself
-    this.debouncedSetSearch = debounce((e) => {
-      this.setState({ search: e.target.value })
-    }, 200)
-  }
-
-  debouncedSearch (e) {
-    e.persist()
-    this.debouncedSetSearch(e)
   }
 
   render () {
@@ -50,7 +38,7 @@ class Ingredients extends Component {
         <div className='ingredients'>
           <span className='search-box'>
             <p>Search Items:</p>
-            <input type='text' onChange={this.debouncedSearch} />
+            <DebouncedInput debounced={(input) => this.setState({ search: input })} />
           </span>
           {ingredients.map((key, index) => {
             if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {

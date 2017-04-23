@@ -5,12 +5,14 @@ import {
   RESET_OUTPUT_SLOT,
   SET_CRAFTING_SLOT,
   SET_FIRST_EMPTY_CRAFTING_SLOT,
-  SET_OUTPUT_SLOT
+  SET_OUTPUT_SLOT,
+  SET_GROUP
 } from '../actions'
 
 export default function Data (state = {
   crafting: [...new Array(9)].map(i => new Ingredient()),
-  output: new Ingredient()
+  output: new Ingredient(),
+  group: ''
 }, action) {
   let newCrafting, newOutput
   switch (action.type) {
@@ -76,6 +78,12 @@ export default function Data (state = {
       return {
         ...state,
         output: newOutput
+      }
+    case SET_GROUP:
+      const group = action.payload
+      return {
+        ...state,
+        group: group
       }
     default:
       return state
