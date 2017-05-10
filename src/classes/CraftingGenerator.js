@@ -284,20 +284,22 @@ class CraftingGenerator {
     // split into groups of three
     let splitKeys = keysString.match(/.{1,3}/g)
 
-    let noTrailing = splitKeys.map((line) => trimEnd(line))
-
-    // get longest string
-    let longest = Math.max(...noTrailing.map(({length}) => length))
-
-    // trim until longest
-    let trimmed = splitKeys.map((line) => {
-      return line.substring(0, longest)
-    })
-
     // init lines
-    let lines = trimmed
+    let lines = [...splitKeys]
     // check if needed to remove space
     if (removeEmptySpace) {
+      // if removing empty space, remove the end
+      // trim the end
+      let noTrailing = splitKeys.map((line) => trimEnd(line))
+
+      // get longest string from the trimmed strings
+      let longest = Math.max(...noTrailing.map(({length}) => length))
+
+      // trim until longest
+      let trimmed = splitKeys.map((line) => {
+        return line.substring(0, longest)
+      })
+
       // remove empty line
       lines = trimmed.filter((line) => /\S/.test(line))
       // get amount of leading whitespace
