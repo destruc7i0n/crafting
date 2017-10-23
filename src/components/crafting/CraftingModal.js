@@ -78,7 +78,7 @@ class CraftingModal extends Component {
     }
 
     return (
-      <Modal show={show}>
+      <Modal show={show} onHide={hide}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>

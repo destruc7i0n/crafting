@@ -1,8 +1,13 @@
-import { jsdom } from 'jsdom'
+import { JSDOM } from 'jsdom'
 
-global.document = jsdom('<!doctype html><html><body></body></html>')
+import { configure } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
+
+configure({ adapter: new Adapter() })
+
+const { document } = (new JSDOM('')).window
+global.document = document
 global.window = document.defaultView
-
 global.Image = global.window.Image
 
 // set globals from the document
@@ -11,7 +16,3 @@ Object.keys(document.defaultView).forEach((property) => {
     global[property] = document.defaultView[property]
   }
 })
-
-global.navigator = {
-  userAgent: 'node.js'
-}
