@@ -7,7 +7,7 @@ import FileSaver from 'file-saver'
 
 import SyntaxHighlighter, { registerLanguage } from 'react-syntax-highlighter/dist/light'
 import codeStyle from 'highlight.js/lib/languages/json'
-import defaultStyle from 'react-syntax-highlighter/dist/styles/default'
+import defaultStyle from 'react-syntax-highlighter/dist/styles/default-style'
 
 import CraftingGenerator from '../classes/CraftingGenerator'
 import RecipeNames from '../resources/recipe-names.json'
