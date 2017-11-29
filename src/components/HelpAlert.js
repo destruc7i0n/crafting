@@ -35,7 +35,7 @@ class HelpAlert extends Component {
         <Alert bsStyle='info' onDismiss={() => this.setState({ shown: true })}>
           <p style={{ fontSize: '1.2em' }}>Information</p>
           <p>
-            Welcome to the crafting generator for Minecraft 1.12+! <br />
+            Welcome to the crafting generator for Minecraft 1.13+! <br />
             Drag and drop the items from the "Ingredients" panel into the crafting table to generate your recipe.
             If you wish to set the count for the resultant item, right click the resultant item and click "Set Count".
             <br />

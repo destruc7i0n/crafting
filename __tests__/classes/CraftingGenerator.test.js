@@ -34,38 +34,6 @@ describe('Crafting Generator Class', () => {
     new Ingredient(dirt.id, dirt.readable, dirt.texture)
   ]
 
-  it('should correctly return item type with data', () => {
-    const generator = new CraftingGenerator()
-
-    expect(
-      generator.getItemType('minecraft:stone', 1)
-    ).toEqual({
-      data: 1,
-      item: 'minecraft:stone'
-    })
-  })
-
-  it('should correctly return item type without data', () => {
-    const generator = new CraftingGenerator()
-
-    expect(
-      generator.getItemType('minecraft:stone', 0)
-    ).toEqual({
-      item: 'minecraft:stone'
-    })
-  })
-
-  it('should separate name and data', () => {
-    const generator = new CraftingGenerator()
-
-    expect(
-      generator.separateNameAndData('minecraft:stone:1')
-    ).toEqual({
-      data: 1,
-      name: 'minecraft:stone'
-    })
-  })
-
   it('should output shapeless', () => {
     const generator = new CraftingGenerator(
       ingredients,

@@ -116,59 +116,15 @@ class CraftingGenerator {
   /**
    * Gets the item based on the item provided
    * @param item
-   * @param data
    * @param rest
    * @returns {object}
    */
-  getItemType (item, data, ...rest) {
+  getItemType (item, ...rest) {
     const itemType = this.getItem()
-    if (data === 0) {
-      return {
-        ...itemType,
-        item,
-        ...rest
-      }
-    } else {
-      return {
-        ...itemType,
-        item,
-        data,
-        ...rest
-      }
-    }
-  }
-
-  /**
-   * Seperates the name and data
-   * @param name
-   * @returns {object}
-   */
-  separateNameAndData (name) {
-    if (!name) {
-      return {
-        name: null,
-        data: null
-      }
-    }
-    // find all ':' in the string
-    let equals = name.match(/:/g)
-
-    // if there are 2 (i.e. a data)
-    if (equals.length === 2) {
-      let split = name.split(':')
-      let data = parseInt(split[2], 10)
-
-      let id = name.replace(`:${split[2]}`, '')
-
-      return {
-        name: id,
-        data
-      }
-    }
-    // return name and 0 data
     return {
-      name,
-      data: 0
+      ...itemType,
+      item,
+      ...rest
     }
   }
 
@@ -182,24 +138,23 @@ class CraftingGenerator {
 
     let shape = {...this.getShapelessDefault()}
 
+    // go over each ingredient
     for (let ingredient of input) {
-      const { name, data } = this.separateNameAndData(ingredient.id)
+      const name = ingredient.id
 
       // only if populated
       if (ingredient.isPopulated()) {
-        // only add data if needed
         shape.ingredients.push({
-          ...this.getItemType(name, data)
+          ...this.getItemType(name)
         })
       }
     }
 
     if (output.isPopulated()) {
-      const { name, data } = this.separateNameAndData(output.id)
+      const name = output.id
 
-      // only add data if needed
       shape.result = {
-        ...this.getItemType(name, data),
+        ...this.getItemType(name),
         count: output.count
       }
     }
@@ -223,15 +178,12 @@ class CraftingGenerator {
 
     let keysString = ''
 
-    const byItem = (item, data) => {
+    const byItem = (item) => {
       let keys = Object.keys(keyMap)
       for (let key of keys) {
         let mapping = keyMap[key]
         if (mapping.item === item) {
-          // check if the data matches or if there is not data and the data is 0
-          if (mapping.data === data || (!mapping.data && data === 0)) {
-            return key
-          }
+          return key
         }
       }
 
@@ -257,17 +209,16 @@ class CraftingGenerator {
 
     for (let ingredient of input) {
       if (ingredient.isPopulated()) {
-        const {name, data} = this.separateNameAndData(ingredient.id)
+        const name = ingredient.id
 
-        let key = byItem(name, data)
+        let key = byItem(name)
 
         if (key) {
           keysString += key
         } else {
           let key = getKey(name)
-          // only add data if needed
           keyMap[key] = {
-            ...this.getItemType(name, data)
+            ...this.getItemType(name)
           }
           // add the key to the string
           keysString += key
@@ -316,11 +267,10 @@ class CraftingGenerator {
 
     // result
     if (output.isPopulated()) {
-      const { name, data } = this.separateNameAndData(output.id)
+      const name = output.id
 
-      // only add data if needed
       shape.result = {
-        ...this.getItemType(name, data),
+        ...this.getItemType(name),
         count: output.count
       }
     }
