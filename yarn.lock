@@ -4203,9 +4203,9 @@ mimic-fn@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.1.0.tgz#e667783d92e89dbd342818b5230b9d62a672ad18"
 
-minecraft-textures@^1.13.1:
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/minecraft-textures/-/minecraft-textures-1.13.1.tgz#13fee23024ee3e74952f3cb5c13e9b1b3994154a"
+minecraft-textures@^1.13.4:
+  version "1.13.6"
+  resolved "https://registry.yarnpkg.com/minecraft-textures/-/minecraft-textures-1.13.6.tgz#b9c8d164845d49546d9993a84c40197f7a42b549"
 
 minimatch@3.0.3, minimatch@^3.0.0, minimatch@^3.0.2, minimatch@^3.0.3:
   version "3.0.3"
@@ -5175,8 +5175,8 @@ react-bootstrap@^0.31.5:
     warning "^3.0.0"
 
 react-contextmenu@^2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.9.0.tgz#ce1568d25db3a886590aae38d783fdba3f708425"
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.9.1.tgz#391c7001f73e49772e37e98d154736d50dac11de"
   dependencies:
     classnames "^2.2.5"
     object-assign "^4.1.0"

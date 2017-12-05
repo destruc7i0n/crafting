@@ -9,7 +9,7 @@ import Ingredient from './ingredient/Ingredient'
 import IngredientClass from '../classes/Ingredient'
 
 // get the items from the JSON file
-import { default as getTextures } from 'minecraft-textures'
+import getTextures from 'minecraft-textures'
 
 import './Ingredients.css'
 
