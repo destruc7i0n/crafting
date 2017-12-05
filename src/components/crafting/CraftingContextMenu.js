@@ -5,7 +5,8 @@ import {
   resetCraftingSlot,
   resetOutputSlot,
   toggleContextMenu,
-  toggleCountMenu
+  toggleCountMenu,
+  toggleNBTMenu
 } from '../../actions'
 import { ContextMenu, MenuItem } from 'react-contextmenu'
 
@@ -22,6 +23,7 @@ class CraftingContextMenu extends Component {
 
     this.toggleContextMenu = this.toggleContextMenu.bind(this)
     this.toggleCountModal = this.toggleCountModal.bind(this)
+    this.toggleNBTModal = this.toggleNBTModal.bind(this)
     this.removeItem = this.removeItem.bind(this)
   }
 
@@ -48,22 +50,26 @@ class CraftingContextMenu extends Component {
     dispatch(toggleCountMenu())
   }
 
+  toggleNBTModal () {
+    const {dispatch} = this.props
+
+    dispatch(toggleNBTMenu())
+  }
+
   render () {
     const id = parseInt(this.props.id, 10)
 
-    let menuItems = (
-      <MenuItem onClick={this.removeItem} data={{item: id}}>Remove</MenuItem>
-    )
+    let menuItems = [
+      // <MenuItem onClick={this.toggleNBTModal} data={{item: id}}>Set NBT</MenuItem>
+    ]
 
     // if output slot
     if (id === 9) {
-      menuItems = (
-        <div>
-          <MenuItem onClick={this.toggleCountModal} data={{item: id}}>Set Count</MenuItem>
-          <MenuItem divider />
-          <MenuItem onClick={this.removeItem} data={{item: id}}>Remove</MenuItem>
-        </div>
-      )
+      menuItems = [
+        ...menuItems,
+        <MenuItem onClick={this.toggleCountModal} data={{item: id}}>Set Count</MenuItem>,
+        <MenuItem divider />
+      ]
     }
 
     return (
@@ -72,6 +78,7 @@ class CraftingContextMenu extends Component {
         onHide={this.toggleContextMenu}
         onShow={this.toggleContextMenu}>
         {menuItems}
+        <MenuItem onClick={this.removeItem} data={{item: id}}>Remove</MenuItem>
       </ContextMenu>
     )
   }

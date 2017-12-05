@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setOutputSlot, toggleCountMenu } from '../../actions'
+import { setNBT, setOutputSlot, toggleCountMenu, toggleNBTMenu } from '../../actions'
 import PropTypes from 'prop-types'
 import { Button, Modal } from 'react-bootstrap'
 
@@ -50,7 +50,7 @@ class CraftingModal extends Component {
   }
 
   render () {
-    const {dispatch, showingCountModal} = this.props
+    const {dispatch, showingCountModal, showingNBTModal, nbt} = this.props
     const {outputCount} = this.state
 
     let title = ''
@@ -77,6 +77,20 @@ class CraftingModal extends Component {
       hide = () => dispatch(toggleCountMenu())
     }
 
+    if (showingNBTModal) {
+      title = 'Set NBT'
+      body = (
+        <textarea
+          className='form-control'
+          value={nbt}
+          rows={10}
+          placeholder='Enter NBT'
+          onChange={({ target: { value } }) => dispatch(setNBT(value))} />
+      )
+      show = showingNBTModal
+      hide = () => dispatch(toggleNBTMenu())
+    }
+
     return (
       <Modal show={show} onHide={hide}>
         <Modal.Header closeButton>
@@ -98,6 +112,8 @@ CraftingModal.propTypes = propTypes
 export default connect((store) => {
   return {
     output: store.Data.output,
-    showingCountModal: store.Private.showingCountModal
+    nbt: store.Data.nbt,
+    showingCountModal: store.Private.showingCountModal,
+    showingNBTModal: store.Private.showingNBTModal
   }
 })(CraftingModal)

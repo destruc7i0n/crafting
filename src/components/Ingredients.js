@@ -9,13 +9,15 @@ import Ingredient from './ingredient/Ingredient'
 import IngredientClass from '../classes/Ingredient'
 
 // get the items from the JSON file
-import { items as IngredientItems } from '../resources/textures.json'
+import { default as getTextures } from 'minecraft-textures'
 
 import './Ingredients.css'
 
 const propTypes = {
   dispatch: PropTypes.func
 }
+
+const IngredientItems = getTextures('1.13').items
 
 class Ingredients extends Component {
   constructor (props) {

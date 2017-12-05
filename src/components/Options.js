@@ -146,7 +146,10 @@ class Options extends Component {
                   </FormControl>
                 </Col>
               </FormGroup>
-              <p style={{fontSize: '10px', marginTop: '5px'}}>When 'Auto' is selected, the file name will be taken based off of the item name if possible.</p>
+              <p style={{fontSize: '12px', margin: '5px 0 5px 0'}}>
+                When 'Auto' is selected, the file name will be taken based off of the item name if possible, otherwise the name will be{' '}
+                <code>crafting_recipe.json</code>
+              </p>
             </Form>
           </Col>
 
@@ -161,7 +164,11 @@ class Options extends Component {
                   <DebouncedInput debounced={this.setGroup} attributes={{className: 'form-control'}} />
                 </Col>
               </FormGroup>
-              <p style={{fontSize: '10px', marginTop: '5px'}}>The recommended case is <code>lowercase_with_underscores</code>. This will group items in the recipe book.</p>
+              <p style={{fontSize: '12px', margin: '5px 0 5px 0'}}>This will group items in the recipe book.{' '}
+                <a href='http://www.minecraftforum.net/forums/minecraft-java-edition/redstone-discussion-and/commands-command-blocks-and/2810250-1-12-custom-recipes#Groups'>
+                  Click here for a short explanation.
+                </a>
+              </p>
             </Form>
           </Col>
 

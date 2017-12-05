@@ -6,7 +6,8 @@ import {
   SET_CRAFTING_SLOT,
   SET_FIRST_EMPTY_CRAFTING_SLOT,
   SET_OUTPUT_SLOT,
-  SET_GROUP
+  SET_GROUP,
+  SET_NBT
 } from '../actions'
 
 export default function Data (state = {
@@ -84,6 +85,11 @@ export default function Data (state = {
       return {
         ...state,
         group: group
+      }
+    case SET_NBT:
+      return {
+        ...state,
+        nbt: action.payload
       }
     default:
       return state

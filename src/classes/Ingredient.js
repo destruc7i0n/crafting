@@ -6,12 +6,14 @@ class Ingredient {
    * @param readable
    * @param texture
    * @param count
+   * @param nbt
    */
-  constructor (id, readable, texture, count) {
+  constructor (id, readable, texture, count, nbt) {
     this.id = id || ''
     this.readable = readable || ''
     this.texture = texture || ''
     this.count = count || 1
+    this.nbt = nbt || '{}'
   }
 
   /**

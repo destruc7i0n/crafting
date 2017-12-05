@@ -72,3 +72,14 @@ export const TOGGLE_SHOWING_COUNT_MENU = 'TOGGLE_SHOWING_COUNT_MENU'
 export const toggleCountMenu = () => ({
   type: TOGGLE_SHOWING_COUNT_MENU
 })
+
+export const TOGGLE_SHOWING_NBT_MENU = 'TOGGLE_SHOWING_NBT_MENU'
+export const toggleNBTMenu = () => ({
+  type: TOGGLE_SHOWING_NBT_MENU
+})
+
+export const SET_NBT = 'SET_NBT'
+export const setNBT = (nbt) => ({
+  type: SET_NBT,
+  payload: nbt
+})
