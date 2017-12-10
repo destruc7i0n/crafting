@@ -8,7 +8,7 @@
     "bootstrap": "^3.3.7",
     "file-saver": "^1.3.3",
     "lodash": "^4.17.4",
-    "minecraft-textures": "^1.13.6",
+    "minecraft-textures": "^1.13.8",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-bootstrap": "^0.31.5",
