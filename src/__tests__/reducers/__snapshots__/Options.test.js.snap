@@ -1,8 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`Options Reducer should have a default state 1`] = `
 Object {
   "emptySpace": true,
   "outputRecipe": "auto",
   "shape": "shaped",
+  "tab": "crafting",
 }
 `;
 
@@ -11,6 +14,7 @@ Object {
   "emptySpace": false,
   "outputRecipe": "auto",
   "shape": "shaped",
+  "tab": "crafting",
 }
 `;
 
@@ -19,6 +23,7 @@ Object {
   "emptySpace": true,
   "outputRecipe": "acacia_boat",
   "shape": "shaped",
+  "tab": "crafting",
 }
 `;
 
@@ -27,5 +32,6 @@ Object {
   "emptySpace": true,
   "outputRecipe": "auto",
   "shape": "shapeless",
+  "tab": "crafting",
 }
 `;

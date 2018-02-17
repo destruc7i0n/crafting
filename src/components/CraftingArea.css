@@ -10,7 +10,7 @@
     line-height: 42px;
 }
 
-.grid, .grid-large {
+.grid, .grid-large, .grid-furnace {
     float: left;
     display: block;
     text-align: center !important;
@@ -26,12 +26,12 @@
     margin-top: 8px;
 }
 
-.grid {
+.grid, .grid-furnace {
     width: 36px;
     height: 36px;
 }
 
-.grid:hover, .grid-large:hover {
+.grid:hover, .grid-large:hover, .grid-furnace:hover {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -40,7 +40,11 @@
     height: 48px;
 }
 
-.grid img, .grid-large img {
+.grid-furnace {
+    margin-left: 50px;
+}
+
+.grid img, .grid-large img, .grid-furnace img {
     cursor: move;
 }
 
@@ -52,9 +56,18 @@
 .crafting .arrow {
     width: 32px;
     height: 27px;
-    margin: 50px 15px 0 15px;
+    margin: 50px 25px 0 15px;
     float: left;
     background: url(../assets/arrow.png);
+}
+
+.crafting .flame {
+    width: 32px;
+    height: 32px;
+    margin-left: 50px;
+    margin-bottom: 5px;
+    float: left;
+    background: url(../assets/flame.png);
 }
 
 .crafting-table-output {

@@ -5,9 +5,9 @@ import { Button, Panel } from 'react-bootstrap'
 
 import FileSaver from 'file-saver'
 
-import SyntaxHighlighter, { registerLanguage } from 'react-syntax-highlighter/dist/light'
-import codeStyle from 'highlight.js/lib/languages/json'
-import defaultStyle from 'react-syntax-highlighter/dist/styles/default-style'
+import SyntaxHighlighter, { registerLanguage } from 'react-syntax-highlighter/light'
+import codeStyle from 'react-syntax-highlighter/languages/hljs/json'
+import defaultStyle from 'react-syntax-highlighter/styles/hljs/default-style'
 
 import CraftingGenerator from '../classes/CraftingGenerator'
 import RecipeNames from '../resources/recipe-names.json'
@@ -38,7 +38,7 @@ class Output extends Component {
   }
 
   render () {
-    const {input, output, group, outputRecipe, emptySpace, shape} = this.props
+    const {input, output, group, furnace, outputRecipe, emptySpace, shape, tab} = this.props
 
     let fileSaveName
     if (outputRecipe === 'auto') {
@@ -57,15 +57,20 @@ class Output extends Component {
       }
     }
 
-    let generator = new CraftingGenerator(input, output, { group })
-    let json
-    if (shape === 'shapeless') {
-      json = generator.shapeless()
-    } else {
-      json = generator.shaped(emptySpace)
+    let json, generator
+    if (tab === 'crafting') {
+      generator = new CraftingGenerator(input, output, { group })
+      if (shape === 'shapeless') {
+        json = generator.shapeless()
+      } else {
+        json = generator.shaped(emptySpace)
+      }
+    } else if (tab === 'furnace') {
+      generator = new CraftingGenerator(furnace.input, output, { group })
+      json = generator.smelting(furnace.cookingTime, furnace.experience)
     }
 
-    if (json.result.item) {
+    if (json.result && json.result.item) {
       json.result.count = output.count
     }
 
@@ -73,17 +78,24 @@ class Output extends Component {
     let blob = new Blob([toCopy], {type: 'text/plain;charset=utf-8'})
 
     return (
-      <Panel header='JSON'>
-        <SyntaxHighlighter
-          style={defaultStyle}
-        >{toCopy}</SyntaxHighlighter>
+      <Panel>
+        <Panel.Heading>
+          <Panel.Title>
+            JSON
+          </Panel.Title>
+        </Panel.Heading>
+        <Panel.Body>
+          <SyntaxHighlighter
+            style={defaultStyle}
+          >{toCopy}</SyntaxHighlighter>
 
-        <Button
-          onClick={() => FileSaver.saveAs(blob, fileSaveName)}
-          className='download-button'
-          bsStyle='primary'
-          block
-        >Download {fileSaveName}</Button>
+          <Button
+            onClick={() => FileSaver.saveAs(blob, fileSaveName)}
+            className='download-button'
+            bsStyle='primary'
+            block
+          >Download <code>{fileSaveName}</code></Button>
+        </Panel.Body>
       </Panel>
     )
   }
@@ -96,7 +108,9 @@ export default connect((store) => {
     input: store.Data.crafting,
     output: store.Data.output,
     group: store.Data.group,
+    furnace: store.Data.furnace,
 
+    tab: store.Options.tab,
     shape: store.Options.shape,
     emptySpace: store.Options.emptySpace,
     outputRecipe: store.Options.outputRecipe

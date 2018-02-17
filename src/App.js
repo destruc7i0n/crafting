@@ -11,7 +11,7 @@ import { debounce } from 'lodash'
 
 import Navbar from './components/Navbar'
 import HelpAlert from './components/HelpAlert'
-import CraftingTable from './components/CraftingTable'
+import CraftingTable from './components/CraftingArea'
 import Ingredients from './components/Ingredients'
 import Options from './components/Options'
 import Output from './components/Output'
@@ -19,11 +19,16 @@ import CraftingModal from './components/crafting/CraftingModal'
 
 import IngredientDragLayer from './components/ingredient/IngredientDragLayer'
 
+import fontawesome from '@fortawesome/fontawesome'
+import faPatreon from '@fortawesome/fontawesome-free-brands/faPatreon'
+
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 
 import './assets/arrow.png'
 import './assets/Minecraft.woff'
+
+fontawesome.library.add(faPatreon)
 
 export class App extends Component {
   constructor (props) {

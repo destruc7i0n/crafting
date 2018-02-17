@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`Data Reducer should have a default state 1`] = `
 Object {
   "crafting": Array [
@@ -56,6 +58,16 @@ Object {
       "texture": "",
     },
   ],
+  "furnace": Object {
+    "cookingTime": 200,
+    "experience": 0.1,
+    "input": Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+  },
   "group": "",
   "output": Object {
     "count": 1,
@@ -269,6 +281,16 @@ Object {
       "texture": "",
     },
   ],
+  "furnace": Object {
+    "cookingTime": 200,
+    "experience": 0.1,
+    "input": Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+  },
   "group": "",
   "output": Object {
     "count": 1,
@@ -337,6 +359,16 @@ Object {
       "texture": "",
     },
   ],
+  "furnace": Object {
+    "cookingTime": 200,
+    "experience": 0.1,
+    "input": Object {
+      "count": 1,
+      "id": "",
+      "readable": "",
+      "texture": "",
+    },
+  },
   "group": "",
   "output": Object {
     "count": 1,

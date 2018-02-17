@@ -1,6 +1,6 @@
-import reducer from '../../src/reducers/Options'
+import reducer from '../../reducers/Options'
 
-import { setEmptySpace, setOutputRecipe, setShape } from '../../src/actions'
+import { setEmptySpace, setOutputRecipe, setShape } from '../../actions/index'
 
 describe('Options Reducer', () => {
   it('should have a default state', () => {

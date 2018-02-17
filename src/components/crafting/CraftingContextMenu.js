@@ -57,18 +57,19 @@ class CraftingContextMenu extends Component {
   }
 
   render () {
+    const { tab } = this.props
     const id = parseInt(this.props.id, 10)
 
     let menuItems = [
       // <MenuItem onClick={this.toggleNBTModal} data={{item: id}}>Set NBT</MenuItem>
     ]
 
-    // if output slot
-    if (id === 9) {
+    // if output slot and not furnace crafting
+    if (id === 9 && tab !== 'furnace') {
       menuItems = [
         ...menuItems,
-        <MenuItem onClick={this.toggleCountModal} data={{item: id}}>Set Count</MenuItem>,
-        <MenuItem divider />
+        <MenuItem key='m1' onClick={this.toggleCountModal} data={{item: id}}>Set Count</MenuItem>,
+        <MenuItem key='m2' divider />
       ]
     }
 

@@ -14,7 +14,7 @@ class CraftingGenerator {
   }
 
   /**
-   * Gets the possible characters for the keys
+   * Returns the possible characters for the keys
    * @returns {[string,*]}
    */
   getPatternCharacters () {
@@ -25,7 +25,7 @@ class CraftingGenerator {
   }
 
   /**
-   * Gets a default item object
+   * Returns a default item object
    * @returns {{item: string}}
    */
   getItem () {
@@ -35,7 +35,7 @@ class CraftingGenerator {
   }
 
   /**
-   * Gets the default for a shapeless crafting
+   * Returns the default for a shapeless crafting
    * @returns {object}
    */
   getShapelessDefault () {
@@ -56,7 +56,7 @@ class CraftingGenerator {
   }
 
   /**
-   * Gets the default for shaped crafting
+   * Returns the default for shaped crafting
    * @returns {object}
    */
   getShapedDefault () {
@@ -78,7 +78,30 @@ class CraftingGenerator {
   }
 
   /**
-   * Gets a character for an item
+   * Returns the default for smelting
+   * @returns {object}
+   */
+  getSmeltingDefault () {
+    const { extras } = this
+    let smelting = {
+      type: 'smelting',
+      ingredient: {},
+      result: {},
+      experience: 0,
+      cookingtime: 0
+    }
+    // go through the extras and add to the object
+    for (let extraKey of Object.keys(extras)) {
+      let extra = extras[extraKey]
+      if (extra) {
+        smelting[extraKey] = extras[extraKey]
+      }
+    }
+    return smelting
+  }
+
+  /**
+   * Returns a character for an item
    * @param item
    * @param keyMap
    * @returns {string}
@@ -114,7 +137,7 @@ class CraftingGenerator {
   }
 
   /**
-   * Gets the item based on the item provided
+   * Returns the item based on the item provided
    * @param item
    * @param rest
    * @returns {object}
@@ -274,6 +297,32 @@ class CraftingGenerator {
         count: output.count
       }
     }
+
+    return shape
+  }
+
+  smelting (time = 0, experience = 0) {
+    const { input, output } = this
+
+    let shape = {...this.getSmeltingDefault()}
+
+    // add the ingredient
+    let ingredient = input
+    const name = ingredient.id
+
+    // only if populated
+    if (ingredient.isPopulated()) {
+      shape.ingredient = {
+        ...this.getItemType(name)
+      }
+    }
+
+    if (output.isPopulated()) {
+      shape.result = output.id
+    }
+
+    shape.cookingtime = time || 0
+    shape.experience = experience || 0
 
     return shape
   }

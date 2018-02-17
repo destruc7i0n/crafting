@@ -1,6 +1,6 @@
-import CraftingGenerator from '../../src/classes/CraftingGenerator'
+import CraftingGenerator from '../../classes/CraftingGenerator'
 
-import Ingredient from '../../src/classes/Ingredient'
+import Ingredient from '../../classes/Ingredient'
 
 describe('Crafting Generator Class', () => {
   const dirt = {
@@ -64,6 +64,17 @@ describe('Crafting Generator Class', () => {
 
     expect(
       generator.shaped(true)
+    ).toMatchSnapshot()
+  })
+
+  it('should output smelting recipe', () => {
+    const generator = new CraftingGenerator(
+      new Ingredient(dirt.id, dirt.readable, dirt.texture),
+      new Ingredient(stone.id, stone.readable, stone.texture)
+    )
+
+    expect(
+      generator.smelting(1000, 1000)
     ).toMatchSnapshot()
   })
 })

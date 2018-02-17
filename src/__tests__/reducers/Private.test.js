@@ -1,6 +1,6 @@
-import reducer from '../../src/reducers/Private'
+import reducer from '../../reducers/Private'
 
-import { toggleContextMenu, toggleCountMenu } from '../../src/actions'
+import { toggleContextMenu, toggleCountMenu } from '../../actions/index'
 
 describe('Private Reducer', () => {
   it('should have a default state', () => {

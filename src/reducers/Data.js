@@ -7,15 +7,23 @@ import {
   SET_FIRST_EMPTY_CRAFTING_SLOT,
   SET_OUTPUT_SLOT,
   SET_GROUP,
-  SET_NBT
+  SET_NBT,
+  SET_FURNACE_SLOT,
+  RESET_FURNACE_SLOT,
+  SET_FURNACE_DATA
 } from '../actions'
 
 export default function Data (state = {
   crafting: [...new Array(9)].map(i => new Ingredient()),
+  furnace: {
+    input: new Ingredient(),
+    cookingTime: 200,
+    experience: 0.1
+  },
   output: new Ingredient(),
   group: ''
 }, action) {
-  let newCrafting, newOutput
+  let newCrafting, newFurnace, newOutput
   switch (action.type) {
     case SET_CRAFTING_SLOT:
       // clone crafting
@@ -79,6 +87,38 @@ export default function Data (state = {
       return {
         ...state,
         output: newOutput
+      }
+    case SET_FURNACE_SLOT:
+      // set furnace slot to new instance of ingredient
+      newFurnace = new Ingredient(
+        action.payload.ingredient.id,
+        action.payload.ingredient.readable,
+        action.payload.ingredient.texture
+      )
+      return {
+        ...state,
+        furnace: {
+          ...state.furnace,
+          input: newFurnace
+        }
+      }
+    case SET_FURNACE_DATA:
+      // add the furnace data to the furnace object
+      return {
+        ...state,
+        furnace: {
+          ...state.furnace,
+          ...action.payload
+        }
+      }
+    case RESET_FURNACE_SLOT:
+      newFurnace = new Ingredient()
+      return {
+        ...state,
+        furnace: {
+          ...state.furnace,
+          input: newFurnace
+        }
       }
     case SET_GROUP:
       const group = action.payload

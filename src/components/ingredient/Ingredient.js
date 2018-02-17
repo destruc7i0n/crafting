@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { resetCraftingSlot, resetOutputSlot } from '../../actions'
+import { resetCraftingSlot, resetFurnaceSlot, resetOutputSlot } from '../../actions'
+
+import classNames from 'classnames'
 
 import { DragSource } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
@@ -11,7 +13,7 @@ import Tooltip from '../Tooltip'
 
 const ingredientSource = {
   beginDrag (props, monitor, component) {
-    const { ingredient, craftingSlot, size } = props
+    const { ingredient, slot, size } = props
     // hide while dragging
     component.setState({
       mouse: { ...component.state.mouse, display: 'none' }
@@ -21,37 +23,42 @@ const ingredientSource = {
       id: ingredient.id,
       readable: ingredient.readable,
       texture: ingredient.texture,
-      craftingSlot,
+      slot,
       size
     }
   },
 
-  endDrag (props, monitor, component) {
-    const { dispatch, size, craftingSlot } = props
-    const resetSlots = (size, craftingSlot) => {
+  endDrag (props, monitor) {
+    const { dispatch, size, slot, type } = props
+    const resetSlots = (size, slot) => {
       if (size === 'large') {
         dispatch(resetOutputSlot())
       }
 
-      if (craftingSlot !== undefined) {
-        dispatch(resetCraftingSlot(craftingSlot))
+      // reset corresponding slot
+      if (slot !== undefined) {
+        if (type === 'crafting') {
+          dispatch(resetCraftingSlot(slot))
+        } else if (type === 'furnace') {
+          dispatch(resetFurnaceSlot())
+        }
       }
     }
 
     // reset if dropped outside any target
     if (!monitor.didDrop()) {
-      const { craftingSlot, size } = monitor.getItem()
+      const { slot, size } = monitor.getItem()
       // reset the slot
-      resetSlots(size, craftingSlot)
+      resetSlots(size, slot)
 
       return
     }
 
     const dropResult = monitor.getDropResult()
-    const { newCraftingSlot, newSize } = dropResult
+    const { newSlot, newSize } = dropResult
 
     // if the crafting slot is the same as the one dragged from, don't do any resetting
-    if (craftingSlot === newCraftingSlot) {
+    if (slot === newSlot) {
       return
     }
     // if dragged from output to output, don't do any resetting
@@ -59,18 +66,19 @@ const ingredientSource = {
       return
     }
 
-    resetSlots(size, craftingSlot)
+    resetSlots(size, slot)
   }
 }
 
 const propTypes = {
   ingredient: PropTypes.object,
   size: PropTypes.string,
+  type: PropTypes.string,
   contextMenu: PropTypes.bool,
   connectDragSource: PropTypes.func,
   connectDragPreview: PropTypes.func,
   isDragging: PropTypes.bool,
-  craftingSlot: PropTypes.number,
+  slot: PropTypes.number,
   dispatch: PropTypes.func
 }
 
@@ -126,7 +134,11 @@ class Ingredient extends Component {
     // only allow tooltip and dragging while no context menu
     return (
       <span
-        className={size === 'large' ? 'grid-large' : 'grid'}
+        className={classNames({
+          'grid-large': size === 'large',
+          'grid': size === 'normal',
+          'grid-furnace': size === 'furnace'
+        })}
         onMouseMove={this.onMouseMove}
         onMouseOut={this.onMouseOut}
       >

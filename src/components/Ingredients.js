@@ -36,27 +36,34 @@ class Ingredients extends Component {
     const ingredients = IngredientItems.map((ingredient) => new IngredientClass(ingredient.id, ingredient.readable, ingredient.texture))
 
     return (
-      <Panel header='Ingredients'>
-        <div className='ingredients'>
-          <span className='search-box'>
-            <p>Search Items:</p>
-            <DebouncedInput debounced={(input) => this.setState({ search: input })} />
-          </span>
-          {ingredients.map((key, index) => {
-            if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {
-              return (
-                <div
-                  key={index}
-                  onDoubleClick={() => dispatch(setFirstEmptyCraftingSlot(key))}
-                >
-                  <Ingredient ingredient={key} size='normal' />
-                </div>
-              )
-            } else {
-              return null
-            }
-          })}
-        </div>
+      <Panel>
+        <Panel.Heading>
+          <Panel.Title>
+            Ingredients
+          </Panel.Title>
+        </Panel.Heading>
+        <Panel.Body>
+          <div className='ingredients'>
+            <span className='search-box'>
+              <p>Search Items:</p>
+              <DebouncedInput debounced={(input) => this.setState({ search: input })} />
+            </span>
+            {ingredients.map((key, index) => {
+              if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {
+                return (
+                  <div
+                    key={index}
+                    onDoubleClick={() => dispatch(setFirstEmptyCraftingSlot(key))}
+                  >
+                    <Ingredient ingredient={key} size='normal' />
+                  </div>
+                )
+              } else {
+                return null
+              }
+            })}
+          </div>
+        </Panel.Body>
       </Panel>
     )
   }

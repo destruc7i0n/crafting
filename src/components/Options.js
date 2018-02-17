@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { setEmptySpace, setOutputRecipe, setShape, setGroup } from '../actions'
+import { setEmptySpace, setOutputRecipe, setShape, setGroup, setFurnaceData } from '../actions'
 
 import DebouncedInput from './DebouncedInput'
+import NumericInput from 'react-numeric-input'
 
 import {
   Checkbox,
   Col,
   ControlLabel,
-  Form,
   FormControl,
   FormGroup,
   OverlayTrigger,
@@ -63,7 +63,7 @@ class Options extends Component {
   }
 
   render () {
-    const {emptySpace, shape, outputRecipe} = this.props
+    const {dispatch, emptySpace, shape, outputRecipe, tab, furnace} = this.props
 
     const shapelessTooltip = (
       <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the output.</Tooltip>
@@ -109,70 +109,128 @@ class Options extends Component {
       </FormGroup>
     )
 
-    return (
-      <Panel collapsible defaultExpanded header='Options'>
-        <Row>
-          <Col md={4}>
-            { shapelessCheckbox }
-          </Col>
-
-          <Col md={8}>
-            { shape === 'shaped' ? removeEmptySpaceCheckbox : null }
-          </Col>
-
-          <Col md={12}>
-            <Form horizontal onSubmit={(e) => e.preventDefault()}>
-              <FormGroup controlId='recipe'>
-                <Col md={2}>
-                  <ControlLabel>Output Recipe:</ControlLabel>
-                </Col>
-                {' '}
-                <Col md={10}>
-                  <FormControl
-                    componentClass='select'
-                    placeholder='select'
-                    value={outputRecipe}
-                    onChange={this.setOutput}
-                  >
-                    <option value='auto' key={-1}>Auto</option>
-                    {RecipeNames.names.map((name, index) => {
-                      let nameParts = name.split('_')
-                      let namePartsUppercase = nameParts.map((name) => name.charAt(0).toUpperCase() + name.slice(1))
-                      let nameReadable = namePartsUppercase.join(' ')
-                      return (
-                        <option value={name} key={index}>{nameReadable}</option>
-                      )
-                    })}
-                  </FormControl>
-                </Col>
-              </FormGroup>
+    let customOptions
+    if (tab === 'crafting') {
+      customOptions = (
+        <Fragment>
+          <legend><h5>Crafting Options</h5></legend>
+          <Row>
+            <Col md={4}>
+              { shapelessCheckbox }
+            </Col>
+            <Col md={8}>
+              { shape === 'shaped' ? removeEmptySpaceCheckbox : null }
+            </Col>
+          </Row>
+        </Fragment>
+      )
+    } else if (tab === 'furnace') {
+      customOptions = (
+        <Fragment>
+          <legend><h5>Furnace Options</h5></legend>
+          <Row>
+            <Col md={2}>
+              <ControlLabel style={{fontSize: '12px'}}>Experience:</ControlLabel>
+            </Col>
+            {' '}
+            <Col md={10}>
+              <NumericInput
+                className='form-control'
+                min={0}
+                precision={1}
+                step={1}
+                value={furnace.experience}
+                onChange={(v) => dispatch(setFurnaceData('experience', v))}
+                placeholder='Enter amount'
+              />
+            </Col>
+            <Col md={12}>
               <p style={{fontSize: '12px', margin: '5px 0 5px 0'}}>
-                When 'Auto' is selected, the file name will be taken based off of the item name if possible, otherwise the name will be{' '}
+                The output experience.
+              </p>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={2}>
+              <ControlLabel>Crafting Time:</ControlLabel>
+            </Col>
+            {' '}
+            <Col md={10}>
+              <NumericInput
+                className='form-control'
+                min={0}
+                value={furnace.cookingTime}
+                onChange={(v) => dispatch(setFurnaceData('cookingTime', v))}
+                placeholder='Enter amount'
+              />
+            </Col>
+            <Col md={12}>
+              <p style={{fontSize: '12px', margin: '5px 0 5px 0'}}>
+                The cook time in ticks.
+              </p>
+            </Col>
+          </Row>
+        </Fragment>
+      )
+    }
+
+    return (
+      <Panel defaultExpanded>
+        <Panel.Heading>
+          <Panel.Title toggle>
+            Options
+          </Panel.Title>
+        </Panel.Heading>
+        <Panel.Body collapsible>
+          {customOptions}
+          <legend><h5>Default Options</h5></legend>
+          <Row>
+            <Col md={2}>
+              <ControlLabel>Output Recipe:</ControlLabel>
+            </Col>
+            {' '}
+            <Col md={10}>
+              <FormControl
+                componentClass='select'
+                placeholder='select'
+                value={outputRecipe}
+                onChange={this.setOutput}
+              >
+                <option value='auto' key={-1}>Auto</option>
+                {RecipeNames.names.map((name, index) => {
+                  let nameParts = name.split('_')
+                  let namePartsUppercase = nameParts.map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+                  let nameReadable = namePartsUppercase.join(' ')
+                  return (
+                    <option value={name} key={index}>{nameReadable}</option>
+                  )
+                })}
+              </FormControl>
+            </Col>
+            <Col md={12}>
+              <p style={{fontSize: '12px'}}>
+                When <code>Auto</code> is selected, the file name will be taken based off of the item name if possible, otherwise the name will be{' '}
                 <code>crafting_recipe.json</code>
               </p>
-            </Form>
-          </Col>
-
-          <Col md={12}>
-            <Form horizontal onSubmit={(e) => e.preventDefault()}>
-              <FormGroup controlId='groups'>
-                <Col md={2}>
-                  <ControlLabel>Group:</ControlLabel>
-                </Col>
-                {' '}
-                <Col md={10}>
-                  <DebouncedInput debounced={this.setGroup} attributes={{className: 'form-control'}} />
-                </Col>
-              </FormGroup>
-              <p style={{fontSize: '12px', margin: '5px 0 5px 0'}}>This will group items in the recipe book.{' '}
-                <a href='http://www.minecraftforum.net/forums/minecraft-java-edition/redstone-discussion-and/commands-command-blocks-and/2810250-1-12-custom-recipes#Groups'>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={2}>
+              <ControlLabel>Group:</ControlLabel>
+            </Col>
+            {' '}
+            <Col md={10}>
+              <DebouncedInput debounced={this.setGroup} attributes={{className: 'form-control'}} />
+            </Col>
+            <Col md={12}>
+              <p style={{fontSize: '12px'}}>This will group items in the recipe book.{' '}
+                <a href='https://github.com/skylinerw/guides/blob/master/java/recipes.md#groups' target='_blank' rel='noopener noreferrer'>
                   Click here for a short explanation.
                 </a>
               </p>
-            </Form>
-          </Col>
-
-        </Row>
+            </Col>
+          </Row>
+        </Panel.Body>
       </Panel>
     )
   }
@@ -184,6 +242,8 @@ export default connect((store) => {
   return {
     shape: store.Options.shape,
     emptySpace: store.Options.emptySpace,
-    outputRecipe: store.Options.outputRecipe
+    outputRecipe: store.Options.outputRecipe,
+    tab: store.Options.tab,
+    furnace: store.Data.furnace
   }
 })(Options)

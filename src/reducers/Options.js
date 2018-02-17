@@ -1,6 +1,7 @@
-import { SET_EMPTY_SPACE, SET_OUTPUT_RECIPE, SET_SHAPE } from '../actions'
+import { SET_EMPTY_SPACE, SET_OUTPUT_RECIPE, SET_SHAPE, SET_TAB } from '../actions'
 
 export default function Options (state = {
+  tab: 'crafting',
   shape: 'shaped',
   emptySpace: true,
   outputRecipe: 'auto'
@@ -20,6 +21,11 @@ export default function Options (state = {
       return {
         ...state,
         outputRecipe: action.payload
+      }
+    case SET_TAB:
+      return {
+        ...state,
+        tab: action.payload
       }
     default:
       return state

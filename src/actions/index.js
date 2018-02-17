@@ -16,6 +16,27 @@ export const resetCraftingSlot = (index) => ({
   }
 })
 
+export const SET_FURNACE_SLOT = 'SET_FURNACE_SLOT'
+export const setFurnaceSlot = (ingredient) => ({
+  type: SET_FURNACE_SLOT,
+  payload: {
+    ingredient
+  }
+})
+
+export const RESET_FURNACE_SLOT = 'RESET_FURNACE_SLOT'
+export const resetFurnaceSlot = () => ({
+  type: RESET_FURNACE_SLOT
+})
+
+export const SET_FURNACE_DATA = 'SET_FURNACE_DATA'
+export const setFurnaceData = (key, value) => ({
+  type: SET_FURNACE_DATA,
+  payload: {
+    [key]: value
+  }
+})
+
 export const SET_FIRST_EMPTY_CRAFTING_SLOT = 'SET_FIRST_EMPTY_CRAFTING_SLOT'
 export const setFirstEmptyCraftingSlot = (ingredient) => ({
   type: SET_FIRST_EMPTY_CRAFTING_SLOT,
@@ -60,6 +81,12 @@ export const SET_OUTPUT_RECIPE = 'SET_OUTPUT_RECIPE'
 export const setOutputRecipe = (recipe) => ({
   type: SET_OUTPUT_RECIPE,
   payload: recipe
+})
+
+export const SET_TAB = 'SET_TAB'
+export const setTab = (tab) => ({
+  type: SET_TAB,
+  payload: tab
 })
 
 // Private reducer

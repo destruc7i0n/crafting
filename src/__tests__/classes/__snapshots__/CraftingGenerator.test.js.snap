@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`Crafting Generator Class should output shaped with spaces 1`] = `
 Object {
   "key": Object {
@@ -58,5 +60,17 @@ Object {
     "item": "minecraft:stone",
   },
   "type": "crafting_shapeless",
+}
+`;
+
+exports[`Crafting Generator Class should output smelting recipe 1`] = `
+Object {
+  "cookingtime": 1000,
+  "experience": 1000,
+  "ingredient": Object {
+    "item": "minecraft:dirt",
+  },
+  "result": "minecraft:stone",
+  "type": "smelting",
 }
 `;

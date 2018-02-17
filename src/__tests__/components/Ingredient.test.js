@@ -5,7 +5,7 @@ import configureStore from 'redux-mock-store'
 import { DragDropContext } from 'react-dnd'
 import TestBackend from 'react-dnd-test-backend'
 
-import Ingredient from '../../src/components/ingredient/Ingredient'
+import Ingredient from '../../components/ingredient/Ingredient'
 
 const middlewares = []
 const mockStore = configureStore(middlewares)

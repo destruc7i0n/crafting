@@ -1,6 +1,6 @@
-import reducer from '../../src/reducers/Data'
+import reducer from '../../reducers/Data'
 
-import Ingredient from '../../src/classes/Ingredient'
+import Ingredient from '../../classes/Ingredient'
 
 import {
   resetCraftingSlot,
@@ -8,7 +8,7 @@ import {
   setCraftingSlot,
   setFirstEmptyCraftingSlot,
   setOutputSlot
-} from '../../src/actions'
+} from '../../actions/index'
 
 describe('Data Reducer', () => {
   const air = {
