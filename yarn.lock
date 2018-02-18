@@ -4745,9 +4745,9 @@ mimic-fn@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.1.0.tgz#e667783d92e89dbd342818b5230b9d62a672ad18"
 
-minecraft-textures@^1.13.10:
-  version "1.13.10"
-  resolved "https://registry.yarnpkg.com/minecraft-textures/-/minecraft-textures-1.13.10.tgz#f83c36c85c1615f94b75f351b9e108ff8b2eec59"
+minecraft-textures@^1.13.11:
+  version "1.13.11"
+  resolved "https://registry.yarnpkg.com/minecraft-textures/-/minecraft-textures-1.13.11.tgz#b271fb8187bf05c3f93d38801e59caec144c2278"
 
 minimalistic-assert@^1.0.0:
   version "1.0.0"
