@@ -23,16 +23,17 @@ class CraftingModal extends Component {
     this.handleOutputCountNumberChange = this.handleOutputCountNumberChange.bind(this)
   }
 
-  componentWillReceiveProps () {
-    const {output} = this.props
+  static getDerivedStateFromProps (nextProps) {
+    const {output} = nextProps
 
     // if the output is not populated/filled, reset the amount for the next item to be placed
     // this only occurs when the item will be updated
-    if (!output.isPopulated()) {
-      this.setState({
+    if (output && !output.isPopulated()) {
+      return {
         outputCount: 1
-      })
+      }
     }
+    return null
   }
 
   handleOutputCountNumberChange (number) {
