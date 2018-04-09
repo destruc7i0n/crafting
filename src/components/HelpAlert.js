@@ -40,6 +40,8 @@ class HelpAlert extends Component {
             If you wish to set the count for the resultant item, right click the resultant item and click "Set Count".
             <br />
             Once you are done creating your recipe, either copy the recipe from the JSON panel, or click the blue button to download the recipe as a JSON file.
+            <br />
+            Note that Shapeless and shaped CAN conflict with each other! For example, if you make a recipe that takes 2 sticks and a plank shapeless, it will conflict with the shaped shovel recipe.
           </p>
         </Alert>
       )

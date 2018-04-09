@@ -43,11 +43,11 @@ class Ingredients extends Component {
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body>
+          <span className='search-box'>
+            <p>Search Items:</p>
+            <DebouncedInput attributes={{ className: 'form-control' }} debounced={(input) => this.setState({ search: input })} />
+          </span>
           <div className='ingredients'>
-            <span className='search-box'>
-              <p>Search Items:</p>
-              <DebouncedInput debounced={(input) => this.setState({ search: input })} />
-            </span>
             {ingredients.map((key, index) => {
               if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {
                 return (
