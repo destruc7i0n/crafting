@@ -5,11 +5,13 @@ class CraftingGenerator {
    * Constructs a new crafting generator
    * @param input
    * @param output
+   * @param tags
    * @param extras
    */
-  constructor (input, output, { ...extras }) {
+  constructor (input, output, tags, { ...extras }) {
     this.input = input || []
     this.output = output || []
+    this.tags = tags || {}
     this.extras = extras || {}
   }
 
@@ -138,16 +140,43 @@ class CraftingGenerator {
 
   /**
    * Returns the item based on the item provided
-   * @param item
+   * @param ingredient
    * @param rest
-   * @returns {object}
+   * @returns {object|array}
    */
-  getItemType (item, ...rest) {
+  getItemType (ingredient, ...rest) {
     const itemType = this.getItem()
-    return {
-      ...itemType,
-      item,
-      ...rest
+    if (ingredient.ingredient_type === 'item') {
+      return {
+        ...itemType,
+        item: ingredient.id,
+        ...rest
+      }
+    } else if (ingredient.ingredient_type === 'tag') {
+      const tag = this.tags[ingredient.tag]
+      if (tag) {
+        // store it as the ingredient for further checking...
+        // handle the conversion to the format later
+        return {
+          tag: ingredient
+        }
+      }
+    }
+  }
+
+  /**
+   * Handles the tags
+   * @param tag
+   * @returns {*}
+   */
+  handleTags (tag) {
+    if (tag.asTag) {
+      return {
+        tag: `${tag.namespace}:${tag.name}`
+      }
+    } else {
+      // create a list of items instead
+      return tag.items.map((item) => ({ item: item.id }))
     }
   }
 
@@ -159,25 +188,30 @@ class CraftingGenerator {
     // clone element
     const { input, output } = this
 
-    let shape = {...this.getShapelessDefault()}
+    let shape = { ...this.getShapelessDefault() }
 
     // go over each ingredient
     for (let ingredient of input) {
-      const name = ingredient.id
-
       // only if populated
       if (ingredient.isPopulated()) {
-        shape.ingredients.push({
-          ...this.getItemType(name)
-        })
+        shape.ingredients.push(
+          this.getItemType(ingredient)
+        )
       }
     }
 
-    if (output.isPopulated()) {
-      const name = output.id
+    // now handle tags...
+    shape.ingredients = shape.ingredients.map((ingredient) => {
+      if (ingredient.tag) {
+        const tag = this.tags[ingredient.tag.tag]
+        return this.handleTags(tag)
+      }
+      return ingredient
+    })
 
+    if (output.isPopulated()) {
       shape.result = {
-        ...this.getItemType(name),
+        ...this.getItemType(output),
         count: output.count
       }
     }
@@ -195,7 +229,7 @@ class CraftingGenerator {
     const { input, output } = this
     const patternCharacters = this.getPatternCharacters()
 
-    let shape = {...this.getShapedDefault()}
+    let shape = { ...this.getShapedDefault() }
     // key for the characters
     let keyMap = {}
 
@@ -205,7 +239,15 @@ class CraftingGenerator {
       let keys = Object.keys(keyMap)
       for (let key of keys) {
         let mapping = keyMap[key]
-        if (mapping.item === item) {
+        if (item.ingredient_type === 'tag') {
+          if (mapping.tag) {
+            // check that the tag id is the same
+            if (mapping.tag.tag === item.tag) {
+              return key
+            }
+          }
+        }
+        if (mapping.item === item.id) {
           return key
         }
       }
@@ -214,7 +256,13 @@ class CraftingGenerator {
     }
 
     const keyExists = (key) => Object.keys(keyMap).indexOf(key) !== -1
-    const getKey = (name) => {
+    const getKey = (ingredient) => {
+      let name = ingredient.id
+      // name from tag name rather than item id
+      if (ingredient.ingredient_type === 'tag') {
+        const tag = this.tags[ingredient.tag]
+        name = tag.name
+      }
       let key = this.dinnerboneChallenge(name, keyMap)
 
       // choose a key if the special ones don't work
@@ -232,17 +280,13 @@ class CraftingGenerator {
 
     for (let ingredient of input) {
       if (ingredient.isPopulated()) {
-        const name = ingredient.id
-
-        let key = byItem(name)
+        let key = byItem(ingredient)
 
         if (key) {
           keysString += key
         } else {
-          let key = getKey(name)
-          keyMap[key] = {
-            ...this.getItemType(name)
-          }
+          let key = getKey(ingredient)
+          keyMap[key] = this.getItemType(ingredient)
           // add the key to the string
           keysString += key
         }
@@ -252,6 +296,17 @@ class CraftingGenerator {
       }
     }
 
+    // handle tags now
+    keyMap = Object.keys(keyMap).reduce((acc, key) => {
+      const value = keyMap[key]
+      if (value.tag) {
+        const tag = this.tags[value.tag.tag]
+        acc[key] = this.handleTags(tag)
+      } else {
+        acc[key] = value
+      }
+      return acc
+    }, {})
     // append the keymap
     shape.key = keyMap
 
@@ -267,7 +322,7 @@ class CraftingGenerator {
       let noTrailing = splitKeys.map((line) => trimEnd(line))
 
       // get longest string from the trimmed strings
-      let longest = Math.max(...noTrailing.map(({length}) => length))
+      let longest = Math.max(...noTrailing.map(({ length }) => length))
 
       // trim until longest
       let trimmed = splitKeys.map((line) => {
@@ -290,10 +345,8 @@ class CraftingGenerator {
 
     // result
     if (output.isPopulated()) {
-      const name = output.id
-
       shape.result = {
-        ...this.getItemType(name),
+        ...this.getItemType(output),
         count: output.count
       }
     }
@@ -301,19 +354,28 @@ class CraftingGenerator {
     return shape
   }
 
+  /**
+   * Returns a smelting crafting of the input provided
+   * @param time
+   * @param experience
+   * @returns {object}
+   */
   smelting (time = 0, experience = 0) {
     const { input, output } = this
 
-    let shape = {...this.getSmeltingDefault()}
+    let shape = { ...this.getSmeltingDefault() }
 
     // add the ingredient
     let ingredient = input
-    const name = ingredient.id
 
     // only if populated
     if (ingredient.isPopulated()) {
-      shape.ingredient = {
-        ...this.getItemType(name)
+      shape.ingredient = this.getItemType(ingredient)
+
+      // handle tags...
+      if (shape.ingredient.tag) {
+        const tag = this.tags[shape.ingredient.tag.tag]
+        shape.ingredient = this.handleTags(tag)
       }
     }
 

@@ -24,7 +24,7 @@ class CraftingModal extends Component {
   }
 
   static getDerivedStateFromProps (nextProps) {
-    const {output} = nextProps
+    const { output } = nextProps
 
     // if the output is not populated/filled, reset the amount for the next item to be placed
     // this only occurs when the item will be updated
@@ -37,7 +37,7 @@ class CraftingModal extends Component {
   }
 
   handleOutputCountNumberChange (number) {
-    const {dispatch, output} = this.props
+    const { dispatch, output } = this.props
 
     // set to state for fast rendering to the input
     this.setState({
@@ -46,13 +46,15 @@ class CraftingModal extends Component {
 
     // check if number is valid and then set the output slot
     if (number >= 1 && number <= 64) {
-      dispatch(setOutputSlot({...output.toJSON(), count: number}))
+      const ingredient = output
+      ingredient.count = number
+      dispatch(setOutputSlot(ingredient))
     }
   }
 
   render () {
-    const {dispatch, showingCountModal, showingNBTModal, nbt} = this.props
-    const {outputCount} = this.state
+    const { dispatch, showingCountModal, showingNBTModal, nbt } = this.props
+    const { outputCount } = this.state
 
     let title = ''
     let body = (

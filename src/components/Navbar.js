@@ -11,7 +11,7 @@ import {
   Tooltip
 } from 'react-bootstrap'
 
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import './Navbar.css'
 

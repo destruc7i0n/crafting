@@ -20,9 +20,7 @@ const ingredientSource = {
     })
     // what will be passed on drop
     return {
-      id: ingredient.id,
-      readable: ingredient.readable,
-      texture: ingredient.texture,
+      ingredient,
       slot,
       size
     }
@@ -30,6 +28,7 @@ const ingredientSource = {
 
   endDrag (props, monitor) {
     const { dispatch, size, slot, type } = props
+
     const resetSlots = (size, slot) => {
       if (size === 'large') {
         dispatch(resetOutputSlot())
@@ -87,6 +86,10 @@ class Ingredient extends Component {
     super(props)
 
     this.state = {
+      ingredient: {
+        index: 0,
+        id: ''
+      },
       mouse: {
         display: 'none',
         x: 0,
@@ -96,12 +99,61 @@ class Ingredient extends Component {
 
     this.onMouseMove = this.onMouseMove.bind(this)
     this.onMouseOut = this.onMouseOut.bind(this)
+    this.handleTagUpdating = this.handleTagUpdating.bind(this)
+
+    this.incrementTagIndex = this.incrementTagIndex.bind(this)
+    this.tagImageUpdate = null
   }
 
   componentDidMount () {
     const { connectDragPreview } = this.props
     // use empty pixel
     connectDragPreview(getEmptyImage())
+    this.handleTagUpdating(this.props)
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.tagImageUpdate)
+  }
+
+  componentDidUpdate (prevProps) {
+    this.handleTagUpdating(prevProps)
+  }
+
+  incrementTagIndex () {
+    const { tags, ingredient } = this.props
+    const { ingredient: { index } } = this.state
+    const tag = tags[ingredient.tag]
+    // increment index
+    if (index < tag.items.length - 1) {
+      this.setState({ ingredient: { ...this.state.ingredient, index: index + 1 } })
+    } else {
+      this.setState({ ingredient: { ...this.state.ingredient, index: 0 } })
+    }
+  }
+
+  handleTagUpdating (props) {
+    const { ingredient: { id } } = this.state
+    const { tags } = this.props
+    const { ingredient, tags: oldTags } = props
+    if (ingredient.ingredient_type === 'tag') {
+      // reset image index if added or removed items
+      if (id !== ingredient.tag || tags[ingredient.tag].items.length !== oldTags[ingredient.tag].items.length) {
+        this.setState({ ingredient: { id: ingredient.tag, index: 0 } })
+        // increment index
+        clearInterval(this.tagImageUpdate)
+
+        // increment tag only if more than one item
+        if (tags[ingredient.tag].items.length > 1) {
+          this.tagImageUpdate = setInterval(this.incrementTagIndex, 1000)
+        }
+      }
+    } else {
+      if (id) { // reset if exists
+        this.setState({ ingredient: { id: '', index: 0 } })
+      }
+      clearInterval(this.tagImageUpdate) // remove interval
+    }
   }
 
   getCursorPos (e) {
@@ -112,7 +164,7 @@ class Ingredient extends Component {
     }
     const cursorX = e.clientX
     const cursorY = e.clientY
-    let updatedStyles = {display: 'block', x: cursorX, y: cursorY}
+    let updatedStyles = { display: 'block', x: cursorX, y: cursorY }
 
     this.setState({
       mouse: updatedStyles
@@ -130,7 +182,26 @@ class Ingredient extends Component {
   }
 
   render () {
-    const { contextMenu, connectDragSource, ingredient, size } = this.props
+    const { contextMenu, connectDragSource, size, tags, draggable = true } = this.props
+    const { ingredient: { index } } = this.state
+    const ingredient = this.props.ingredient
+
+    let readable = ingredient.readable
+    let texture = ingredient.texture
+
+    // update the name and texture on each render
+    if (ingredient.ingredient_type === 'tag') {
+      const currentTag = tags[ingredient.tag]
+      readable = `Tag: ${(currentTag && currentTag.name) || ''}`
+      const tag = tags[ingredient.tag]
+      if (tag) {
+        if (tag.items[index]) {
+          texture = tag.items[index].texture
+        }
+      }
+    }
+
+    const image = <img src={texture} alt='' />
     // only allow tooltip and dragging while no context menu
     return (
       <span
@@ -142,8 +213,8 @@ class Ingredient extends Component {
         onMouseMove={this.onMouseMove}
         onMouseOut={this.onMouseOut}
       >
-        {!contextMenu ? connectDragSource(<img src={ingredient.texture} alt='' />) : <img src={ingredient.texture} alt='' />}
-        {!contextMenu ? <Tooltip title={ingredient.readable} id={ingredient.id} style={this.state.mouse} /> : null}
+        {draggable ? connectDragSource(image) : image}
+        <Tooltip title={readable} id={ingredient.id} style={this.state.mouse} hidden={contextMenu} />
       </span>
     )
   }
@@ -152,7 +223,14 @@ class Ingredient extends Component {
 Ingredient.propTypes = propTypes
 
 export default compose(
-  connect((store) => {
+  connect((store, props) => {
+    // only pass the tags to the tag ingredients
+    if (props.ingredient && props.ingredient.ingredient_type === 'tag') {
+      return {
+        tags: store.Data.tags,
+        contextMenu: store.Private.showingContextMenu
+      }
+    }
     return {
       contextMenu: store.Private.showingContextMenu
     }

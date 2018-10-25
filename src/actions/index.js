@@ -1,12 +1,22 @@
+import uuid from 'uuid/v4'
+
 // Data reducer
 export const SET_CRAFTING_SLOT = 'SET_CRAFTING_SLOT'
-export const setCraftingSlot = (index, ingredient) => ({
-  type: SET_CRAFTING_SLOT,
-  payload: {
-    index,
-    ingredient
+export const setCraftingSlot = (index, ingredient) => (dispatch, getState) => {
+  const state = getState()
+  const itemAtIndex = state.Data.crafting[index]
+  // reset before populating again
+  if (itemAtIndex.isPopulated()) {
+    dispatch(resetCraftingSlot(index))
   }
-})
+  dispatch({
+    type: SET_CRAFTING_SLOT,
+    payload: {
+      index,
+      ingredient
+    }
+  })
+}
 
 export const RESET_CRAFTING_SLOT = 'RESET_CRAFTING_SLOT'
 export const resetCraftingSlot = (index) => ({
@@ -17,12 +27,20 @@ export const resetCraftingSlot = (index) => ({
 })
 
 export const SET_FURNACE_SLOT = 'SET_FURNACE_SLOT'
-export const setFurnaceSlot = (ingredient) => ({
-  type: SET_FURNACE_SLOT,
-  payload: {
-    ingredient
+export const setFurnaceSlot = (ingredient) => (dispatch, getState) => {
+  const state = getState()
+  const currentItem = state.Data.furnace.input
+  // reset before populating again
+  if (currentItem.isPopulated()) {
+    dispatch(resetFurnaceSlot())
   }
-})
+  dispatch({
+    type: SET_FURNACE_SLOT,
+    payload: {
+      ingredient
+    }
+  })
+}
 
 export const RESET_FURNACE_SLOT = 'RESET_FURNACE_SLOT'
 export const resetFurnaceSlot = () => ({
@@ -46,12 +64,20 @@ export const setFirstEmptyCraftingSlot = (ingredient) => ({
 })
 
 export const SET_OUTPUT_SLOT = 'SET_OUTPUT_SLOT'
-export const setOutputSlot = (ingredient) => ({
-  type: SET_OUTPUT_SLOT,
-  payload: {
-    ingredient
+export const setOutputSlot = (ingredient) => (dispatch, getState) => {
+  const state = getState()
+  const currentOutput = state.Data.output
+  // reset before populating again
+  if (currentOutput.isPopulated()) {
+    dispatch(resetOutputSlot())
   }
-})
+  dispatch({
+    type: SET_OUTPUT_SLOT,
+    payload: {
+      ingredient
+    }
+  })
+}
 
 export const RESET_OUTPUT_SLOT = 'RESET_OUTPUT_SLOT'
 export const resetOutputSlot = () => ({
@@ -109,4 +135,50 @@ export const SET_NBT = 'SET_NBT'
 export const setNBT = (nbt) => ({
   type: SET_NBT,
   payload: nbt
+})
+
+export const CREATE_TAG = 'CREATE_TAG'
+export const createTag = (ingredient) => (dispatch) => {
+  const id = uuid() // internal identifier for the tag
+  dispatch({
+    type: CREATE_TAG,
+    payload: {
+      id,
+      ingredient
+    }
+  })
+  return id
+}
+
+export const REMOVE_TAG = 'REMOVE_TAG'
+export const removeTag = (id) => ({
+  type: REMOVE_TAG,
+  payload: id
+})
+
+export const UPDATE_TAG = 'UPDATE_TAG'
+export const updateTag = (id, tag) => ({
+  type: UPDATE_TAG,
+  payload: {
+    id,
+    tag
+  }
+})
+
+export const ADD_TAG_ITEM = 'ADD_TAG_ITEM'
+export const addTagItem = (id, item) => ({
+  type: ADD_TAG_ITEM,
+  payload: {
+    id,
+    item
+  }
+})
+
+export const REMOVE_TAG_ITEM = 'REMOVE_TAG_ITEM'
+export const removeTagItem = (id, index) => ({
+  type: REMOVE_TAG_ITEM,
+  payload: {
+    id,
+    index
+  }
 })

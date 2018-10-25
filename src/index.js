@@ -5,8 +5,9 @@ import App from './App'
 import reducer from './reducers'
 import { applyMiddleware, createStore } from 'redux'
 import { Provider } from 'react-redux'
+import ReduxThunk from 'redux-thunk'
 
-let middleware = []
+let middleware = [ReduxThunk]
 
 if (process.env.NODE_ENV === 'development') {
   // only add logger in development

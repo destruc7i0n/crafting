@@ -16,11 +16,12 @@ import Ingredients from './components/Ingredients'
 import Options from './components/Options'
 import Output from './components/Output'
 import CraftingModal from './components/crafting/CraftingModal'
+import Tags from './components/tags/Tags'
 
 import IngredientDragLayer from './components/ingredient/IngredientDragLayer'
 
-import fontawesome from '@fortawesome/fontawesome'
-import faPatreon from '@fortawesome/fontawesome-free-brands/faPatreon'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faPatreon } from '@fortawesome/free-brands-svg-icons/faPatreon'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
@@ -28,7 +29,7 @@ import './App.css'
 import './assets/arrow.png'
 import './assets/Minecraft.woff'
 
-fontawesome.library.add(faPatreon)
+library.add(faPatreon)
 
 export class App extends Component {
   constructor (props) {
@@ -65,6 +66,7 @@ export class App extends Component {
           <Col md={6} sm={12}>
             <CraftingTable />
             { isMobile ? <Ingredients /> : null }
+            <Tags />
             <Options />
             <Output />
           </Col>

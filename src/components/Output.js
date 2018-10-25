@@ -1,3 +1,5 @@
+/* global Blob */
+
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -38,7 +40,7 @@ class Output extends Component {
   }
 
   render () {
-    const {input, output, group, furnace, outputRecipe, emptySpace, shape, tab} = this.props
+    const { input, output, group, furnace, outputRecipe, emptySpace, shape, tab, tags } = this.props
 
     let fileSaveName
     if (outputRecipe === 'auto') {
@@ -59,14 +61,14 @@ class Output extends Component {
 
     let json, generator
     if (tab === 'crafting') {
-      generator = new CraftingGenerator(input, output, { group })
+      generator = new CraftingGenerator(input, output, tags, { group })
       if (shape === 'shapeless') {
         json = generator.shapeless()
       } else {
         json = generator.shaped(emptySpace)
       }
     } else if (tab === 'furnace') {
-      generator = new CraftingGenerator(furnace.input, output, { group })
+      generator = new CraftingGenerator(furnace.input, output, tags, { group })
       json = generator.smelting(furnace.cookingTime, furnace.experience)
     }
 
@@ -75,7 +77,7 @@ class Output extends Component {
     }
 
     let toCopy = JSON.stringify(json, null, 4)
-    let blob = new Blob([toCopy], {type: 'text/plain;charset=utf-8'})
+    let blob = new Blob([toCopy], { type: 'text/plain;charset=utf-8' })
 
     return (
       <Panel>
@@ -109,6 +111,7 @@ export default connect((store) => {
     output: store.Data.output,
     group: store.Data.group,
     furnace: store.Data.furnace,
+    tags: store.Data.tags,
 
     tab: store.Options.tab,
     shape: store.Options.shape,

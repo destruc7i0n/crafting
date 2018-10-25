@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import './IngredientDragPreview.css'
 
 const IngredientDragPreview = ({ texture }) => (
-  <div style={{display: 'inline-block'}}>
+  <div style={{ display: 'inline-block' }}>
     <img className='item-shake' src={texture} alt='' />
   </div>
 )

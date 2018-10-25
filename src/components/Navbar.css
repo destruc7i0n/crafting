@@ -1,3 +1,7 @@
+.navbar {
+    font-family: Minecraft;
+}
+
 .navbar-brand {
     cursor: pointer;
     display: flex;
