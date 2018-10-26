@@ -48,19 +48,16 @@ class Ingredients extends Component {
             <DebouncedInput attributes={{ className: 'form-control' }} debounced={(input) => this.setState({ search: input })} />
           </span>
           <div className='ingredients'>
-            {ingredients.map((key, index) => {
-              if (key.id.indexOf(search) !== -1 || key.readable.indexOf(search) !== -1) {
-                return (
-                  <div
-                    key={index}
-                    onDoubleClick={() => dispatch(setFirstEmptyCraftingSlot(key))}
-                  >
-                    <Ingredient ingredient={key} size='normal' />
-                  </div>
-                )
-              } else {
-                return null
-              }
+            {ingredients.map((ingredient, index) => {
+              const visible = ingredient.id.indexOf(search) !== -1 || ingredient.readable.indexOf(search) !== -1
+              return visible ? (
+                <div
+                  key={index}
+                  onDoubleClick={() => dispatch(setFirstEmptyCraftingSlot(ingredient))}
+                >
+                  <Ingredient ingredient={ingredient} size='normal' />
+                </div>
+              ) : null
             })}
           </div>
         </Panel.Body>

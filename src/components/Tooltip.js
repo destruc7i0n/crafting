@@ -2,9 +2,9 @@ import React from 'react'
 
 import './Tooltip.css'
 
-const Tooltip = ({ style, id, title, hidden }) => (
+const Tooltip = ({ style, id, title, hidden }) => !hidden ? (
   <div className='mc-tooltip' style={{
-    display: hidden ? 'none' : style.display,
+    display: style.display,
     top: style.y,
     left: style.x
   }}>
@@ -15,6 +15,6 @@ const Tooltip = ({ style, id, title, hidden }) => (
       {id}
     </div>
   </div>
-)
+) : null
 
 export default Tooltip

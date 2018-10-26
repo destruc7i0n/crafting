@@ -116,11 +116,6 @@ export const setTab = (tab) => ({
 })
 
 // Private reducer
-export const TOGGLE_SHOWING_CONTEXT_MENU = 'TOGGLE_SHOWING_CONTEXT_MENU'
-export const toggleContextMenu = () => ({
-  type: TOGGLE_SHOWING_CONTEXT_MENU
-})
-
 export const TOGGLE_SHOWING_COUNT_MENU = 'TOGGLE_SHOWING_COUNT_MENU'
 export const toggleCountMenu = () => ({
   type: TOGGLE_SHOWING_COUNT_MENU

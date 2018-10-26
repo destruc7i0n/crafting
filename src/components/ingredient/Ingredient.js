@@ -113,7 +113,9 @@ class Ingredient extends Component {
   }
 
   componentWillUnmount () {
-    clearInterval(this.tagImageUpdate)
+    if (this.tagImageUpdate) {
+      clearInterval(this.tagImageUpdate)
+    }
   }
 
   componentDidUpdate (prevProps) {
@@ -141,18 +143,24 @@ class Ingredient extends Component {
       if (id !== ingredient.tag || tags[ingredient.tag].items.length !== oldTags[ingredient.tag].items.length) {
         this.setState({ ingredient: { id: ingredient.tag, index: 0 } })
         // increment index
-        clearInterval(this.tagImageUpdate)
 
+        clearInterval(this.tagImageUpdate)
+        this.tagImageUpdate = null
         // increment tag only if more than one item
         if (tags[ingredient.tag].items.length > 1) {
-          this.tagImageUpdate = setInterval(this.incrementTagIndex, 1000)
+          if (!this.tagImageUpdate) {
+            this.tagImageUpdate = setInterval(this.incrementTagIndex, 1000)
+          }
         }
       }
     } else {
       if (id) { // reset if exists
         this.setState({ ingredient: { id: '', index: 0 } })
       }
-      clearInterval(this.tagImageUpdate) // remove interval
+      if (this.tagImageUpdate) {
+        clearInterval(this.tagImageUpdate) // remove interval
+        this.tagImageUpdate = null
+      }
     }
   }
 
@@ -182,7 +190,7 @@ class Ingredient extends Component {
   }
 
   render () {
-    const { contextMenu, connectDragSource, size, tags, draggable = true } = this.props
+    const { connectDragSource, size, tags, draggable = true } = this.props
     const { ingredient: { index } } = this.state
     const ingredient = this.props.ingredient
 
@@ -214,7 +222,7 @@ class Ingredient extends Component {
         onMouseOut={this.onMouseOut}
       >
         {draggable ? connectDragSource(image) : image}
-        <Tooltip title={readable} id={ingredient.id} style={this.state.mouse} hidden={contextMenu} />
+        <Tooltip title={readable} id={ingredient.id} style={this.state.mouse} />
       </span>
     )
   }
@@ -227,14 +235,11 @@ export default compose(
     // only pass the tags to the tag ingredients
     if (props.ingredient && props.ingredient.ingredient_type === 'tag') {
       return {
-        tags: store.Data.tags,
-        contextMenu: store.Private.showingContextMenu
+        tags: store.Data.tags
       }
     }
-    return {
-      contextMenu: store.Private.showingContextMenu
-    }
-  }, null, null, { withRef: true }), // get refs for testing
+    return {}
+  }),
   DragSource('ingredient', ingredientSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),

@@ -5,7 +5,6 @@ import {
   createTag,
   resetCraftingSlot,
   resetOutputSlot, setCraftingSlot, setFurnaceSlot,
-  toggleContextMenu,
   toggleCountMenu,
   toggleNBTMenu
 } from '../../actions'
@@ -25,7 +24,6 @@ class CraftingContextMenu extends Component {
   constructor (props) {
     super(props)
 
-    this.toggleContextMenu = this.toggleContextMenu.bind(this)
     this.toggleCountModal = this.toggleCountModal.bind(this)
     this.toggleNBTModal = this.toggleNBTModal.bind(this)
     this.removeItem = this.removeItem.bind(this)
@@ -41,12 +39,6 @@ class CraftingContextMenu extends Component {
     } else {
       dispatch(resetCraftingSlot(index))
     }
-  }
-
-  toggleContextMenu () {
-    const { dispatch } = this.props
-
-    dispatch(toggleContextMenu())
   }
 
   toggleCountModal () {
@@ -102,9 +94,7 @@ class CraftingContextMenu extends Component {
 
     return (
       <ContextMenu
-        id={this.props.id}
-        onHide={this.toggleContextMenu}
-        onShow={this.toggleContextMenu}>
+        id={this.props.id}>
         {menuItems}
         <MenuItem onClick={this.removeItem} data={{ index: id, ingredient }}>Remove</MenuItem>
       </ContextMenu>

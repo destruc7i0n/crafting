@@ -34,11 +34,7 @@ describe('<Ingredient />', () => {
   }
 
   beforeEach(() => {
-    store = mockStore({
-      Private: {
-        showingContextMenu: false
-      }
-    })
+    store = mockStore()
   })
 
   it('renders without exploding', () => {
