@@ -177,3 +177,8 @@ export const removeTagItem = (id, index) => ({
     index
   }
 })
+
+export const UPDATE_ALL_TIMERS = 'UPDATE_ALL_TIMERS'
+export const updateTimers = () => ({
+  type: UPDATE_ALL_TIMERS
+})

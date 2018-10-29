@@ -46,7 +46,7 @@ class IngredientDragLayer extends Component {
     switch (type) {
       case 'ingredient':
         return (
-          <IngredientDragPreview texture={item.ingredient.texture} />
+          <IngredientDragPreview ingredient={item.ingredient} />
         )
       default:
         return null

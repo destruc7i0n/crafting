@@ -87,6 +87,7 @@ Object {
     "type": "item",
   },
   "tagIndex": 0,
+  "tagUpdateTimers": Object {},
   "tags": Object {},
 }
 `;
@@ -342,6 +343,7 @@ Object {
     "type": "item",
   },
   "tagIndex": 0,
+  "tagUpdateTimers": Object {},
   "tags": Object {},
 }
 `;
@@ -433,6 +435,7 @@ Object {
     "type": "item",
   },
   "tagIndex": 0,
+  "tagUpdateTimers": Object {},
   "tags": Object {},
 }
 `;

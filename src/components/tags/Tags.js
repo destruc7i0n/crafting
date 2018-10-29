@@ -120,16 +120,16 @@ class Tags extends Component {
                 </OverlayTrigger>
               </ControlLabel>
             </Col>
-            <Col md={1}>
+            <Col md={2}>
               <Ingredient size='normal' ingredient={new Tag(currentTag)} />
             </Col>
             <Col md={3}>
               <ControlLabel>Add Item:</ControlLabel>
             </Col>
-            <Col md={1}>
+            <Col md={1} mdPull={1}>
               <TagDropArea id={currentTag} />
             </Col>
-            <Col mdPush={1} md={3}>
+            <Col md={3}>
               <Button bsStyle='danger' block onClick={this.removeTag}>Delete</Button>
             </Col>
           </Row>

@@ -16,7 +16,9 @@ import {
   CREATE_TAG,
   REMOVE_TAG,
   UPDATE_TAG,
-  ADD_TAG_ITEM, REMOVE_TAG_ITEM
+  ADD_TAG_ITEM,
+  REMOVE_TAG_ITEM,
+  UPDATE_ALL_TIMERS
 } from '../actions'
 
 export default function Data (state = {
@@ -29,7 +31,8 @@ export default function Data (state = {
   output: new Ingredient(),
   group: '',
   tagIndex: 0,
-  tags: {}
+  tags: {},
+  tagUpdateTimers: {}
 }, action) {
   return produce(state, draft => {
     switch (action.type) {
@@ -91,6 +94,11 @@ export default function Data (state = {
             action.payload.ingredient
           ]
         }
+        // create an update timer
+        draft.tagUpdateTimers[action.payload.id] = {
+          max: 0, // maximum index
+          index: 0 // current index
+        }
         break
       case UPDATE_TAG:
         draft.tags[action.payload.id] = {
@@ -99,18 +107,30 @@ export default function Data (state = {
         }
         break
       case ADD_TAG_ITEM:
-        const { item, id } = action.payload
+        const { item: addItem, id: addId } = action.payload
         // check that the item isn't already there
-        const itemCheck = state.tags[id].items
-          .find((currentItem) => currentItem.id === item.id)
+        const itemCheck = state.tags[addId].items
+          .find((currentItem) => currentItem.id === addItem.id)
 
         if (!itemCheck) {
-          draft.tags[id].items.push(item)
+          draft.tags[addId].items.push(addItem)
+        }
+
+        // update the tag update timer
+        draft.tagUpdateTimers[addId] = {
+          max: draft.tags[addId].items.length - 1, // maximum index, set to the number of items
+          index: 0 // reset
         }
         break
       case REMOVE_TAG_ITEM:
-        // a certain tag index...
-        draft.tags[action.payload.id].items.splice(action.payload.index, 1)
+        const { id: removeId, index: removeIndex } = action.payload
+        // a certain magical tag index...
+        draft.tags[removeId].items.splice(removeIndex, 1)
+        // update the tag update timer
+        draft.tagUpdateTimers[removeId] = {
+          max: draft.tags[removeId].items.length - 1, // maximum index, set to the number of items
+          index: 0 // reset
+        }
         break
       case REMOVE_TAG:
         // clear the tag from every input
@@ -122,7 +142,27 @@ export default function Data (state = {
         if (state.furnace.input.ingredient_type === 'tag' && state.furnace.input.tag === action.payload) {
           draft.furnace.input = new Ingredient()
         }
-        delete draft.tags[action.payload]
+        delete draft.tags[action.payload] // remove the tag
+        delete draft.tagUpdateTimers[action.payload.id] // remove the tag timer too
+        break
+      case UPDATE_ALL_TIMERS:
+        // update every tag timer
+        draft.tagUpdateTimers = Object.keys(state.tagUpdateTimers).reduce((acc, id) => {
+          let { max, index } = state.tagUpdateTimers[id] // grab the timer
+
+          // increment accordingly
+          if (index < max) {
+            index += 1
+          } else {
+            index = 0
+          }
+
+          acc[id] = {
+            max,
+            index
+          }
+          return acc
+        }, {})
         break
       default:
         return state
