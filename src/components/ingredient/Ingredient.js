@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { resetCraftingSlot, resetFurnaceSlot, resetOutputSlot } from '../../actions'
@@ -69,18 +68,6 @@ const ingredientSource = {
   }
 }
 
-const propTypes = {
-  ingredient: PropTypes.object,
-  size: PropTypes.string,
-  type: PropTypes.string,
-  contextMenu: PropTypes.bool,
-  connectDragSource: PropTypes.func,
-  connectDragPreview: PropTypes.func,
-  isDragging: PropTypes.bool,
-  slot: PropTypes.number,
-  dispatch: PropTypes.func
-}
-
 class Ingredient extends Component {
   constructor (props) {
     super(props)
@@ -134,7 +121,6 @@ class Ingredient extends Component {
 
   render () {
     const { connectDragSource, size, tags, draggable = true } = this.props
-    // const { ingredient: { index } } = this.state
     const ingredient = this.props.ingredient
 
     let readable = ingredient.readable
@@ -170,8 +156,6 @@ class Ingredient extends Component {
     )
   }
 }
-
-Ingredient.propTypes = propTypes
 
 export default compose(
   connect((store, props) => {

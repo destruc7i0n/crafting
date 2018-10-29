@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
   createTag,
@@ -13,12 +12,6 @@ import { ContextMenu, MenuItem } from 'react-contextmenu'
 import Tag from '../../classes/Tag'
 
 import './CraftingContextMenu.css'
-
-const propTypes = {
-  ingredient: PropTypes.object,
-  id: PropTypes.string,
-  dispatch: PropTypes.func
-}
 
 class CraftingContextMenu extends Component {
   constructor (props) {
@@ -101,7 +94,5 @@ class CraftingContextMenu extends Component {
     )
   }
 }
-
-CraftingContextMenu.propTypes = propTypes
 
 export default connect()(CraftingContextMenu)

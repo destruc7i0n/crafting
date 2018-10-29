@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setEmptySpace, setOutputRecipe, setShape, setGroup, setFurnaceData } from '../actions'
 
@@ -20,13 +19,6 @@ import {
 
 import infoCircle from '../assets/info-circle.png'
 import RecipeNames from '../resources/recipe-names.json'
-
-const propTypes = {
-  shape: PropTypes.string,
-  emptySpace: PropTypes.bool,
-  outputRecipe: PropTypes.string,
-  dispatch: PropTypes.func
-}
 
 class Options extends Component {
   constructor (props) {
@@ -237,8 +229,6 @@ class Options extends Component {
     )
   }
 }
-
-Options.propTypes = propTypes
 
 export default connect((store) => {
   return {

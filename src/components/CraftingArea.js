@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setTab } from '../actions'
 import { Panel, Tabs, Tab } from 'react-bootstrap'
@@ -8,12 +7,6 @@ import { invert, upperFirst } from 'lodash'
 import CraftingGrid from './crafting/CraftingGrid'
 
 import './CraftingArea.css'
-
-const propTypes = {
-  crafting: PropTypes.array,
-  output: PropTypes.object,
-  dispatch: PropTypes.func
-}
 
 class CraftingArea extends Component {
   constructor (props) {
@@ -26,7 +19,7 @@ class CraftingArea extends Component {
   }
 
   render () {
-    const {dispatch, crafting, furnace, output, tab} = this.props
+    const { dispatch, crafting, furnace, output, tab } = this.props
     const selectedTab = parseInt(invert(this.keyMapping)[tab], 10) // grab the selected tab index
     return (
       <Panel>
@@ -75,8 +68,6 @@ class CraftingArea extends Component {
     )
   }
 }
-
-CraftingArea.propTypes = propTypes
 
 export default connect((store) => {
   return {

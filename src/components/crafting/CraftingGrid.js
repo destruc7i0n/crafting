@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { setCraftingSlot, setFurnaceSlot, setOutputSlot } from '../../actions'
@@ -104,16 +103,6 @@ class CraftingGrid extends Component {
       ingredientTarget
     )
   }
-}
-
-CraftingGrid.propTypes = {
-  connectDropTarget: PropTypes.func,
-  ingredient: PropTypes.object,
-  size: PropTypes.string,
-  type: PropTypes.string,
-  index: PropTypes.number,
-  disabled: PropTypes.bool,
-  dispatch: PropTypes.func
 }
 
 export default compose(

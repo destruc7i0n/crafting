@@ -1,16 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setNBT, setOutputSlot, toggleCountMenu, toggleNBTMenu } from '../../actions'
-import PropTypes from 'prop-types'
 import { Button, Modal } from 'react-bootstrap'
 
 import NumericInput from 'react-numeric-input'
-
-const propTypes = {
-  output: PropTypes.object,
-  showingCountModal: PropTypes.bool,
-  dispatch: PropTypes.func
-}
 
 class CraftingModal extends Component {
   constructor (props) {
@@ -109,8 +102,6 @@ class CraftingModal extends Component {
     )
   }
 }
-
-CraftingModal.propTypes = propTypes
 
 export default connect((store) => {
   return {

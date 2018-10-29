@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setFirstEmptyCraftingSlot } from '../actions'
 import { Panel } from 'react-bootstrap'
@@ -12,10 +11,6 @@ import IngredientClass from '../classes/Ingredient'
 import getTextures from 'minecraft-textures'
 
 import './Ingredients.css'
-
-const propTypes = {
-  dispatch: PropTypes.func
-}
 
 const IngredientItems = getTextures('1.13').items
 
@@ -65,7 +60,5 @@ class Ingredients extends Component {
     )
   }
 }
-
-Ingredients.propTypes = propTypes
 
 export default connect()(Ingredients)

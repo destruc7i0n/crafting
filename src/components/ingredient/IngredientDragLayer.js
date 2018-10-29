@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { DragLayer } from 'react-dnd'
 
 import IngredientDragPreview from './IngredientDragPreview'
@@ -31,16 +30,6 @@ function getItemStyles (props) {
   }
 }
 
-const propTypes = {
-  item: PropTypes.object,
-  itemType: PropTypes.string,
-  currentOffset: PropTypes.shape({
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired
-  }),
-  isDragging: PropTypes.bool
-}
-
 class IngredientDragLayer extends Component {
   renderItem (type, item) {
     switch (type) {
@@ -69,8 +58,6 @@ class IngredientDragLayer extends Component {
     )
   }
 }
-
-IngredientDragLayer.propTypes = propTypes
 
 export default DragLayer((monitor) => ({
   item: monitor.getItem(),

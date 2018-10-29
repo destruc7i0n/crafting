@@ -14,7 +14,6 @@
     "immer": "^1.7.4",
     "lodash": "^4.17.11",
     "minecraft-textures": "^1.13.22",
-    "prop-types": "^15.6.2",
     "react": "^16.6.0",
     "react-bootstrap": "0.32.1",
     "react-contextmenu": "^2.9.4",

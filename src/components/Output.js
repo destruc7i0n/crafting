@@ -1,7 +1,6 @@
 /* global Blob */
 
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Button, Panel } from 'react-bootstrap'
 
@@ -18,16 +17,6 @@ import './Output.css'
 
 // register the language
 registerLanguage('json', codeStyle)
-
-const propTypes = {
-  input: PropTypes.array,
-  output: PropTypes.object,
-
-  shape: PropTypes.string,
-  emptySpace: PropTypes.bool,
-  outputRecipe: PropTypes.string,
-  dispatch: PropTypes.func
-}
 
 class Output extends Component {
   constructor (props) {
@@ -102,8 +91,6 @@ class Output extends Component {
     )
   }
 }
-
-Output.propTypes = propTypes
 
 export default connect((store) => {
   return {
