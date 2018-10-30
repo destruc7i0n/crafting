@@ -4,7 +4,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Panel } from 'react-bootstrap'
 
-import FileSaver from 'file-saver'
+import JSZip from 'jszip'
+
+import { saveAs } from 'file-saver'
 
 import SyntaxHighlighter, { registerLanguage } from 'react-syntax-highlighter/light'
 import codeStyle from 'react-syntax-highlighter/languages/hljs/json'
@@ -22,15 +24,14 @@ class Output extends Component {
   constructor (props) {
     super(props)
 
-    this.state = {
-      shape: 'shaped',
-      emptySpace: true
-    }
+    this.generateCraftingName = this.generateCraftingName.bind(this)
+    this.generateCrafting = this.generateCrafting.bind(this)
+    this.generateTags = this.generateTags.bind(this)
+    this.generateDatapack = this.generateDatapack.bind(this)
   }
 
-  render () {
-    const { input, output, group, furnace, outputRecipe, emptySpace, shape, tab, tags } = this.props
-
+  generateCraftingName () {
+    const { output, outputRecipe } = this.props
     let fileSaveName
     if (outputRecipe === 'auto') {
       fileSaveName = 'crafting_recipe.json'
@@ -47,7 +48,11 @@ class Output extends Component {
         fileSaveName = name + '.json'
       }
     }
+    return fileSaveName
+  }
 
+  generateCrafting () {
+    const { input, output, group, furnace, emptySpace, shape, tab, tags } = this.props
     let json, generator
     if (tab === 'crafting') {
       generator = new CraftingGenerator(input, output, tags, { group })
@@ -64,6 +69,52 @@ class Output extends Component {
     if (json.result && json.result.item) {
       json.result.count = output.count
     }
+    return json
+  }
+
+  generateTags () {
+    let { tags = [] } = this.props
+    const downloadableTags = Object.keys(tags)
+      .filter(tag => tags[tag].asTag)
+      .filter(tag => tags[tag].namespace !== 'minecraft') // ignore minecraft ones
+
+    return downloadableTags.map((tag) => ({
+      namespace: tags[tag].namespace,
+      name: tags[tag].name,
+      data: {
+        replace: false,
+        values: tags[tag].items.map((item) => item.id)
+      }
+    }))
+  }
+
+  generateDatapack () {
+    const craftingRecipe = this.generateCrafting()
+    const craftingName = this.generateCraftingName()
+    const tags = this.generateTags()
+
+    let zip = new JSZip()
+    // add the pack file
+    zip.file('pack.mcmeta', JSON.stringify({
+      pack: {
+        pack_format: 1,
+        description: 'Generated with TheDestruc7i0n\'s crafting generator: https://crafting.thedestruc7i0n.ca'
+      }
+    }))
+    // add the crafting recipe
+    zip.file(`data/crafting/recipes/${craftingName}`, JSON.stringify(craftingRecipe, null, 4))
+    // add all the tags
+    tags.forEach(({ namespace, name, data }) => {
+      zip.file(`data/${namespace}/tags/items/${name}.json`, JSON.stringify(data, null, 4))
+    })
+    // generate and download
+    zip.generateAsync({ type: 'blob' })
+      .then((content) => saveAs(content, `datapack.zip`))
+  }
+
+  render () {
+    const fileSaveName = this.generateCraftingName()
+    const json = this.generateCrafting()
 
     let toCopy = JSON.stringify(json, null, 4)
     let blob = new Blob([toCopy], { type: 'text/plain;charset=utf-8' })
@@ -81,11 +132,17 @@ class Output extends Component {
           >{toCopy}</SyntaxHighlighter>
 
           <Button
-            onClick={() => FileSaver.saveAs(blob, fileSaveName)}
+            onClick={() => saveAs(blob, fileSaveName)}
             className='download-button'
             bsStyle='primary'
             block
           >Download <code>{fileSaveName}</code></Button>
+          <Button
+            onClick={() => this.generateDatapack()}
+            className='download-button'
+            bsStyle='primary'
+            block
+          >Download <code>datapack.zip</code></Button>
         </Panel.Body>
       </Panel>
     )

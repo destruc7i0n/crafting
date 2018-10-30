@@ -12,6 +12,7 @@
     "classnames": "^2.2.6",
     "file-saver": "^2.0.0-rc.4",
     "immer": "^1.7.4",
+    "jszip": "^3.1.5",
     "lodash": "^4.17.11",
     "minecraft-textures": "^1.13.22",
     "react": "^16.6.0",
