@@ -9,6 +9,7 @@ class Ingredient {
    * @param nbt
    */
   constructor (id, readable, texture, count, nbt) {
+    this.ingredient_type = 'item'
     this.id = id || ''
     this.readable = readable || ''
     this.texture = texture || ''
@@ -26,10 +27,11 @@ class Ingredient {
 
   /**
    * Gets a JSON object of the class
-   * @returns {{id: (*|string), readable: (*|string), texture: (*|string), count: (*|number)}}
+   * @returns {{type: string, id: (*|string), readable: (*|string), texture: (*|string), count: (*|number)}}
    */
   toJSON () {
     return {
+      type: this.ingredient_type,
       id: this.id,
       readable: this.readable,
       texture: this.texture,

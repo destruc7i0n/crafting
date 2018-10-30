@@ -82,3 +82,7 @@
         margin-right: 0;
     }
 }
+
+.recipe > h6 {
+    font-family: Minecraft;
+}

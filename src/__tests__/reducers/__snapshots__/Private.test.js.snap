@@ -2,15 +2,6 @@
 
 exports[`Private Reducer should have a default state 1`] = `
 Object {
-  "showingContextMenu": false,
-  "showingCountModal": false,
-  "showingNBTModal": false,
-}
-`;
-
-exports[`Private Reducer should toggle context menu 1`] = `
-Object {
-  "showingContextMenu": true,
   "showingCountModal": false,
   "showingNBTModal": false,
 }
@@ -18,7 +9,6 @@ Object {
 
 exports[`Private Reducer should toggle count menu 1`] = `
 Object {
-  "showingContextMenu": false,
   "showingCountModal": true,
   "showingNBTModal": false,
 }

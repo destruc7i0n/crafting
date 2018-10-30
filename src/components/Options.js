@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setEmptySpace, setOutputRecipe, setShape, setGroup, setFurnaceData } from '../actions'
 
@@ -21,13 +20,6 @@ import {
 import infoCircle from '../assets/info-circle.png'
 import RecipeNames from '../resources/recipe-names.json'
 
-const propTypes = {
-  shape: PropTypes.string,
-  emptySpace: PropTypes.bool,
-  outputRecipe: PropTypes.string,
-  dispatch: PropTypes.func
-}
-
 class Options extends Component {
   constructor (props) {
     super(props)
@@ -39,34 +31,35 @@ class Options extends Component {
   }
 
   toggleShape (e) {
-    const {dispatch} = this.props
+    const { dispatch } = this.props
 
     dispatch(setShape(e.target.checked ? 'shapeless' : 'shaped'))
   }
 
   toggleEmptySpace (e) {
-    const {dispatch} = this.props
+    const { dispatch } = this.props
 
     dispatch(setEmptySpace(!e.target.checked))
   }
 
   setOutput (e) {
-    const {dispatch} = this.props
+    const { dispatch } = this.props
 
     dispatch(setOutputRecipe(e.target.value))
   }
 
   setGroup (value) {
-    const {dispatch} = this.props
+    const { dispatch } = this.props
 
     dispatch(setGroup(value))
   }
 
   render () {
-    const {dispatch, emptySpace, shape, outputRecipe, tab, furnace} = this.props
+    const { dispatch, emptySpace, shape, outputRecipe, tab, furnace } = this.props
 
     const shapelessTooltip = (
-      <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the output.</Tooltip>
+      <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the
+        output.</Tooltip>
     )
 
     const shapelessCheckbox = (
@@ -76,7 +69,7 @@ class Options extends Component {
           checked={shape === 'shapeless'}
           onChange={this.toggleShape}
         >
-          Shapeless?
+          Shapeless?{' '}
           <OverlayTrigger placement='bottom' overlay={shapelessTooltip}>
             <img className='inline' src={infoCircle} alt='info' />
           </OverlayTrigger>
@@ -101,7 +94,7 @@ class Options extends Component {
           checked={!emptySpace}
           onChange={this.toggleEmptySpace}
         >
-          Exactly where placed?
+          Exactly where placed?{' '}
           <OverlayTrigger placement='bottom' overlay={removeEmptySpaceTooltip}>
             <img className='inline' src={infoCircle} alt='info' />
           </OverlayTrigger>
@@ -116,10 +109,10 @@ class Options extends Component {
           <legend><h5>Crafting Options</h5></legend>
           <Row>
             <Col md={4}>
-              { shapelessCheckbox }
+              {shapelessCheckbox}
             </Col>
             <Col md={8}>
-              { shape === 'shaped' ? removeEmptySpaceCheckbox : null }
+              {shape === 'shaped' ? removeEmptySpaceCheckbox : null}
             </Col>
           </Row>
         </Fragment>
@@ -130,7 +123,7 @@ class Options extends Component {
           <legend><h5>Furnace Options</h5></legend>
           <Row>
             <Col md={2}>
-              <ControlLabel style={{fontSize: '12px'}}>Experience:</ControlLabel>
+              <ControlLabel style={{ fontSize: '12px' }}>Experience:</ControlLabel>
             </Col>
             {' '}
             <Col md={10}>
@@ -145,7 +138,7 @@ class Options extends Component {
               />
             </Col>
             <Col md={12}>
-              <p style={{fontSize: '12px', margin: '5px 0 5px 0'}}>
+              <p style={{ fontSize: '12px', margin: '5px 0 5px 0' }}>
                 The output experience.
               </p>
             </Col>
@@ -165,7 +158,7 @@ class Options extends Component {
               />
             </Col>
             <Col md={12}>
-              <p style={{fontSize: '12px', margin: '5px 0 5px 0'}}>
+              <p style={{ fontSize: '12px', margin: '5px 0 5px 0' }}>
                 The cook time in ticks.
               </p>
             </Col>
@@ -208,8 +201,9 @@ class Options extends Component {
               </FormControl>
             </Col>
             <Col md={12}>
-              <p style={{fontSize: '12px'}}>
-                When <code>Auto</code> is selected, the file name will be taken based off of the item name if possible, otherwise the name will be{' '}
+              <p style={{ fontSize: '12px' }}>
+                When <code>Auto</code> is selected, the file name will be taken based off of the item name if possible,
+                otherwise the name will be{' '}
                 <code>crafting_recipe.json</code>
               </p>
             </Col>
@@ -220,10 +214,10 @@ class Options extends Component {
             </Col>
             {' '}
             <Col md={10}>
-              <DebouncedInput debounced={this.setGroup} attributes={{className: 'form-control'}} />
+              <DebouncedInput debounced={this.setGroup} attributes={{ className: 'form-control' }} />
             </Col>
             <Col md={12}>
-              <p style={{fontSize: '12px'}}>This will group items in the recipe book.{' '}
+              <p style={{ fontSize: '12px' }}>This will group items in the recipe book.{' '}
                 <a href='https://github.com/skylinerw/guides/blob/master/java/recipes.md#groups' target='_blank' rel='noopener noreferrer'>
                   Click here for a short explanation.
                 </a>
@@ -235,8 +229,6 @@ class Options extends Component {
     )
   }
 }
-
-Options.propTypes = propTypes
 
 export default connect((store) => {
   return {

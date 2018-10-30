@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { setCraftingSlot, setFurnaceSlot, setOutputSlot } from '../../actions'
@@ -13,7 +12,7 @@ import CraftingContextMenu from '../crafting/CraftingContextMenu'
 
 const craftingTarget = {
   drop (props, monitor, component) {
-    const {dispatch, size, index, disabled} = props
+    const { dispatch, size, index, crafting, furnace, disabled } = props
     if (disabled) {
       return
     }
@@ -24,26 +23,32 @@ const craftingTarget = {
 
     // get the item
     const item = monitor.getItem()
-    const newSlot = item.slot
-    const newSize = item.size
+    const oldSlot = item.slot
+    const oldSize = item.size
 
     // the type will be from the new component, to also handle if dragging from the ingredients list
     const type = component.props.type
+
+    let replacedItem = null
 
     // check if the slots are different and update store
     // if the new crafting slot is not the same as the current slot
     // OR
     // the old and new size are not large (output slot):
     // then only update the slot
-    if (!(newSlot === index) || !(size === 'large' && newSize === 'large')) {
+    if (!(oldSlot === index) || !(size === 'large' && oldSize === 'large')) {
       // update store
       if (size === 'large') {
-        dispatch(setOutputSlot(item))
+        if (item.ingredient.ingredient_type === 'item') {
+          dispatch(setOutputSlot(item.ingredient))
+        }
       } else {
         if (type === 'crafting') {
-          dispatch(setCraftingSlot(index, item))
+          dispatch(setCraftingSlot(index, item.ingredient))
+          replacedItem = crafting[index]
         } else if (type === 'furnace') {
-          dispatch(setFurnaceSlot(item))
+          dispatch(setFurnaceSlot(item.ingredient))
+          replacedItem = furnace.input
         }
       }
     }
@@ -51,14 +56,15 @@ const craftingTarget = {
     // return for endDrag handler in Ingredient.js
     return {
       newSize: size,
-      newSlot: index
+      newSlot: index,
+      replacedItem
     }
   }
 }
 
 class CraftingGrid extends Component {
   render () {
-    const {connectDropTarget, index, ingredient, size, type, disabled, tab} = this.props
+    const { connectDropTarget, index, ingredient, size, type, disabled, tab } = this.props
 
     // determine an id for the context menu
     let contextMenuId = size === 'large' ? 9 : index
@@ -74,9 +80,11 @@ class CraftingGrid extends Component {
       )
     }
 
+    let ingredientComponent = <Ingredient ingredient={ingredient} slot={index} size={size} type={type} />
+
     let ingredientTarget = (
       <div>
-        <Ingredient ingredient={ingredient} slot={index} size={size} type={type} />
+        {ingredientComponent}
       </div>
     )
 
@@ -84,9 +92,9 @@ class CraftingGrid extends Component {
       ingredientTarget = (
         <div>
           <ContextMenuTrigger id={contextMenuId} holdToDisplay={-1}>
-            <Ingredient ingredient={ingredient} slot={index} size={size} type={type} />
+            {ingredientComponent}
           </ContextMenuTrigger>
-          <CraftingContextMenu id={contextMenuId} tab={tab} />
+          <CraftingContextMenu ingredient={ingredient} id={contextMenuId} tab={tab} />
         </div>
       )
     }
@@ -97,20 +105,12 @@ class CraftingGrid extends Component {
   }
 }
 
-CraftingGrid.propTypes = {
-  connectDropTarget: PropTypes.func,
-  ingredient: PropTypes.object,
-  size: PropTypes.string,
-  type: PropTypes.string,
-  index: PropTypes.number,
-  disabled: PropTypes.bool,
-  dispatch: PropTypes.func
-}
-
 export default compose(
   connect((store) => {
     return {
-      tab: store.Options.tab
+      tab: store.Options.tab,
+      crafting: store.Data.crafting,
+      furnace: store.Data.furnace
     }
   }),
   DropTarget('ingredient', craftingTarget, (connect) => ({

@@ -1,12 +1,5 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { debounce } from 'lodash'
-
-const propTypes = {
-  attributes: PropTypes.object,
-  debounced: PropTypes.func.isRequired,
-  debounceTime: PropTypes.number
-}
 
 const defaultProps = {
   attributes: {},
@@ -47,7 +40,6 @@ class DebouncedInput extends Component {
   }
 }
 
-DebouncedInput.propTypes = propTypes
 DebouncedInput.defaultProps = defaultProps
 
 export default DebouncedInput

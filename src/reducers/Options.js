@@ -1,3 +1,5 @@
+import produce from 'immer'
+
 import { SET_EMPTY_SPACE, SET_OUTPUT_RECIPE, SET_SHAPE, SET_TAB } from '../actions'
 
 export default function Options (state = {
@@ -6,28 +8,22 @@ export default function Options (state = {
   emptySpace: true,
   outputRecipe: 'auto'
 }, action) {
-  switch (action.type) {
-    case SET_SHAPE:
-      return {
-        ...state,
-        shape: action.payload
-      }
-    case SET_EMPTY_SPACE:
-      return {
-        ...state,
-        emptySpace: action.payload
-      }
-    case SET_OUTPUT_RECIPE:
-      return {
-        ...state,
-        outputRecipe: action.payload
-      }
-    case SET_TAB:
-      return {
-        ...state,
-        tab: action.payload
-      }
-    default:
-      return state
-  }
+  return produce(state, draft => {
+    switch (action.type) {
+      case SET_SHAPE:
+        draft.shape = action.payload
+        break
+      case SET_EMPTY_SPACE:
+        draft.emptySpace = action.payload
+        break
+      case SET_OUTPUT_RECIPE:
+        draft.outputRecipe = action.payload
+        break
+      case SET_TAB:
+        draft.tab = action.payload
+        break
+      default:
+        return state
+    }
+  })
 }

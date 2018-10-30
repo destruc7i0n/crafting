@@ -1,3 +1,4 @@
+/* global localStorage */
 import React, { Component } from 'react'
 import { Alert } from 'react-bootstrap'
 
@@ -38,6 +39,7 @@ class HelpAlert extends Component {
             Welcome to the crafting generator for Minecraft 1.13+! <br />
             Drag and drop the items from the "Ingredients" panel into the crafting table to generate your recipe.
             If you wish to set the count for the resultant item, right click the resultant item and click "Set Count".
+            If you wish to create a tag, right click an item in the crafting grid and select "Create Tag".
             <br />
             Once you are done creating your recipe, either copy the recipe from the JSON panel, or click the blue button to download the recipe as a JSON file.
             <br />

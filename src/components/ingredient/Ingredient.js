@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { resetCraftingSlot, resetFurnaceSlot, resetOutputSlot } from '../../actions'
@@ -20,9 +19,7 @@ const ingredientSource = {
     })
     // what will be passed on drop
     return {
-      id: ingredient.id,
-      readable: ingredient.readable,
-      texture: ingredient.texture,
+      ingredient,
       slot,
       size
     }
@@ -30,6 +27,7 @@ const ingredientSource = {
 
   endDrag (props, monitor) {
     const { dispatch, size, slot, type } = props
+
     const resetSlots = (size, slot) => {
       if (size === 'large') {
         dispatch(resetOutputSlot())
@@ -70,23 +68,15 @@ const ingredientSource = {
   }
 }
 
-const propTypes = {
-  ingredient: PropTypes.object,
-  size: PropTypes.string,
-  type: PropTypes.string,
-  contextMenu: PropTypes.bool,
-  connectDragSource: PropTypes.func,
-  connectDragPreview: PropTypes.func,
-  isDragging: PropTypes.bool,
-  slot: PropTypes.number,
-  dispatch: PropTypes.func
-}
-
 class Ingredient extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
+      ingredient: {
+        index: 0,
+        id: ''
+      },
       mouse: {
         display: 'none',
         x: 0,
@@ -112,7 +102,7 @@ class Ingredient extends Component {
     }
     const cursorX = e.clientX
     const cursorY = e.clientY
-    let updatedStyles = {display: 'block', x: cursorX, y: cursorY}
+    let updatedStyles = { display: 'block', x: cursorX, y: cursorY }
 
     this.setState({
       mouse: updatedStyles
@@ -130,7 +120,25 @@ class Ingredient extends Component {
   }
 
   render () {
-    const { contextMenu, connectDragSource, ingredient, size } = this.props
+    const { connectDragSource, size, tags, draggable = true } = this.props
+    const ingredient = this.props.ingredient
+
+    let readable = ingredient.readable
+    let texture = ingredient.texture
+
+    // update the name and texture on each render
+    if (ingredient && ingredient.ingredient_type === 'tag') {
+      const { updateTimer: { index = 0 } = {} } = this.props // grab the index from the redux store
+      const tag = tags[ingredient.tag] // grab from the store
+      readable = `Tag: ${(tag && tag.name) || ''}` // dynamically update this
+      if (tag) {
+        if (tag.items[index]) {
+          texture = tag.items[index].texture
+        }
+      }
+    }
+
+    const image = <img src={texture} alt='' />
     // only allow tooltip and dragging while no context menu
     return (
       <span
@@ -142,21 +150,24 @@ class Ingredient extends Component {
         onMouseMove={this.onMouseMove}
         onMouseOut={this.onMouseOut}
       >
-        {!contextMenu ? connectDragSource(<img src={ingredient.texture} alt='' />) : <img src={ingredient.texture} alt='' />}
-        {!contextMenu ? <Tooltip title={ingredient.readable} id={ingredient.id} style={this.state.mouse} /> : null}
+        {draggable ? connectDragSource(image) : image}
+        <Tooltip title={readable} id={ingredient.id} style={this.state.mouse} />
       </span>
     )
   }
 }
 
-Ingredient.propTypes = propTypes
-
 export default compose(
-  connect((store) => {
-    return {
-      contextMenu: store.Private.showingContextMenu
+  connect((store, props) => {
+    // only pass the tags to the tag ingredients
+    if (props.ingredient && props.ingredient.ingredient_type === 'tag') {
+      return {
+        tags: store.Data.tags,
+        updateTimer: store.Data.tagUpdateTimers[props.ingredient.tag] // grab the update timer for this tag
+      }
     }
-  }, null, null, { withRef: true }), // get refs for testing
+    return {}
+  }),
   DragSource('ingredient', ingredientSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
