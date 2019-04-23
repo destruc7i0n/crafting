@@ -12,7 +12,7 @@ import getTextures from 'minecraft-textures'
 
 import './Ingredients.css'
 
-const IngredientItems = getTextures('1.13').items
+const IngredientItems = getTextures('1.14').items
 
 class Ingredients extends Component {
   constructor (props) {

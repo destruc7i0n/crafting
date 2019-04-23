@@ -8,9 +8,9 @@ import JSZip from 'jszip'
 
 import { saveAs } from 'file-saver'
 
-import SyntaxHighlighter, { registerLanguage } from 'react-syntax-highlighter/light'
-import codeStyle from 'react-syntax-highlighter/languages/hljs/json'
-import defaultStyle from 'react-syntax-highlighter/styles/hljs/default-style'
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
+import codeStyle from 'react-syntax-highlighter/dist/languages/hljs/json'
+import defaultStyle from 'react-syntax-highlighter/dist/styles/hljs/default-style'
 
 import CraftingGenerator from '../classes/CraftingGenerator'
 import RecipeNames from '../resources/recipe-names.json'
@@ -18,7 +18,7 @@ import RecipeNames from '../resources/recipe-names.json'
 import './Output.css'
 
 // register the language
-registerLanguage('json', codeStyle)
+SyntaxHighlighter.registerLanguage('json', codeStyle)
 
 class Output extends Component {
   constructor (props) {

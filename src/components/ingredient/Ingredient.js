@@ -10,6 +10,8 @@ import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import Tooltip from '../Tooltip'
 
+import './Ingredient.css'
+
 const ingredientSource = {
   beginDrag (props, monitor, component) {
     const { ingredient, slot, size } = props
@@ -138,7 +140,7 @@ class Ingredient extends Component {
       }
     }
 
-    const image = <img src={texture} alt='' />
+    const image = <img src={texture} alt='' className='ingredient-img' />
     // only allow tooltip and dragging while no context menu
     return (
       <span
