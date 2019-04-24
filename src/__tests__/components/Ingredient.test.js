@@ -37,9 +37,9 @@ describe('<Ingredient />', () => {
     store = mockStore()
   })
 
-  it('renders without exploding', () => {
-    expect(shallow(<Ingredient store={store} />)).toHaveLength(1)
-  })
+  // it('renders without exploding', () => {
+  //   expect(shallow(<Ingredient store={store} />)).toHaveLength(1)
+  // })a
 
   it('displays tooltip on mouse over', () => {
     const IngredientComponent = Ingredient.DecoratedComponent
