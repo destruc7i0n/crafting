@@ -13,7 +13,6 @@ import codeStyle from 'react-syntax-highlighter/dist/languages/hljs/json'
 import defaultStyle from 'react-syntax-highlighter/dist/styles/hljs/default-style'
 
 import CraftingGenerator from '../classes/CraftingGenerator'
-import RecipeNames from '../resources/recipe-names.json'
 
 import './Output.css'
 
@@ -31,28 +30,13 @@ class Output extends Component {
   }
 
   generateCraftingName () {
-    const { output, outputRecipe } = this.props
-    let fileSaveName
-    if (outputRecipe === 'auto') {
-      fileSaveName = 'crafting_recipe.json'
-    } else {
-      fileSaveName = outputRecipe + '.json'
-    }
+    const { outputRecipe } = this.props
 
-    // check if the output is populated and the output is recipe
-    if (output.isPopulated() && outputRecipe === 'auto') {
-      // remove the minecraft: and any trailing
-      let name = output.id.match(/minecraft:(\w+)(:\d+)?/)[1]
-      // if the recipe is in the recipe names
-      if (RecipeNames.names.indexOf(name) !== -1) {
-        fileSaveName = name + '.json'
-      }
-    }
-    return fileSaveName
+    return (outputRecipe || 'crafting_recipe') + '.json'
   }
 
   generateCrafting () {
-    const { input, output, group, furnace, emptySpace, shape, tab, tags } = this.props
+    const { input, output, group, furnace, generic, emptySpace, shape, tab, tags } = this.props
     let json, generator
     if (tab === 'crafting') {
       generator = new CraftingGenerator(input, output, tags, { group })
@@ -61,12 +45,15 @@ class Output extends Component {
       } else {
         json = generator.shaped(emptySpace)
       }
-    } else if (tab === 'furnace') {
+    } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
       generator = new CraftingGenerator(furnace.input, output, tags, { group })
-      json = generator.smelting(furnace.cookingTime, furnace.experience)
+      json = generator.cooking(furnace.cookingTime, furnace.experience, tab)
+    } else if (['stonecutter'].includes(tab)) {
+      generator = new CraftingGenerator(generic.input, output, tags, { group })
+      json = generator.generic(tab)
     }
 
-    if (json.result && json.result.item) {
+    if (json && json.result && json.result.item) {
       json.result.count = output.count
     }
     return json
@@ -114,7 +101,7 @@ class Output extends Component {
 
   render () {
     const fileSaveName = this.generateCraftingName()
-    const json = this.generateCrafting()
+    const json = this.generateCrafting() || {}
 
     let toCopy = JSON.stringify(json, null, 4)
     let blob = new Blob([toCopy], { type: 'text/plain;charset=utf-8' })
@@ -155,6 +142,7 @@ export default connect((store) => {
     output: store.Data.output,
     group: store.Data.group,
     furnace: store.Data.furnace,
+    generic: store.Data.generic,
     tags: store.Data.tags,
 
     tab: store.Options.tab,

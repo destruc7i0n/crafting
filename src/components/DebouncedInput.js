@@ -11,7 +11,7 @@ class DebouncedInput extends Component {
     super(props)
 
     this.state = {
-      input: ''
+      input: props.initial || ''
     }
 
     this.debounce = this.debounce.bind(this)

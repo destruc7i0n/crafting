@@ -6,7 +6,7 @@ export default function Options (state = {
   tab: 'crafting',
   shape: 'shaped',
   emptySpace: true,
-  outputRecipe: 'auto'
+  outputRecipe: 'crafting_recipe'
 }, action) {
   return produce(state, draft => {
     switch (action.type) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { resetCraftingSlot, resetFurnaceSlot, resetOutputSlot } from '../../actions'
+import { resetCraftingSlot, resetFurnaceSlot, resetGenericSlot, resetOutputSlot } from '../../actions'
 
 import classNames from 'classnames'
 
@@ -14,7 +14,7 @@ import './Ingredient.css'
 
 const ingredientSource = {
   beginDrag (props, monitor, component) {
-    const { ingredient, slot, size } = props
+    const { ingredient, slot, size, output } = props
     // hide while dragging
     component.setState({
       mouse: { ...component.state.mouse, display: 'none' }
@@ -23,15 +23,16 @@ const ingredientSource = {
     return {
       ingredient,
       slot,
-      size
+      size,
+      output
     }
   },
 
   endDrag (props, monitor) {
-    const { dispatch, size, slot, type } = props
+    const { dispatch, size, slot, output, type } = props
 
     const resetSlots = (size, slot) => {
-      if (size === 'large') {
+      if (size === 'large' && output) {
         dispatch(resetOutputSlot())
       }
 
@@ -41,6 +42,8 @@ const ingredientSource = {
           dispatch(resetCraftingSlot(slot))
         } else if (type === 'furnace') {
           dispatch(resetFurnaceSlot())
+        } else if (type === 'generic') {
+          dispatch(resetGenericSlot())
         }
       }
     }
@@ -55,14 +58,14 @@ const ingredientSource = {
     }
 
     const dropResult = monitor.getDropResult()
-    const { newSlot, newSize } = dropResult
+    const { newSlot, newIsOutput } = dropResult
 
     // if the crafting slot is the same as the one dragged from, don't do any resetting
     if (slot === newSlot) {
       return
     }
     // if dragged from output to output, don't do any resetting
-    if (size === 'large' && newSize === 'large') {
+    if (output && newIsOutput) {
       return
     }
 

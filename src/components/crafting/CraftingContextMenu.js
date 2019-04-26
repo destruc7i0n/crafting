@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
   createTag,
-  resetCraftingSlot,
-  resetOutputSlot, setCraftingSlot, setFurnaceSlot,
+  resetCraftingSlot, resetFurnaceSlot, resetGenericSlot,
+  resetOutputSlot, setCraftingSlot, setFurnaceSlot, setGenericSlot,
   toggleCountMenu,
   toggleNBTMenu
 } from '../../actions'
@@ -23,14 +23,20 @@ class CraftingContextMenu extends Component {
     this.createTag = this.createTag.bind(this)
   }
 
-  removeItem (e, { index, ingredient }) {
-    const { dispatch } = this.props
+  removeItem (e, { index }) {
+    const { tab, dispatch } = this.props
 
-    // if output slot
     if (index === 9) {
       dispatch(resetOutputSlot())
-    } else {
+      return
+    }
+
+    if (tab === 'crafting') {
       dispatch(resetCraftingSlot(index))
+    } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
+      dispatch(resetFurnaceSlot())
+    } else if (tab === 'stonecutter') {
+      dispatch(resetGenericSlot())
     }
   }
 
@@ -53,10 +59,12 @@ class CraftingContextMenu extends Component {
     const tagId = dispatch(createTag(ingredient))
     const tagIngredient = new Tag(tagId)
 
-    if (tab !== 'furnace') {
-      dispatch(setCraftingSlot(id, tagIngredient))
-    } else {
+    if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
       dispatch(setFurnaceSlot(tagIngredient))
+    } else if (tab === 'crafting') {
+      dispatch(setCraftingSlot(id, tagIngredient))
+    } else if (tab === 'stonecutter') {
+      dispatch(setGenericSlot(tagIngredient))
     }
   }
 
@@ -69,7 +77,7 @@ class CraftingContextMenu extends Component {
     ]
 
     // if output slot and not furnace crafting
-    if (id === 9 && tab !== 'furnace') {
+    if (id === 9 && ['crafting', 'stonecutter'].includes(tab)) {
       menuItems = [
         ...menuItems,
         <MenuItem key='count' onClick={this.toggleCountModal} data={{ item: id }}>Set Count</MenuItem>,

@@ -18,7 +18,6 @@ import {
 } from 'react-bootstrap'
 
 import infoCircle from '../assets/info-circle.png'
-import RecipeNames from '../resources/recipe-names.json'
 
 class Options extends Component {
   constructor (props) {
@@ -42,10 +41,12 @@ class Options extends Component {
     dispatch(setEmptySpace(!e.target.checked))
   }
 
-  setOutput (e) {
+  setOutput ({ target: { value } }) {
     const { dispatch } = this.props
 
-    dispatch(setOutputRecipe(e.target.value))
+    let outputName = value.replace(/[^a-z0-9_]+/, '')
+
+    dispatch(setOutputRecipe(outputName))
   }
 
   setGroup (value) {
@@ -117,7 +118,7 @@ class Options extends Component {
           </Row>
         </Fragment>
       )
-    } else if (tab === 'furnace') {
+    } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
       customOptions = (
         <Fragment>
           <legend><h5>Furnace Options</h5></legend>
@@ -183,28 +184,11 @@ class Options extends Component {
             </Col>
             {' '}
             <Col md={10}>
-              <FormControl
-                componentClass='select'
-                placeholder='select'
-                value={outputRecipe}
-                onChange={this.setOutput}
-              >
-                <option value='auto' key={-1}>Auto</option>
-                {RecipeNames.names.map((name, index) => {
-                  let nameParts = name.split('_')
-                  let namePartsUppercase = nameParts.map((name) => name.charAt(0).toUpperCase() + name.slice(1))
-                  let nameReadable = namePartsUppercase.join(' ')
-                  return (
-                    <option value={name} key={index}>{nameReadable}</option>
-                  )
-                })}
-              </FormControl>
+              <input type='text' value={outputRecipe} onChange={this.setOutput} className='form-control' />
             </Col>
             <Col md={12}>
               <p style={{ fontSize: '12px' }}>
-                When <code>Auto</code> is selected, the file name will be taken based off of the item name if possible,
-                otherwise the name will be{' '}
-                <code>crafting_recipe.json</code>
+                The file name to output as.
               </p>
             </Col>
           </Row>

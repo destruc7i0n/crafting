@@ -3,7 +3,7 @@
 exports[`Options Reducer should have a default state 1`] = `
 Object {
   "emptySpace": true,
-  "outputRecipe": "auto",
+  "outputRecipe": "crafting_recipe",
   "shape": "shaped",
   "tab": "crafting",
 }
@@ -12,7 +12,7 @@ Object {
 exports[`Options Reducer should set empty space 1`] = `
 Object {
   "emptySpace": false,
-  "outputRecipe": "auto",
+  "outputRecipe": "crafting_recipe",
   "shape": "shaped",
   "tab": "crafting",
 }
@@ -30,7 +30,7 @@ Object {
 exports[`Options Reducer should set shape 1`] = `
 Object {
   "emptySpace": true,
-  "outputRecipe": "auto",
+  "outputRecipe": "crafting_recipe",
   "shape": "shapeless",
   "tab": "crafting",
 }
