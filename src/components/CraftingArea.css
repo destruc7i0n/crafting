@@ -11,6 +11,7 @@
 }
 
 .grid, .grid-large, .grid-furnace {
+    position: relative;
     float: left;
     display: block;
     text-align: center !important;
@@ -75,6 +76,15 @@
     padding-top: 40px;
 }
 
+.crafting-table-output-count {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+    color: #ffffff;
+    font-family: Minecraft;
+    user-select: none;
+}
+
 /* only for small */
 @media screen and (max-device-width: 400px) {
     .crafting .arrow {
@@ -85,4 +95,14 @@
 
 .recipe > h6 {
     font-family: Minecraft;
+}
+
+.nav-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: -webkit-box;
+    display: -moz-box;
+}
+.nav-tabs>li {
+    float: none;
 }

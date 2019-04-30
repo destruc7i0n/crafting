@@ -43,7 +43,7 @@ class CraftingGenerator {
   getShapelessDefault () {
     const { extras } = this
     let shapeless = {
-      type: 'crafting_shapeless',
+      type: 'minecraft:crafting_shapeless',
       ingredients: [],
       result: {}
     }
@@ -64,7 +64,7 @@ class CraftingGenerator {
   getShapedDefault () {
     const { extras } = this
     let shaped = {
-      type: 'crafting_shaped',
+      type: 'minecraft:crafting_shaped',
       pattern: [],
       key: {},
       result: {}
@@ -80,13 +80,21 @@ class CraftingGenerator {
   }
 
   /**
-   * Returns the default for smelting
+   * Returns the default for cooking
    * @returns {object}
    */
-  getSmeltingDefault () {
+  getCookingDefault (tab) {
     const { extras } = this
-    let smelting = {
-      type: 'smelting',
+
+    const type = {
+      'furnace': 'minecraft:smelting',
+      'blast': 'minecraft:blasting',
+      'smoking': 'minecraft:smoking',
+      'campfire': 'minecraft:campfire_cooking',
+    }[tab]
+
+    let cooking = {
+      type,
       ingredient: {},
       result: {},
       experience: 0,
@@ -96,10 +104,36 @@ class CraftingGenerator {
     for (let extraKey of Object.keys(extras)) {
       let extra = extras[extraKey]
       if (extra) {
-        smelting[extraKey] = extras[extraKey]
+        cooking[extraKey] = extras[extraKey]
       }
     }
-    return smelting
+    return cooking
+  }
+
+  /**
+   * Returns the generic default type
+   * @returns {object}
+   */
+  getGenericDefault (tab) {
+    const { extras } = this
+
+    const type = {
+      'stonecutter': 'minecraft:stonecutting'
+    }[tab]
+
+    let generic = {
+      type,
+      ingredient: {},
+      result: ''
+    }
+    // go through the extras and add to the object
+    for (let extraKey of Object.keys(extras)) {
+      let extra = extras[extraKey]
+      if (extra) {
+        generic[extraKey] = extras[extraKey]
+      }
+    }
+    return generic
   }
 
   /**
@@ -355,15 +389,15 @@ class CraftingGenerator {
   }
 
   /**
-   * Returns a smelting crafting of the input provided
+   * Returns a cooking type crafting of the input provided
    * @param time
    * @param experience
    * @returns {object}
    */
-  smelting (time = 0, experience = 0) {
+  cooking (time = 0, experience = 0, tab) {
     const { input, output } = this
 
-    let shape = { ...this.getSmeltingDefault() }
+    let shape = { ...this.getCookingDefault(tab) }
 
     // add the ingredient
     let ingredient = input
@@ -385,6 +419,38 @@ class CraftingGenerator {
 
     shape.cookingtime = time || 0
     shape.experience = experience || 0
+
+    return shape
+  }
+
+  /**
+   * Returns a generic type crafting of the input provided
+   * @returns {object}
+   */
+  generic (type) {
+    const { input, output } = this
+
+    let shape = { ...this.getGenericDefault(type) }
+
+    // add the ingredient
+    let ingredient = input
+
+    // only if populated
+    if (ingredient.isPopulated()) {
+      shape.ingredient = this.getItemType(ingredient)
+
+      // handle tags...
+      if (shape.ingredient.tag) {
+        const tag = this.tags[shape.ingredient.tag.tag]
+        shape.ingredient = this.handleTags(tag)
+      }
+    }
+
+    if (output.isPopulated()) {
+      shape.result = output.id
+    }
+
+    shape.count = output.count
 
     return shape
   }

@@ -18,7 +18,10 @@ import {
   UPDATE_TAG,
   ADD_TAG_ITEM,
   REMOVE_TAG_ITEM,
-  UPDATE_ALL_TIMERS
+  UPDATE_ALL_TIMERS,
+  SET_GENERIC_SLOT_DATA,
+  SET_GENERIC_SLOT,
+  RESET_GENERIC_SLOT
 } from '../actions'
 
 export default function Data (state = {
@@ -27,6 +30,9 @@ export default function Data (state = {
     input: new Ingredient(),
     cookingTime: 200,
     experience: 0.1
+  },
+  generic: {
+    input: new Ingredient()
   },
   output: new Ingredient(),
   group: '',
@@ -77,6 +83,20 @@ export default function Data (state = {
         break
       case RESET_FURNACE_SLOT:
         draft.furnace.input = new Ingredient()
+        break
+      case SET_GENERIC_SLOT:
+        // set furnace slot to new instance of ingredient
+        draft.generic.input = action.payload.ingredient
+        break
+      case SET_GENERIC_SLOT_DATA:
+        // add the furnace data to the furnace object
+        draft.furnace = {
+          ...state.generic,
+          ...action.payload
+        }
+        break
+      case RESET_GENERIC_SLOT:
+        draft.generic.input = new Ingredient()
         break
       case SET_GROUP:
         draft.group = action.payload

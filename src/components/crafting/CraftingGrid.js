@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { setCraftingSlot, setFurnaceSlot, setOutputSlot } from '../../actions'
+import { setCraftingSlot, setFurnaceSlot, setGenericSlot, setOutputSlot } from '../../actions'
 import { DropTarget } from 'react-dnd'
 import { ContextMenuTrigger } from 'react-contextmenu'
 
@@ -12,7 +12,7 @@ import CraftingContextMenu from '../crafting/CraftingContextMenu'
 
 const craftingTarget = {
   drop (props, monitor, component) {
-    const { dispatch, size, index, crafting, furnace, disabled } = props
+    const { dispatch, size, index, crafting, furnace, generic, disabled, output } = props
     if (disabled) {
       return
     }
@@ -38,7 +38,7 @@ const craftingTarget = {
     // then only update the slot
     if (!(oldSlot === index) || !(size === 'large' && oldSize === 'large')) {
       // update store
-      if (size === 'large') {
+      if (size === 'large' && output) {
         if (item.ingredient.ingredient_type === 'item') {
           dispatch(setOutputSlot(item.ingredient))
         }
@@ -49,13 +49,16 @@ const craftingTarget = {
         } else if (type === 'furnace') {
           dispatch(setFurnaceSlot(item.ingredient))
           replacedItem = furnace.input
+        } else if (type === 'generic') {
+          dispatch(setGenericSlot(item.ingredient))
+          replacedItem = generic.input
         }
       }
     }
 
     // return for endDrag handler in Ingredient.js
     return {
-      newSize: size,
+      newIsOutput: output,
       newSlot: index,
       replacedItem
     }
@@ -64,10 +67,10 @@ const craftingTarget = {
 
 class CraftingGrid extends Component {
   render () {
-    const { connectDropTarget, index, ingredient, size, type, disabled, tab } = this.props
+    const { connectDropTarget, index, ingredient, size, type, disabled, output, tab, style = {} } = this.props
 
     // determine an id for the context menu
-    let contextMenuId = size === 'large' ? 9 : index
+    let contextMenuId = size === 'large' && output ? 9 : index
     contextMenuId = contextMenuId.toString()
 
     // no drop target for disabled
@@ -80,17 +83,17 @@ class CraftingGrid extends Component {
       )
     }
 
-    let ingredientComponent = <Ingredient ingredient={ingredient} slot={index} size={size} type={type} />
+    let ingredientComponent = <Ingredient ingredient={ingredient} slot={index} size={size} type={type} isOutput={output} />
 
     let ingredientTarget = (
-      <div>
+      <div style={style}>
         {ingredientComponent}
       </div>
     )
 
     if (ingredient.isPopulated()) {
       ingredientTarget = (
-        <div>
+        <div style={style}>
           <ContextMenuTrigger id={contextMenuId} holdToDisplay={-1}>
             {ingredientComponent}
           </ContextMenuTrigger>
@@ -110,7 +113,8 @@ export default compose(
     return {
       tab: store.Options.tab,
       crafting: store.Data.crafting,
-      furnace: store.Data.furnace
+      furnace: store.Data.furnace,
+      generic: store.Data.generic
     }
   }),
   DropTarget('ingredient', craftingTarget, (connect) => ({

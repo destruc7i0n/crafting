@@ -16,7 +16,7 @@ Object {
     "count": 1,
     "item": "minecraft:stone",
   },
-  "type": "crafting_shaped",
+  "type": "minecraft:crafting_shaped",
 }
 `;
 
@@ -35,7 +35,7 @@ Object {
     "count": 1,
     "item": "minecraft:stone",
   },
-  "type": "crafting_shaped",
+  "type": "minecraft:crafting_shaped",
 }
 `;
 
@@ -59,7 +59,7 @@ Object {
     "count": 1,
     "item": "minecraft:stone",
   },
-  "type": "crafting_shapeless",
+  "type": "minecraft:crafting_shapeless",
 }
 `;
 
@@ -71,6 +71,17 @@ Object {
     "item": "minecraft:dirt",
   },
   "result": "minecraft:stone",
-  "type": "smelting",
+  "type": "minecraft:smelting",
+}
+`;
+
+exports[`Crafting Generator Class should output stonecutter recipe 1`] = `
+Object {
+  "count": 1,
+  "ingredient": Object {
+    "item": "minecraft:dirt",
+  },
+  "result": "minecraft:stone",
+  "type": "minecraft:stonecutting",
 }
 `;

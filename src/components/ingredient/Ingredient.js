@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { resetCraftingSlot, resetFurnaceSlot, resetOutputSlot } from '../../actions'
+import { resetCraftingSlot, resetFurnaceSlot, resetGenericSlot, resetOutputSlot } from '../../actions'
 
 import classNames from 'classnames'
 
@@ -14,7 +14,7 @@ import './Ingredient.css'
 
 const ingredientSource = {
   beginDrag (props, monitor, component) {
-    const { ingredient, slot, size } = props
+    const { ingredient, slot, size, isOutput } = props
     // hide while dragging
     component.setState({
       mouse: { ...component.state.mouse, display: 'none' }
@@ -23,15 +23,16 @@ const ingredientSource = {
     return {
       ingredient,
       slot,
-      size
+      size,
+      output: isOutput
     }
   },
 
   endDrag (props, monitor) {
-    const { dispatch, size, slot, type } = props
+    const { dispatch, size, slot, isOutput, type } = props
 
     const resetSlots = (size, slot) => {
-      if (size === 'large') {
+      if (size === 'large' && isOutput) {
         dispatch(resetOutputSlot())
       }
 
@@ -41,6 +42,8 @@ const ingredientSource = {
           dispatch(resetCraftingSlot(slot))
         } else if (type === 'furnace') {
           dispatch(resetFurnaceSlot())
+        } else if (type === 'generic') {
+          dispatch(resetGenericSlot())
         }
       }
     }
@@ -55,14 +58,14 @@ const ingredientSource = {
     }
 
     const dropResult = monitor.getDropResult()
-    const { newSlot, newSize } = dropResult
+    const { newSlot, newIsOutput } = dropResult
 
     // if the crafting slot is the same as the one dragged from, don't do any resetting
     if (slot === newSlot) {
       return
     }
     // if dragged from output to output, don't do any resetting
-    if (size === 'large' && newSize === 'large') {
+    if (isOutput && newIsOutput) {
       return
     }
 
@@ -122,7 +125,7 @@ class Ingredient extends Component {
   }
 
   render () {
-    const { connectDragSource, size, tags, draggable = true } = this.props
+    const { connectDragSource, size, tags, draggable = true, isOutput } = this.props
     const ingredient = this.props.ingredient
 
     let readable = ingredient.readable
@@ -153,6 +156,7 @@ class Ingredient extends Component {
         onMouseOut={this.onMouseOut}
       >
         {draggable ? connectDragSource(image) : image}
+        {isOutput && ingredient.isPopulated() ? <span className='crafting-table-output-count'>{ingredient.count}</span> : null}
         <Tooltip title={readable} id={ingredient.id} style={this.state.mouse} />
       </span>
     )
@@ -166,6 +170,11 @@ export default compose(
       return {
         tags: store.Data.tags,
         updateTimer: store.Data.tagUpdateTimers[props.ingredient.tag] // grab the update timer for this tag
+      }
+    } else if (props.ingredient && props.isOutput) {
+      // state doesn't like classes...
+      return {
+        output: store.Data.output.toJSON()
       }
     }
     return {}
