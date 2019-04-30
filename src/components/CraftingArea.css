@@ -82,6 +82,7 @@
     right: 5%;
     color: #ffffff;
     font-family: Minecraft;
+    user-select: none;
 }
 
 /* only for small */
