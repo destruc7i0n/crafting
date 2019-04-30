@@ -83,7 +83,7 @@ class CraftingGrid extends Component {
       )
     }
 
-    let ingredientComponent = <Ingredient ingredient={ingredient} slot={index} size={size} type={type} output={output} />
+    let ingredientComponent = <Ingredient ingredient={ingredient} slot={index} size={size} type={type} isOutput={output} />
 
     let ingredientTarget = (
       <div style={style}>

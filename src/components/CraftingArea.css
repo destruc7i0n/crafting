@@ -11,6 +11,7 @@
 }
 
 .grid, .grid-large, .grid-furnace {
+    position: relative;
     float: left;
     display: block;
     text-align: center !important;
@@ -73,6 +74,14 @@
 .crafting-table-output {
     float: left;
     padding-top: 40px;
+}
+
+.crafting-table-output-count {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+    color: #ffffff;
+    font-family: Minecraft;
 }
 
 /* only for small */

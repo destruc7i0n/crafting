@@ -9,7 +9,6 @@ import {
   Checkbox,
   Col,
   ControlLabel,
-  FormControl,
   FormGroup,
   OverlayTrigger,
   Panel,
