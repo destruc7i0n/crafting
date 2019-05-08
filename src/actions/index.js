@@ -211,3 +211,9 @@ export const UPDATE_ALL_TIMERS = 'UPDATE_ALL_TIMERS'
 export const updateTimers = () => ({
   type: UPDATE_ALL_TIMERS
 })
+
+export const SET_MINECRAFT_VERSION = 'SET_MINECRAFT_VERSION'
+export const setMinecraftVersion = (version) => ({
+  type: SET_MINECRAFT_VERSION,
+  payload: Number(version)
+})

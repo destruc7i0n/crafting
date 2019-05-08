@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { setEmptySpace, setOutputRecipe, setShape, setGroup, setFurnaceData } from '../actions'
+import { setEmptySpace, setOutputRecipe, setShape, setGroup, setFurnaceData, setMinecraftVersion } from '../actions'
 
 import DebouncedInput from './DebouncedInput'
 import NumericInput from 'react-numeric-input'
@@ -9,6 +9,7 @@ import {
   Checkbox,
   Col,
   ControlLabel,
+  FormControl,
   FormGroup,
   OverlayTrigger,
   Panel,
@@ -26,6 +27,7 @@ class Options extends Component {
     this.toggleEmptySpace = this.toggleEmptySpace.bind(this)
     this.setOutput = this.setOutput.bind(this)
     this.setGroup = this.setGroup.bind(this)
+    this.setMinecraftVersion = this.setMinecraftVersion.bind(this)
   }
 
   toggleShape (e) {
@@ -54,8 +56,14 @@ class Options extends Component {
     dispatch(setGroup(value))
   }
 
+  setMinecraftVersion ({ target: { value } }) {
+    const { dispatch } = this.props
+
+    dispatch(setMinecraftVersion(value))
+  }
+
   render () {
-    const { dispatch, emptySpace, shape, outputRecipe, tab, furnace } = this.props
+    const { dispatch, emptySpace, shape, outputRecipe, tab, furnace, minecraftVersion } = this.props
 
     const shapelessTooltip = (
       <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the
@@ -100,6 +108,28 @@ class Options extends Component {
           </OverlayTrigger>
         </Checkbox>
       </FormGroup>
+    )
+
+    let versionSelector = (
+      ['crafting', 'furnace'].includes(tab)
+        ? (
+          <Row>
+            <Col md={2}>
+              <ControlLabel>Minecraft Version:</ControlLabel>
+            </Col>
+            <Col md={10}>
+              <FormControl
+                componentClass='select'
+                placeholder='select'
+                value={minecraftVersion}
+                onChange={this.setMinecraftVersion}
+              >
+                <option value={1.14} key={1.14}>1.14</option>
+                <option value={1.13} key={1.13}>1.13</option>
+              </FormControl>
+            </Col>
+          </Row>
+        ) : null
     )
 
     let customOptions
@@ -175,6 +205,7 @@ class Options extends Component {
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body collapsible>
+          {versionSelector}
           {customOptions}
           <legend><h5>Default Options</h5></legend>
           <Row>
@@ -219,6 +250,7 @@ export default connect((store) => {
     emptySpace: store.Options.emptySpace,
     outputRecipe: store.Options.outputRecipe,
     tab: store.Options.tab,
+    minecraftVersion: store.Options.minecraftVersion,
     furnace: store.Data.furnace
   }
 })(Options)

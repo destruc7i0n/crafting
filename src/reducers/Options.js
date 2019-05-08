@@ -1,12 +1,14 @@
 import produce from 'immer'
 
-import { SET_EMPTY_SPACE, SET_OUTPUT_RECIPE, SET_SHAPE, SET_TAB } from '../actions'
+import { SET_EMPTY_SPACE, SET_MINECRAFT_VERSION, SET_OUTPUT_RECIPE, SET_SHAPE, SET_TAB } from '../actions'
 
 export default function Options (state = {
   tab: 'crafting',
   shape: 'shaped',
   emptySpace: true,
-  outputRecipe: 'crafting_recipe'
+  outputRecipe: 'crafting_recipe',
+
+  minecraftVersion: 1.14
 }, action) {
   return produce(state, draft => {
     switch (action.type) {
@@ -21,6 +23,9 @@ export default function Options (state = {
         break
       case SET_TAB:
         draft.tab = action.payload
+        break
+      case SET_MINECRAFT_VERSION:
+        draft.minecraftVersion = action.payload
         break
       default:
         return state

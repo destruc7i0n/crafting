@@ -36,7 +36,7 @@ class Output extends Component {
   }
 
   generateCrafting () {
-    const { input, output, group, furnace, generic, emptySpace, shape, tab, tags } = this.props
+    const { input, output, group, furnace, generic, emptySpace, shape, tab, tags, minecraftVersion } = this.props
     let json, generator
     if (tab === 'crafting') {
       generator = new CraftingGenerator(input, output, tags, { group })
@@ -56,6 +56,13 @@ class Output extends Component {
     if (json && json.result && json.result.item) {
       json.result.count = output.count
     }
+
+
+    // remove the prefix for 1.13
+    if (['crafting', 'furnace'].includes(tab) && minecraftVersion === 1.13) {
+      json.type = json.type.replace('minecraft:', '')
+    }
+
     return json
   }
 
@@ -148,6 +155,7 @@ export default connect((store) => {
     tab: store.Options.tab,
     shape: store.Options.shape,
     emptySpace: store.Options.emptySpace,
-    outputRecipe: store.Options.outputRecipe
+    outputRecipe: store.Options.outputRecipe,
+    minecraftVersion: store.Options.minecraftVersion
   }
 })(Output)
