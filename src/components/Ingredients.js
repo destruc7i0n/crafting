@@ -11,7 +11,7 @@ import IngredientClass from '../classes/Ingredient'
 import getTextures from 'minecraft-textures'
 
 import './Ingredients.css'
-``
+
 class Ingredients extends Component {
   constructor (props) {
     super(props)
