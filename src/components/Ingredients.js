@@ -11,9 +11,7 @@ import IngredientClass from '../classes/Ingredient'
 import getTextures from 'minecraft-textures'
 
 import './Ingredients.css'
-
-const IngredientItems = getTextures('1.14').items
-
+``
 class Ingredients extends Component {
   constructor (props) {
     super(props)
@@ -25,7 +23,9 @@ class Ingredients extends Component {
 
   render () {
     const { search } = this.state
-    const { dispatch } = this.props
+    const { dispatch, minecraftVersion } = this.props
+
+    const IngredientItems = getTextures(minecraftVersion).items
 
     // convert the items to the class
     const ingredients = IngredientItems.map((ingredient) => new IngredientClass(ingredient.id, ingredient.readable, ingredient.texture))
@@ -61,4 +61,8 @@ class Ingredients extends Component {
   }
 }
 
-export default connect()(Ingredients)
+export default connect((store) => {
+  return {
+    minecraftVersion: store.Options.minecraftVersion
+  }
+})(Ingredients)
