@@ -5,8 +5,6 @@ import { DragDropContext } from 'react-dnd'
 import MultiBackend from 'react-dnd-multi-backend'
 import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
 
-import 'babel-polyfill'
-
 import { debounce } from 'lodash'
 
 import Navbar from './components/Navbar'
@@ -22,6 +20,8 @@ import IngredientDragLayer from './components/ingredient/IngredientDragLayer'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPatreon } from '@fortawesome/free-brands-svg-icons/faPatreon'
+import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
+import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
@@ -29,7 +29,7 @@ import './App.css'
 import './assets/arrow.png'
 import './assets/Minecraft.woff'
 
-library.add(faPatreon)
+library.add(faPatreon, faPlus, faTimes)
 
 export class App extends Component {
   constructor (props) {

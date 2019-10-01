@@ -23,7 +23,7 @@ class CraftingArea extends Component {
   }
 
   render () {
-    const { dispatch, crafting, furnace, generic, output, tab } = this.props
+    const { dispatch, crafting, furnace, generic, output, tab, minecraftVersion } = this.props
     const selectedTab = parseInt(invert(this.keyMapping)[tab], 10) // grab the selected tab index
 
     const titles = {
@@ -50,10 +50,12 @@ class CraftingArea extends Component {
             id='selected-tab'>
             <Tab eventKey={1} title='Crafting' />
             <Tab eventKey={2} title='Furnace' />
-            <Tab eventKey={3} title='Blasting' />
-            <Tab eventKey={4} title='Campfire' />
-            <Tab eventKey={5} title='Smoking' />
-            <Tab eventKey={6} title='Stonecutter' />
+            {minecraftVersion !== 'bedrock' ? [
+              <Tab key={3} eventKey={3} title='Blasting' />,
+              <Tab key={4} eventKey={4} title='Campfire' />,
+              <Tab key={5} eventKey={5} title='Smoking' />,
+              <Tab key={6} eventKey={6} title='Stonecutter' />
+            ] : null}
           </Tabs>
           <div className='crafting-holder'>
             <div className='crafting clearfix'>
@@ -86,7 +88,7 @@ class CraftingArea extends Component {
               </div>
               <div className='arrow' />
               <div className='crafting-table-output'>
-                <CraftingGrid ingredient={output} output={true} size='large' />
+                <CraftingGrid ingredient={output} output size='large' />
               </div>
             </div>
           </div>
@@ -99,6 +101,7 @@ class CraftingArea extends Component {
 export default connect((store) => {
   return {
     tab: store.Options.tab,
+    minecraftVersion: store.Options.minecraftVersion,
     crafting: store.Data.crafting,
     furnace: store.Data.furnace,
     generic: store.Data.generic,

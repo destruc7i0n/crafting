@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import {
   createTag,
@@ -9,6 +9,8 @@ import {
 } from '../../actions'
 import { ContextMenu, MenuItem } from 'react-contextmenu'
 
+import ItemDataModal from '../ItemDataModal'
+
 import Tag from '../../classes/Tag'
 
 import './CraftingContextMenu.css'
@@ -17,10 +19,16 @@ class CraftingContextMenu extends Component {
   constructor (props) {
     super(props)
 
+    this.state = {
+      customDataModal: false
+    }
+
     this.toggleCountModal = this.toggleCountModal.bind(this)
     this.toggleNBTModal = this.toggleNBTModal.bind(this)
     this.removeItem = this.removeItem.bind(this)
     this.createTag = this.createTag.bind(this)
+    this.updateIngredient = this.updateIngredient.bind(this)
+    this.setCustomData = this.setCustomData.bind(this)
   }
 
   removeItem (e, { index }) {
@@ -52,28 +60,50 @@ class CraftingContextMenu extends Component {
     dispatch(toggleNBTMenu())
   }
 
+  updateIngredient (id, ingredient) {
+    const { dispatch, tab } = this.props
+    if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
+      dispatch(setFurnaceSlot(ingredient))
+    } else if (tab === 'crafting') {
+      dispatch(setCraftingSlot(id, ingredient))
+    } else if (tab === 'stonecutter') {
+      dispatch(setGenericSlot(ingredient))
+    }
+  }
+
   createTag () {
-    const { dispatch, tab, ingredient } = this.props
+    const { dispatch, ingredient } = this.props
     const id = parseInt(this.props.id, 10)
 
     const tagId = dispatch(createTag(ingredient))
     const tagIngredient = new Tag(tagId)
 
-    if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
-      dispatch(setFurnaceSlot(tagIngredient))
-    } else if (tab === 'crafting') {
-      dispatch(setCraftingSlot(id, tagIngredient))
-    } else if (tab === 'stonecutter') {
-      dispatch(setGenericSlot(tagIngredient))
-    }
+    this.updateIngredient(id, tagIngredient)
+  }
+
+  setCustomData (data) {
+    const { ingredient } = this.props
+    const id = parseInt(this.props.id, 10)
+
+    ingredient.customData = data.reduce((acc, value) => {
+      let v = value[1]
+      if (!isNaN(v)) v = Number(v)
+      acc[value[0]] = v
+      return acc
+    }, {})
+
+    this.updateIngredient(id, ingredient)
+    this.setState({ customDataModal: false })
   }
 
   render () {
+    const { customDataModal } = this.state
     const { tab, ingredient } = this.props
     const id = parseInt(this.props.id, 10)
 
     let menuItems = [
       // <MenuItem key='nbt' onClick={this.toggleNBTModal} data={{item: id}}>Set NBT</MenuItem>
+      <MenuItem key='edit_data' onClick={() => this.setState({ customDataModal: true })}>Edit Custom Data</MenuItem>
     ]
 
     // if output slot and not furnace crafting
@@ -94,11 +124,14 @@ class CraftingContextMenu extends Component {
     }
 
     return (
-      <ContextMenu
-        id={this.props.id}>
-        {menuItems}
-        <MenuItem onClick={this.removeItem} data={{ index: id, ingredient }}>Remove</MenuItem>
-      </ContextMenu>
+      <Fragment>
+        <ContextMenu
+          id={this.props.id}>
+          {menuItems}
+          <MenuItem onClick={this.removeItem} data={{ index: id, ingredient }}>Remove</MenuItem>
+        </ContextMenu>
+        <ItemDataModal ingredient={ingredient} setCustomData={this.setCustomData} show={customDataModal} onHide={() => this.setState({ customDataModal: false })} />
+      </Fragment>
     )
   }
 }

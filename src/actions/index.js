@@ -1,5 +1,7 @@
 import uuid from 'uuid/v4'
 
+import Ingredient from '../classes/Ingredient'
+
 // Data reducer
 export const SET_CRAFTING_SLOT = 'SET_CRAFTING_SLOT'
 export const setCraftingSlot = (index, ingredient) => (dispatch, getState) => {
@@ -215,5 +217,28 @@ export const updateTimers = () => ({
 export const SET_MINECRAFT_VERSION = 'SET_MINECRAFT_VERSION'
 export const setMinecraftVersion = (version) => ({
   type: SET_MINECRAFT_VERSION,
-  payload: Number(version)
+  payload: !isNaN(version) ? Number(version) : version
+})
+
+export const ADD_ITEM = 'ADD_ITEM'
+export const addItem = (id, name, texture) => (dispatch) => {
+  let ingredient = new Ingredient(id, name, texture)
+  ingredient.custom = true
+
+  dispatch({
+    type: ADD_ITEM,
+    payload: ingredient
+  })
+}
+
+export const DELETE_CUSTOM_ITEM = 'DELETE_CUSTOM_ITEM'
+export const deleteCustomItem = (id) => ({
+  type: DELETE_CUSTOM_ITEM,
+  payload: id
+})
+
+export const SET_BEDROCK_IDENTIFIER = 'SET_BEDROCK_IDENTIFIER'
+export const setBedrockIdentifier = (id) => ({
+  type: SET_BEDROCK_IDENTIFIER,
+  payload: id
 })

@@ -71,7 +71,6 @@ class CraftingGrid extends Component {
 
     // determine an id for the context menu
     let contextMenuId = size === 'large' && output ? 9 : index
-    contextMenuId = contextMenuId.toString()
 
     // no drop target for disabled
     if (disabled) {

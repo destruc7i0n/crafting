@@ -21,7 +21,9 @@ import {
   UPDATE_ALL_TIMERS,
   SET_GENERIC_SLOT_DATA,
   SET_GENERIC_SLOT,
-  RESET_GENERIC_SLOT
+  RESET_GENERIC_SLOT,
+  ADD_ITEM,
+  DELETE_CUSTOM_ITEM
 } from '../actions'
 
 export default function Data (state = {
@@ -38,7 +40,8 @@ export default function Data (state = {
   group: '',
   tagIndex: 0,
   tags: {},
-  tagUpdateTimers: {}
+  tagUpdateTimers: {},
+  customItems: {}
 }, action) {
   return produce(state, draft => {
     switch (action.type) {
@@ -162,6 +165,9 @@ export default function Data (state = {
         if (state.furnace.input.ingredient_type === 'tag' && state.furnace.input.tag === action.payload) {
           draft.furnace.input = new Ingredient()
         }
+        if (state.generic.input.ingredient_type === 'tag' && state.generic.input.tag === action.payload) {
+          draft.generic.input = new Ingredient()
+        }
         delete draft.tags[action.payload] // remove the tag
         delete draft.tagUpdateTimers[action.payload.id] // remove the tag timer too
         break
@@ -183,6 +189,27 @@ export default function Data (state = {
           }
           return acc
         }, {})
+        break
+      case ADD_ITEM:
+        draft.customItems[action.payload.id] = action.payload
+        break
+      case DELETE_CUSTOM_ITEM:
+        // clear the tag from every input
+        for (let [index, ingredient] of state.crafting.entries()) {
+          if (ingredient.id === action.payload) {
+            draft.crafting[index] = new Ingredient()
+          }
+        }
+        if (state.furnace.input.id === action.payload) {
+          draft.furnace.input = new Ingredient()
+        }
+        if (state.generic.input.id === action.payload) {
+          draft.generic.input = new Ingredient()
+        }
+        if (state.output.id === action.payload) {
+          draft.output = new Ingredient()
+        }
+        delete draft.customItems[action.payload]
         break
       default:
         return state

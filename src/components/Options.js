@@ -1,8 +1,15 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { setEmptySpace, setOutputRecipe, setShape, setGroup, setFurnaceData, setMinecraftVersion } from '../actions'
+import {
+  setEmptySpace,
+  setOutputRecipe,
+  setShape,
+  setGroup,
+  setFurnaceData,
+  setMinecraftVersion,
+  setTab, setBedrockIdentifier
+} from '../actions'
 
-import DebouncedInput from './DebouncedInput'
 import NumericInput from 'react-numeric-input'
 
 import {
@@ -27,6 +34,7 @@ class Options extends Component {
     this.toggleEmptySpace = this.toggleEmptySpace.bind(this)
     this.setOutput = this.setOutput.bind(this)
     this.setGroup = this.setGroup.bind(this)
+    this.setBedrockIdentifier = this.setBedrockIdentifier.bind(this)
     this.setMinecraftVersion = this.setMinecraftVersion.bind(this)
   }
 
@@ -50,20 +58,27 @@ class Options extends Component {
     dispatch(setOutputRecipe(outputName))
   }
 
-  setGroup (value) {
+  setGroup ({ target: { value } }) {
     const { dispatch } = this.props
 
     dispatch(setGroup(value))
+  }
+
+  setBedrockIdentifier ({ target: { value } }) {
+    const { dispatch } = this.props
+
+    dispatch(setBedrockIdentifier(value))
   }
 
   setMinecraftVersion ({ target: { value } }) {
     const { dispatch } = this.props
 
     dispatch(setMinecraftVersion(value))
+    dispatch(setTab('crafting'))
   }
 
   render () {
-    const { dispatch, emptySpace, shape, outputRecipe, tab, furnace, minecraftVersion } = this.props
+    const { dispatch, emptySpace, shape, outputRecipe, tab, furnace, minecraftVersion, bedrockIdentifier, group } = this.props
 
     const shapelessTooltip = (
       <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the
@@ -111,25 +126,23 @@ class Options extends Component {
     )
 
     let versionSelector = (
-      ['crafting', 'furnace'].includes(tab)
-        ? (
-          <Row>
-            <Col md={2}>
-              <ControlLabel>Minecraft Version:</ControlLabel>
-            </Col>
-            <Col md={10}>
-              <FormControl
-                componentClass='select'
-                placeholder='select'
-                value={minecraftVersion}
-                onChange={this.setMinecraftVersion}
-              >
-                <option value={1.14} key={1.14}>1.14</option>
-                <option value={1.13} key={1.13}>1.13</option>
-              </FormControl>
-            </Col>
-          </Row>
-        ) : null
+      <Row>
+        <Col md={2}>
+          <ControlLabel>Minecraft Version:</ControlLabel>
+        </Col>
+        <Col md={10}>
+          <FormControl
+            componentClass='select'
+            placeholder='select'
+            value={minecraftVersion}
+            onChange={this.setMinecraftVersion}
+          >
+            <option value={'bedrock'} key={'bedrock'}>Bedrock</option>
+            <option value={1.14} key={1.14}>1.14</option>
+            <option value={1.13} key={1.13}>1.13</option>
+          </FormControl>
+        </Col>
+      </Row>
     )
 
     let customOptions
@@ -147,7 +160,7 @@ class Options extends Component {
           </Row>
         </Fragment>
       )
-    } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
+    } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab) && minecraftVersion !== 'bedrock') {
       customOptions = (
         <Fragment>
           <legend><h5>Furnace Options</h5></legend>
@@ -206,6 +219,22 @@ class Options extends Component {
         </Panel.Heading>
         <Panel.Body collapsible>
           {versionSelector}
+          {minecraftVersion === 'bedrock' ? (
+            // set the identifier for bedrock
+            <Row>
+              <Col md={2}>
+                <ControlLabel>Bedrock Identifier:</ControlLabel>
+              </Col>
+              {' '}
+              <Col md={10}>
+                <FormControl
+                  onChange={this.setBedrockIdentifier}
+                  placeholder='identifier:value'
+                  value={bedrockIdentifier}
+                />
+              </Col>
+            </Row>
+          ) : null}
           {customOptions}
           <legend><h5>Default Options</h5></legend>
           <Row>
@@ -222,22 +251,24 @@ class Options extends Component {
               </p>
             </Col>
           </Row>
-          <Row>
-            <Col md={2}>
-              <ControlLabel>Group:</ControlLabel>
-            </Col>
-            {' '}
-            <Col md={10}>
-              <DebouncedInput debounced={this.setGroup} attributes={{ className: 'form-control' }} />
-            </Col>
-            <Col md={12}>
-              <p style={{ fontSize: '12px' }}>This will group items in the recipe book.{' '}
-                <a href='https://github.com/skylinerw/guides/blob/master/java/recipes.md#groups' target='_blank' rel='noopener noreferrer'>
-                  Click here for a short explanation.
-                </a>
-              </p>
-            </Col>
-          </Row>
+          {minecraftVersion !== 'bedrock' ? (
+            <Row>
+              <Col md={2}>
+                <ControlLabel>Group:</ControlLabel>
+              </Col>
+              {' '}
+              <Col md={10}>
+                <FormControl onChange={this.setGroup} value={group} />
+              </Col>
+              <Col md={12}>
+                <p style={{ fontSize: '12px' }}>This will group items in the recipe book.{' '}
+                  <a href='https://github.com/skylinerw/guides/blob/master/java/recipes.md#groups' target='_blank' rel='noopener noreferrer'>
+                    Click here for a short explanation.
+                  </a>
+                </p>
+              </Col>
+            </Row>
+          ) : null}
         </Panel.Body>
       </Panel>
     )
@@ -251,6 +282,7 @@ export default connect((store) => {
     outputRecipe: store.Options.outputRecipe,
     tab: store.Options.tab,
     minecraftVersion: store.Options.minecraftVersion,
+    bedrockIdentifier: store.Options.bedrockIdentifier,
     furnace: store.Data.furnace
   }
 })(Options)

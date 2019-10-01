@@ -184,6 +184,7 @@ class CraftingGenerator {
       return {
         ...itemType,
         item: ingredient.id,
+        ...ingredient.customData,
         ...rest
       }
     } else if (ingredient.ingredient_type === 'tag') {

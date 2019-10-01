@@ -125,7 +125,7 @@ class Ingredient extends Component {
   }
 
   render () {
-    const { connectDragSource, size, tags, draggable = true, isOutput } = this.props
+    const { connectDragSource, size, tags, draggable = true, hover = true, isOutput } = this.props
     const ingredient = this.props.ingredient
 
     let readable = ingredient.readable
@@ -157,7 +157,7 @@ class Ingredient extends Component {
       >
         {draggable ? connectDragSource(image) : image}
         {isOutput && ingredient.isPopulated() ? <span className='crafting-table-output-count'>{ingredient.count}</span> : null}
-        <Tooltip title={readable} id={ingredient.id} style={this.state.mouse} />
+        {hover ? <Tooltip title={readable} id={ingredient.id} style={this.state.mouse} /> : null}
       </span>
     )
   }

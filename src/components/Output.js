@@ -8,6 +8,8 @@ import JSZip from 'jszip'
 
 import { saveAs } from 'file-saver'
 
+import { omit } from 'lodash'
+
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
 import codeStyle from 'react-syntax-highlighter/dist/languages/hljs/json'
 import defaultStyle from 'react-syntax-highlighter/dist/styles/hljs/default-style'
@@ -36,8 +38,9 @@ class Output extends Component {
   }
 
   generateCrafting () {
-    const { input, output, group, furnace, generic, emptySpace, shape, tab, tags, minecraftVersion } = this.props
+    const { input, output, group, furnace, generic, emptySpace, shape, tab, tags, minecraftVersion, bedrockIdentifier } = this.props
     let json, generator
+
     if (tab === 'crafting') {
       generator = new CraftingGenerator(input, output, tags, { group })
       if (shape === 'shapeless') {
@@ -57,10 +60,34 @@ class Output extends Component {
       json.result.count = output.count
     }
 
-
     // remove the prefix for 1.13
     if (['crafting', 'furnace'].includes(tab) && minecraftVersion === 1.13) {
       json.type = json.type.replace('minecraft:', '')
+    }
+
+    const renameProp = (oldProp, newProp, {[oldProp]:old, ...others}) => ({
+      [newProp]: old,
+      ...others
+    })
+
+    if (minecraftVersion === 'bedrock') {
+      let recipeType = json.type
+      if (recipeType === 'minecraft:smelting') recipeType = 'minecraft:recipe_furnace'
+
+      if (recipeType === 'minecraft:recipe_furnace') {
+        json = renameProp('ingredient', 'input', json)
+        json = renameProp('result', 'output', json)
+      }
+
+      json['description'] = {}
+      json['description']['identifier'] = bedrockIdentifier
+
+      json = {
+        format_version: '1.12',
+        [recipeType]: {
+          ...omit(json, ['type', 'experience', 'cookingtime', 'group'])
+        }
+      }
     }
 
     return json
@@ -156,6 +183,7 @@ export default connect((store) => {
     shape: store.Options.shape,
     emptySpace: store.Options.emptySpace,
     outputRecipe: store.Options.outputRecipe,
+    bedrockIdentifier: store.Options.bedrockIdentifier,
     minecraftVersion: store.Options.minecraftVersion
   }
 })(Output)
