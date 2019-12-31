@@ -11,8 +11,8 @@ import { saveAs } from 'file-saver'
 import { omit } from 'lodash'
 
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
-import codeStyle from 'react-syntax-highlighter/dist/languages/hljs/json'
-import defaultStyle from 'react-syntax-highlighter/dist/styles/hljs/default-style'
+import codeStyle from 'react-syntax-highlighter/dist/esm/languages/hljs/json'
+import defaultStyle from 'react-syntax-highlighter/dist/esm/styles/hljs/default-style'
 
 import CraftingGenerator from '../classes/CraftingGenerator'
 
@@ -32,9 +32,18 @@ class Output extends Component {
   }
 
   generateCraftingName () {
-    const { outputRecipe } = this.props
+    const { outputRecipe, minecraftVersion, bedrockIdentifier } = this.props
 
-    return (outputRecipe || 'crafting_recipe') + '.json'
+    let output = (outputRecipe || 'crafting_recipe') + '.json'
+
+    if (minecraftVersion === 'bedrock') {
+      const bedrockIdParts = bedrockIdentifier.split(':')
+      const bedrockId = bedrockIdParts[bedrockIdParts.length - 1]
+
+      output = bedrockId + '.recipe.json'
+    }
+
+    return output
   }
 
   generateCrafting () {
@@ -65,7 +74,7 @@ class Output extends Component {
       json.type = json.type.replace('minecraft:', '')
     }
 
-    const renameProp = (oldProp, newProp, {[oldProp]:old, ...others}) => ({
+    const renameProp = (oldProp, newProp, { [oldProp]: old, ...others }) => ({
       [newProp]: old,
       ...others
     })
@@ -134,6 +143,8 @@ class Output extends Component {
   }
 
   render () {
+    const { minecraftVersion } = this.props
+
     const fileSaveName = this.generateCraftingName()
     const json = this.generateCrafting() || {}
 
@@ -158,12 +169,14 @@ class Output extends Component {
             bsStyle='primary'
             block
           >Download <code>{fileSaveName}</code></Button>
-          <Button
-            onClick={() => this.generateDatapack()}
-            className='download-button'
-            bsStyle='primary'
-            block
-          >Download <code>datapack.zip</code></Button>
+          {minecraftVersion !== 'bedrock' ? (
+            <Button
+              onClick={() => this.generateDatapack()}
+              className='download-button'
+              bsStyle='primary'
+              block
+            >Download <code>datapack.zip</code></Button>
+          ) : null}
         </Panel.Body>
       </Panel>
     )

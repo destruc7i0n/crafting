@@ -15,9 +15,9 @@ export default function Options (state = {
   emptySpace: true,
   outputRecipe: 'crafting_recipe',
 
-  bedrockIdentifier: '',
+  bedrockIdentifier: 'crafting:recipe',
 
-  minecraftVersion: 1.14
+  minecraftVersion: 1.15
 }, action) {
   return produce(state, draft => {
     switch (action.type) {

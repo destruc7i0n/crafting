@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Button, Col, FormControl, Modal, Row } from 'react-bootstrap'
+import { Alert, Button, Col, FormControl, Modal, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class ItemDataModal extends Component {
@@ -59,6 +59,14 @@ class ItemDataModal extends Component {
           <Modal.Title>Set Item Data</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <Row>
+            <Col md={12}>
+              <Alert>
+                Here you can set custom data for the items, for example <code>data</code> for Bedrock Edition items.
+                This will be copied verbatim to the output.
+              </Alert>
+            </Col>
+          </Row>
           <Row>
             <Col mdPush={10} md={2}>
               <Button bsStyle='success' block onClick={this.addRow}>

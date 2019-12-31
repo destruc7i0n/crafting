@@ -13,6 +13,7 @@ import {
 import NumericInput from 'react-numeric-input'
 
 import {
+  Alert,
   Checkbox,
   Col,
   ControlLabel,
@@ -138,6 +139,7 @@ class Options extends Component {
             onChange={this.setMinecraftVersion}
           >
             <option value={'bedrock'} key={'bedrock'}>Bedrock</option>
+            <option value={1.15} key={1.15}>1.15</option>
             <option value={1.14} key={1.14}>1.14</option>
             <option value={1.13} key={1.13}>1.13</option>
           </FormControl>
@@ -218,6 +220,11 @@ class Options extends Component {
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body collapsible>
+          {minecraftVersion === 'bedrock' ? (
+            <Alert>
+              <strong>Note</strong>: Note that Bedrock support is partial.
+            </Alert>
+          ) : null}
           {versionSelector}
           {minecraftVersion === 'bedrock' ? (
             // set the identifier for bedrock
@@ -233,41 +240,48 @@ class Options extends Component {
                   value={bedrockIdentifier}
                 />
               </Col>
-            </Row>
-          ) : null}
-          {customOptions}
-          <legend><h5>Default Options</h5></legend>
-          <Row>
-            <Col md={2}>
-              <ControlLabel>Output Recipe:</ControlLabel>
-            </Col>
-            {' '}
-            <Col md={10}>
-              <input type='text' value={outputRecipe} onChange={this.setOutput} className='form-control' />
-            </Col>
-            <Col md={12}>
-              <p style={{ fontSize: '12px' }}>
-                The file name to output as.
-              </p>
-            </Col>
-          </Row>
-          {minecraftVersion !== 'bedrock' ? (
-            <Row>
-              <Col md={2}>
-                <ControlLabel>Group:</ControlLabel>
-              </Col>
-              {' '}
-              <Col md={10}>
-                <FormControl onChange={this.setGroup} value={group} />
-              </Col>
               <Col md={12}>
-                <p style={{ fontSize: '12px' }}>This will group items in the recipe book.{' '}
-                  <a href='https://github.com/skylinerw/guides/blob/master/java/recipes.md#groups' target='_blank' rel='noopener noreferrer'>
-                    Click here for a short explanation.
-                  </a>
+                <p style={{ fontSize: '12px' }}>
+                  The identifier for the bedrock recipe. Must be defined. The identifier is used internally.
                 </p>
               </Col>
             </Row>
+          ) : null}
+          {customOptions}
+          {minecraftVersion !== 'bedrock' ? (
+            <>
+              <legend><h5>Default Options</h5></legend>
+              <Row>
+                <Col md={2}>
+                  <ControlLabel>Output Recipe:</ControlLabel>
+                </Col>
+                {' '}
+                <Col md={10}>
+                  <input type='text' value={outputRecipe} onChange={this.setOutput} className='form-control' />
+                </Col>
+                <Col md={12}>
+                  <p style={{ fontSize: '12px' }}>
+                    The file name to output as.
+                  </p>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={2}>
+                  <ControlLabel>Group:</ControlLabel>
+                </Col>
+                {' '}
+                <Col md={10}>
+                  <FormControl onChange={this.setGroup} value={group} />
+                </Col>
+                <Col md={12}>
+                  <p style={{ fontSize: '12px' }}>This will group items in the recipe book.{' '}
+                    <a href='https://github.com/skylinerw/guides/blob/master/java/recipes.md#groups' target='_blank' rel='noopener noreferrer'>
+                      Click here for a short explanation.
+                    </a>
+                  </p>
+                </Col>
+              </Row>
+            </>
           ) : null}
         </Panel.Body>
       </Panel>

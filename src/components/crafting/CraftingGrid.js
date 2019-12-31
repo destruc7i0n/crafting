@@ -38,6 +38,8 @@ const craftingTarget = {
     // then only update the slot
     if (!(oldSlot === index) || !(size === 'large' && oldSize === 'large')) {
       // update store
+      item.ingredient.count = 1
+
       if (size === 'large' && output) {
         if (item.ingredient.ingredient_type === 'item') {
           dispatch(setOutputSlot(item.ingredient))

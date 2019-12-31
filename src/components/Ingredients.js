@@ -30,7 +30,7 @@ class Ingredients extends Component {
 
     let IngredientItems = null
     if (typeof minecraftVersion === 'string') {
-      IngredientItems = getTextures(1.14).items
+      IngredientItems = getTextures(1.15).items
     } else {
       IngredientItems = getTextures(minecraftVersion).items
     }
@@ -57,7 +57,9 @@ class Ingredients extends Component {
           </span>
           <div className='ingredients'>
             {[...customItemsIngredients, ...ingredients].map((ingredient, index) => {
-              const visible = ingredient.id.indexOf(search) !== -1 || ingredient.readable.indexOf(search) !== -1
+              let visible = false
+              if (ingredient.id && ingredient.id.includes(search)) visible = true
+              if (ingredient.readable && ingredient.readable.toLowerCase().includes(search)) visible = true
 
               const IngredientComponent = ingredient.custom ? AddItemIngredient : Ingredient
 
