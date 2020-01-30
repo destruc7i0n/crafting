@@ -85,14 +85,15 @@ class CraftingContextMenu extends Component {
     const { ingredient } = this.props
     const id = parseInt(this.props.id, 10)
 
-    ingredient.customData = data.reduce((acc, value) => {
+    const customDataIngredient = ingredient.clone()
+    customDataIngredient.customData = data.reduce((acc, value) => {
       let v = value[1]
       if (!isNaN(v)) v = Number(v)
       acc[value[0]] = v
       return acc
     }, {})
 
-    this.updateIngredient(id, ingredient)
+    this.updateIngredient(id, customDataIngredient)
     this.setState({ customDataModal: false })
   }
 

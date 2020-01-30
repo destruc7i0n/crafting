@@ -33,7 +33,41 @@ class Ingredient {
    * @returns {boolean}
    */
   isPopulated () {
-    return this.id && this.readable && this.texture
+    return this.id && this.readable && (this.custom || this.textureSrc)
+  }
+
+  /**
+   * Whether this ingredient has custom data
+   * @returns {boolean}
+   */
+  hasCustomData () {
+    return Object.keys(this.customData).length > 0
+  }
+
+  /**
+   * Gets the custom data for the ingredient
+   * @returns {*|{}}
+   */
+  getCustomData () {
+    return this.customData
+  }
+
+  /**
+   * Get the custom data of this object as a sorted string
+   * @returns {string}
+   */
+  getCustomDataAsString () {
+    // sort the custom data
+    const sortedData = Object.keys(this.customData).sort().map(k => `${k}:${this.customData[k]}`)
+    return sortedData.join(':')
+  }
+
+  /**
+   * Get a comparable string with the id and/or custom data
+   * @returns {string}
+   */
+  getComparableString () {
+    return this.id + (this.hasCustomData() ? `:${this.getCustomDataAsString()}` : '')
   }
 
   /**
@@ -50,6 +84,22 @@ class Ingredient {
       custom: this.custom,
       customData: this.customData
     }
+  }
+
+  /**
+   * Clones the ingredient
+   * @returns {Ingredient}
+   */
+  clone () {
+    return new Ingredient(
+      this.id,
+      this.readable,
+      this.textureSrc,
+      this.count,
+      this.nbt,
+      this.custom,
+      this.customData,
+    )
   }
 }
 
