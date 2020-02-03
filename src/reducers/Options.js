@@ -1,6 +1,13 @@
 import produce from 'immer'
 
-import { SET_EMPTY_SPACE, SET_MINECRAFT_VERSION, SET_OUTPUT_RECIPE, SET_SHAPE, SET_TAB } from '../actions'
+import {
+  SET_BEDROCK_IDENTIFIER,
+  SET_EMPTY_SPACE,
+  SET_MINECRAFT_VERSION,
+  SET_OUTPUT_RECIPE,
+  SET_SHAPE,
+  SET_TAB
+} from '../actions'
 
 export default function Options (state = {
   tab: 'crafting',
@@ -8,7 +15,9 @@ export default function Options (state = {
   emptySpace: true,
   outputRecipe: 'crafting_recipe',
 
-  minecraftVersion: 1.14
+  bedrockIdentifier: 'crafting:recipe',
+
+  minecraftVersion: 1.15
 }, action) {
   return produce(state, draft => {
     switch (action.type) {
@@ -26,6 +35,9 @@ export default function Options (state = {
         break
       case SET_MINECRAFT_VERSION:
         draft.minecraftVersion = action.payload
+        break
+      case SET_BEDROCK_IDENTIFIER:
+        draft.bedrockIdentifier = action.payload
         break
       default:
         return state

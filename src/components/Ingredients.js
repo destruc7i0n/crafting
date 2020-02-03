@@ -7,6 +7,9 @@ import DebouncedInput from './DebouncedInput'
 import Ingredient from './ingredient/Ingredient'
 import IngredientClass from '../classes/Ingredient'
 
+import AddItemModal from './addItem/AddItemModal'
+import AddItemIngredient from './addItem/AddItemIngredient'
+
 // get the items from the JSON file
 import getTextures from 'minecraft-textures'
 
@@ -23,18 +26,28 @@ class Ingredients extends Component {
 
   render () {
     const { search } = this.state
-    const { dispatch, minecraftVersion } = this.props
+    const { dispatch, minecraftVersion, customItems } = this.props
 
-    const IngredientItems = getTextures(minecraftVersion).items
+    let IngredientItems = null
+    if (typeof minecraftVersion === 'string') {
+      IngredientItems = getTextures(1.15).items
+    } else {
+      IngredientItems = getTextures(minecraftVersion).items
+    }
 
     // convert the items to the class
     const ingredients = IngredientItems.map((ingredient) => new IngredientClass(ingredient.id, ingredient.readable, ingredient.texture))
+
+    const customItemsIngredients = Object.keys(customItems).map(id => customItems[id])
 
     return (
       <Panel>
         <Panel.Heading>
           <Panel.Title>
             Ingredients
+            <div className='pull-right'>
+              <AddItemModal />
+            </div>
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body>
@@ -43,14 +56,19 @@ class Ingredients extends Component {
             <DebouncedInput attributes={{ className: 'form-control' }} debounced={(input) => this.setState({ search: input })} />
           </span>
           <div className='ingredients'>
-            {ingredients.map((ingredient, index) => {
-              const visible = ingredient.id.indexOf(search) !== -1 || ingredient.readable.indexOf(search) !== -1
+            {[...customItemsIngredients, ...ingredients].map((ingredient, index) => {
+              let visible = false
+              if (ingredient.id && ingredient.id.includes(search)) visible = true
+              if (ingredient.readable && ingredient.readable.toLowerCase().includes(search)) visible = true
+
+              const IngredientComponent = ingredient.custom ? AddItemIngredient : Ingredient
+
               return visible ? (
                 <div
                   key={index}
                   onDoubleClick={() => dispatch(setFirstEmptyCraftingSlot(ingredient))}
                 >
-                  <Ingredient ingredient={ingredient} size='normal' />
+                  <IngredientComponent ingredient={ingredient} size='normal' />
                 </div>
               ) : null
             })}
@@ -63,6 +81,7 @@ class Ingredients extends Component {
 
 export default connect((store) => {
   return {
-    minecraftVersion: store.Options.minecraftVersion
+    minecraftVersion: store.Options.minecraftVersion,
+    customItems: store.Data.customItems
   }
 })(Ingredients)

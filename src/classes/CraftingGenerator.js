@@ -184,6 +184,8 @@ class CraftingGenerator {
       return {
         ...itemType,
         item: ingredient.id,
+        item_h: ingredient.getComparableString(),
+        ...ingredient.customData,
         ...rest
       }
     } else if (ingredient.ingredient_type === 'tag') {
@@ -281,7 +283,8 @@ class CraftingGenerator {
             }
           }
         }
-        if (mapping.item === item.id) {
+        console.log(mapping, item)
+        if (mapping.item === item.id && mapping.item_h === item.getComparableString()) {
           return key
         }
       }
@@ -291,7 +294,7 @@ class CraftingGenerator {
 
     const keyExists = (key) => Object.keys(keyMap).indexOf(key) !== -1
     const getKey = (ingredient) => {
-      let name = ingredient.id
+      let name = ingredient.getComparableString()
       // name from tag name rather than item id
       if (ingredient.ingredient_type === 'tag') {
         const tag = this.tags[ingredient.tag]
@@ -337,6 +340,7 @@ class CraftingGenerator {
         const tag = this.tags[value.tag.tag]
         acc[key] = this.handleTags(tag)
       } else {
+        if (value.item_h) delete value.item_h
         acc[key] = value
       }
       return acc
