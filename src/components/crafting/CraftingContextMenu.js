@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import {
   createTag,
   resetCraftingSlot, resetFurnaceSlot, resetGenericSlot,
-  resetOutputSlot, setCraftingSlot, setFurnaceSlot, setGenericSlot,
+  resetOutputSlot, setCraftingSlot, setFurnaceSlot, setGenericSlot, setOutputSlot,
   toggleCountMenu,
   toggleNBTMenu
 } from '../../actions'
@@ -62,6 +62,14 @@ class CraftingContextMenu extends Component {
 
   updateIngredient (id, ingredient) {
     const { dispatch, tab } = this.props
+
+    if (!ingredient) return
+
+    if (id === 9) {
+      dispatch(setOutputSlot(ingredient))
+      return
+    }
+
     if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
       dispatch(setFurnaceSlot(ingredient))
     } else if (tab === 'crafting') {

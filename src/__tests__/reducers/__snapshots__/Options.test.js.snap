@@ -2,7 +2,7 @@
 
 exports[`Options Reducer should have a default state 1`] = `
 Object {
-  "bedrockIdentifier": "",
+  "bedrockIdentifier": "crafting:recipe",
   "emptySpace": true,
   "minecraftVersion": 1.15,
   "outputRecipe": "crafting_recipe",
@@ -13,7 +13,7 @@ Object {
 
 exports[`Options Reducer should set empty space 1`] = `
 Object {
-  "bedrockIdentifier": "",
+  "bedrockIdentifier": "crafting:recipe",
   "emptySpace": false,
   "minecraftVersion": 1.15,
   "outputRecipe": "crafting_recipe",
@@ -24,7 +24,7 @@ Object {
 
 exports[`Options Reducer should set output recipe 1`] = `
 Object {
-  "bedrockIdentifier": "",
+  "bedrockIdentifier": "crafting:recipe",
   "emptySpace": true,
   "minecraftVersion": 1.15,
   "outputRecipe": "acacia_boat",
@@ -35,7 +35,7 @@ Object {
 
 exports[`Options Reducer should set shape 1`] = `
 Object {
-  "bedrockIdentifier": "",
+  "bedrockIdentifier": "crafting:recipe",
   "emptySpace": true,
   "minecraftVersion": 1.15,
   "outputRecipe": "crafting_recipe",

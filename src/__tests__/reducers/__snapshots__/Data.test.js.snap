@@ -5,6 +5,8 @@ Object {
   "crafting": Array [
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -12,6 +14,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -19,6 +23,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -26,6 +32,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -33,6 +41,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -40,6 +50,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -47,6 +59,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -54,6 +68,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -61,17 +77,22 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
       "type": "item",
     },
   ],
+  "customItems": Object {},
   "furnace": Object {
     "cookingTime": 200,
     "experience": 0.1,
     "input": Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -81,6 +102,8 @@ Object {
   "generic": Object {
     "input": Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -90,6 +113,8 @@ Object {
   "group": "",
   "output": Object {
     "count": 1,
+    "custom": false,
+    "customData": Object {},
     "id": "",
     "readable": "",
     "texture": "",
@@ -106,6 +131,8 @@ Object {
   "crafting": Array [
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -113,6 +140,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -120,6 +149,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -127,6 +158,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -134,6 +167,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -141,6 +176,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -148,6 +185,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -155,6 +194,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -162,6 +203,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -170,6 +213,8 @@ Object {
   ],
   "output": Object {
     "count": 1,
+    "custom": false,
+    "customData": Object {},
     "id": "",
     "readable": "",
     "texture": "",
@@ -182,6 +227,8 @@ exports[`Data Reducer should reset the output slot 1`] = `
 Object {
   "output": Object {
     "count": 1,
+    "custom": false,
+    "customData": Object {},
     "id": "",
     "readable": "",
     "texture": "",
@@ -195,6 +242,8 @@ Object {
   "crafting": Array [
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "minecraft:air",
       "readable": "Air",
       "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
@@ -202,6 +251,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "minecraft:air",
       "readable": "Air",
       "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
@@ -209,6 +260,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "minecraft:air",
       "readable": "Air",
       "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
@@ -216,6 +269,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "minecraft:air",
       "readable": "Air",
       "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
@@ -223,6 +278,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "minecraft:air",
       "readable": "Air",
       "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
@@ -230,6 +287,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "minecraft:air",
       "readable": "Air",
       "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
@@ -237,6 +296,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "minecraft:air",
       "readable": "Air",
       "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
@@ -244,6 +305,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "minecraft:air",
       "readable": "Air",
       "texture": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
@@ -257,6 +320,8 @@ Object {
   ],
   "output": Object {
     "count": 1,
+    "custom": false,
+    "customData": Object {},
     "id": "",
     "readable": "",
     "texture": "",
@@ -270,6 +335,8 @@ Object {
   "crafting": Array [
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -277,6 +344,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -284,6 +353,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -291,6 +362,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -298,6 +371,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -305,6 +380,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -312,6 +389,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -319,6 +398,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -326,17 +407,22 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
       "type": "item",
     },
   ],
+  "customItems": Object {},
   "furnace": Object {
     "cookingTime": 200,
     "experience": 0.1,
     "input": Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -346,6 +432,8 @@ Object {
   "generic": Object {
     "input": Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -355,6 +443,8 @@ Object {
   "group": "",
   "output": Object {
     "count": 1,
+    "custom": false,
+    "customData": Object {},
     "id": "",
     "readable": "",
     "texture": "",
@@ -371,6 +461,8 @@ Object {
   "crafting": Array [
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -378,6 +470,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -385,6 +479,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -392,6 +488,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -399,6 +497,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -406,6 +506,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -413,6 +515,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -420,6 +524,8 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -427,17 +533,22 @@ Object {
     },
     Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
       "type": "item",
     },
   ],
+  "customItems": Object {},
   "furnace": Object {
     "cookingTime": 200,
     "experience": 0.1,
     "input": Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -447,6 +558,8 @@ Object {
   "generic": Object {
     "input": Object {
       "count": 1,
+      "custom": false,
+      "customData": Object {},
       "id": "",
       "readable": "",
       "texture": "",
@@ -456,6 +569,8 @@ Object {
   "group": "",
   "output": Object {
     "count": 1,
+    "custom": false,
+    "customData": Object {},
     "id": "",
     "readable": "",
     "texture": "",
