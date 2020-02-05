@@ -8,7 +8,7 @@ export const setCraftingSlot = (index, ingredient) => (dispatch, getState) => {
   const state = getState()
   const itemAtIndex = state.Data.crafting[index]
   // reset before populating again
-  if (itemAtIndex.isPopulated()) {
+  if (itemAtIndex && itemAtIndex.isPopulated()) {
     dispatch(resetCraftingSlot(index))
   }
   dispatch({

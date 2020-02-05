@@ -246,8 +246,10 @@ class CraftingGenerator {
     })
 
     if (output.isPopulated()) {
+      const itemType = this.getItemType(output)
+      if (itemType.item_h) delete itemType.item_h
       shape.result = {
-        ...this.getItemType(output),
+        ...itemType,
         count: output.count
       }
     }
@@ -283,7 +285,6 @@ class CraftingGenerator {
             }
           }
         }
-        console.log(mapping, item)
         if (mapping.item === item.id && mapping.item_h === item.getComparableString()) {
           return key
         }
@@ -383,8 +384,10 @@ class CraftingGenerator {
 
     // result
     if (output.isPopulated()) {
+      const itemType = this.getItemType(output)
+      if (itemType.item_h) delete itemType.item_h
       shape.result = {
-        ...this.getItemType(output),
+        ...itemType,
         count: output.count
       }
     }

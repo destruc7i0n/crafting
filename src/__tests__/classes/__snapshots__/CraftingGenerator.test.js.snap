@@ -15,6 +15,7 @@ Object {
   "result": Object {
     "count": 1,
     "item": "minecraft:stone",
+    "item_h": "minecraft:stone",
   },
   "type": "minecraft:crafting_shaped",
 }
@@ -34,6 +35,7 @@ Object {
   "result": Object {
     "count": 1,
     "item": "minecraft:stone",
+    "item_h": "minecraft:stone",
   },
   "type": "minecraft:crafting_shaped",
 }
@@ -44,20 +46,25 @@ Object {
   "ingredients": Array [
     Object {
       "item": "minecraft:dirt",
+      "item_h": "minecraft:dirt",
     },
     Object {
       "item": "minecraft:dirt",
+      "item_h": "minecraft:dirt",
     },
     Object {
       "item": "minecraft:dirt",
+      "item_h": "minecraft:dirt",
     },
     Object {
       "item": "minecraft:dirt",
+      "item_h": "minecraft:dirt",
     },
   ],
   "result": Object {
     "count": 1,
     "item": "minecraft:stone",
+    "item_h": "minecraft:stone",
   },
   "type": "minecraft:crafting_shapeless",
 }
@@ -69,6 +76,7 @@ Object {
   "experience": 1000,
   "ingredient": Object {
     "item": "minecraft:dirt",
+    "item_h": "minecraft:dirt",
   },
   "result": "minecraft:stone",
   "type": "minecraft:smelting",
@@ -80,6 +88,7 @@ Object {
   "count": 1,
   "ingredient": Object {
     "item": "minecraft:dirt",
+    "item_h": "minecraft:dirt",
   },
   "result": "minecraft:stone",
   "type": "minecraft:stonecutting",
