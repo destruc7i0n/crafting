@@ -1,3 +1,7 @@
+import 'core-js/es/map'
+import 'core-js/es/set'
+import 'core-js/features/array/includes'
+
 import React from 'react'
 import { render } from 'react-dom'
 import App from './App'

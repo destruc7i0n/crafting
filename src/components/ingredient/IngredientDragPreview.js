@@ -1,13 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { NoTextureTexture } from '../../classes/Ingredient'
+
 import './IngredientDragPreview.css'
 
 const IngredientDragPreview = ({ ingredient, tags = [], updateTimer = {} }) => {
-  let texture = ingredient.texture || null
+  let texture = ingredient.texture || NoTextureTexture
   if (ingredient.ingredient_type === 'tag') {
     const { index = 0 } = updateTimer
-    texture = tags[ingredient.tag].items[index].texture
+    if (tags[ingredient.tag].items[index]) texture = tags[ingredient.tag].items[index].texture
   }
   return (
     <div style={{ display: 'inline-block' }}>

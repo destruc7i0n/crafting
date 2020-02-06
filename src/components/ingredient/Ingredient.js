@@ -16,9 +16,11 @@ const ingredientSource = {
   beginDrag (props, monitor, component) {
     const { ingredient, slot, size, isOutput } = props
     // hide while dragging
-    component.setState({
-      mouse: { ...component.state.mouse, display: 'none' }
-    })
+    if (component) {
+      component.setState({
+        mouse: { ...component.state.mouse, display: 'none' }
+      })
+    }
     // what will be passed on drop
     return {
       ingredient,
@@ -107,7 +109,7 @@ class Ingredient extends Component {
     }
     const cursorX = e.clientX
     const cursorY = e.clientY
-    let updatedStyles = { display: 'block', x: cursorX, y: cursorY }
+    const updatedStyles = { display: 'block', x: cursorX, y: cursorY }
 
     this.setState({
       mouse: updatedStyles
@@ -149,7 +151,7 @@ class Ingredient extends Component {
       <span
         className={classNames({
           'grid-large': size === 'large',
-          'grid': size === 'normal',
+          grid: size === 'normal',
           'grid-furnace': size === 'furnace'
         })}
         onMouseMove={this.onMouseMove}
