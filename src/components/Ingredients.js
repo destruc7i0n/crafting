@@ -11,7 +11,7 @@ import AddItemModal from './addItem/AddItemModal'
 import AddItemIngredient from './addItem/AddItemIngredient'
 
 // get the items from the JSON file
-import getTextures from 'minecraft-textures'
+import { latestVersion } from 'minecraft-textures'
 
 import './Ingredients.css'
 
@@ -20,23 +20,39 @@ class Ingredients extends Component {
     super(props)
 
     this.state = {
-      search: ''
+      search: '',
+      items: []
     }
   }
 
-  render () {
-    const { search } = this.state
-    const { dispatch, minecraftVersion, customItems } = this.props
+  async componentDidMount () {
+    await this.getTextures()
+  }
 
-    let IngredientItems = null
-    if (typeof minecraftVersion === 'string') {
-      IngredientItems = getTextures(1.15).items
-    } else {
-      IngredientItems = getTextures(minecraftVersion).items
+  async componentDidUpdate (prevProps) {
+    if (prevProps.minecraftVersion !== this.props.minecraftVersion) {
+      this.setState({ items: [] })
+      await this.getTextures(this.props.minecraftVersion)
     }
+  }
+
+  async getTextures (version = null) {
+    let minecraftVersion = latestVersion
+    if (typeof version === 'number') {
+      minecraftVersion = version
+    } else if (typeof version === 'string') {
+      minecraftVersion = 1.15
+    }
+    const { default: textures } = await import(`minecraft-textures/dist/textures/${minecraftVersion}`)
+    this.setState({ items: textures.items })
+  }
+
+  render () {
+    const { search, items } = this.state
+    const { dispatch, customItems } = this.props
 
     // convert the items to the class
-    const ingredients = IngredientItems.map((ingredient) => new IngredientClass(ingredient.id, ingredient.readable, ingredient.texture))
+    const ingredients = items.map((ingredient) => new IngredientClass(ingredient.id, ingredient.readable, ingredient.texture))
 
     const customItemsIngredients = Object.keys(customItems).map(id => customItems[id])
 
@@ -56,6 +72,7 @@ class Ingredients extends Component {
             <DebouncedInput attributes={{ className: 'form-control' }} debounced={(input) => this.setState({ search: input })} />
           </span>
           <div className='ingredients'>
+            {ingredients.length === 0 ? <div className='ingredients-loading-text'>Loading...</div> : null}
             {[...customItemsIngredients, ...ingredients].map((ingredient, index) => {
               let visible = false
               if (ingredient.id && ingredient.id.includes(search)) visible = true

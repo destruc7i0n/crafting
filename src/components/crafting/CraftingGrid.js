@@ -72,19 +72,16 @@ class CraftingGrid extends Component {
     const { connectDropTarget, index, ingredient, size, type, disabled, output, tab, style = {} } = this.props
 
     // determine an id for the context menu
-    let contextMenuId = size === 'large' && output ? 9 : index
+    const contextMenuId = size === 'large' && output ? 9 : index
 
     // no drop target for disabled
     if (disabled) {
       return (
-        <span className={classNames({
-          'grid-furnace': type === 'furnace',
-          'grid': type === 'crafting'
-        })} />
+        <span className={classNames({ 'grid-furnace': type === 'furnace', grid: type === 'crafting' })} />
       )
     }
 
-    let ingredientComponent = <Ingredient ingredient={ingredient} slot={index} size={size} type={type} isOutput={output} />
+    const ingredientComponent = <Ingredient ingredient={ingredient} slot={index} size={size} type={type} isOutput={output} />
 
     let ingredientTarget = (
       <div style={style}>
@@ -95,7 +92,7 @@ class CraftingGrid extends Component {
     if (ingredient.isPopulated()) {
       ingredientTarget = (
         <div style={style}>
-          <ContextMenuTrigger id={contextMenuId} holdToDisplay={-1}>
+          <ContextMenuTrigger id={contextMenuId.toString()} holdToDisplay={-1}>
             {ingredientComponent}
           </ContextMenuTrigger>
           <CraftingContextMenu ingredient={ingredient} id={contextMenuId} tab={tab} />

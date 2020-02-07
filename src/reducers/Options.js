@@ -9,6 +9,8 @@ import {
   SET_TAB
 } from '../actions'
 
+import { latestVersion } from 'minecraft-textures'
+
 export default function Options (state = {
   tab: 'crafting',
   shape: 'shaped',
@@ -17,7 +19,7 @@ export default function Options (state = {
 
   bedrockIdentifier: 'crafting:recipe',
 
-  minecraftVersion: 1.15
+  minecraftVersion: Number(latestVersion)
 }, action) {
   return produce(state, draft => {
     switch (action.type) {

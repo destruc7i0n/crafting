@@ -6,6 +6,7 @@ module.exports = {
     "jest": true
   },
   "rules": {
-    "prefer-const": false
+    "prefer-const": 0,
+    "react/jsx-handler-names": 0
   }
 }

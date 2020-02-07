@@ -9,6 +9,13 @@
     border-bottom-color: #FFF;
 }
 
+.ingredients-loading-text {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-family: Minecraft;
+}
+
 .ingredients {
     max-height: 700px;
     overflow-y: scroll;

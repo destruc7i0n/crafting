@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
   createTag,
@@ -133,14 +133,15 @@ class CraftingContextMenu extends Component {
     }
 
     return (
-      <Fragment>
+      <>
         <ContextMenu
-          id={this.props.id}>
+          id={this.props.id.toString()}
+        >
           {menuItems}
           <MenuItem onClick={this.removeItem} data={{ index: id, ingredient }}>Remove</MenuItem>
         </ContextMenu>
         <ItemDataModal ingredient={ingredient} setCustomData={this.setCustomData} show={customDataModal} onHide={() => this.setState({ customDataModal: false })} />
-      </Fragment>
+      </>
     )
   }
 }

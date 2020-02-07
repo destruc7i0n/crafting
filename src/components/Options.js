@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
   setEmptySpace,
@@ -11,6 +11,8 @@ import {
 } from '../actions'
 
 import NumericInput from 'react-numeric-input'
+
+import { versions } from 'minecraft-textures'
 
 import {
   Alert,
@@ -54,7 +56,7 @@ class Options extends Component {
   setOutput ({ target: { value } }) {
     const { dispatch } = this.props
 
-    let outputName = value.replace(/[^a-z0-9_]+/, '')
+    const outputName = value.replace(/[^a-z0-9_]+/, '')
 
     dispatch(setOutputRecipe(outputName))
   }
@@ -83,7 +85,8 @@ class Options extends Component {
 
     const shapelessTooltip = (
       <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the
-        output.</Tooltip>
+        output.
+      </Tooltip>
     )
 
     const shapelessCheckbox = (
@@ -126,7 +129,7 @@ class Options extends Component {
       </FormGroup>
     )
 
-    let versionSelector = (
+    const versionSelector = (
       <Row>
         <Col md={2}>
           <ControlLabel>Minecraft Version:</ControlLabel>
@@ -138,10 +141,13 @@ class Options extends Component {
             value={minecraftVersion}
             onChange={this.setMinecraftVersion}
           >
-            <option value={'bedrock'} key={'bedrock'}>Bedrock</option>
-            <option value={1.15} key={1.15}>1.15</option>
-            <option value={1.14} key={1.14}>1.14</option>
-            <option value={1.13} key={1.13}>1.13</option>
+            <option value='bedrock' key='bedrock'>Bedrock</option>
+            {versions.map(v => {
+              if (v.toString() !== '1.12') {
+                return (<option value={v} key={v}>{v}</option>)
+              }
+              return null
+            })}
           </FormControl>
         </Col>
       </Row>
@@ -150,7 +156,7 @@ class Options extends Component {
     let customOptions
     if (tab === 'crafting') {
       customOptions = (
-        <Fragment>
+        <>
           <legend><h5>Crafting Options</h5></legend>
           <Row>
             <Col md={4}>
@@ -160,11 +166,11 @@ class Options extends Component {
               {shape === 'shaped' ? removeEmptySpaceCheckbox : null}
             </Col>
           </Row>
-        </Fragment>
+        </>
       )
     } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab) && minecraftVersion !== 'bedrock') {
       customOptions = (
-        <Fragment>
+        <>
           <legend><h5>Furnace Options</h5></legend>
           <Row>
             <Col md={2}>
@@ -208,7 +214,7 @@ class Options extends Component {
               </p>
             </Col>
           </Row>
-        </Fragment>
+        </>
       )
     }
 

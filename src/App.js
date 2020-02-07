@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Col, Row } from 'react-bootstrap'
 
-import { DragDropContext } from 'react-dnd'
+import { DndProvider } from 'react-dnd'
 import MultiBackend from 'react-dnd-multi-backend'
-import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
+import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch'
 
 import { debounce } from 'lodash'
 
@@ -56,28 +56,30 @@ export class App extends Component {
     const isMobile = window.matchMedia && window.matchMedia('only screen and (max-width: 992px)').matches
 
     return (
-      <div className='container'>
-        <Navbar />
-        <IngredientDragLayer />
-        <Row>
-          <Col md={12}>
-            <HelpAlert />
-          </Col>
-          <Col md={6} sm={12}>
-            <CraftingTable />
-            { isMobile ? <Ingredients /> : null }
-            <Tags />
-            <Options />
-            <Output />
-          </Col>
-          <Col md={6} sm={12} className='pull-right'>
-            { !isMobile ? <Ingredients /> : null }
-          </Col>
-        </Row>
-        <CraftingModal />
-      </div>
+      <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+        <div className='container'>
+          <Navbar />
+          <IngredientDragLayer />
+          <Row>
+            <Col md={12}>
+              <HelpAlert />
+            </Col>
+            <Col md={6} sm={12}>
+              <CraftingTable />
+              {isMobile ? <Ingredients /> : null}
+              <Tags />
+              <Options />
+              <Output />
+            </Col>
+            <Col md={6} sm={12} className='pull-right'>
+              {!isMobile ? <Ingredients /> : null}
+            </Col>
+          </Row>
+          <CraftingModal />
+        </div>
+      </DndProvider>
     )
   }
 }
 
-export default DragDropContext(MultiBackend(HTML5toTouch))(App)
+export default App
