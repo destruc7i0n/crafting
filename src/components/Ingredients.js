@@ -21,7 +21,8 @@ class Ingredients extends Component {
 
     this.state = {
       search: '',
-      items: []
+      items: [],
+      error: ''
     }
   }
 
@@ -29,7 +30,7 @@ class Ingredients extends Component {
     await this.getTextures()
   }
 
-  async componentDidUpdate (prevProps) {
+  async componentDidUpdate (prevProps, prevState, snapshot) {
     if (prevProps.minecraftVersion !== this.props.minecraftVersion) {
       this.setState({ items: [] })
       await this.getTextures(this.props.minecraftVersion)
@@ -43,12 +44,16 @@ class Ingredients extends Component {
     } else if (typeof version === 'string') {
       minecraftVersion = 1.15
     }
-    const { default: textures } = await import(`minecraft-textures/dist/textures/${minecraftVersion}`)
-    this.setState({ items: textures.items })
+    try {
+      const { default: textures } = await import(`minecraft-textures/dist/textures/${minecraftVersion}`)
+      this.setState({ items: textures.items })
+    } catch (e) {
+      this.setState({ error: 'Could not load the textures!' })
+    }
   }
 
   render () {
-    const { search, items } = this.state
+    const { search, items, error } = this.state
     const { dispatch, customItems } = this.props
 
     // convert the items to the class
@@ -72,7 +77,14 @@ class Ingredients extends Component {
             <DebouncedInput attributes={{ className: 'form-control' }} debounced={(input) => this.setState({ search: input })} />
           </span>
           <div className='ingredients'>
-            {ingredients.length === 0 ? <div className='ingredients-loading-text'>Loading...</div> : null}
+            {ingredients.length === 0
+              ? (
+                <div className='ingredients-loading-text'>
+                  {error || 'Loading...'}
+                </div>
+              )
+              : null
+            }
             {[...customItemsIngredients, ...ingredients].map((ingredient, index) => {
               let visible = false
               if (ingredient.id && ingredient.id.includes(search)) visible = true

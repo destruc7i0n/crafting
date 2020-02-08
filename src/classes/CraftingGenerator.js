@@ -140,7 +140,7 @@ class CraftingGenerator {
    * Returns a character for an item
    * @param item
    * @param keyMap
-   * @returns {string}
+   * @returns {string|boolean}
    */
   dinnerboneChallenge (item, keyMap) {
     // dinnerbone actually said for an 'ascii to item chart', http://i.thedestruc7i0n.ca/b4p518.png
@@ -169,7 +169,8 @@ class CraftingGenerator {
       return '#'
     }
 
-    return name[0].toUpperCase()
+    if (name[0]) return name[0].toUpperCase()
+    return false
   }
 
   /**
@@ -306,7 +307,7 @@ class CraftingGenerator {
       // choose a key if the special ones don't work
       let flag = true
       while (flag) {
-        if (keyExists(key)) {
+        if (keyExists(key) || !key) {
           key = patternCharacters[Math.floor(patternCharacters.length * Math.random())]
         } else {
           flag = false
