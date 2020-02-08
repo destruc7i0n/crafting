@@ -7107,10 +7107,10 @@ mimic-fn@^2.0.0, mimic-fn@^2.1.0:
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-minecraft-textures@1.16.0-beta.2:
-  version "1.16.0-beta.2"
-  resolved "https://registry.yarnpkg.com/minecraft-textures/-/minecraft-textures-1.16.0-beta.2.tgz#bf43d7816ebde9181ab63c6ab7e17aa25c70e06c"
-  integrity sha512-Io3oI6DOt//AQz3PsQ5YoRwp4wiAVe3HQyM3hhVVaiOqgzULn+IPzQXledv7NKwj/SFKh0n6KFQTE53+UWIo/Q==
+minecraft-textures@latest:
+  version "1.16.0-beta.3"
+  resolved "https://registry.yarnpkg.com/minecraft-textures/-/minecraft-textures-1.16.0-beta.3.tgz#8bdb246613c27ec42bb70e130e2055b8385a9422"
+  integrity sha512-oy5AlRNMUg7ob/Nip2gqEJ+lWqQe/TsYUBCB4REAyxughuBva1+NlEb5QQtbzJwyZyz9ROVklWk6xAKyW8mC9Q==
 
 mini-css-extract-plugin@0.9.0:
   version "0.9.0"

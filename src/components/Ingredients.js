@@ -45,7 +45,7 @@ class Ingredients extends Component {
       minecraftVersion = 1.15
     }
     try {
-      const { default: textures } = await import(`minecraft-textures/dist/textures/${minecraftVersion}`)
+      const { default: textures } = await import(`minecraft-textures/dist/textures/${minecraftVersion}.js`)
       this.setState({ items: textures.items })
     } catch (e) {
       this.setState({ error: 'Could not load the textures!' })
