@@ -176,16 +176,17 @@ class CraftingGenerator {
   /**
    * Returns the item based on the item provided
    * @param ingredient
+   * @param comparable
    * @param rest
    * @returns {object|array}
    */
-  getItemType (ingredient, ...rest) {
+  getItemType (ingredient, comparable = true, ...rest) {
     const itemType = this.getItem()
     if (ingredient.ingredient_type === 'item') {
       return {
         ...itemType,
         item: ingredient.id,
-        item_h: ingredient.getComparableString(),
+        ...(comparable && { item_h: ingredient.getComparableString() }),
         ...ingredient.customData,
         ...rest
       }
@@ -231,8 +232,9 @@ class CraftingGenerator {
     for (let ingredient of input) {
       // only if populated
       if (ingredient.isPopulated()) {
+        const itemType = this.getItemType(ingredient, false)
         shape.ingredients.push(
-          this.getItemType(ingredient)
+          itemType
         )
       }
     }
@@ -247,8 +249,7 @@ class CraftingGenerator {
     })
 
     if (output.isPopulated()) {
-      const itemType = this.getItemType(output)
-      if (itemType.item_h) delete itemType.item_h
+      const itemType = this.getItemType(output, false)
       shape.result = {
         ...itemType,
         count: output.count
@@ -385,8 +386,7 @@ class CraftingGenerator {
 
     // result
     if (output.isPopulated()) {
-      const itemType = this.getItemType(output)
-      if (itemType.item_h) delete itemType.item_h
+      const itemType = this.getItemType(output, false)
       shape.result = {
         ...itemType,
         count: output.count
@@ -412,7 +412,7 @@ class CraftingGenerator {
 
     // only if populated
     if (ingredient.isPopulated()) {
-      shape.ingredient = this.getItemType(ingredient)
+      shape.ingredient = this.getItemType(ingredient, false)
 
       // handle tags...
       if (shape.ingredient.tag) {
@@ -445,7 +445,7 @@ class CraftingGenerator {
 
     // only if populated
     if (ingredient.isPopulated()) {
-      shape.ingredient = this.getItemType(ingredient)
+      shape.ingredient = this.getItemType(ingredient, false)
 
       // handle tags...
       if (shape.ingredient.tag) {
