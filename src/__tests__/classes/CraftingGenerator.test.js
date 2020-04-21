@@ -37,7 +37,8 @@ describe('Crafting Generator Class', () => {
   it('should output shapeless', () => {
     const generator = new CraftingGenerator(
       ingredients,
-      new Ingredient(stone.id, stone.readable, stone.texture)
+      new Ingredient(stone.id, stone.readable, stone.texture),
+      {}, {}
     )
 
     expect(
@@ -48,7 +49,8 @@ describe('Crafting Generator Class', () => {
   it('should output shaped with spaces', () => {
     const generator = new CraftingGenerator(
       ingredients,
-      new Ingredient(stone.id, stone.readable, stone.texture)
+      new Ingredient(stone.id, stone.readable, stone.texture),
+      {}, {}
     )
 
     expect(
@@ -59,7 +61,8 @@ describe('Crafting Generator Class', () => {
   it('should output shaped without spaces', () => {
     const generator = new CraftingGenerator(
       ingredients,
-      new Ingredient(stone.id, stone.readable, stone.texture)
+      new Ingredient(stone.id, stone.readable, stone.texture),
+      {}, {}
     )
 
     expect(
@@ -70,7 +73,8 @@ describe('Crafting Generator Class', () => {
   it('should output smelting recipe', () => {
     const generator = new CraftingGenerator(
       new Ingredient(dirt.id, dirt.readable, dirt.texture),
-      new Ingredient(stone.id, stone.readable, stone.texture)
+      new Ingredient(stone.id, stone.readable, stone.texture),
+      {}, {}
     )
 
     expect(
@@ -81,7 +85,8 @@ describe('Crafting Generator Class', () => {
   it('should output stonecutter recipe', () => {
     const generator = new CraftingGenerator(
       new Ingredient(dirt.id, dirt.readable, dirt.texture),
-      new Ingredient(stone.id, stone.readable, stone.texture)
+      new Ingredient(stone.id, stone.readable, stone.texture),
+      {}, {}
     )
 
     expect(

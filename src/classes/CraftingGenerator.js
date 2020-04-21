@@ -358,28 +358,27 @@ class CraftingGenerator {
     let lines = [...splitKeys]
     // check if needed to remove space
     if (removeEmptySpace) {
-      // if removing empty space, remove the end
-      // trim the end
-      let noTrailing = splitKeys.map((line) => trimEnd(line))
+      // split and get the minimum and maximum positions of the first-non whitespace chars
+      const indexOfFirstNonWhitespace = (els) => els.findIndex(el => el !== ' ')
 
-      // get longest string from the trimmed strings
-      let longest = Math.max(...noTrailing.map(({ length }) => length))
+      const nonEmpty = lines.filter(p => /\S/.test(p))
 
-      // trim until longest
-      let trimmed = splitKeys.map((line) => {
-        return line.substring(0, longest)
+      let min = []
+      let max = []
+
+      nonEmpty.forEach(p => {
+        const split = p.split('')
+        min.push(indexOfFirstNonWhitespace(split))
+        max.push(
+          split.length - indexOfFirstNonWhitespace([...split].reverse())
+        )
       })
 
-      // remove empty line
-      lines = trimmed.filter((line) => /\S/.test(line))
-      // get amount of leading whitespace
-      let leadingWhitespace = lines.map((line) => line.search(/\S/))
+      const minLength = Math.min(...min)
+      const maxLength = Math.max(...max)
 
-      // get shortest amount
-      let leadingWhitespaceAmount = Math.min(...leadingWhitespace)
-
-      // trim the start
-      lines = lines.map((line) => line.substring(leadingWhitespaceAmount))
+      // trim each line to these lengths
+      lines = nonEmpty.map((line) => line.substring(minLength, maxLength))
     }
     // append mapping
     shape.pattern = lines
