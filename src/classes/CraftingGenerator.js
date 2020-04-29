@@ -1,5 +1,3 @@
-import { trimEnd } from 'lodash'
-
 class CraftingGenerator {
   /**
    * Constructs a new crafting generator
@@ -87,10 +85,10 @@ class CraftingGenerator {
     const { extras } = this
 
     const type = {
-      'furnace': 'minecraft:smelting',
-      'blast': 'minecraft:blasting',
-      'smoking': 'minecraft:smoking',
-      'campfire': 'minecraft:campfire_cooking',
+      furnace: 'minecraft:smelting',
+      blast: 'minecraft:blasting',
+      smoking: 'minecraft:smoking',
+      campfire: 'minecraft:campfire_cooking'
     }[tab]
 
     let cooking = {
@@ -118,7 +116,7 @@ class CraftingGenerator {
     const { extras } = this
 
     const type = {
-      'stonecutter': 'minecraft:stonecutting'
+      stonecutter: 'minecraft:stonecutting'
     }[tab]
 
     let generic = {
