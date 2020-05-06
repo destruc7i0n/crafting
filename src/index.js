@@ -4,6 +4,7 @@ import 'core-js/es/array/includes'
 import 'core-js/es/array/from'
 import 'core-js/es/string/includes'
 import 'core-js/es/object/assign'
+import 'core-js/es/object/entries'
 import 'core-js/es/symbol'
 
 import React from 'react'

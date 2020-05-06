@@ -4001,10 +4001,10 @@ dnd-core@^10.0.2:
     "@react-dnd/invariant" "^2.0.0"
     redux "^4.0.4"
 
-dnd-multi-backend@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/dnd-multi-backend/-/dnd-multi-backend-5.0.0.tgz#afa73e541bf434cbf1a46ac717b2b9a580b5f19f"
-  integrity sha512-an4231UOPvipbcVXczXUHf1u3SNSTouSbu6ZLCPJvAO29yIo3C43ddS2evK5aastg2qKWTOlzI52IGq7q5oGGA==
+dnd-multi-backend@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/dnd-multi-backend/-/dnd-multi-backend-6.0.0.tgz#4ed68229a3f6f1fb9e9bc45b4034e8330005280d"
+  integrity sha512-qfUO4V0IACs24xfE9m9OUnwIzoL+SWzSiFbKVIHE0pFddJeZ93BZOdHS1XEYr8X3HNh+CfnfjezXgOMgjvh74g==
 
 dns-equal@^1.0.0:
   version "1.0.0"
@@ -5818,10 +5818,10 @@ immer@1.10.0:
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
   integrity sha512-O3sR1/opvCDGLEVcvrGTMtLac8GJ5IwZC4puPrLuRj3l7ICKvkmA0vGuU9OW8mV9WIBRnaxp5GJh9IEAaNOoYg==
 
-immer@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-6.0.3.tgz#94d5051cd724668160a900d66d85ec02816f29bd"
-  integrity sha512-12VvNrfSrXZdm/BJgi/KDW2soq5freVSf3I1+4CLunUM8mAGx2/0Njy0xBVzi5zewQZiwM7z1/1T+8VaI7NkmQ==
+immer@^6.0.5:
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-6.0.5.tgz#77187d13b71c6cee40dde3b8e87a50a7a636d630"
+  integrity sha512-Q2wd90qrgFieIpLzAO2q9NLEdmyp/sr76Ml4Vm5peUKgyTa2CQa3ey8zuzwSKOlKH7grCeGBGUcLLVCVW1aguA==
 
 import-cwd@^2.0.0:
   version "2.1.0"
@@ -9475,6 +9475,13 @@ react-dev-utils@^10.2.1:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
+react-device-detect@^1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/react-device-detect/-/react-device-detect-1.12.1.tgz#0a2e0b02dbbceff7d619c57074a9e0ebab74bb35"
+  integrity sha512-BQ7xIEHx0VqPBGEtEFJRybHnhZ1Qn3BXX8dRR3EKLRfSTKpITUw925VYCGnygZDpmgYSq5NX0IvHGhy0w7Sckg==
+  dependencies:
+    ua-parser-js "^0.7.21"
+
 react-dnd-html5-backend@10.0.2:
   version "10.0.2"
   resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-10.0.2.tgz#15cb9d2b923f43576a136df854e288cb5969784c"
@@ -9482,19 +9489,19 @@ react-dnd-html5-backend@10.0.2:
   dependencies:
     dnd-core "^10.0.2"
 
-react-dnd-multi-backend@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/react-dnd-multi-backend/-/react-dnd-multi-backend-5.0.0.tgz#eeb186ac32f46dd2f0ed720b653978d9e1fdfb5c"
-  integrity sha512-Ql8JKAmFnzzKLxOYUTIQVQZeQd1shbZKJiEbkDY5Vte3hY/YFdv+qs2IDxeH2LX2itBYrnEIgWYcRBacPtPeag==
+react-dnd-multi-backend@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-dnd-multi-backend/-/react-dnd-multi-backend-6.0.0.tgz#bbf423e159b20f33fa5bbbe725aeb4a3df2d891d"
+  integrity sha512-izDZu2D0jlOhaXcgxcf4PhI5xlzCddIWmRccEur8Bom4Sj2xNOOxmPyncscxq6ZMOZ4Mf6mpM0IW5uPyZDD5gA==
   dependencies:
-    dnd-multi-backend "^5.0.0"
+    dnd-multi-backend "^6.0.0"
     prop-types "^15.7.2"
-    react-dnd-preview "^5.0.0"
+    react-dnd-preview "^6.0.0"
 
-react-dnd-preview@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/react-dnd-preview/-/react-dnd-preview-5.0.0.tgz#a3a693c27195885a9f7413ccddf46a6fc5ef665a"
-  integrity sha512-TYXOsLUuEQpwAoxjPLWi+3bXsYGUBAslBFChUN6xyH11/ogsrQ9UrBIFf6uON7wmf2azsLAuWglfffXlZXSRsg==
+react-dnd-preview@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-dnd-preview/-/react-dnd-preview-6.0.0.tgz#b765a95aee0f6b149bc357347397a7ea70e132c1"
+  integrity sha512-7kYWChFYMlHhdRqQyTAZn2QvZ6kN4n3qQUN698e+Mdl81Vq5pxaBrdeUsT07tpV5IhD54OQx82aLbxKOKCnq6w==
   dependencies:
     prop-types "^15.7.2"
 
@@ -11362,6 +11369,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+ua-parser-js@^0.7.21:
+  version "0.7.21"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.21.tgz#853cf9ce93f642f67174273cc34565ae6f308777"
+  integrity sha512-+O8/qh/Qj8CgC6eYBVBykMrNtp5Gebn4dlGD/kKXVkJNDwyrAwSIqwz8CDf+tsAIWVycKcku6gIXJ0qwx/ZXaQ==
 
 uncontrollable@^4.1.0:
   version "4.1.0"
