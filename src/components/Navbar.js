@@ -15,8 +15,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import './Navbar.css'
 
-const BrandToggle = () => (
-  <Navbar.Brand onClick={(e) => this.props.onClick(e)}>
+const BrandToggle = (props) => (
+  <Navbar.Brand onClick={(e) => props.onClick(e)}>
     <img src='/assets/crafting_table.png' alt='Logo' />
     Crafting
     <span className='caret' />
