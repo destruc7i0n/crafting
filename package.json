@@ -16,14 +16,14 @@
     "jszip": "^3.4.0",
     "localforage": "^1.7.3",
     "lodash": "^4.17.15",
-    "minecraft-textures": "1.16.0-beta.5",
+    "minecraft-textures": "1.16.0-beta.6",
     "react": "^16.13.1",
     "react-bootstrap": "0.32.1",
     "react-contextmenu": "^2.13.0",
     "react-device-detect": "^1.12.1",
     "react-dnd": "10.0.2",
     "react-dnd-html5-backend": "10.0.2",
-    "react-dnd-multi-backend": "^6.0.0",
+    "react-dnd-multi-backend": "^6.0.1",
     "react-dnd-touch-backend": "10.0.2",
     "react-dom": "^16.13.1",
     "react-numeric-input": "^2.2.3",
@@ -51,7 +51,7 @@
     "react-scripts": "3.4.1",
     "react-test-renderer": "^16.13.1",
     "redux-mock-store": "^1.5.4",
-    "standard": "^14.3.3"
+    "standard": "^14.3.4"
   },
   "scripts": {
     "start": "react-scripts start",

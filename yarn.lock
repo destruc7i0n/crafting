@@ -4417,12 +4417,7 @@ eslint-config-standard-jsx@8.1.0, eslint-config-standard-jsx@^8.1.0:
   resolved "https://registry.yarnpkg.com/eslint-config-standard-jsx/-/eslint-config-standard-jsx-8.1.0.tgz#314c62a0e6f51f75547f89aade059bec140edfc7"
   integrity sha512-ULVC8qH8qCqbU792ZOO6DaiaZyHNS/5CZt3hKqHkEhVlhPEPN3nfBqqxJCyp59XrjIBZPu1chMYe9T2DXZ7TMw==
 
-eslint-config-standard@14.1.0:
-  version "14.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-14.1.0.tgz#b23da2b76fe5a2eba668374f246454e7058f15d4"
-  integrity sha512-EF6XkrrGVbvv8hL/kYa/m6vnvmUT+K82pJJc4JJVMM6+Qgqh0pnwprSxdduDLB9p/7bIxD+YV5O0wfb8lmcPbA==
-
-eslint-config-standard@^14.1.1:
+eslint-config-standard@14.1.1, eslint-config-standard@^14.1.1:
   version "14.1.1"
   resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-14.1.1.tgz#830a8e44e7aef7de67464979ad06b406026c56ea"
   integrity sha512-Z9B+VR+JIXRxz21udPTL9HpFMyoMUEeX1G251EQ6e05WD9aPVtVBn09XUmZ259wCMlCDmYDSZG62Hhm+ZTJcUg==
@@ -7484,10 +7479,10 @@ mimic-fn@^2.0.0, mimic-fn@^2.1.0:
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-minecraft-textures@1.16.0-beta.5:
-  version "1.16.0-beta.5"
-  resolved "https://registry.yarnpkg.com/minecraft-textures/-/minecraft-textures-1.16.0-beta.5.tgz#9a97ec00d9663fe01e7fa3b2b16c3c4593445eeb"
-  integrity sha512-2xLYgB/uukZb9kGDna4KEjhZ3RzCuguA2WHcYLGQoICy05axigwPjEn8MhLWL765XsIfb/Nm8k31i2WhFnLSKg==
+minecraft-textures@1.16.0-beta.6:
+  version "1.16.0-beta.6"
+  resolved "https://registry.yarnpkg.com/minecraft-textures/-/minecraft-textures-1.16.0-beta.6.tgz#524f82753eec69a7a90728416d41433464957d1c"
+  integrity sha512-KwSJ/esgkXUQSB/nB5+Z4dIGlneofrNvVgEr0jvujBgPN4q+gvXNz7i0pVFvu7UHtzBTZpQiWRtJonrw2dMkhg==
 
 mini-css-extract-plugin@0.9.0:
   version "0.9.0"
@@ -9489,10 +9484,10 @@ react-dnd-html5-backend@10.0.2:
   dependencies:
     dnd-core "^10.0.2"
 
-react-dnd-multi-backend@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/react-dnd-multi-backend/-/react-dnd-multi-backend-6.0.0.tgz#bbf423e159b20f33fa5bbbe725aeb4a3df2d891d"
-  integrity sha512-izDZu2D0jlOhaXcgxcf4PhI5xlzCddIWmRccEur8Bom4Sj2xNOOxmPyncscxq6ZMOZ4Mf6mpM0IW5uPyZDD5gA==
+react-dnd-multi-backend@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/react-dnd-multi-backend/-/react-dnd-multi-backend-6.0.1.tgz#4bbe92eec5acfefa8cd3e17bb75e7a22cb8cf462"
+  integrity sha512-iL3j09ILGFBMlS2XjVLWj/5aI0UzWMP5Gne4chAnMoLW60fgFoCq2Od2J+gn26fQgDlzCdRnxyBuOPMMaorOpw==
   dependencies:
     dnd-multi-backend "^6.0.0"
     prop-types "^15.7.2"
@@ -10780,13 +10775,13 @@ standard-engine@^12.0.0:
     minimist "^1.1.0"
     pkg-conf "^3.1.0"
 
-standard@^14.3.3:
-  version "14.3.3"
-  resolved "https://registry.yarnpkg.com/standard/-/standard-14.3.3.tgz#2b16559d892cb29e29a854eb6ed15d43e44759c8"
-  integrity sha512-HBEAD5eVXrr2o/KZ3kU8Wwaxw90wzoq4dOQe6vlRnPoQ6stn4LCLRLBBDp0CjH/aOTL9bDZJbRUOZcBaBnNJ0A==
+standard@^14.3.4:
+  version "14.3.4"
+  resolved "https://registry.yarnpkg.com/standard/-/standard-14.3.4.tgz#748e80e8cd7b535844a85a12f337755a7e3a0f6e"
+  integrity sha512-+lpOkFssMkljJ6eaILmqxHQ2n4csuEABmcubLTb9almFi1ElDzXb1819fjf/5ygSyePCq4kU2wMdb2fBfb9P9Q==
   dependencies:
     eslint "~6.8.0"
-    eslint-config-standard "14.1.0"
+    eslint-config-standard "14.1.1"
     eslint-config-standard-jsx "8.1.0"
     eslint-plugin-import "~2.18.0"
     eslint-plugin-node "~10.0.0"
