@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setFirstEmptyCraftingSlot } from '../actions'
-import { Panel } from 'react-bootstrap'
+
 import DebouncedInput from './DebouncedInput'
 
 import Ingredient from './ingredient/Ingredient'
@@ -62,16 +62,16 @@ class Ingredients extends Component {
     const customItemsIngredients = Object.keys(customItems).map(id => customItems[id])
 
     return (
-      <Panel>
-        <Panel.Heading>
-          <Panel.Title>
+      <div className='panel'>
+        <div className='panel-heading'>
+          <div className='panel-title'>
             Ingredients
             <div className='pull-right'>
               <AddItemModal />
             </div>
-          </Panel.Title>
-        </Panel.Heading>
-        <Panel.Body>
+          </div>
+        </div>
+        <div className='panel-body'>
           <span className='search-box'>
             <p>Search Items:</p>
             <DebouncedInput attributes={{ className: 'form-control' }} debounced={(input) => this.setState({ search: input })} />
@@ -102,8 +102,8 @@ class Ingredients extends Component {
               ) : null
             })}
           </div>
-        </Panel.Body>
-      </Panel>
+        </div>
+      </div>
     )
   }
 }

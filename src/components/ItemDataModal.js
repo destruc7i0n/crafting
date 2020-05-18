@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Alert, Button, Col, FormControl, Modal, Row } from 'react-bootstrap'
+import { Alert, Button, FormControl, Modal } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class ItemDataModal extends Component {
@@ -59,38 +59,38 @@ class ItemDataModal extends Component {
           <Modal.Title>Set Item Data</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Row>
-            <Col md={12}>
+          <div className='row'>
+            <div className='col-md-12'>
               <Alert>
                 Here you can set custom data for the items, for example <code>data</code> for Bedrock Edition items.
                 This will be copied verbatim to the output.
               </Alert>
-            </Col>
-          </Row>
-          <Row>
-            <Col mdPush={10} md={2}>
+            </div>
+          </div>
+          <div className='row'>
+            <div className='col-md-push-10 col-md-2'>
               <Button bsStyle='success' block onClick={this.addRow}>
                 <FontAwesomeIcon icon='plus' />
               </Button>
-            </Col>
-          </Row>
+            </div>
+          </div>
           {kvPairs.map((pair, index) => {
             return (
               <Fragment key={index}>
                 <br />
-                <Row>
-                  <Col md={5}>
+                <div className='row'>
+                  <div className='col-md-5'>
                     <FormControl type='text' value={pair[0]} placeholder='Key' onChange={({ target: { value } }) => this.updateRow(index, value, null)} />
-                  </Col>
-                  <Col md={5}>
+                  </div>
+                  <div className='col-md-5'>
                     <FormControl type='text' value={pair[1]} placeholder='Value' onChange={({ target: { value } }) => this.updateRow(index, null, value)} />
-                  </Col>
-                  <Col md={2}>
+                  </div>
+                  <div className='col-md-2'>
                     <Button bsStyle='danger' block onClick={() => this.deleteRow(index)}>
                       <FontAwesomeIcon icon='times' />
                     </Button>
-                  </Col>
-                </Row>
+                  </div>
+                </div>
               </Fragment>
             )
           })}

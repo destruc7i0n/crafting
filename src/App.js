@@ -1,5 +1,4 @@
 import React from 'react'
-import { Col, Row } from 'react-bootstrap'
 
 import { DndProvider } from 'react-dnd'
 import MultiBackend from 'react-dnd-multi-backend'
@@ -37,21 +36,21 @@ const App = () => {
       <div className='container'>
         <Navbar />
         <IngredientDragLayer />
-        <Row>
-          <Col md={12}>
+        <div className='row'>
+          <div className='col-md-12'>
             <HelpAlert />
-          </Col>
-          <Col md={6} sm={12}>
+          </div>
+          <div className='col-md-6 col-sm-12'>
             <CraftingTable />
             {isMobile ? <Ingredients /> : null}
             <Tags />
             <Options />
             <Output />
-          </Col>
-          <Col md={6} sm={12} className='pull-right'>
+          </div>
+          <div className='pull-right col-md-6 col-sm-12'>
             {!isMobile ? <Ingredients /> : null}
-          </Col>
-        </Row>
+          </div>
+        </div>
         <CraftingModal />
       </div>
     </DndProvider>

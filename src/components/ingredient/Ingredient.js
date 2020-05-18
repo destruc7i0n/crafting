@@ -15,6 +15,9 @@ import './Ingredient.css'
 const ingredientSource = {
   beginDrag (props, monitor, component) {
     const { ingredient, slot, size, isOutput } = props
+
+    if (!ingredient) return
+
     // hide while dragging
     if (component) {
       component.setState({

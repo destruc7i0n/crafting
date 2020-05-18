@@ -17,13 +17,11 @@ import { versions } from 'minecraft-textures'
 import {
   Alert,
   Checkbox,
-  Col,
   ControlLabel,
   FormControl,
   FormGroup,
   OverlayTrigger,
   Panel,
-  Row,
   Tooltip
 } from 'react-bootstrap'
 
@@ -130,11 +128,11 @@ class Options extends Component {
     )
 
     const versionSelector = (
-      <Row>
-        <Col md={2}>
+      <div className='row'>
+        <div className='col-md-2'>
           <ControlLabel>Minecraft Version:</ControlLabel>
-        </Col>
-        <Col md={10}>
+        </div>
+        <div className='col-md-10'>
           <FormControl
             componentClass='select'
             placeholder='select'
@@ -149,8 +147,8 @@ class Options extends Component {
               return null
             })}
           </FormControl>
-        </Col>
-      </Row>
+        </div>
+      </div>
     )
 
     let customOptions
@@ -158,26 +156,26 @@ class Options extends Component {
       customOptions = (
         <>
           <legend><h5>Crafting Options</h5></legend>
-          <Row>
-            <Col md={4}>
+          <div className='row'>
+            <div className='col-md-4'>
               {shapelessCheckbox}
-            </Col>
-            <Col md={8}>
+            </div>
+            <div className='col-md-8'>
               {shape === 'shaped' ? removeEmptySpaceCheckbox : null}
-            </Col>
-          </Row>
+            </div>
+          </div>
         </>
       )
     } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab) && minecraftVersion !== 'bedrock') {
       customOptions = (
         <>
           <legend><h5>Furnace Options</h5></legend>
-          <Row>
-            <Col md={2}>
+          <div className='row'>
+            <div className='col-md-2'>
               <ControlLabel style={{ fontSize: '12px' }}>Experience:</ControlLabel>
-            </Col>
+            </div>
             {' '}
-            <Col md={10}>
+            <div className='col-md-10'>
               <NumericInput
                 className='form-control'
                 min={0}
@@ -187,19 +185,19 @@ class Options extends Component {
                 onChange={(v) => dispatch(setFurnaceData('experience', v))}
                 placeholder='Enter amount'
               />
-            </Col>
-            <Col md={12}>
+            </div>
+            <div className='col-md-12'>
               <p style={{ fontSize: '12px', margin: '5px 0 5px 0' }}>
                 The output experience.
               </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={2}>
+            </div>
+          </div>
+          <div className='row'>
+            <div className='col-md-2'>
               <ControlLabel>Crafting Time:</ControlLabel>
-            </Col>
+            </div>
             {' '}
-            <Col md={10}>
+            <div className='col-md-10'>
               <NumericInput
                 className='form-control'
                 min={0}
@@ -207,13 +205,13 @@ class Options extends Component {
                 onChange={(v) => dispatch(setFurnaceData('cookingTime', v))}
                 placeholder='Enter amount'
               />
-            </Col>
-            <Col md={12}>
+            </div>
+            <div className='col-md-12'>
               <p style={{ fontSize: '12px', margin: '5px 0 5px 0' }}>
                 The cook time in ticks.
               </p>
-            </Col>
-          </Row>
+            </div>
+          </div>
         </>
       )
     }
@@ -234,59 +232,59 @@ class Options extends Component {
           {versionSelector}
           {minecraftVersion === 'bedrock' ? (
             // set the identifier for bedrock
-            <Row>
-              <Col md={2}>
+            <div className='row'>
+              <div className='col-md-2'>
                 <ControlLabel>Bedrock Identifier:</ControlLabel>
-              </Col>
+              </div>
               {' '}
-              <Col md={10}>
+              <div className='col-md-10'>
                 <FormControl
                   onChange={this.setBedrockIdentifier}
                   placeholder='identifier:value'
                   value={bedrockIdentifier}
                 />
-              </Col>
-              <Col md={12}>
+              </div>
+              <div className='col-md-12'>
                 <p style={{ fontSize: '12px' }}>
                   The identifier for the bedrock recipe. Must be defined. The identifier is used internally.
                 </p>
-              </Col>
-            </Row>
+              </div>
+            </div>
           ) : null}
           {customOptions}
           {minecraftVersion !== 'bedrock' ? (
             <>
               <legend><h5>Default Options</h5></legend>
-              <Row>
-                <Col md={2}>
+              <div className='row'>
+                <div className='col-md-2'>
                   <ControlLabel>Output Recipe:</ControlLabel>
-                </Col>
+                </div>
                 {' '}
-                <Col md={10}>
+                <div className='col-md-10'>
                   <input type='text' value={outputRecipe} onChange={this.setOutput} className='form-control' />
-                </Col>
-                <Col md={12}>
+                </div>
+                <div className='col-md-12'>
                   <p style={{ fontSize: '12px' }}>
                     The file name to output as.
                   </p>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={2}>
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col-md-2'>
                   <ControlLabel>Group:</ControlLabel>
-                </Col>
+                </div>
                 {' '}
-                <Col md={10}>
+                <div className='col-md-10'>
                   <FormControl onChange={this.setGroup} value={group} />
-                </Col>
-                <Col md={12}>
+                </div>
+                <div className='col-md-12'>
                   <p style={{ fontSize: '12px' }}>This will group items in the recipe book.{' '}
                     <a href='https://github.com/skylinerw/guides/blob/master/java/recipes.md#groups' target='_blank' rel='noopener noreferrer'>
                       Click here for a short explanation.
                     </a>
                   </p>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </>
           ) : null}
         </Panel.Body>

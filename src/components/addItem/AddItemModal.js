@@ -1,9 +1,9 @@
 /* global FileReader, Blob */
 
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { Button, Col, ControlLabel, FormControl, Modal, Row } from 'react-bootstrap'
+import { Alert, Button, ControlLabel, FormControl, Modal } from 'react-bootstrap'
 
 import Ingredient from '../ingredient/Ingredient'
 import IngredientClass from '../../classes/Ingredient'
@@ -56,7 +56,7 @@ class AddItemModal extends Component {
     const { name, show, id, image } = this.state
 
     return (
-      <Fragment>
+      <>
         <Button bsSize='xs' bsStyle='info' onClick={() => this.setState({ show: true })}>Add Item</Button>
 
         <Modal show={show} onHide={() => this.setState({ show: false })}>
@@ -64,25 +64,30 @@ class AddItemModal extends Component {
             <Modal.Title>Add Item</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Row>
-              <Col md={2}>
+            <Alert bsStyle='info'>
+              Please note that this will not add items to the game itself!<br />
+              This is meant for items which are not present in the list below, or for items added to the game
+              through means such as modding.
+            </Alert>
+            <div className='row'>
+              <div className='col-md-2'>
                 <ControlLabel>Name:</ControlLabel>
-              </Col>
-              <Col md={10}>
+              </div>
+              <div className='col-md-10'>
                 <FormControl
                   type='text'
                   autoComplete='off'
                   value={name}
                   onChange={({ target: { value: name } }) => this.setState({ name })}
                 />
-              </Col>
-            </Row>
+              </div>
+            </div>
             <br />
-            <Row>
-              <Col md={2}>
+            <div className='row'>
+              <div className='col-md-2'>
                 <ControlLabel>Id:</ControlLabel>
-              </Col>
-              <Col md={10}>
+              </div>
+              <div className='col-md-10'>
                 <FormControl
                   type='text'
                   autoComplete='off'
@@ -90,32 +95,34 @@ class AddItemModal extends Component {
                   value={id}
                   onChange={({ target: { value: id } }) => this.setState({ id })}
                 />
-              </Col>
-            </Row>
+              </div>
+            </div>
             <br />
-            <Row>
-              <Col md={2}>
+            <div className='row'>
+              <div className='col-md-2'>
                 <ControlLabel>Texture:</ControlLabel>
-              </Col>
-              <Col md={3}>
+              </div>
+              <div className='col-md-3'>
                 <label className='btn btn-success btn-block'>
                   Select Texture <input type='file' accept='.png' multiple={false} style={{ display: 'none' }} onChange={this.importImage} />
                 </label>
-              </Col>
-              <Col md={2} mdPush={2}>
-                <Ingredient ingredient={new IngredientClass(
-                  id || 'example:item',
-                  name || '',
-                  image || null
-                )} size='normal' draggable={false} hover={false} />
-              </Col>
-            </Row>
+              </div>
+              <div className='col-md-2 col-md-push-2'>
+                <Ingredient
+                  ingredient={new IngredientClass(
+                    id || 'example:item',
+                    name || '',
+                    image || null
+                  )} size='normal' draggable={false} hover={false}
+                />
+              </div>
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle='success' onClick={this.addItem} disabled={!name || !id}>Add</Button>
           </Modal.Footer>
         </Modal>
-      </Fragment>
+      </>
     )
   }
 }
