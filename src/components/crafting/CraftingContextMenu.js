@@ -44,7 +44,9 @@ class CraftingContextMenu extends Component {
     } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
       dispatch(resetFurnaceSlot())
     } else if (tab === 'stonecutter') {
-      dispatch(resetGenericSlot())
+      dispatch(resetGenericSlot(0))
+    } else if (tab === 'smithing') {
+      dispatch(resetGenericSlot(index))
     }
   }
 
@@ -61,7 +63,7 @@ class CraftingContextMenu extends Component {
   }
 
   updateIngredient (id, ingredient) {
-    const { dispatch, tab } = this.props
+    const { dispatch, tab, index } = this.props
 
     if (!ingredient) return
 
@@ -75,7 +77,9 @@ class CraftingContextMenu extends Component {
     } else if (tab === 'crafting') {
       dispatch(setCraftingSlot(id, ingredient))
     } else if (tab === 'stonecutter') {
-      dispatch(setGenericSlot(ingredient))
+      dispatch(setGenericSlot(0, ingredient))
+    } else if (tab === 'smithing') {
+      dispatch(setGenericSlot(index, ingredient))
     }
   }
 

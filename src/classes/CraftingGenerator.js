@@ -135,6 +135,19 @@ class CraftingGenerator {
   }
 
   /**
+   * Returns the smithing default type
+   * @returns {object}
+   */
+  getSmithingDefault () {
+    return {
+      type: 'minecraft:smithing',
+      base: {},
+      addition: {},
+      result: {}
+    }
+  }
+
+  /**
    * Returns a character for an item
    * @param item
    * @param keyMap
@@ -397,6 +410,7 @@ class CraftingGenerator {
    * Returns a cooking type crafting of the input provided
    * @param time
    * @param experience
+   * @param tab
    * @returns {object}
    */
   cooking (time = 0, experience = 0, tab) {
@@ -435,10 +449,12 @@ class CraftingGenerator {
   generic (type) {
     const { input, output } = this
 
+    if (type === 'smithing') return this.smithing()
+
     let shape = { ...this.getGenericDefault(type) }
 
     // add the ingredient
-    let ingredient = input
+    let ingredient = input[0]
 
     // only if populated
     if (ingredient.isPopulated()) {
@@ -456,6 +472,38 @@ class CraftingGenerator {
     }
 
     shape.count = output.count
+
+    return shape
+  }
+
+  /**
+   * Returns a smithing type crafting of the input provided
+   * @returns {object}
+   */
+  smithing () {
+    const { input, output } = this
+
+    let shape = { ...this.getSmithingDefault() }
+
+    const getIngredient = (ingredient) => {
+      ingredient = this.getItemType(ingredient, false)
+
+      // handle tags...
+      if (ingredient.tag) {
+        const tag = this.tags[ingredient.tag.tag]
+        ingredient = this.handleTags(tag)
+      }
+
+      return ingredient
+    }
+
+    if (input[0] && input[0].isPopulated()) shape.base = getIngredient(input[0])
+    if (input[1] && input[1].isPopulated()) shape.addition = getIngredient(input[1])
+
+    if (output.isPopulated()) {
+      shape.result = getIngredient(output)
+      if (!shape.result.tag) shape.result.count = output.count
+    }
 
     return shape
   }

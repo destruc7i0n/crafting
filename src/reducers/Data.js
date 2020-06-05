@@ -27,14 +27,14 @@ import {
 } from '../actions'
 
 export default function Data (state = {
-  crafting: [...new Array(9)].map(i => new Ingredient()),
+  crafting: [...new Array(9)].map(_ => new Ingredient()),
   furnace: {
     input: new Ingredient(),
     cookingTime: 200,
     experience: 0.1
   },
   generic: {
-    input: new Ingredient()
+    input: [new Ingredient(), new Ingredient()]
   },
   output: new Ingredient(),
   group: '',
@@ -89,17 +89,16 @@ export default function Data (state = {
         break
       case SET_GENERIC_SLOT:
         // set furnace slot to new instance of ingredient
-        draft.generic.input = action.payload.ingredient
-        break
-      case SET_GENERIC_SLOT_DATA:
-        // add the furnace data to the furnace object
-        draft.furnace = {
-          ...state.generic,
-          ...action.payload
+        if (action.payload.index < draft.generic.input.length) {
+          draft.generic.input[action.payload.index] = action.payload.ingredient
         }
         break
+      case SET_GENERIC_SLOT_DATA:
+        break
       case RESET_GENERIC_SLOT:
-        draft.generic.input = new Ingredient()
+        if (action.payload.index < draft.generic.input.length) {
+          draft.generic.input[action.payload.index] = new Ingredient()
+        }
         break
       case SET_GROUP:
         draft.group = action.payload

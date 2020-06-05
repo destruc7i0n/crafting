@@ -52,8 +52,8 @@ const craftingTarget = {
           dispatch(setFurnaceSlot(item.ingredient))
           replacedItem = furnace.input
         } else if (type === 'generic') {
-          dispatch(setGenericSlot(item.ingredient))
-          replacedItem = generic.input
+          dispatch(setGenericSlot(index, item.ingredient))
+          replacedItem = generic.input[index]
         }
       }
     }
@@ -84,18 +84,18 @@ class CraftingGrid extends Component {
     const ingredientComponent = <Ingredient ingredient={ingredient} slot={index} size={size} type={type} isOutput={output} />
 
     let ingredientTarget = (
-      <div style={style}>
+      <div className='crafting-grid-item' style={style}>
         {ingredientComponent}
       </div>
     )
 
     if (ingredient.isPopulated()) {
       ingredientTarget = (
-        <div style={style}>
+        <div className='crafting-grid-item' style={style}>
           <ContextMenuTrigger id={contextMenuId.toString()} holdToDisplay={-1}>
             {ingredientComponent}
           </ContextMenuTrigger>
-          <CraftingContextMenu ingredient={ingredient} id={contextMenuId} tab={tab} />
+          <CraftingContextMenu ingredient={ingredient} id={contextMenuId} tab={tab} index={index} />
         </div>
       )
     }

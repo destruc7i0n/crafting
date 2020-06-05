@@ -58,30 +58,33 @@ export const setFurnaceData = (key, value) => ({
 })
 
 export const SET_GENERIC_SLOT = 'SET_GENERIC_SLOT'
-export const setGenericSlot = (ingredient) => (dispatch, getState) => {
+export const setGenericSlot = (index, ingredient) => (dispatch, getState) => {
   const state = getState()
-  const currentItem = state.Data.generic.input
+  const currentItem = state.Data.generic.input[index]
   // reset before populating again
-  if (currentItem.isPopulated()) {
-    dispatch(resetGenericSlot())
+  if (currentItem && currentItem.isPopulated()) {
+    dispatch(resetGenericSlot(index))
   }
   dispatch({
     type: SET_GENERIC_SLOT,
     payload: {
+      index,
       ingredient
     }
   })
 }
 
 export const RESET_GENERIC_SLOT = 'RESET_GENERIC_SLOT'
-export const resetGenericSlot = () => ({
-  type: RESET_GENERIC_SLOT
+export const resetGenericSlot = (index) => ({
+  type: RESET_GENERIC_SLOT,
+  payload: { index }
 })
 
 export const SET_GENERIC_SLOT_DATA = 'SET_GENERIC_DATA'
-export const setGenericSlotData = (key, value) => ({
+export const setGenericSlotData = (index, key, value) => ({
   type: SET_GENERIC_SLOT_DATA,
   payload: {
+    index,
     [key]: value
   }
 })

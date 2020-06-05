@@ -1,0 +1,131 @@
+.crafting-holder {
+    flex-direction: column;
+
+    .crafting-title {
+        font-family: Minecraft;
+        margin-bottom: 5px;
+    }
+
+    .crafting {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        max-width: 230px;
+        margin: 0 auto;
+
+        &.full {
+            max-width: 100%;
+        }
+
+        .recipe {
+            display: flex;
+            .table-wrap {
+                display: flex;
+                flex-wrap: wrap;
+                max-width: 110px;
+            }
+        }
+
+        .arrow {
+            width: 32px;
+            height: 27px;
+            margin-left: 16px;
+            margin-right: 16px;
+            background-size: cover;
+            background: url(../assets/arrow.png);
+        }
+
+        .flame {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 5px;
+            background: url(../assets/flame.png);
+        }
+
+        .plus {
+            width: 26px;
+            height: 26px;
+            margin-left: 16px;
+            margin-right: 16px;
+            background-image: url(../assets/plus.png);
+        }
+    }
+}
+
+.vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.horizontal {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.grid, .grid-large, .grid-furnace {
+    position: relative;
+    display: block;
+    text-align: center !important;
+    background-color: #8B8B8B;
+    border: 2px solid #373737;
+    border-right-color: #FFF;
+    border-bottom-color: #FFF;
+    vertical-align: middle;
+}
+
+.grid-large img {
+    z-index: -1;
+    margin-top: 8px;
+}
+
+.grid, .grid-furnace {
+    width: 36px;
+    height: 36px;
+}
+
+.grid:hover, .grid-large:hover, .grid-furnace:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.grid-large {
+    width: 48px;
+    height: 48px;
+}
+
+.grid img, .grid-large img, .grid-furnace img {
+    cursor: move;
+}
+
+.crafting-table-output {
+    display: flex;
+}
+
+.crafting-table-output-count {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+    color: #ffffff;
+    font-family: Minecraft;
+    user-select: none;
+}
+
+/* only for small */
+@media screen and (max-device-width: 400px) {
+    .crafting .arrow {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+.recipe > h6 {
+    font-family: Minecraft;
+}
+
+.nav-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.nav-tabs>li {
+    float: none;
+}

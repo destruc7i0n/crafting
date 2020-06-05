@@ -60,7 +60,7 @@ class Output extends Component {
     } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
       generator = new CraftingGenerator(furnace.input, output, tags, { group })
       json = generator.cooking(furnace.cookingTime, furnace.experience, tab)
-    } else if (['stonecutter'].includes(tab)) {
+    } else if (['stonecutter', 'smithing'].includes(tab)) {
       generator = new CraftingGenerator(generic.input, output, tags, { group })
       json = generator.generic(tab)
     }
@@ -88,8 +88,8 @@ class Output extends Component {
         json = renameProp('result', 'output', json)
       }
 
-      json['description'] = {}
-      json['description']['identifier'] = bedrockIdentifier
+      json.description = {}
+      json.description.identifier = bedrockIdentifier
 
       json = {
         format_version: '1.12',
@@ -139,7 +139,7 @@ class Output extends Component {
     })
     // generate and download
     zip.generateAsync({ type: 'blob' })
-      .then((content) => saveAs(content, `datapack.zip`))
+      .then((content) => saveAs(content, 'datapack.zip'))
   }
 
   render () {
@@ -161,21 +161,27 @@ class Output extends Component {
         <Panel.Body>
           <SyntaxHighlighter
             style={defaultStyle}
-          >{toCopy}</SyntaxHighlighter>
+          >
+            {toCopy}
+          </SyntaxHighlighter>
 
           <Button
             onClick={() => saveAs(blob, fileSaveName)}
             className='download-button'
             bsStyle='primary'
             block
-          >Download <code>{fileSaveName}</code></Button>
+          >
+            Download <code>{fileSaveName}</code>
+          </Button>
           {minecraftVersion !== 'bedrock' ? (
             <Button
               onClick={() => this.generateDatapack()}
               className='download-button'
               bsStyle='primary'
               block
-            >Download <code>datapack.zip</code></Button>
+            >
+              Download <code>datapack.zip</code>
+            </Button>
           ) : null}
         </Panel.Body>
       </Panel>

@@ -48,7 +48,8 @@ const ingredientSource = {
         } else if (type === 'furnace') {
           dispatch(resetFurnaceSlot())
         } else if (type === 'generic') {
-          dispatch(resetGenericSlot())
+          // index stored in slot
+          dispatch(resetGenericSlot(slot))
         }
       }
     }
