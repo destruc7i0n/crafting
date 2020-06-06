@@ -84,13 +84,25 @@ describe('Crafting Generator Class', () => {
 
   it('should output stonecutter recipe', () => {
     const generator = new CraftingGenerator(
-      new Ingredient(dirt.id, dirt.readable, dirt.texture),
+      [new Ingredient(dirt.id, dirt.readable, dirt.texture)],
       new Ingredient(stone.id, stone.readable, stone.texture),
       {}, {}
     )
 
     expect(
       generator.generic('stonecutter')
+    ).toMatchSnapshot()
+  })
+
+  it('should output a smithing recipe', () => {
+    const generator = new CraftingGenerator(
+      [new Ingredient(dirt.id, dirt.readable, dirt.texture), new Ingredient(dirt.id, dirt.readable, dirt.texture)],
+      new Ingredient(stone.id, stone.readable, stone.texture),
+      {}, {}
+    )
+
+    expect(
+      generator.smithing()
     ).toMatchSnapshot()
   })
 })

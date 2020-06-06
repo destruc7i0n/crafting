@@ -12,7 +12,7 @@ import {
 import { latestVersion } from 'minecraft-textures'
 
 export default function Options (state = {
-  tab: 'smithing',
+  tab: 'crafting',
   shape: 'shaped',
   emptySpace: true,
   outputRecipe: 'crafting_recipe',

@@ -12,7 +12,7 @@ class AddItemIngredient extends Component {
     const { id } = ingredient
 
     return (
-      <div>
+      <>
         <ContextMenuTrigger id={`menu_${id}`} holdToDisplay={-1}>
           <Ingredient ingredient={ingredient} size='normal' />
         </ContextMenuTrigger>
@@ -22,7 +22,7 @@ class AddItemIngredient extends Component {
             Delete Item
           </MenuItem>
         </ContextMenu>
-      </div>
+      </>
     )
   }
 }

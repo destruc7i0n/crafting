@@ -100,15 +100,26 @@ Object {
     },
   },
   "generic": Object {
-    "input": Object {
-      "count": 1,
-      "custom": false,
-      "customData": Object {},
-      "id": "",
-      "readable": "",
-      "texture": "",
-      "type": "item",
-    },
+    "input": Array [
+      Object {
+        "count": 1,
+        "custom": false,
+        "customData": Object {},
+        "id": "",
+        "readable": "",
+        "texture": "",
+        "type": "item",
+      },
+      Object {
+        "count": 1,
+        "custom": false,
+        "customData": Object {},
+        "id": "",
+        "readable": "",
+        "texture": "",
+        "type": "item",
+      },
+    ],
   },
   "group": "",
   "output": Object {
@@ -430,15 +441,26 @@ Object {
     },
   },
   "generic": Object {
-    "input": Object {
-      "count": 1,
-      "custom": false,
-      "customData": Object {},
-      "id": "",
-      "readable": "",
-      "texture": "",
-      "type": "item",
-    },
+    "input": Array [
+      Object {
+        "count": 1,
+        "custom": false,
+        "customData": Object {},
+        "id": "",
+        "readable": "",
+        "texture": "",
+        "type": "item",
+      },
+      Object {
+        "count": 1,
+        "custom": false,
+        "customData": Object {},
+        "id": "",
+        "readable": "",
+        "texture": "",
+        "type": "item",
+      },
+    ],
   },
   "group": "",
   "output": Object {
@@ -556,15 +578,26 @@ Object {
     },
   },
   "generic": Object {
-    "input": Object {
-      "count": 1,
-      "custom": false,
-      "customData": Object {},
-      "id": "",
-      "readable": "",
-      "texture": "",
-      "type": "item",
-    },
+    "input": Array [
+      Object {
+        "count": 1,
+        "custom": false,
+        "customData": Object {},
+        "id": "",
+        "readable": "",
+        "texture": "",
+        "type": "item",
+      },
+      Object {
+        "count": 1,
+        "custom": false,
+        "customData": Object {},
+        "id": "",
+        "readable": "",
+        "texture": "",
+        "type": "item",
+      },
+    ],
   },
   "group": "",
   "output": Object {

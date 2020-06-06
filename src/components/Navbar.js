@@ -1,4 +1,4 @@
-import React  from 'react'
+import React, { memo } from 'react'
 import {
   Dropdown,
   MenuItem,
@@ -86,4 +86,4 @@ const CraftingNav = () => {
   )
 }
 
-export default CraftingNav
+export default memo(CraftingNav)

@@ -1,5 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Crafting Generator Class should output a smithing recipe 1`] = `
+Object {
+  "addition": Object {
+    "item": "minecraft:dirt",
+  },
+  "base": Object {
+    "item": "minecraft:dirt",
+  },
+  "result": Object {
+    "count": 1,
+    "item": "minecraft:stone",
+  },
+  "type": "minecraft:smithing",
+}
+`;
+
 exports[`Crafting Generator Class should output shaped with spaces 1`] = `
 Object {
   "key": Object {
