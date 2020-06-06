@@ -502,7 +502,6 @@ class CraftingGenerator {
 
     if (output.isPopulated()) {
       shape.result = getIngredient(output)
-      if (!shape.result.tag) shape.result.count = output.count
     }
 
     return shape

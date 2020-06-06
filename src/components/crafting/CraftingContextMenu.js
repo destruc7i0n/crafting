@@ -119,7 +119,7 @@ class CraftingContextMenu extends Component {
       <MenuItem key='edit_data' onClick={() => this.setState({ customDataModal: true })}>Edit Custom Data</MenuItem>
     ]
 
-    // if output slot and not furnace crafting
+    // if output slot and can set count
     if (id === 9 && ['crafting', 'stonecutter'].includes(tab)) {
       menuItems = [
         ...menuItems,

@@ -9,7 +9,6 @@ Object {
     "item": "minecraft:dirt",
   },
   "result": Object {
-    "count": 1,
     "item": "minecraft:stone",
   },
   "type": "minecraft:smithing",
