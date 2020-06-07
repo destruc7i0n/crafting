@@ -211,6 +211,7 @@ class CraftingGenerator {
         }
       }
     }
+    return { item: ingredient.id || 'minecraft:air' }
   }
 
   /**
@@ -219,7 +220,7 @@ class CraftingGenerator {
    * @returns {*}
    */
   handleTags (tag) {
-    if (tag.asTag) {
+    if (tag && tag.asTag) {
       return {
         tag: `${tag.namespace}:${tag.name}`
       }
@@ -449,19 +450,17 @@ class CraftingGenerator {
   generic (type) {
     const { input, output } = this
 
-    if (type === 'smithing') return this.smithing()
-
     let shape = { ...this.getGenericDefault(type) }
 
     // add the ingredient
-    let ingredient = input[0]
+    let ingredient = input
 
     // only if populated
-    if (ingredient.isPopulated()) {
+    if (ingredient && ingredient.isPopulated()) {
       shape.ingredient = this.getItemType(ingredient, false)
 
       // handle tags...
-      if (shape.ingredient.tag) {
+      if (ingredient.tag) {
         const tag = this.tags[shape.ingredient.tag.tag]
         shape.ingredient = this.handleTags(tag)
       }
@@ -489,7 +488,7 @@ class CraftingGenerator {
       ingredient = this.getItemType(ingredient, false)
 
       // handle tags...
-      if (ingredient.tag) {
+      if (ingredient && ingredient.tag) {
         const tag = this.tags[ingredient.tag.tag]
         ingredient = this.handleTags(tag)
       }

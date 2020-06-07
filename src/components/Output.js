@@ -60,9 +60,12 @@ class Output extends Component {
     } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
       generator = new CraftingGenerator(furnace.input, output, tags, { group })
       json = generator.cooking(furnace.cookingTime, furnace.experience, tab)
-    } else if (['stonecutter', 'smithing'].includes(tab)) {
-      generator = new CraftingGenerator(generic.input, output, tags, { group })
+    } else if (['stonecutter'].includes(tab)) {
+      generator = new CraftingGenerator(generic.input[0], output, tags, { group })
       json = generator.generic(tab)
+    } else if (tab === 'smithing') {
+      generator = new CraftingGenerator(generic.input, output, tags, { group })
+      json = generator.smithing(tab)
     }
 
     if (json && json.result && json.result.item && !['smithing'].includes(tab)) {

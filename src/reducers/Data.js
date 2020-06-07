@@ -164,8 +164,12 @@ export default function Data (state = {
         if (state.furnace.input.ingredient_type === 'tag' && state.furnace.input.tag === action.payload) {
           draft.furnace.input = new Ingredient()
         }
-        if (state.generic.input.ingredient_type === 'tag' && state.generic.input.tag === action.payload) {
-          draft.generic.input = new Ingredient()
+        if (state.generic.input.ingredient_type === 'tag' && state.generic.input) {
+          for (let i = 0; i < state.generic.input.length; i++) {
+            if (state.generic.input[i] && state.generic.input[i].tag === action.payload) {
+              draft.generic.input[i] = new Ingredient()
+            }
+          }
         }
         delete draft.tags[action.payload] // remove the tag
         delete draft.tagUpdateTimers[action.payload.id] // remove the tag timer too
@@ -202,8 +206,10 @@ export default function Data (state = {
         if (state.furnace.input.id === action.payload) {
           draft.furnace.input = new Ingredient()
         }
-        if (state.generic.input.id === action.payload) {
-          draft.generic.input = new Ingredient()
+        for (let i = 0; i < state.generic.input.length; i++) {
+          if (state.generic.input[i] && state.generic.input[i].id === action.payload) {
+            draft.generic.input[i] = new Ingredient()
+          }
         }
         if (state.output.id === action.payload) {
           draft.output = new Ingredient()
