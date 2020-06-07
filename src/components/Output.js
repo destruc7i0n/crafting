@@ -65,7 +65,7 @@ class Output extends Component {
       json = generator.generic(tab)
     }
 
-    if (json && json.result && json.result.item) {
+    if (json && json.result && json.result.item && !['smithing'].includes(tab)) {
       json.result.count = output.count
     }
 
