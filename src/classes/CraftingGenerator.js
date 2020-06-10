@@ -427,7 +427,7 @@ class CraftingGenerator {
       shape.ingredient = this.getItemType(ingredient, false)
 
       // handle tags...
-      if (shape.ingredient.tag) {
+      if (shape.ingredient.tag && shape.ingredient.tag.tag) {
         const tag = this.tags[shape.ingredient.tag.tag]
         shape.ingredient = this.handleTags(tag)
       }
@@ -461,7 +461,7 @@ class CraftingGenerator {
 
       // handle tags...
       if (ingredient.tag) {
-        const tag = this.tags[shape.ingredient.tag.tag]
+        const tag = this.tags[ingredient.tag.tag]
         shape.ingredient = this.handleTags(tag)
       }
     }

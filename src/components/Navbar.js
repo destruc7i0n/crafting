@@ -15,13 +15,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import './Navbar.css'
 
-const BrandToggle = (props) => (
-  <Navbar.Brand onClick={(e) => props.onClick(e)}>
-    <img src='/assets/crafting_table.png' alt='Logo' />
-    Crafting
-    <span className='caret' />
-  </Navbar.Brand>
-)
+const BrandToggle = (props) => {
+  return (
+    <Navbar.Brand onClick={props.onClick}>
+      <img src='/assets/crafting_table.png' alt='Logo' />
+      Crafting
+      <span className='caret' />
+    </Navbar.Brand>
+  )
+}
 
 const CraftingNav = () => {
   const creatorTooltip = (

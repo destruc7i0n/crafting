@@ -9,7 +9,7 @@ const IngredientDragPreview = ({ ingredient, tags = [], updateTimer = {} }) => {
   let texture = ingredient.texture || NoTextureTexture
   if (ingredient.ingredient_type === 'tag') {
     const { index = 0 } = updateTimer
-    if (tags[ingredient.tag].items[index]) texture = tags[ingredient.tag].items[index].texture
+    if (tags[ingredient.tag] && tags[ingredient.tag].items[index]) texture = tags[ingredient.tag].items[index].texture
   }
   return (
     <div style={{ display: 'inline-block' }}>
