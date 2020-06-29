@@ -149,7 +149,7 @@ class Ingredient extends Component {
       }
     }
 
-    const image = <img src={texture} alt='' className='ingredient-img' />
+    const image = texture ? <img src={texture} alt='' className='ingredient-img' /> : null
     // only allow tooltip and dragging while no context menu
     return (
       <span
@@ -161,7 +161,7 @@ class Ingredient extends Component {
         onMouseMove={this.onMouseMove}
         onMouseOut={this.onMouseOut}
       >
-        {draggable ? connectDragSource(image) : image}
+        {draggable && image ? connectDragSource(image) : image}
         {isOutput && ingredient.isPopulated()
           ? <span className='crafting-table-output-count'>{ingredient.count}</span>
           : null}
