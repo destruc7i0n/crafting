@@ -12,7 +12,7 @@ export default function configureStore () {
     // only add logger in development
     const { createLogger } = require('redux-logger')
     const logger = createLogger({
-      // don't log this please
+      // don't log this please!
       predicate: (getState, action) => action.type !== UPDATE_ALL_TIMERS
     })
     middleware.push(logger)
