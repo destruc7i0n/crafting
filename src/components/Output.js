@@ -83,8 +83,35 @@ class Output extends Component {
     })
 
     if (minecraftVersion === 'bedrock') {
+      let tags = []
       let recipeType = json.type
-      if (recipeType === 'minecraft:smelting') recipeType = 'minecraft:recipe_furnace'
+
+      // get the tags and the root key
+      switch (recipeType) {
+        case 'minecraft:crafting_shaped':
+        case 'minecraft:crafting_shapeless': {
+          tags = ['crafting_table']
+          recipeType = {
+            'minecraft:crafting_shapeless': 'minecraft:recipe_shapeless',
+            'minecraft:crafting_shaped': 'minecraft:recipe_shaped'
+          }[recipeType]
+          break
+        }
+        case 'minecraft:smoking':
+        case 'minecraft:campfire_cooking':
+        case 'minecraft:blasting':
+        case 'minecraft:smelting': {
+          tags = {
+            'minecraft:smoking': ['smoking'],
+            'minecraft:campfire_cooking': ['campfire', 'soul_campfire'],
+            'minecraft:blasting': ['blast_furnace'],
+            'minecraft:smelting': ['furnace']
+          }[recipeType]
+          recipeType = 'minecraft:recipe_furnace'
+          break
+        }
+        default: break
+      }
 
       if (recipeType === 'minecraft:recipe_furnace') {
         json = renameProp('ingredient', 'input', json)
@@ -97,6 +124,7 @@ class Output extends Component {
       json = {
         format_version: '1.12',
         [recipeType]: {
+          tags,
           ...omit(json, ['type', 'experience', 'cookingtime', 'group'])
         }
       }
