@@ -84,7 +84,7 @@ class Ingredients extends Component {
       (ingredient) => new IngredientClass(
         ingredient.id, ingredient.readable, ingredient.texture, 1, '{}',
         false,
-        ingredient.data ? { data: ingredient.data } : {}
+        ingredient.data !== undefined ? { data: ingredient.data } : {}
       )
     )
 
