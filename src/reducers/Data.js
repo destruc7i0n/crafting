@@ -23,7 +23,8 @@ import {
   SET_GENERIC_SLOT,
   RESET_GENERIC_SLOT,
   ADD_ITEM,
-  DELETE_CUSTOM_ITEM
+  DELETE_CUSTOM_ITEM,
+  RESET_CRAFTING
 } from '../actions'
 
 export default function Data (state = {
@@ -45,6 +46,19 @@ export default function Data (state = {
 }, action) {
   return produce(state, draft => {
     switch (action.type) {
+      // reset all fields
+      case RESET_CRAFTING:
+        draft.crafting = [...new Array(9)].map(_ => new Ingredient())
+        draft.furnace = {
+          input: new Ingredient(),
+          cookingTime: 200,
+          experience: 0.1
+        }
+        draft.generic = {
+          input: [new Ingredient(), new Ingredient()]
+        }
+        draft.output = new Ingredient()
+        break
       case SET_CRAFTING_SLOT:
         draft.crafting[action.payload.index] = action.payload.ingredient
         break

@@ -7,7 +7,9 @@ import {
   setGroup,
   setFurnaceData,
   setMinecraftVersion,
-  setTab, setBedrockIdentifier
+  setTab,
+  setBedrockIdentifier,
+  resetCrafting
 } from '../actions'
 
 import NumericInput from 'react-numeric-input'
@@ -72,7 +74,10 @@ class Options extends Component {
   }
 
   setMinecraftVersion ({ target: { value } }) {
-    const { dispatch } = this.props
+    const { dispatch, minecraftVersion } = this.props
+
+    // remove bedrock items
+    if (minecraftVersion === 'bedrock' || value === 'bedrock') dispatch(resetCrafting())
 
     dispatch(setMinecraftVersion(value))
     dispatch(setTab('crafting'))
@@ -142,7 +147,7 @@ class Options extends Component {
             <option value='bedrock' key='bedrock'>Bedrock</option>
             {versions.map(v => {
               if (v.toString() !== '1.12') {
-                return (<option value={v} key={v}>{v}</option>)
+                return (<option value={v} key={v}>Java {v}</option>)
               }
               return null
             })}
@@ -226,7 +231,7 @@ class Options extends Component {
         <Panel.Body collapsible>
           {minecraftVersion === 'bedrock' ? (
             <Alert>
-              <strong>Note</strong>: Note that Bedrock support is partial.
+              <strong>Note</strong>: Bedrock support is WIP.
             </Alert>
           ) : null}
           {versionSelector}

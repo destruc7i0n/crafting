@@ -20,6 +20,11 @@ export const setCraftingSlot = (index, ingredient) => (dispatch, getState) => {
   })
 }
 
+export const RESET_CRAFTING = 'RESET_CRAFTING'
+export const resetCrafting = () => ({
+  type: RESET_CRAFTING
+})
+
 export const RESET_CRAFTING_SLOT = 'RESET_CRAFTING_SLOT'
 export const resetCraftingSlot = (index) => ({
   type: RESET_CRAFTING_SLOT,

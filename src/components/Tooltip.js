@@ -2,7 +2,7 @@ import React from 'react'
 
 import './Tooltip.css'
 
-const Tooltip = ({ style, id, title, hidden }) => !hidden ? (
+const Tooltip = ({ style, ingredient, title, hidden }) => !hidden ? (
   <div
     className='mc-tooltip'
     style={{
@@ -15,7 +15,9 @@ const Tooltip = ({ style, id, title, hidden }) => !hidden ? (
       {title}
     </div>
     <div className='mc-tooltip-description'>
-      {id}
+      {ingredient.id}
+      {/* show the custom data as well for bedrock items */}
+      {ingredient.hasCustomData() && !!ingredient.getCustomData().data ? ':' + ingredient.getCustomData().data : ''}
     </div>
   </div>
 ) : null

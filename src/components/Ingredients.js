@@ -37,16 +37,39 @@ class Ingredients extends Component {
     }
   }
 
-  async getTextures (version = null) {
+  async getTextures (version) {
     let minecraftVersion = latestVersion
     if (typeof version === 'number') {
       minecraftVersion = version
     } else if (typeof version === 'string') {
-      minecraftVersion = 1.15
+      // bedrock
+      minecraftVersion = 1.16
     }
     try {
       const { default: textures } = await import(`minecraft-textures/dist/textures/${minecraftVersion}.js`)
-      this.setState({ items: textures.items })
+
+      let items = textures.items
+
+      if (version === 'bedrock') {
+        // perform bedrock mapping
+        const bedrockMapping = await import('../assets/bedrock.json')
+        const bedrockItems = []
+
+        for (let item of items) {
+          if (bedrockMapping[item.id]) {
+            const bedrockMappingValue = bedrockMapping[item.id]
+            const bedrockItem = { ...item }
+            bedrockItem.id = bedrockMappingValue.id
+            bedrockItem.data = bedrockMappingValue.data
+
+            bedrockItems.push(bedrockItem)
+          } else bedrockItems.push(item) // might be the same as java :O
+        }
+
+        items = bedrockItems
+      }
+
+      this.setState({ items })
     } catch (e) {
       this.setState({ error: 'Could not load the textures!' })
     }
@@ -57,7 +80,13 @@ class Ingredients extends Component {
     const { dispatch, customItems } = this.props
 
     // convert the items to the class
-    const ingredients = items.map((ingredient) => new IngredientClass(ingredient.id, ingredient.readable, ingredient.texture))
+    const ingredients = items.map(
+      (ingredient) => new IngredientClass(
+        ingredient.id, ingredient.readable, ingredient.texture, 1, '{}',
+        false,
+        ingredient.data ? { data: ingredient.data } : {}
+      )
+    )
 
     const customItemsIngredients = Object.keys(customItems).map(id => customItems[id])
 

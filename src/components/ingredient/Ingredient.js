@@ -165,7 +165,7 @@ class Ingredient extends Component {
         {isOutput && ingredient.isPopulated()
           ? <span className='crafting-table-output-count'>{ingredient.count}</span>
           : null}
-        {hover ? <Tooltip title={readable} id={ingredient.id} style={this.state.mouse} /> : null}
+        {hover ? <Tooltip title={readable} ingredient={ingredient} style={this.state.mouse} /> : null}
       </span>
     )
   }
