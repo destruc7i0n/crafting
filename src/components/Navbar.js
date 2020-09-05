@@ -43,10 +43,16 @@ const CraftingNav = () => {
         <Dropdown componentClass='li' id='brand-dropdown'>
           <BrandToggle bsRole='toggle' useAnchor />
           <Dropdown.Menu className='brand-menu'>
-            <MenuItem eventKey={1} href='https://advancements.thedestruc7i0n.ca' target='_blank' rel='noopener noreferrer'>
+            <MenuItem eventKey={1} href='https://advancements.thedestruc7i0n.ca' target='_blank' rel='noopener'>
               <Navbar.Brand>
-                <img src='https://advancements.thedestruc7i0n.ca/assets/frame.png' alt='Crafting' />
+                <img src='https://advancements.thedestruc7i0n.ca/assets/frame.png' alt='Advancements' />
                 Advancements
+              </Navbar.Brand>
+            </MenuItem>
+            <MenuItem eventKey={1} href='https://bedrock.dev' target='_blank' rel='noopener'>
+              <Navbar.Brand>
+                <img src='https://bedrock.dev/favicon/android-chrome-512x512.png' alt='bedrock.dev' />
+                bedrock.dev
               </Navbar.Brand>
             </MenuItem>
           </Dropdown.Menu>
