@@ -35,6 +35,19 @@ class Ingredients extends Component {
       this.setState({ items: [] })
       await this.getTextures(this.props.minecraftVersion)
     }
+
+    const customItemsIdsOld = Object.keys(prevProps.customItems).map(id => prevProps.customItems[id])
+    const customItemsIds = Object.keys(this.props.customItems).map(id => this.props.customItems[id])
+
+    if (customItemsIdsOld.length !== customItemsIds.length) {
+      const items = this.props.customItems
+      const itemsData = Object.keys(items).map(id => ({ id: items[id].id, name: items[id].readable, texture: items[id].textureSrc }))
+      if (window.localStorage) {
+        try {
+          window.localStorage.setItem('customItems', JSON.stringify(itemsData))
+        } catch (e) {}
+      }
+    }
   }
 
   async getTextures (version) {
@@ -91,7 +104,7 @@ class Ingredients extends Component {
     const customItemsIngredients = Object.keys(customItems).map(id => customItems[id])
 
     return (
-      <div className='panel'>
+      <div className='panel panel-default'>
         <div className='panel-heading'>
           <div className='panel-title'>
             Ingredients
@@ -112,24 +125,24 @@ class Ingredients extends Component {
                   {error || 'Loading...'}
                 </div>
               )
-              : null
-            }
-            {[...customItemsIngredients, ...ingredients].map((ingredient, index) => {
-              let visible = false
-              if (ingredient.id && ingredient.id.includes(search)) visible = true
-              if (ingredient.readable && ingredient.readable.toLowerCase().includes(search)) visible = true
+              : null}
+            {ingredients.length > 0 ? (
+              [...customItemsIngredients, ...ingredients].map((ingredient, index) => {
+                let visible = false
+                if (ingredient.id && ingredient.id.includes(search)) visible = true
+                if (ingredient.readable && ingredient.readable.toLowerCase().includes(search)) visible = true
 
-              const IngredientComponent = ingredient.custom ? AddItemIngredient : Ingredient
-
-              return visible ? (
-                <div
-                  key={index}
-                  onDoubleClick={() => dispatch(setFirstEmptyCraftingSlot(ingredient))}
-                >
-                  <IngredientComponent ingredient={ingredient} size='normal' />
-                </div>
-              ) : null
-            })}
+                const IngredientComponent = ingredient.custom ? AddItemIngredient : Ingredient
+                return visible ? (
+                  <div
+                    key={index}
+                    onDoubleClick={() => dispatch(setFirstEmptyCraftingSlot(ingredient))}
+                  >
+                    <IngredientComponent ingredient={ingredient} size='normal' />
+                  </div>
+                ) : null
+              })
+            ) : null}
           </div>
         </div>
       </div>

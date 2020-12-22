@@ -27,6 +27,18 @@ import {
   RESET_CRAFTING
 } from '../actions'
 
+let localStorageItems = []
+try {
+  localStorageItems = JSON.parse(window.localStorage.getItem('customItems') || '[]')
+} catch (e) {}
+const preloadedCustomItems = localStorageItems.reduce((acc, el) => {
+  const { id, name, texture } = el
+  let ingredient = new Ingredient(id, name, texture)
+  ingredient.custom = true
+  acc[id] = ingredient
+  return acc
+}, {})
+
 export default function Data (state = {
   crafting: [...new Array(9)].map(_ => new Ingredient()),
   furnace: {
@@ -42,7 +54,7 @@ export default function Data (state = {
   tagIndex: 0,
   tags: {},
   tagUpdateTimers: {},
-  customItems: {}
+  customItems: preloadedCustomItems || {}
 }, action) {
   return produce(state, draft => {
     switch (action.type) {
