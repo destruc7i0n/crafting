@@ -129,8 +129,9 @@ class Ingredients extends Component {
             {ingredients.length > 0 ? (
               [...customItemsIngredients, ...ingredients].map((ingredient, index) => {
                 let visible = false
-                if (ingredient.id && ingredient.id.includes(search)) visible = true
-                if (ingredient.readable && ingredient.readable.toLowerCase().includes(search)) visible = true
+                let searchQuery = search.toLowerCase()
+                if (ingredient.id && ingredient.id.toLowerCase().includes(searchQuery)) visible = true
+                if (ingredient.readable && ingredient.readable.toLowerCase().includes(searchQuery)) visible = true
 
                 const IngredientComponent = ingredient.custom ? AddItemIngredient : Ingredient
                 return visible ? (
