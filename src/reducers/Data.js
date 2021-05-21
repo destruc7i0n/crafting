@@ -59,7 +59,7 @@ export default function Data (state = {
   return produce(state, draft => {
     switch (action.type) {
       // reset all fields
-      case RESET_CRAFTING:
+      case RESET_CRAFTING: {
         draft.crafting = [...new Array(9)].map(_ => new Ingredient())
         draft.furnace = {
           input: new Ingredient(),
@@ -71,13 +71,16 @@ export default function Data (state = {
         }
         draft.output = new Ingredient()
         break
-      case SET_CRAFTING_SLOT:
+      }
+      case SET_CRAFTING_SLOT: {
         draft.crafting[action.payload.index] = action.payload.ingredient
         break
-      case RESET_CRAFTING_SLOT:
+      }
+      case RESET_CRAFTING_SLOT: {
         draft.crafting[action.payload.index] = new Ingredient()
         break
-      case SET_FIRST_EMPTY_CRAFTING_SLOT:
+      }
+      case SET_FIRST_EMPTY_CRAFTING_SLOT: {
         // find the first empty slot and update it
         for (let [index, slot] of draft.crafting.entries()) {
           // if the slot is not populated
@@ -89,50 +92,61 @@ export default function Data (state = {
           }
         }
         break
-      case SET_OUTPUT_SLOT:
+      }
+      case SET_OUTPUT_SLOT: {
         // update output slot with new instance
         const ingredient = action.payload.ingredient
         ingredient.count = ingredient.count || state.output.count
         draft.output = ingredient
         break
-      case RESET_OUTPUT_SLOT:
+      }
+      case RESET_OUTPUT_SLOT: {
         // reset output slot with new instance
         draft.output = new Ingredient()
         break
-      case SET_FURNACE_SLOT:
+      }
+      case SET_FURNACE_SLOT: {
         // set furnace slot to new instance of ingredient
         draft.furnace.input = action.payload.ingredient
         break
-      case SET_FURNACE_DATA:
+      }
+      case SET_FURNACE_DATA: {
         // add the furnace data to the furnace object
         draft.furnace = {
           ...state.furnace,
           ...action.payload
         }
         break
-      case RESET_FURNACE_SLOT:
+      }
+      case RESET_FURNACE_SLOT: {
         draft.furnace.input = new Ingredient()
         break
-      case SET_GENERIC_SLOT:
+      }
+      case SET_GENERIC_SLOT: {
         // set furnace slot to new instance of ingredient
         if (action.payload.index < draft.generic.input.length) {
           draft.generic.input[action.payload.index] = action.payload.ingredient
         }
         break
-      case SET_GENERIC_SLOT_DATA:
+      }
+      case SET_GENERIC_SLOT_DATA: {
         break
-      case RESET_GENERIC_SLOT:
+      }
+      case RESET_GENERIC_SLOT: {
         if (action.payload.index < draft.generic.input.length) {
           draft.generic.input[action.payload.index] = new Ingredient()
         }
         break
-      case SET_GROUP:
+      }
+      case SET_GROUP: {
         draft.group = action.payload
         break
-      case SET_NBT:
+      }
+      case SET_NBT: {
         draft.nbt = action.payload
         break
-      case CREATE_TAG:
+      }
+      case CREATE_TAG: {
         draft.tagIndex += 1
         draft.tags[action.payload.id] = {
           name: `tag${draft.tagIndex}`,
@@ -148,13 +162,15 @@ export default function Data (state = {
           index: 0 // current index
         }
         break
-      case UPDATE_TAG:
+      }
+      case UPDATE_TAG: {
         draft.tags[action.payload.id] = {
           ...state.tags[action.payload.id],
           ...action.payload.tag
         }
         break
-      case ADD_TAG_ITEM:
+      }
+      case ADD_TAG_ITEM: {
         const { item: addItem, id: addId } = action.payload
         // check that the item isn't already there
         const itemCheck = state.tags[addId].items
@@ -170,7 +186,8 @@ export default function Data (state = {
           index: 0 // reset
         }
         break
-      case REMOVE_TAG_ITEM:
+      }
+      case REMOVE_TAG_ITEM: {
         const { id: removeId, index: removeIndex } = action.payload
         // a certain magical tag index...
         draft.tags[removeId].items.splice(removeIndex, 1)
@@ -180,7 +197,8 @@ export default function Data (state = {
           index: 0 // reset
         }
         break
-      case REMOVE_TAG:
+      }
+      case REMOVE_TAG: {
         // clear the tag from every input
         for (let [index, ingredient] of state.crafting.entries()) {
           if (ingredient.ingredient_type === 'tag' && ingredient.tag === action.payload) {
@@ -200,7 +218,8 @@ export default function Data (state = {
         delete draft.tags[action.payload] // remove the tag
         delete draft.tagUpdateTimers[action.payload.id] // remove the tag timer too
         break
-      case UPDATE_ALL_TIMERS:
+      }
+      case UPDATE_ALL_TIMERS: {
         // update every tag timer
         draft.tagUpdateTimers = Object.keys(state.tagUpdateTimers).reduce((acc, id) => {
           let { max, index } = state.tagUpdateTimers[id] // grab the timer
@@ -219,10 +238,12 @@ export default function Data (state = {
           return acc
         }, {})
         break
-      case ADD_ITEM:
+      }
+      case ADD_ITEM: {
         draft.customItems[action.payload.id] = action.payload
         break
-      case DELETE_CUSTOM_ITEM:
+      }
+      case DELETE_CUSTOM_ITEM: {
         // clear the tag from every input
         for (let [index, ingredient] of state.crafting.entries()) {
           if (ingredient.id === action.payload) {
@@ -242,6 +263,7 @@ export default function Data (state = {
         }
         delete draft.customItems[action.payload]
         break
+      }
       default:
         return state
     }

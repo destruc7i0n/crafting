@@ -154,6 +154,11 @@ export const setTab = (tab) => ({
   payload: tab
 })
 
+export const TOGGLE_TWO_BY_TWO_GRID = 'TOGGLE_TWO_BY_TWO_GRID'
+export const toggleTwoByTwoGrid = () => ({
+  type: TOGGLE_TWO_BY_TWO_GRID
+})
+
 // Private reducer
 export const TOGGLE_SHOWING_COUNT_MENU = 'TOGGLE_SHOWING_COUNT_MENU'
 export const toggleCountMenu = () => ({

@@ -32,7 +32,7 @@ class CraftingArea extends Component {
   }
 
   render () {
-    const { dispatch, crafting, furnace, generic, output, tab, minecraftVersion } = this.props
+    const { dispatch, crafting, furnace, generic, output, tab, minecraftVersion, twoByTwo } = this.props
     const selectedTab = parseInt(invert(this.keyMapping)[tab], 10) // grab the selected tab index
 
     const titles = {
@@ -54,6 +54,21 @@ class CraftingArea extends Component {
       stonecutter: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEkElEQVR4XmMYBaMhMBoC1AqB0NDQ/+SYxUipA5ycnP4rKyuDjbl79y6DsLAww+rVq4k2l4VcB6SmpsJ9/OHDBwYBAQEGkENAjiDFTLJCAORrkE9hFoEsB7G/f//OwMnJyQByELGhQFIINDU1/X/8+DHYXpivYY4AWf7z50+wA2AOIiYkiAoBkMWfPn0Cm/fw4UMwDbIE2REwB4Ak3759y+Dg4MBQV1dH0Hy8CpAt/vbtG8ONGzfAiYydnZ0B5FsQDQpymOUwR3FxcTFwc3MzgGg+Pj68DsHqgKysrP8gzehB+PHjRwaYr0E0yKegtHDv3j0GJSUlBiYmJrAWbW1tBliIwcwAeWDatGkY9qEIdKbr/792GxLH3BoRYL1fv34F0yADYD6EGQoKERBbS0sLw2KQemQPfL2xAszVUpVlKJ95EW4vE0yRm640OFvxC4igeByUtWD5HDnOQb4GWQzCIB/LysrCfQ2yXEJCAhwFIA/APAEzW06YG56F4S6x1ZAEC3LJ64HzM8gAUDDCDDtw4AADLOvBghrGh0UXSC0yG+QTWDp48eIFw5EjRxi+vnwA9uDdl5/AdsMdYKok/F+Qm4NBUMsGnMBACcva2hqsGOQQUPz/+vWL4cePHwwg375+/RosBwsdWLCBLAL5WFRUlAGUAEHia9asAUuzsLAwfHtxl+H33/8MOB3w/usPBl0HfwaQIaCUDtJpZGQEdwi6xbDEBotzmI9BGjZs2IASnW8e3mTgYocUPTeefcQMAQ42NoYfQF+CaJBOKX07cHaCxSEorkHiIEthDgFlN5AYSA0sNGA+hsm9f3gN7Ovff/4ysLIwM7AyMzJgOACUBkCWgwwDRQUoJEA0iC9j6g72ybt378C0lJQUA8uLPQwfP7wB80GJ64+EC8P+/fvBfFDZACoj0C0GOQCkABQKGA4A5YLvv/8xgBIhSNG722fAhoFCg5OViQEkBwoRkOD7a0fAfB97MbCaWRvuM4AMF5FXB/NB8QxigOIaTAN9zi0mB5b7+uoRA0EHIOf3bw8vMcAAyCGgkIE5CsT+/OMPA8wyWBDDaJA4m5A0WJ6VlZXh9+/fDL/ePQXzYYkQXhnBghwUfKDEJy0tzQCJez2wBpBDQGpAHJBDQDTIIe++/gbHKShefwPdAgtmmMUg8xiQwH9g/MNCBiQMdwAs4QkJCUGCCloCwg0Alg9cQBlY1ICiBKQQYiEkYYH4sKAG+RjEB6UFEA3yFChR/gImG5gjURxw+MZzcLYI1/oKLpBAikEhgO4gBlUTBli0wEIC5kGQ5aDog1VUMIth8iBxWOKDieGsDcPDw/8jGwTLUk+fPmX4/+wKAyzK7r76DE6AoITFyC/FgB7ksBA4fvw4VrtwOgDmwoCAgP8wQ2A+enrpMFgalE0fvf0Cz+MC0srgcgPk8D9//jCASr5z587htYOgA2AOSUpKglcglw9sZIClmdefvjHAEpWYkjYDzPJLly4RZTbRDoA5BBQ1zy4eYoCVDQ9ffwLn628//zCAygFCPmZAAyQ7AKYfVHCB0gEsG6InLoahAgC13zizwnPHRQAAAABJRU5ErkJggg==',
       smithing: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAF1klEQVR4XmMYaMBIrgOcXcL/f//xFaydk4ObYe+elWSZRbImH7/k/8+f30Nx97+/P8D8T58+MNy9c50kM4lWDPLxh4+vGD68f8HAwcHJ8OPHdzANspmNjR3FQZxcwgzHjmwhymyCikAWv3v3iIGJmYMB5NNfv37CLVNUMmR4+uQamA8ShzkEpBYkKMAvRjBqcDpAWUXzv4CgBNhwWBDDbEZ2BHoaQg4NUEiA5H/+/Mpw9vR+rHZhCFrZ+PwHaQBphFmMz0J0B2CLGphDsCVWuANAQQ0yDBTPMEORfQ5zBAcnP8OP7x8Z8AH0NAGKEnZ2brAWkCNADFiuYYEZ9PjJLTBTVkYNTEOyGDfD929vUezCZjnIQlgaQA8tZMtBBl04v5+BmYUNbiY8BBQU1f6DRGEGKSsbIjkEov7li7sM4hLKcEfBLOMXkIKohToWlghBgqCECKKvXTvF8OsnpNz48+cPw8eP78B2w0MA2eWfPr1nePToCsPv378ZhEWkwYaDghCUKJFDBBbUQkLiYDXXoQ4EcWBix49uBvv4759fDCCLGdAAPAR4eHjBIcDGzsHAxycIVoactWAhAkojIMegRw0sqGFxDApqZLtglv/48Q0s/PPnD7DdcAcICYv+//UTUqKBHMHBwQVWCNIAcxAbMCGpqRkBo+ALA8whIEWgXAML6kuXDgHLi78M34EWcQLNQLaYmYWF4S8w+EH0t69fUB0gJS3//9PHdwyK7Mxgi58ysIJpkOXIIQHzlY6uLUpgnjyxDRjHPxlYgJaALIXRMB8Ls0D8+vbPfwaQ5zDSAMw0NiYmhl///jFIM/wGC91//RziEH4huIWguL9y+TADKEQ+vH8Nia6fkBIS5uMvXz6BxcVYmcD03///GZgZGYHpgRnF4Uxwi6HluZCRAwPIEda6smApUIiAMCh0YL6BJdgvn98xgBIXCIMU/wYmNBAGqQNZDLMcJAey/A+fOAM6YEEWAMX92zfvGRjk9BlOfWYAOuQpODRAaiBR85vhPjCaQHw+aIigJy6wpUi+BqnlAUbLd35JBphloOiB2YuRDd+9e8rAwyPMwMbGwfAf6JD/v34wMD67DncnLI3AHALKqiBJWBzDFIKC/D+/BDBNsDK8ffWQgQGI2YQg5QVyQcSCESZvnzG8+fEXLCwiIgZ2CBvQB5wszEDxnwywNAJSAAqxf8C4BaVsEB8WzLxf34D1f2dhZfgGtJiLBRrvn14CxZlQrMRwgCIvN8P9zy8ZTFQlGM68gxbD3yHZEyQH0v3pFyiB/kUxCGQ5g5AMOJjf/vwFlmP785sBZDk4AQrLMnB+BCboP/+xOwCUskEJjQGYd0EWifByMjDcvg9WLMwOKbvvf4YUpSB5tn/M4Oz09w/EIZzMjAzfoUazM0N8yQzyMdBRPECLP//5zYANYCRCmCXqQNUwH7/5AQl6kENAWRSshpUTbh4oCt7+/c8A8rEEyxeGN4yQPM/JzMwAs/jXu2cM4PBkZmX4CS0NQQYgsiG0uuRlZWEAYZAkzDEiHIgmFygNgORhpSYoRYNKNpCvQZZzs7MygCwGYZAZIItBOQAkDwsZrLkA5h2QBTA2yMcwR4DYfGyQ0hGWBkDR9vMHJOBBaQBk+defkKCGpQOQpX+AwY/c8kHOBfAQePP6CdhekCWswNJwxzlE/IMsBxkIcwzMIaCSEFYOwHz8hkGQAaQWlPhAloMcxvjxBQOoLABhkCVfvnyARx88Dbx7+xrsyPt8POBkihz/INXoCZGBAbU1B7JUDKTw3RMGWLYDF72g4heIYSHy7cdPFI0Y2fDBpy8wBVgdAop/UDR9+gfJ26D4BBW/IEsfPkf4DBYiMIvfolkMCwLMgggqg80h34FZ7jewooJpBtUFDEgAlN9hwUzIYoIOYMDjELDUj38MoET4B1wOfGMg1scMaABnCKArRA8RBmA5AEqE375BWjjE+hjdXKydBQYiAKgFBVL2A5oNYS0chqEGAE1hbJ2P6B4KAAAAAElFTkSuQmCC'
     }
+
+    const grid = !twoByTwo ? (
+      <div className='table-wrap'>
+        {crafting.map((key, index) =>
+          <CraftingGrid key={`grid-${index}`} index={index} ingredient={key} size='normal' type='crafting' />
+        )}
+      </div>
+    ) : (
+      <div className='table-wrap grid-2x2'>
+        <CraftingGrid key={'grid-0'} index={0} ingredient={crafting[0]} size='normal' type='crafting' />
+        <CraftingGrid key={'grid-1'} index={1} ingredient={crafting[1]} size='normal' type='crafting' />
+        <CraftingGrid key={'grid-2'} index={3} ingredient={crafting[3]} size='normal' type='crafting' />
+        <CraftingGrid key={'grid-3'} index={4} ingredient={crafting[4]} size='normal' type='crafting' />
+      </div>
+    )
 
     return (
       <div className='panel panel-default'>
@@ -83,17 +98,7 @@ class CraftingArea extends Component {
             <h6 className='crafting-title'>{titles[tab]}</h6>
             <div className={classNames('crafting', { full: tab === 'smithing' })}>
               <div className='recipe'>
-                {tab === 'crafting'
-                  ? (
-                    <div className='table-wrap'>
-                      {crafting.map((key, index) => {
-                        return (
-                          <CraftingGrid key={index} index={index} ingredient={key} size='normal' type='crafting' />
-                        )
-                      })}
-                    </div>
-                  )
-                  : null}
+                {tab === 'crafting' ? grid : null}
                 {['furnace', 'blast', 'campfire', 'smoking'].includes(tab)
                   ? (
                     <div className='vertical'>
@@ -101,7 +106,7 @@ class CraftingArea extends Component {
                       <div className='flame' />
                       <CraftingGrid index={0} ingredient={null} size='furnace' type='furnace' disabled />
                     </div>
-                  )
+                    )
                   : null}
                 {tab === 'smithing'
                   ? (
@@ -110,7 +115,7 @@ class CraftingArea extends Component {
                       <div className='plus' />
                       <CraftingGrid index={1} ingredient={generic.input[1]} size='large' type='generic' />
                     </div>
-                  )
+                    )
                   : null}
                 {tab === 'stonecutter'
                   ? <CraftingGrid index={0} ingredient={generic.input[0]} output={false} type='generic' size='large' />
@@ -132,6 +137,7 @@ export default connect((store) => {
   return {
     tab: store.Options.tab,
     minecraftVersion: store.Options.minecraftVersion,
+    twoByTwo: store.Options.twoByTwoGrid,
     crafting: store.Data.crafting,
     furnace: store.Data.furnace,
     generic: store.Data.generic,

@@ -9,7 +9,8 @@ import {
   setMinecraftVersion,
   setTab,
   setBedrockIdentifier,
-  resetCrafting
+  resetCrafting,
+  toggleTwoByTwoGrid
 } from '../actions'
 
 import NumericInput from 'react-numeric-input'
@@ -28,6 +29,8 @@ import {
 } from 'react-bootstrap'
 
 import infoCircle from '../assets/info-circle.png'
+
+import './Options.css'
 
 class Options extends Component {
   constructor (props) {
@@ -84,7 +87,7 @@ class Options extends Component {
   }
 
   render () {
-    const { dispatch, emptySpace, shape, outputRecipe, tab, furnace, minecraftVersion, bedrockIdentifier, group } = this.props
+    const { dispatch, emptySpace, shape, outputRecipe, tab, furnace, minecraftVersion, bedrockIdentifier, group, twoByTwo } = this.props
 
     const shapelessTooltip = (
       <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the
@@ -132,6 +135,18 @@ class Options extends Component {
       </FormGroup>
     )
 
+    const twoByTwoGridCheckbox = (
+      <FormGroup controlId='twoByTwo'>
+        <Checkbox
+          inline
+          checked={twoByTwo}
+          onChange={() => dispatch(toggleTwoByTwoGrid())}
+        >
+          2x2 Grid
+        </Checkbox>
+      </FormGroup>
+    )
+
     const versionSelector = (
       <div className='row'>
         <div className='col-md-2'>
@@ -161,11 +176,14 @@ class Options extends Component {
       customOptions = (
         <>
           <legend><h5>Crafting Options</h5></legend>
-          <div className='row'>
-            <div className='col-md-4'>
+          <div className='options-row'>
+            <div className='options-col'>
               {shapelessCheckbox}
             </div>
-            <div className='col-md-8'>
+            <div className='options-col'>
+              {minecraftVersion !== 'bedrock' && twoByTwoGridCheckbox}
+            </div>
+            <div className='options-col'>
               {shape === 'shaped' ? removeEmptySpaceCheckbox : null}
             </div>
           </div>
@@ -306,6 +324,7 @@ export default connect((store) => {
     tab: store.Options.tab,
     minecraftVersion: store.Options.minecraftVersion,
     bedrockIdentifier: store.Options.bedrockIdentifier,
+    twoByTwo: store.Options.twoByTwoGrid,
     furnace: store.Data.furnace
   }
 })(Options)

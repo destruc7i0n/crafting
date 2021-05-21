@@ -6,7 +6,8 @@ import {
   SET_MINECRAFT_VERSION,
   SET_OUTPUT_RECIPE,
   SET_SHAPE,
-  SET_TAB
+  SET_TAB,
+  TOGGLE_TWO_BY_TWO_GRID
 } from '../actions'
 
 import { latestVersion } from 'minecraft-textures'
@@ -16,6 +17,8 @@ export default function Options (state = {
   shape: 'shaped',
   emptySpace: true,
   outputRecipe: 'crafting_recipe',
+
+  twoByTwoGrid: true,
 
   bedrockIdentifier: 'crafting:recipe',
 
@@ -40,6 +43,9 @@ export default function Options (state = {
         break
       case SET_BEDROCK_IDENTIFIER:
         draft.bedrockIdentifier = action.payload
+        break
+      case TOGGLE_TWO_BY_TWO_GRID:
+        draft.twoByTwoGrid = !state.twoByTwoGrid
         break
       default:
         return state

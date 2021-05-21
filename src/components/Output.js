@@ -47,15 +47,23 @@ class Output extends Component {
   }
 
   generateCrafting () {
-    const { input, output, group, furnace, generic, emptySpace, shape, tab, tags, minecraftVersion, bedrockIdentifier } = this.props
+    const { input, output, group, furnace, generic, emptySpace, shape, tab, tags, minecraftVersion, bedrockIdentifier, twoByTwo } = this.props
     let json, generator
 
     if (tab === 'crafting') {
-      generator = new CraftingGenerator(input, output, tags, { group })
+      let craftingInput = input
+      if (twoByTwo) {
+        // only the elements in use
+        craftingInput = [
+          input[0], input[1],
+          input[3], input[4]
+        ]
+      }
+      generator = new CraftingGenerator(craftingInput, output, tags, { group })
       if (shape === 'shapeless') {
         json = generator.shapeless()
       } else {
-        json = generator.shaped(emptySpace)
+        json = generator.shaped(emptySpace, twoByTwo ? 2 : 3)
       }
     } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
       generator = new CraftingGenerator(furnace.input, output, tags, { group })
@@ -234,6 +242,7 @@ export default connect((store) => {
     emptySpace: store.Options.emptySpace,
     outputRecipe: store.Options.outputRecipe,
     bedrockIdentifier: store.Options.bedrockIdentifier,
-    minecraftVersion: store.Options.minecraftVersion
+    minecraftVersion: store.Options.minecraftVersion,
+    twoByTwo: store.Options.twoByTwoGrid
   }
 })(Output)

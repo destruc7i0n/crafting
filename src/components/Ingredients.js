@@ -59,7 +59,7 @@ class Ingredients extends Component {
       minecraftVersion = 1.16
     }
     try {
-      const { default: textures } = await import(`minecraft-textures/dist/textures/${minecraftVersion}.js`)
+      const { default: textures } = await import('minecraft-textures/dist/textures/' + minecraftVersion + '.js')
 
       let items = textures.items
 
@@ -68,7 +68,7 @@ class Ingredients extends Component {
         const bedrockMapping = await import('../assets/bedrock.json')
         const bedrockItems = []
 
-        for (let item of items) {
+        for (const item of items) {
           if (bedrockMapping[item.id]) {
             const bedrockMappingValue = bedrockMapping[item.id]
             const bedrockItem = { ...item }
@@ -124,12 +124,12 @@ class Ingredients extends Component {
                 <div className='ingredients-loading-text'>
                   {error || 'Loading...'}
                 </div>
-              )
+                )
               : null}
             {ingredients.length > 0 ? (
               [...customItemsIngredients, ...ingredients].map((ingredient, index) => {
                 let visible = false
-                let searchQuery = search.toLowerCase()
+                const searchQuery = search.toLowerCase()
                 if (ingredient.id && ingredient.id.toLowerCase().includes(searchQuery)) visible = true
                 if (ingredient.readable && ingredient.readable.toLowerCase().includes(searchQuery)) visible = true
 

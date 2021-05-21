@@ -243,7 +243,7 @@ class CraftingGenerator {
     // go over each ingredient
     for (let ingredient of input) {
       // only if populated
-      if (ingredient.isPopulated()) {
+      if (!!ingredient && ingredient.isPopulated()) {
         const itemType = this.getItemType(ingredient, false)
         shape.ingredients.push(
           itemType
@@ -274,9 +274,10 @@ class CraftingGenerator {
   /**
    * Returns a shaped crafting of the input and output provided
    * @param removeEmptySpace {boolean}
+   * @param dim {number}
    * @returns {object}
    */
-  shaped (removeEmptySpace = false) {
+  shaped (removeEmptySpace = false, dim = 3) {
     // clone element
     const { input, output } = this
     const patternCharacters = this.getPatternCharacters()
@@ -331,7 +332,7 @@ class CraftingGenerator {
     }
 
     for (let ingredient of input) {
-      if (ingredient.isPopulated()) {
+      if (!!ingredient && ingredient.isPopulated()) {
         let key = byItem(ingredient)
 
         if (key) {
@@ -364,7 +365,7 @@ class CraftingGenerator {
     shape.key = keyMap
 
     // split into groups of three
-    let splitKeys = keysString.match(/.{1,3}/g)
+    let splitKeys = keysString.match(new RegExp(`.{1,${dim}}`, 'g'))
 
     // init lines
     let lines = [...splitKeys]

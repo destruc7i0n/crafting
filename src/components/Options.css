@@ -1,0 +1,8 @@
+.options-row {
+    display: flex;
+    margin: -15px;
+}
+
+.options-row .options-col {
+    padding: 15px;
+}
