@@ -1,8 +1,15 @@
 .options-row {
-    display: flex;
-    margin: -15px;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+@media (min-width:768px) {
+    .options-row {
+        display: flex;
+    }
 }
 
 .options-row .options-col {
-    padding: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
