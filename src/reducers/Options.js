@@ -18,7 +18,7 @@ export default function Options (state = {
   emptySpace: true,
   outputRecipe: 'crafting_recipe',
 
-  twoByTwoGrid: true,
+  twoByTwoGrid: false,
 
   bedrockIdentifier: 'crafting:recipe',
 
