@@ -39,9 +39,14 @@
 
 .search-box {
     display: flex;
+    align-items: center;
     flex: 0 0 100%;
     margin-bottom: 5px;
     overflow-x: auto;
+}
+
+.search-box p {
+    margin-bottom: 0;
 }
 
 .search-box input {

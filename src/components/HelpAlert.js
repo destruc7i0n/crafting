@@ -36,17 +36,18 @@ class HelpAlert extends Component {
         <Alert bsStyle='info' onDismiss={() => this.setState({ shown: true })}>
           <p style={{ fontSize: '1.2em' }}>Information</p>
           <p>
-            Welcome to the crafting recipe generator for Minecraft Java and Bedrock!
-            <br />
-            Drag and drop the items from the "Ingredients" panel into the crafting table to generate your recipe.
-            If you wish to set the count for the resultant item, right click the resultant item and click "Set Count".
-            If you wish to create a tag, right click an item in the crafting grid and select "Create Tag".
-            <br />
-            Once you are done creating your recipe, either copy the recipe from the JSON panel, or click the blue button to download the recipe as a JSON file.
-            <br />
-            Note that Shapeless and shaped CAN conflict with each other! For example, if you make a recipe that takes 2 sticks and a plank shapeless, it will conflict with the shaped shovel recipe.
-            <br />
-            <b>Note:</b> You cannot add custom enchantments or NBT data to crafting items yet.
+            Welcome to the crafting recipe generator for Minecraft Java Edition and Bedrock Edition!<br />
+            <ol>
+              <li>Drag and drop the items from the "Ingredients" panel into the crafting table to generate your recipe.</li>
+              <li>Once you are done creating your recipe, either copy the recipe from the JSON panel, or click the "Download" button download the recipe as a JSON file or datapack.</li>
+            </ol>
+            Notes:
+            <ul>
+              <li>To set the count for the resultant item, right click the resultant item and click "Set Count".<br /></li>
+              <li>To create a tag, right click an item in the crafting grid and select "Create Tag".<br /></li>
+              <li>Shapeless and shaped recipes CAN conflict with each other! For example, if you make a recipe that takes 2 sticks and a plank shapeless, it will conflict with the shaped shovel recipe.</li>
+              <li>You cannot add custom enchantments or NBT data to crafting items yet.</li>
+            </ul>
           </p>
         </Alert>
       )

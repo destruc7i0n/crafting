@@ -115,7 +115,7 @@ class Ingredients extends Component {
         </div>
         <div className='panel-body'>
           <span className='search-box'>
-            <p>Search Items:</p>
+            <p>Search:</p>
             <DebouncedInput attributes={{ className: 'form-control' }} debounced={(input) => this.setState({ search: input })} />
           </span>
           <div className='ingredients'>

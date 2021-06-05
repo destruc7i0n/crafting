@@ -11,7 +11,7 @@ import CraftingGrid from './crafting/CraftingGrid'
 import './CraftingArea.scss'
 
 const CraftingTabImage = ({ title, image }) => (
-  <OverlayTrigger placement='top' overlay={<Tooltip>{title}</Tooltip>}>
+  <OverlayTrigger placement='top' overlay={<Tooltip id='crafting-title'>{title}</Tooltip>}>
     <img src={image} alt={title} />
   </OverlayTrigger>
 )
