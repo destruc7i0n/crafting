@@ -42,9 +42,15 @@ class AddItemModal extends Component {
     const { name, id, image } = this.state
     const { dispatch } = this.props
 
+    let trimmedId = id.split(':').map(p => p.trim()).join(':')
+    // remove spaces and transform to lower case (as most items are)
+    let fixedId = trimmedId.split(' ').join('_').toLowerCase()
+
     if (name && id) {
       dispatch(addItem(
-        id, name, image
+        fixedId,
+        name,
+        image
       ))
       this.setState({
         id: '', name: '', image: null, show: false
