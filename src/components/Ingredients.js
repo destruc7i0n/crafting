@@ -65,12 +65,14 @@ class Ingredients extends Component {
 
       if (version === 'bedrock') {
         // perform bedrock mapping
-        const bedrockMapping = await import('../assets/bedrock.json')
+        const { conversions, ignore } = await import('../assets/bedrock.json')
         const bedrockItems = []
 
         for (const item of items) {
-          if (bedrockMapping[item.id]) {
-            const bedrockMappingValue = bedrockMapping[item.id]
+          if (ignore.includes(item.id)) continue
+
+          if (conversions[item.id]) {
+            const bedrockMappingValue = conversions[item.id]
             const bedrockItem = { ...item }
             bedrockItem.id = bedrockMappingValue.id
             bedrockItem.data = bedrockMappingValue.data
