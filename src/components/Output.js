@@ -29,6 +29,7 @@ class Output extends Component {
     this.generateCrafting = this.generateCrafting.bind(this)
     this.generateTags = this.generateTags.bind(this)
     this.generateDatapack = this.generateDatapack.bind(this)
+    this.getPackFormat = this.getPackFormat.bind(this)
   }
 
   generateCraftingName () {
@@ -161,17 +162,17 @@ class Output extends Component {
     const { minecraftVersion } = this.props
 
     switch (minecraftVersion) {
-      case '1.12': {
+      case 1.12: {
         return 3
       }
-      case '1.13':
-      case '1.14': {
+      case 1.13:
+      case 1.14: {
         return 4
       }
-      case '1.15': {
+      case 1.15: {
         return 5
       }
-      case '1.16': {
+      case 1.16: {
         return 6
       }
       default: {
