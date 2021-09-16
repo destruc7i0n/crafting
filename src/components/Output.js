@@ -157,6 +157,29 @@ class Output extends Component {
     }))
   }
 
+  getPackFormat () {
+    const { minecraftVersion } = this.props
+
+    switch (minecraftVersion) {
+      case '1.12': {
+        return 3
+      }
+      case '1.13':
+      case '1.14': {
+        return 4
+      }
+      case '1.15': {
+        return 5
+      }
+      case '1.16': {
+        return 6
+      }
+      default: {
+        return 7
+      }
+    }
+  }
+
   generateDatapack () {
     const craftingRecipe = this.generateCrafting()
     const craftingName = this.generateCraftingName()
@@ -166,7 +189,7 @@ class Output extends Component {
     // add the pack file
     zip.file('pack.mcmeta', JSON.stringify({
       pack: {
-        pack_format: 1,
+        pack_format: this.getPackFormat(),
         description: 'Generated with TheDestruc7i0n\'s crafting generator: https://crafting.thedestruc7i0n.ca'
       }
     }))
