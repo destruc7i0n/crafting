@@ -234,7 +234,7 @@ class Output extends Component {
             bsStyle='primary'
             block
           >
-            Download <code>{fileSaveName}</code>
+            Download JSON File
           </Button>
           {minecraftVersion !== 'bedrock' ? (
             <Button
@@ -243,7 +243,7 @@ class Output extends Component {
               bsStyle='primary'
               block
             >
-              Download <code>datapack.zip</code>
+              Download Datapack
             </Button>
           ) : null}
         </Panel.Body>

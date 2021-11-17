@@ -288,7 +288,7 @@ class Options extends Component {
                 </div>
                 <div className='col-md-12'>
                   <p style={{ fontSize: '12px' }}>
-                    The file name to output as.
+                    Will output as <code>{outputRecipe}.json</code>.
                   </p>
                 </div>
               </div>
