@@ -56,7 +56,7 @@ class Ingredients extends Component {
       minecraftVersion = version
     } else if (typeof version === 'string') {
       // bedrock
-      minecraftVersion = 1.17
+      minecraftVersion = 1.18
     }
     try {
       const { default: textures } = await import('minecraft-textures/dist/textures/' + minecraftVersion + '.js')

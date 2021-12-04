@@ -147,6 +147,7 @@ class Options extends Component {
       </FormGroup>
     )
 
+    const sortedVersions = [...versions].reverse()
     const versionSelector = (
       <div className='row'>
         <div className='col-md-2'>
@@ -159,8 +160,8 @@ class Options extends Component {
             value={minecraftVersion}
             onChange={this.setMinecraftVersion}
           >
-            <option value='bedrock' key='bedrock'>Bedrock 1.17</option>
-            {versions.map(v => {
+            <option value='bedrock' key='bedrock'>Bedrock 1.18</option>
+            {sortedVersions.map(v => {
               if (v.toString() !== '1.12') {
                 return (<option value={v} key={v}>Java {v}</option>)
               }

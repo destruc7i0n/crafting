@@ -175,8 +175,11 @@ class Output extends Component {
       case 1.16: {
         return 6
       }
-      default: {
+      case 1.17: {
         return 7
+      }
+      default: {
+        return 8
       }
     }
   }
