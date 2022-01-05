@@ -14,6 +14,7 @@ import Options from './components/Options'
 import Output from './components/Output'
 import CraftingModal from './components/crafting/CraftingModal'
 import Tags from './components/tags/Tags'
+import Footer from './components/Footer'
 
 import IngredientDragLayer from './components/ingredient/IngredientDragLayer'
 
@@ -51,6 +52,7 @@ const App = () => {
             {!isMobile ? <Ingredients /> : null}
           </div>
         </div>
+        <Footer />
         <CraftingModal />
       </div>
     </DndProvider>
