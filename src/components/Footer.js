@@ -9,7 +9,7 @@ const Footer = () => {
       <p className='me'>Website by <a href='https://thedestruc7i0n.ca' target='_blank' rel='noopener'>destruc7i0n</a> · <a href='https://twitter.com/TheDestruc7i0n' target='_blank' rel='noopener'>Twitter</a></p>
       <br />
       <p>The Minecraft item icons are copyright © 2009-{new Date().getFullYear()} Mojang Studios</p>
-      <p>This site is not affiliated with Mojang AB.</p>
+      <p>This site is not affiliated with Mojang Studios</p>
     </div>
   )
 }
