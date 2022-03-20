@@ -8338,10 +8338,10 @@ min-indent@^1.0.0:
   resolved "https://registry.yarnpkg.com/min-indent/-/min-indent-1.0.1.tgz#a63f681673b30571fbe8bc25686ae746eefa9869"
   integrity sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==
 
-minecraft-textures@^1.18.0:
-  version "1.18.0"
-  resolved "https://registry.npmjs.org/minecraft-textures/-/minecraft-textures-1.18.0.tgz#21a8b526709243464e13820e7311e692dbb11b8d"
-  integrity sha512-a2WTCXNWrqnLhL7DHQ8HnDP/BamAfOyXaAdIzGblAW1MUWQ9/SPfcEmLd5mQevrgYv+JbrKlq/X1UXbisjHBcA==
+minecraft-textures@^1.18.1:
+  version "1.18.1"
+  resolved "https://registry.npmjs.org/minecraft-textures/-/minecraft-textures-1.18.1.tgz#5291c8845c1c6356e469dcbe29178c0d7995609a"
+  integrity sha512-OIHXtvK/Tg9Hhnl2XWTmIMZeE8Km2Aq6oPnhH4BP2MlohXK7AR+NwZGRzVC+L+8HvAFTnmglZ7xenIgYK4anqg==
 
 mini-css-extract-plugin@0.11.3:
   version "0.11.3"
