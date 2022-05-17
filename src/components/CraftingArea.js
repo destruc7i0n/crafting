@@ -4,7 +4,10 @@ import { setTab } from '../actions'
 import { Tabs, Tab, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { invert } from 'lodash'
 
-import classNames from 'classnames'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import FileSaver from 'file-saver'
+import domtoimage from 'dom-to-image-more'
 
 import CraftingGrid from './crafting/CraftingGrid'
 
@@ -20,6 +23,8 @@ class CraftingArea extends Component {
   constructor (props) {
     super(props)
 
+    this.craftingGridRef = React.createRef()
+
     this.keyMapping = {
       1: 'crafting',
       2: 'furnace',
@@ -29,6 +34,19 @@ class CraftingArea extends Component {
       6: 'stonecutter',
       7: 'smithing'
     }
+
+    this.downloadCraftingGridImage = this.downloadCraftingGridImage.bind(this)
+  }
+
+  downloadCraftingGridImage () {
+    domtoimage.toBlob(this.craftingGridRef.current, { bgcolor: '#C6C6C6' })
+      .then((blob) => {
+        FileSaver.saveAs(blob, 'crafting-grid.png')
+      })
+      .catch((e) => {
+        console.error('Image generation error', e)
+        alert('Could not download crafting grid image.')
+      })
   }
 
   render () {
@@ -70,6 +88,12 @@ class CraftingArea extends Component {
       </div>
     )
 
+    const downloadGridTooltip = (
+      <Tooltip id='shapeless'>
+        Download Crafting Image
+      </Tooltip>
+    )
+
     return (
       <div className='panel panel-default'>
         <div className='panel-heading'>
@@ -96,36 +120,43 @@ class CraftingArea extends Component {
           </Tabs>
           <div className='crafting-holder'>
             <h6 className='crafting-title'>{titles[tab]}</h6>
-            <div className={classNames('crafting', { full: tab === 'smithing' })}>
-              <div className='recipe'>
-                {tab === 'crafting' ? grid : null}
-                {['furnace', 'blast', 'campfire', 'smoking'].includes(tab)
-                  ? (
-                    <div className='vertical'>
-                      <CraftingGrid index={0} ingredient={furnace.input} size='furnace' type='furnace' />
-                      <div className='flame' />
-                      <CraftingGrid index={0} ingredient={null} size='furnace' type='furnace' disabled />
-                    </div>
-                    )
-                  : null}
-                {tab === 'smithing'
-                  ? (
-                    <div className='horizontal'>
-                      <CraftingGrid index={0} ingredient={generic.input[0]} size='large' type='generic' />
-                      <div className='plus' />
-                      <CraftingGrid index={1} ingredient={generic.input[1]} size='large' type='generic' />
-                    </div>
-                    )
-                  : null}
-                {tab === 'stonecutter'
-                  ? <CraftingGrid index={0} ingredient={generic.input[0]} output={false} type='generic' size='large' />
-                  : null}
-              </div>
-              <div className='arrow' />
-              <div className='crafting-table-output'>
-                <CraftingGrid ingredient={output} output size='large' />
+            <div className='crafting-wrapper'>
+              <div className='crafting' ref={this.craftingGridRef}>
+                <div className='recipe'>
+                  {tab === 'crafting' ? grid : null}
+                  {['furnace', 'blast', 'campfire', 'smoking'].includes(tab)
+                    ? (
+                      <div className='vertical'>
+                        <CraftingGrid index={0} ingredient={furnace.input} size='furnace' type='furnace' />
+                        <div className='flame' />
+                        <CraftingGrid index={0} ingredient={null} size='furnace' type='furnace' disabled />
+                      </div>
+                      )
+                    : null}
+                  {tab === 'smithing'
+                    ? (
+                      <div className='horizontal'>
+                        <CraftingGrid index={0} ingredient={generic.input[0]} size='large' type='generic' />
+                        <div className='plus' />
+                        <CraftingGrid index={1} ingredient={generic.input[1]} size='large' type='generic' />
+                      </div>
+                      )
+                    : null}
+                  {tab === 'stonecutter'
+                    ? <CraftingGrid index={0} ingredient={generic.input[0]} output={false} type='generic' size='large' />
+                    : null}
+                </div>
+                <div className='arrow' />
+                <div className='crafting-table-output'>
+                  <CraftingGrid ingredient={output} output size='large' />
+                </div>
               </div>
             </div>
+            <OverlayTrigger placement='top' overlay={downloadGridTooltip}>
+              <div className='grid-image-download-button' onClick={() => this.downloadCraftingGridImage()}>
+                <FontAwesomeIcon icon='file-image' />
+              </div>
+            </OverlayTrigger>
           </div>
         </div>
       </div>

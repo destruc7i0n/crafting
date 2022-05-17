@@ -19,9 +19,8 @@ import Footer from './components/Footer'
 import IngredientDragLayer from './components/ingredient/IngredientDragLayer'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPatreon } from '@fortawesome/free-brands-svg-icons/faPatreon'
-import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
-import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
+import { faPatreon } from '@fortawesome/free-brands-svg-icons'
+import { faPlus, faTimes, faFileImage } from '@fortawesome/free-solid-svg-icons'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
@@ -29,7 +28,7 @@ import './App.css'
 import './assets/arrow.png'
 import './assets/Minecraft.woff'
 
-library.add(faPatreon, faPlus, faTimes)
+library.add(faPatreon, faPlus, faTimes, faFileImage)
 
 const App = () => {
   return (

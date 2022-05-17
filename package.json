@@ -11,6 +11,7 @@
     "bootstrap": "^3.3.7",
     "classnames": "^2.3.1",
     "core-js": "^3.17.3",
+    "dom-to-image-more": "^2.10.1",
     "file-saver": "^2.0.5",
     "immer": "^6.0.9",
     "jszip": "^3.7.1",

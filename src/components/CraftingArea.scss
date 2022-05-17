@@ -1,21 +1,22 @@
 .crafting-holder {
+    position: relative;
     flex-direction: column;
 
     .crafting-title {
         font-family: Minecraft;
         margin-bottom: 5px;
     }
+    
+    .crafting-wrapper {
+        display: flex;
+        justify-content: center;
+    }
 
     .crafting {
         display: flex;
         flex-direction: row;
         align-items: center;
-        max-width: 230px;
-        margin: 0 auto;
-
-        &.full {
-            max-width: 100%;
-        }
+        padding: 10px;
 
         .recipe {
             display: flex;
@@ -53,6 +54,14 @@
             margin-right: 16px;
             background-image: url(../assets/plus.png);
         }
+    }
+
+    .grid-image-download-button {
+        position: absolute;
+        padding: 5px 7px;
+        bottom: 0;
+        right: 0;
+        cursor: pointer;
     }
 }
 
@@ -125,7 +134,4 @@
 
 .recipe > h6 {
     font-family: Minecraft;
-}
-
-.nav-tabs {
 }
