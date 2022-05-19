@@ -15,3 +15,7 @@ body {
     padding: 10px;
     color: #404040;
 }
+
+canvas {
+    image-rendering: crisp-edges;
+}
