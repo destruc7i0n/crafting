@@ -2,4 +2,5 @@
     width: 32px !important;
     height: 32px !important;
     image-rendering: crisp-edges;
+    image-rendering: pixelated;
 }
