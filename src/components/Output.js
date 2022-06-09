@@ -178,8 +178,14 @@ class Output extends Component {
       case 1.17: {
         return 7
       }
-      default: {
+      case 1.18: {
         return 8
+      }
+      case 1.19: {
+        return 9
+      }
+      default: {
+        return 1
       }
     }
   }

@@ -97,7 +97,7 @@
       "data": 3
     },
     "minecraft:quartz_slab": {
-      "id": "minecraft:double_stone_slab",
+      "id": "minecraft:double_stone_block_slab",
       "data": 6
     },
     "minecraft:oak_log": {
@@ -414,33 +414,33 @@
       "data": 5
     },
     "minecraft:smooth_stone_slab": {
-      "id": "minecraft:double_stone_slab"
+      "id": "minecraft:double_stone_block_slab"
     },
     "minecraft:petrified_oak_slab": {
-      "id": "minecraft:double_stone_slab",
+      "id": "minecraft:double_stone_block_slab",
       "data": 2
     },
     "minecraft:cobblestone_slab": {
-      "id": "minecraft:double_stone_slab",
+      "id": "minecraft:double_stone_block_slab",
       "data": 3
     },
     "minecraft:brick_slab": {
-      "id": "minecraft:double_stone_slab",
+      "id": "minecraft:double_stone_block_slab",
       "data": 4
     },
     "minecraft:stone_brick_slab": {
-      "id": "minecraft:double_stone_slab",
+      "id": "minecraft:double_stone_block_slab",
       "data": 5
     },
     "minecraft:sandstone_slab": {
-      "id": "minecraft:double_stone_slab",
+      "id": "minecraft:double_stone_block_slab",
       "data": 1
     },
     "minecraft:red_sandstone_slab": {
-      "id": "minecraft:double_stone_slab2"
+      "id": "minecraft:double_stone_block_slab2"
     },
     "minecraft:nether_brick_slab": {
-      "id": "minecraft:double_stone_slab",
+      "id": "minecraft:double_stone_block_slab",
       "data": 7
     },
     "minecraft:spawner": {
@@ -802,19 +802,16 @@
       "id": "minecraft:prismarine_bricks_stairs"
     },
     "minecraft:prismarine_slab": {
-      "id": "minecraft:double_stone_slab2",
+      "id": "minecraft:double_stone_block_slab2",
       "data": 2
     },
     "minecraft:prismarine_brick_slab": {
-      "id": "minecraft:double_stone_slab2",
+      "id": "minecraft:double_stone_block_slab2",
       "data": 4
     },
     "minecraft:dark_prismarine_slab": {
-      "id": "minecraft:double_stone_slab2",
+      "id": "minecraft:double_stone_block_slab2",
       "data": 3
-    },
-    "minecraft:sea_lantern": {
-      "id": "minecraft:sealantern"
     },
     "minecraft:white_carpet": {
       "id": "minecraft:carpet"
@@ -910,7 +907,7 @@
       "data": 2
     },
     "minecraft:purpur_slab": {
-      "id": "minecraft:double_stone_slab2",
+      "id": "minecraft:double_stone_block_slab2",
       "data": 1
     },
     "minecraft:end_stone_bricks": {
@@ -1342,7 +1339,7 @@
       "id": "minecraft:coral_fan_dead"
     },
     "minecraft:andesite_slab": {
-      "id": "minecraft:double_stone_slab3",
+      "id": "minecraft:double_stone_block_slab3",
       "data": 3
     },
     "minecraft:andesite_wall": {
@@ -1358,15 +1355,15 @@
       "data": 9
     },
     "minecraft:cut_red_sandstone_slab": {
-      "id": "minecraft:double_stone_slab4",
+      "id": "minecraft:double_stone_block_slab4",
       "data": 4
     },
     "minecraft:cut_sandstone_slab": {
-      "id": "minecraft:double_stone_slab4",
+      "id": "minecraft:double_stone_block_slab4",
       "data": 3
     },
     "minecraft:diorite_slab": {
-      "id": "minecraft:double_stone_slab3",
+      "id": "minecraft:double_stone_block_slab3",
       "data": 4
     },
     "minecraft:diorite_wall": {
@@ -1374,7 +1371,7 @@
       "data": 3
     },
     "minecraft:end_stone_brick_slab": {
-      "id": "minecraft:double_stone_slab3"
+      "id": "minecraft:double_stone_block_slab3"
     },
     "minecraft:end_stone_brick_stairs": {
       "id": "minecraft:end_brick_stairs"
@@ -1383,11 +1380,8 @@
       "id": "minecraft:cobblestone_wall",
       "data": 10
     },
-    "minecraft:globe_banner_pattern": {
-      "id": "minecraft:banner_pattern"
-    },
     "minecraft:granite_slab": {
-      "id": "minecraft:double_stone_slab3",
+      "id": "minecraft:double_stone_block_slab3",
       "data": 6
     },
     "minecraft:granite_wall": {
@@ -1399,11 +1393,11 @@
       "data": 10
     },
     "minecraft:mossy_cobblestone_slab": {
-      "id": "minecraft:double_stone_slab2",
+      "id": "minecraft:double_stone_block_slab2",
       "data": 5
     },
     "minecraft:mossy_stone_brick_slab": {
-      "id": "minecraft:double_stone_slab4"
+      "id": "minecraft:double_stone_block_slab4"
     },
     "minecraft:mossy_stone_brick_wall": {
       "id": "minecraft:cobblestone_wall",
@@ -1414,15 +1408,15 @@
       "data": 9
     },
     "minecraft:polished_andesite_slab": {
-      "id": "minecraft:double_stone_slab3",
+      "id": "minecraft:double_stone_block_slab3",
       "data": 2
     },
     "minecraft:polished_diorite_slab": {
-      "id": "minecraft:double_stone_slab3",
+      "id": "minecraft:double_stone_block_slab3",
       "data": 5
     },
     "minecraft:polished_granite_slab": {
-      "id": "minecraft:double_stone_slab3",
+      "id": "minecraft:double_stone_block_slab3",
       "data": 7
     },
     "minecraft:prismarine_wall": {
@@ -1430,7 +1424,7 @@
       "data": 11
     },
     "minecraft:red_nether_brick_slab": {
-      "id": "minecraft:double_stone_slab2",
+      "id": "minecraft:double_stone_block_slab2",
       "data": 7
     },
     "minecraft:red_nether_brick_wall": {
@@ -1446,15 +1440,15 @@
       "data": 5
     },
     "minecraft:smooth_quartz_slab": {
-      "id": "minecraft:double_stone_slab4",
+      "id": "minecraft:double_stone_block_slab4",
       "data": 1
     },
     "minecraft:smooth_red_sandstone_slab": {
-      "id": "minecraft:double_stone_slab3",
+      "id": "minecraft:double_stone_block_slab3",
       "data": 1
     },
     "minecraft:smooth_sandstone_slab": {
-      "id": "minecraft:double_stone_slab2",
+      "id": "minecraft:double_stone_block_slab2",
       "data": 6
     },
     "minecraft:stone_brick_wall": {
@@ -1465,7 +1459,7 @@
       "id": "minecraft:normal_stone_stairs"
     },
     "minecraft:stone_slab": {
-      "id": "minecraft:double_stone_slab4",
+      "id": "minecraft:double_stone_block_slab4",
       "data": 2
     },
     "minecraft:stonecutter": {
@@ -1477,6 +1471,9 @@
     "minecraft:mushroom_stem": {
       "id": "minecraft:brown_mushroom_block",
       "data": 15
+    },
+    "minecraft:flowering_azalea_leaves": {
+      "id": "minecraft:azalea_leaves_flowered"
     },
     "minecraft:small_dripleaf": {
       "id": "minecraft:small_dripleaf_block"
@@ -1492,9 +1489,6 @@
     },
     "minecraft:rooted_dirt": {
       "id": "minecraft:dirt_with_roots"
-    },
-    "minecraft:sculk_sensor": {
-      "id": "minecraft:sculk_sensor"
     }
   },
   "ignore": [
