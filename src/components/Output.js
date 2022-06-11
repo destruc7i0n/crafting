@@ -21,6 +21,11 @@ import './Output.css'
 // register the language
 SyntaxHighlighter.registerLanguage('json', codeStyle)
 
+const renameProp = (oldProp, newProp, { [oldProp]: old, ...others }) => ({
+  [newProp]: old,
+  ...others
+})
+
 class Output extends Component {
   constructor (props) {
     super(props)
@@ -49,32 +54,70 @@ class Output extends Component {
 
   generateCrafting () {
     const { input, output, group, furnace, generic, emptySpace, shape, tab, tags, minecraftVersion, bedrockIdentifier, twoByTwo } = this.props
-    let json, generator
 
-    if (tab === 'crafting') {
-      let craftingInput = input
-      if (twoByTwo) {
-        // only the elements in use
-        craftingInput = [
-          input[0], input[1],
-          input[3], input[4]
-        ]
+    const isBedrock = minecraftVersion === 'bedrock'
+
+    let json, generator
+    let bedrockRecipeType, bedrockTags
+
+    switch (tab) {
+      case 'crafting': {
+        let craftingInput = input
+        if (twoByTwo) {
+          // only the elements in use
+          craftingInput = [
+            input[0], input[1],
+            input[3], input[4]
+          ]
+        }
+        generator = new CraftingGenerator(craftingInput, output, tags, { group })
+        if (shape === 'shapeless') {
+          json = generator.shapeless()
+
+          bedrockRecipeType = 'minecraft:recipe_shapeless'
+        } else {
+          json = generator.shaped(emptySpace, twoByTwo ? 2 : 3)
+
+          bedrockRecipeType = 'minecraft:recipe_shaped'
+        }
+        bedrockTags = ['crafting_table']
+        break
       }
-      generator = new CraftingGenerator(craftingInput, output, tags, { group })
-      if (shape === 'shapeless') {
-        json = generator.shapeless()
-      } else {
-        json = generator.shaped(emptySpace, twoByTwo ? 2 : 3)
+      case 'furnace':
+      case 'blast':
+      case 'campfire':
+      case 'smoking': {
+        generator = new CraftingGenerator(furnace.input, output, tags, { group })
+        json = generator.cooking(furnace.cookingTime, furnace.experience, tab)
+
+        bedrockRecipeType = 'minecraft:recipe_furnace'
+        bedrockTags = {
+          smoking: ['smoker'],
+          campfire: ['campfire', 'soul_campfire'],
+          blast: ['blast_furnace'],
+          furnace: ['furnace']
+        }[tab]
+        break
       }
-    } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
-      generator = new CraftingGenerator(furnace.input, output, tags, { group })
-      json = generator.cooking(furnace.cookingTime, furnace.experience, tab)
-    } else if (['stonecutter'].includes(tab)) {
-      generator = new CraftingGenerator(generic.input[0], output, tags, { group })
-      json = generator.generic(tab)
-    } else if (tab === 'smithing') {
-      generator = new CraftingGenerator(generic.input, output, tags, { group })
-      json = generator.smithing(tab)
+      case 'stonecutter': {
+        if (isBedrock) {
+          generator = new CraftingGenerator([generic.input[0]], output, tags, { group })
+          json = generator.shapeless()
+
+          bedrockRecipeType = 'minecraft:recipe_shapeless'
+          bedrockTags = ['stonecutter']
+        } else {
+          generator = new CraftingGenerator(generic.input[0], output, tags, { group })
+          json = generator.generic(tab)
+        }
+        break
+      }
+      case 'smithing': {
+        generator = new CraftingGenerator(generic.input, output, tags, { group })
+        json = generator.smithing(tab)
+        break
+      }
+      default: break
     }
 
     if (json && json.result && json.result.item && !['smithing'].includes(tab)) {
@@ -86,54 +129,20 @@ class Output extends Component {
       json.type = json.type.replace('minecraft:', '')
     }
 
-    const renameProp = (oldProp, newProp, { [oldProp]: old, ...others }) => ({
-      [newProp]: old,
-      ...others
-    })
-
-    if (minecraftVersion === 'bedrock') {
-      let tags = []
-      let recipeType = json.type
-
-      // get the tags and the root key
-      switch (recipeType) {
-        case 'minecraft:crafting_shaped':
-        case 'minecraft:crafting_shapeless': {
-          tags = ['crafting_table']
-          recipeType = {
-            'minecraft:crafting_shapeless': 'minecraft:recipe_shapeless',
-            'minecraft:crafting_shaped': 'minecraft:recipe_shaped'
-          }[recipeType]
-          break
-        }
-        case 'minecraft:smoking':
-        case 'minecraft:campfire_cooking':
-        case 'minecraft:blasting':
-        case 'minecraft:smelting': {
-          tags = {
-            'minecraft:smoking': ['smoking'],
-            'minecraft:campfire_cooking': ['campfire', 'soul_campfire'],
-            'minecraft:blasting': ['blast_furnace'],
-            'minecraft:smelting': ['furnace']
-          }[recipeType]
-          recipeType = 'minecraft:recipe_furnace'
-          break
-        }
-        default: break
-      }
-
-      if (recipeType === 'minecraft:recipe_furnace') {
-        json = renameProp('ingredient', 'input', json)
+    if (isBedrock) {
+      // rename props when furnace recipe
+      if (bedrockRecipeType === 'minecraft:recipe_furnace') {
         json = renameProp('result', 'output', json)
+        json = renameProp('ingredient', 'input', json)
       }
-
-      json.description = {}
-      json.description.identifier = bedrockIdentifier
 
       json = {
         format_version: '1.12',
-        [recipeType]: {
-          tags,
+        [bedrockRecipeType]: {
+          description: {
+            identifier: bedrockIdentifier
+          },
+          tags: bedrockTags,
           ...omit(json, ['type', 'experience', 'cookingtime', 'group'])
         }
       }
@@ -161,6 +170,7 @@ class Output extends Component {
   getPackFormat () {
     const { minecraftVersion } = this.props
 
+    // https://minecraft.fandom.com/wiki/Pack_format
     switch (minecraftVersion) {
       case 1.12: {
         return 3
@@ -200,7 +210,7 @@ class Output extends Component {
     zip.file('pack.mcmeta', JSON.stringify({
       pack: {
         pack_format: this.getPackFormat(),
-        description: 'Generated with TheDestruc7i0n\'s crafting generator: https://crafting.thedestruc7i0n.ca'
+        description: 'Generated with TheDestruc7i0n\'s Crafting Generator: https://crafting.thedestruc7i0n.ca'
       }
     }))
     // add the crafting recipe

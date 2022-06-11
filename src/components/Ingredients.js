@@ -92,14 +92,18 @@ class Ingredients extends Component {
 
   render () {
     const { search, items, error } = this.state
-    const { dispatch, customItems } = this.props
+    const { dispatch, customItems, minecraftVersion } = this.props
 
     // convert the items to the class
     const ingredients = items.map(
       (ingredient) => new IngredientClass(
-        ingredient.id, ingredient.readable, ingredient.texture, 1, '{}',
+        ingredient.id,
+        ingredient.readable,
+        ingredient.texture, 1,
+        '{}',
         false,
-        ingredient.data !== undefined ? { data: ingredient.data } : {}
+        ingredient.data !== undefined ? { data: ingredient.data } : {},
+        minecraftVersion === 'bedrock'
       )
     )
 

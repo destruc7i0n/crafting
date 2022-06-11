@@ -4,6 +4,7 @@ class CraftingGenerator {
    * @param input
    * @param output
    * @param tags
+   * @param isBedrock
    * @param extras
    */
   constructor (input, output, tags, { ...extras }) {
@@ -435,7 +436,7 @@ class CraftingGenerator {
     }
 
     if (output.isPopulated()) {
-      shape.result = output.id
+      shape.result = output.fullId()
     }
 
     shape.cookingtime = time || 0
@@ -468,7 +469,7 @@ class CraftingGenerator {
     }
 
     if (output.isPopulated()) {
-      shape.result = output.id
+      shape.result = output.fullId()
     }
 
     shape.count = output.count

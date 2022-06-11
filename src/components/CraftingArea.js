@@ -113,9 +113,9 @@ class CraftingArea extends Component {
             <Tab eventKey={3} title={<CraftingTabImage title={titles.blast} image={images.blast} />} />
             <Tab eventKey={4} title={<CraftingTabImage title={titles.campfire} image={images.campfire} />} />
             <Tab eventKey={5} title={<CraftingTabImage title={titles.smoking} image={images.smoking} />} />
+            <Tab eventKey={6} title={<CraftingTabImage title={titles.stonecutter} image={images.stonecutter} />} />,
             {minecraftVersion !== 'bedrock' ? [
-              <Tab key={6} eventKey={6} title={<CraftingTabImage title={titles.stonecutter} image={images.stonecutter} />} />,
-              <Tab key={7} eventKey={7} title={<CraftingTabImage title={titles.smithing} image={images.smithing} />} />
+              <Tab eventKey={7} key={7} title={<CraftingTabImage title={titles.smithing} image={images.smithing} />} />
             ] : null}
           </Tabs>
           <div className='crafting-holder'>
