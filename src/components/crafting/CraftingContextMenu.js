@@ -111,7 +111,7 @@ class CraftingContextMenu extends Component {
 
   render () {
     const { customDataModal } = this.state
-    const { tab, ingredient } = this.props
+    const { tab, ingredient, minecraftVersion } = this.props
     const id = parseInt(this.props.id, 10)
 
     let menuItems = [
@@ -129,7 +129,7 @@ class CraftingContextMenu extends Component {
     }
 
     // only for crafting items
-    if (id !== 9 && ingredient.ingredient_type !== 'tag') {
+    if (id !== 9 && ingredient.ingredient_type !== 'tag' && minecraftVersion !== 'bedrock') {
       menuItems = [
         ...menuItems,
         <MenuItem key='tag' onClick={this.createTag}>Create Tag</MenuItem>
@@ -150,4 +150,6 @@ class CraftingContextMenu extends Component {
   }
 }
 
-export default connect()(CraftingContextMenu)
+export default connect((store) => ({
+  minecraftVersion: store.Options.minecraftVersion
+}))(CraftingContextMenu)

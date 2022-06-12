@@ -9,6 +9,7 @@ import {
   setMinecraftVersion,
   setTab,
   setBedrockIdentifier,
+  setBedrockPriority,
   resetCrafting,
   toggleTwoByTwoGrid
 } from '../actions'
@@ -87,7 +88,19 @@ class Options extends Component {
   }
 
   render () {
-    const { dispatch, emptySpace, shape, outputRecipe, tab, furnace, minecraftVersion, bedrockIdentifier, group, twoByTwo } = this.props
+    const {
+      dispatch,
+      emptySpace,
+      shape,
+      outputRecipe,
+      tab,
+      furnace,
+      minecraftVersion,
+      bedrockIdentifier,
+      bedrockPriority,
+      group,
+      twoByTwo
+    } = this.props
 
     const shapelessTooltip = (
       <Tooltip id='shapeless'>This will allow the items to be placed in anywhere in the crafting table to get the
@@ -250,30 +263,57 @@ class Options extends Component {
         <Panel.Body collapsible>
           {minecraftVersion === 'bedrock' ? (
             <Alert>
-              <strong>Note</strong>: Bedrock support is WIP.
+              <strong>Note</strong>: Bedrock support is still a WIP.
             </Alert>
           ) : null}
           {versionSelector}
           {minecraftVersion === 'bedrock' ? (
             // set the identifier for bedrock
-            <div className='row'>
-              <div className='col-md-2'>
-                <ControlLabel>Bedrock Identifier:</ControlLabel>
+            <>
+              <div className='row'>
+                <div className='col-md-2'>
+                  <ControlLabel>Bedrock Identifier:</ControlLabel>
+                </div>
+                {' '}
+                <div className='col-md-10'>
+                  <FormControl
+                    onChange={this.setBedrockIdentifier}
+                    placeholder='identifier:value'
+                    value={bedrockIdentifier}
+                  />
+                </div>
+                <div className='col-md-12'>
+                  <p style={{ fontSize: '12px' }}>
+                    The identifier for the bedrock recipe. Must be defined. The identifier is used internally.
+                  </p>
+                </div>
               </div>
-              {' '}
-              <div className='col-md-10'>
-                <FormControl
-                  onChange={this.setBedrockIdentifier}
-                  placeholder='identifier:value'
-                  value={bedrockIdentifier}
-                />
-              </div>
-              <div className='col-md-12'>
-                <p style={{ fontSize: '12px' }}>
-                  The identifier for the bedrock recipe. Must be defined. The identifier is used internally.
-                </p>
-              </div>
-            </div>
+
+              {['crafting', 'stonecutter'].includes(tab) && (
+                // this is supported on shaped and shapeless according to MS docs
+                <div className='row'>
+                  <div className='col-md-2'>
+                    <ControlLabel>Priority:</ControlLabel>
+                  </div>
+                  {' '}
+                  <div className='col-md-10'>
+                    <NumericInput
+                      className='form-control'
+                      min={0}
+                      step={1}
+                      value={bedrockPriority}
+                      onChange={(v) => dispatch(setBedrockPriority(v))}
+                      placeholder='0'
+                    />
+                  </div>
+                  <div className='col-md-12'>
+                    <p style={{ fontSize: '12px' }}>
+                      Sets the priority order of the recipe. Lower numbers represent a higher priority.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </>
           ) : null}
           {customOptions}
           {minecraftVersion !== 'bedrock' ? (
@@ -325,6 +365,7 @@ export default connect((store) => {
     tab: store.Options.tab,
     minecraftVersion: store.Options.minecraftVersion,
     bedrockIdentifier: store.Options.bedrockIdentifier,
+    bedrockPriority: store.Options.bedrockPriority,
     twoByTwo: store.Options.twoByTwoGrid,
     furnace: store.Data.furnace
   }

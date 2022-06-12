@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useSelector } from 'react-redux'
+
 import { DndProvider } from 'react-dnd'
 import MultiBackend from 'react-dnd-multi-backend'
 import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch'
@@ -31,6 +33,8 @@ import './assets/Minecraft.woff'
 library.add(faPatreon, faPlus, faTimes, faFileImage)
 
 const App = () => {
+  const minecraftVersion = useSelector((store) => store.Options.minecraftVersion)
+
   return (
     <DndProvider backend={MultiBackend} options={HTML5toTouch}>
       <div className='container'>
@@ -43,7 +47,7 @@ const App = () => {
           <div className='col-md-6 col-sm-12'>
             <CraftingTable />
             {isMobile ? <Ingredients /> : null}
-            <Tags />
+            {minecraftVersion !== 'bedrock' && <Tags />}
             <Options />
             <Output />
           </div>

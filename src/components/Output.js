@@ -53,7 +53,21 @@ class Output extends Component {
   }
 
   generateCrafting () {
-    const { input, output, group, furnace, generic, emptySpace, shape, tab, tags, minecraftVersion, bedrockIdentifier, twoByTwo } = this.props
+    const {
+      input,
+      output,
+      group,
+      furnace,
+      generic,
+      emptySpace,
+      shape,
+      tab,
+      tags,
+      minecraftVersion,
+      bedrockIdentifier,
+      bedrockPriority,
+      twoByTwo
+    } = this.props
 
     const isBedrock = minecraftVersion === 'bedrock'
 
@@ -143,6 +157,7 @@ class Output extends Component {
             identifier: bedrockIdentifier
           },
           tags: bedrockTags,
+          ...bedrockPriority !== 0 && { priority: bedrockPriority },
           ...omit(json, ['type', 'experience', 'cookingtime', 'group'])
         }
       }
@@ -285,6 +300,7 @@ export default connect((store) => {
     emptySpace: store.Options.emptySpace,
     outputRecipe: store.Options.outputRecipe,
     bedrockIdentifier: store.Options.bedrockIdentifier,
+    bedrockPriority: store.Options.bedrockPriority,
     minecraftVersion: store.Options.minecraftVersion,
     twoByTwo: store.Options.twoByTwoGrid
   }

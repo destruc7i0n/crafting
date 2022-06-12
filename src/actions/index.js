@@ -255,3 +255,9 @@ export const setBedrockIdentifier = (id) => ({
   type: SET_BEDROCK_IDENTIFIER,
   payload: id
 })
+
+export const SET_BEDROCK_PRIORITY = 'SET_BEDROCK_PRIORITY'
+export const setBedrockPriority = (id) => ({
+  type: SET_BEDROCK_PRIORITY,
+  payload: id
+})
