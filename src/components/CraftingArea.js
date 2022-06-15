@@ -15,7 +15,7 @@ import './CraftingArea.scss'
 
 const CraftingTabImage = ({ title, image }) => (
   <OverlayTrigger placement='top' overlay={<Tooltip id='crafting-title'>{title}</Tooltip>}>
-    <img src={image} alt={title} />
+    <img className='crafting-tab-image' src={image} alt={title} />
   </OverlayTrigger>
 )
 
@@ -39,7 +39,23 @@ class CraftingArea extends Component {
   }
 
   downloadCraftingGridImage () {
-    domtoimage.toBlob(this.craftingGridRef.current, { bgcolor: '#C6C6C6' })
+    const scale = 2
+
+    // credits to KamiADN#0960 on Discord
+    let el = this.craftingGridRef.current
+    const options = {
+      bgcolor: '#C6C6C6',
+      height: el.offsetHeight * scale,
+      width: el.offsetWidth * scale,
+      style: {
+        transform: `scale(${scale})`,
+        transformOrigin: 'top left',
+        width: `${el.offsetWidth}px`,
+        height: `${el.offsetHeight}px`
+      }
+    }
+
+    domtoimage.toBlob(this.craftingGridRef.current, options)
       .then((blob) => {
         FileSaver.saveAs(blob, 'crafting-grid.png')
       })

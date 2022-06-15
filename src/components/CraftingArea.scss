@@ -33,7 +33,7 @@
 
         .arrow {
             width: 32px;
-            height: 27px;
+            height: 26px;
             margin-left: 16px;
             margin-right: 16px;
             background-size: cover;
@@ -54,6 +54,11 @@
             margin-right: 16px;
             background-image: url(../assets/plus.png);
         }
+
+        .arrow, .flame, .plus {
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
     }
 
     .grid-image-download-button {
@@ -63,6 +68,11 @@
         right: 0;
         cursor: pointer;
     }
+}
+
+.crafting-tab-image {
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
 }
 
 .vertical {
