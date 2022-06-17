@@ -127,8 +127,16 @@ class Output extends Component {
         break
       }
       case 'smithing': {
-        generator = new CraftingGenerator(generic.input, output, tags, { group })
-        json = generator.smithing(tab)
+        if (isBedrock) {
+          generator = new CraftingGenerator([generic.input[0], generic.input[1]], output, tags, { group })
+          json = generator.shapeless()
+
+          bedrockRecipeType = 'minecraft:recipe_shapeless'
+          bedrockTags = ['smithing_table']
+        } else {
+          generator = new CraftingGenerator(generic.input, output, tags, { group })
+          json = generator.smithing(tab)
+        }
         break
       }
       default: break
