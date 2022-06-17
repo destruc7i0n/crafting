@@ -14,6 +14,8 @@ import {
   toggleTwoByTwoGrid
 } from '../actions'
 
+import { BEDROCK_PRIORITY } from '../lib/const'
+
 import NumericInput from 'react-numeric-input'
 
 import { versions } from 'minecraft-textures'
@@ -289,7 +291,7 @@ class Options extends Component {
                 </div>
               </div>
 
-              {['crafting', 'stonecutter'].includes(tab) && (
+              {BEDROCK_PRIORITY.includes(tab) && (
                 // this is supported on shaped and shapeless according to MS docs
                 <div className='row'>
                   <div className='col-md-2'>

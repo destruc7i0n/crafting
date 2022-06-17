@@ -16,6 +16,8 @@ import defaultStyle from 'react-syntax-highlighter/dist/esm/styles/hljs/default-
 
 import CraftingGenerator from '../classes/CraftingGenerator'
 
+import { BEDROCK_PRIORITY } from '../lib/const'
+
 import './Output.css'
 
 // register the language
@@ -165,7 +167,7 @@ class Output extends Component {
             identifier: bedrockIdentifier
           },
           tags: bedrockTags,
-          ...bedrockPriority !== 0 && { priority: bedrockPriority },
+          ...bedrockPriority !== 0 && BEDROCK_PRIORITY.includes(tab) && { priority: bedrockPriority },
           ...omit(json, ['type', 'experience', 'cookingtime', 'group'])
         }
       }
