@@ -1,3 +1,5 @@
+import { CraftingType } from '../lib/const'
+
 class CraftingGenerator {
   /**
    * Constructs a new crafting generator
@@ -86,10 +88,10 @@ class CraftingGenerator {
     const { extras } = this
 
     const type = {
-      furnace: 'minecraft:smelting',
-      blast: 'minecraft:blasting',
-      smoking: 'minecraft:smoking',
-      campfire: 'minecraft:campfire_cooking'
+      [CraftingType.FURNACE]: 'minecraft:smelting',
+      [CraftingType.BLAST]: 'minecraft:blasting',
+      [CraftingType.SMOKING]: 'minecraft:smoking',
+      [CraftingType.CAMPFIRE]: 'minecraft:campfire_cooking'
     }[tab]
 
     let cooking = {
@@ -117,7 +119,7 @@ class CraftingGenerator {
     const { extras } = this
 
     const type = {
-      stonecutter: 'minecraft:stonecutting'
+      [CraftingType.STONECUTTER]: 'minecraft:stonecutting'
     }[tab]
 
     let generic = {

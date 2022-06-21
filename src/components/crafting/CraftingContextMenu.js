@@ -12,6 +12,7 @@ import { ContextMenu, MenuItem } from 'react-contextmenu'
 import ItemDataModal from '../ItemDataModal'
 
 import Tag from '../../classes/Tag'
+import { CraftingType } from '../../lib/const'
 
 import './CraftingContextMenu.css'
 
@@ -39,14 +40,27 @@ class CraftingContextMenu extends Component {
       return
     }
 
-    if (tab === 'crafting') {
-      dispatch(resetCraftingSlot(index))
-    } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
-      dispatch(resetFurnaceSlot())
-    } else if (tab === 'stonecutter') {
-      dispatch(resetGenericSlot(0))
-    } else if (tab === 'smithing') {
-      dispatch(resetGenericSlot(index))
+    switch (tab) {
+      case CraftingType.CRAFTING: {
+        dispatch(resetCraftingSlot(index))
+        break
+      }
+      case CraftingType.FURNACE:
+      case CraftingType.BLAST:
+      case CraftingType.CAMPFIRE:
+      case CraftingType.SMOKING: {
+        dispatch(resetFurnaceSlot())
+        break
+      }
+      case CraftingType.STONECUTTER: {
+        dispatch(resetGenericSlot(0))
+        break
+      }
+      case CraftingType.SMITHING: {
+        dispatch(resetGenericSlot(index))
+        break
+      }
+      default: break
     }
   }
 
@@ -72,14 +86,27 @@ class CraftingContextMenu extends Component {
       return
     }
 
-    if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab)) {
-      dispatch(setFurnaceSlot(ingredient))
-    } else if (tab === 'crafting') {
-      dispatch(setCraftingSlot(id, ingredient))
-    } else if (tab === 'stonecutter') {
-      dispatch(setGenericSlot(0, ingredient))
-    } else if (tab === 'smithing') {
-      dispatch(setGenericSlot(index, ingredient))
+    switch (tab) {
+      case CraftingType.CRAFTING: {
+        dispatch(setCraftingSlot(id, ingredient))
+        break
+      }
+      case CraftingType.FURNACE:
+      case CraftingType.BLAST:
+      case CraftingType.CAMPFIRE:
+      case CraftingType.SMOKING: {
+        dispatch(setFurnaceSlot(ingredient))
+        break
+      }
+      case CraftingType.STONECUTTER: {
+        dispatch(setGenericSlot(0, ingredient))
+        break
+      }
+      case CraftingType.SMITHING: {
+        dispatch(setGenericSlot(index, ingredient))
+        break
+      }
+      default: break
     }
   }
 
@@ -120,7 +147,7 @@ class CraftingContextMenu extends Component {
     ]
 
     // if output slot and can set count
-    if (id === 9 && ['crafting', 'stonecutter'].includes(tab)) {
+    if (id === 9 && [CraftingType.CRAFTING, CraftingType.STONECUTTER].includes(tab)) {
       menuItems = [
         ...menuItems,
         <MenuItem key='count' onClick={this.toggleCountModal} data={{ item: id }}>Set Count</MenuItem>,

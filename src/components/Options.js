@@ -14,7 +14,7 @@ import {
   toggleTwoByTwoGrid
 } from '../actions'
 
-import { BEDROCK_PRIORITY } from '../lib/const'
+import { BEDROCK_PRIORITY, CookingTypes, CraftingType } from '../lib/const'
 
 import NumericInput from 'react-numeric-input'
 
@@ -86,7 +86,7 @@ class Options extends Component {
     if (minecraftVersion === 'bedrock' || value === 'bedrock') dispatch(resetCrafting())
 
     dispatch(setMinecraftVersion(value))
-    dispatch(setTab('crafting'))
+    dispatch(setTab(CraftingType.CRAFTING))
   }
 
   render () {
@@ -188,7 +188,7 @@ class Options extends Component {
     )
 
     let customOptions
-    if (tab === 'crafting') {
+    if (tab === CraftingType.CRAFTING) {
       customOptions = (
         <>
           <legend><h5>Crafting Options</h5></legend>
@@ -205,7 +205,7 @@ class Options extends Component {
           </div>
         </>
       )
-    } else if (['furnace', 'blast', 'campfire', 'smoking'].includes(tab) && minecraftVersion !== 'bedrock') {
+    } else if (CookingTypes.includes(tab) && minecraftVersion !== 'bedrock') {
       customOptions = (
         <>
           <legend><h5>Furnace Options</h5></legend>

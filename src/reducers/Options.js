@@ -10,11 +10,12 @@ import {
   TOGGLE_TWO_BY_TWO_GRID,
   SET_BEDROCK_PRIORITY
 } from '../actions'
+import { CraftingType } from '../lib/const'
 
 import { latestVersion } from 'minecraft-textures'
 
 export default function Options (state = {
-  tab: 'crafting',
+  tab: CraftingType.CRAFTING,
   shape: 'shaped',
   emptySpace: true,
   outputRecipe: 'crafting_recipe',

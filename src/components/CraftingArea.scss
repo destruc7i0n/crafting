@@ -20,13 +20,15 @@
 
         .recipe {
             display: flex;
-            .table-wrap {
+
+            .table-grid {
                 display: flex;
                 flex-wrap: wrap;
-                max-width: 110px;
+
+                width: 110px;
 
                 &.grid-2x2 {
-                    max-width: 72px;
+                    width: 72px;
                 }
             }
         }
