@@ -162,7 +162,7 @@ class Ingredient extends Component {
         onMouseOut={this.onMouseOut}
       >
         {draggable && image ? connectDragSource(image) : image}
-        {isOutput && ingredient.isPopulated()
+        {isOutput && ingredient.isPopulated() && ingredient.count > 1
           ? <span className='crafting-table-output-count'>{ingredient.count}</span>
           : null}
         {hover ? <Tooltip title={readable} ingredient={ingredient} style={this.state.mouse} /> : null}
