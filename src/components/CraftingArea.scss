@@ -3,7 +3,7 @@
     flex-direction: column;
 
     .crafting-title {
-        font-family: Minecraft;
+        font-family: Minecraft, sans-serif;
         margin-bottom: 5px;
     }
     
@@ -152,9 +152,13 @@
     bottom: 0;
     right: 5%;
     color: #ffffff;
-    font-family: Minecraft;
+    font-family: Minecraft, sans-serif;
     user-select: none;
     pointer-events: none;
+
+    font-smooth: none;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: none;
 }
 
 /* only for small */
@@ -166,5 +170,5 @@
 }
 
 .recipe > h6 {
-    font-family: Minecraft;
+    font-family: Minecraft, sans-serif;
 }

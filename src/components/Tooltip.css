@@ -7,7 +7,7 @@
     background-color: rgba(16, 0, 16, 0.94);
     color: #FFF;
     padding: 0.375em;
-    font-family: Minecraft;
+    font-family: Minecraft, sans-serif;
     font-size: 16px;
     word-spacing: 4px;
     white-space: nowrap;

@@ -7,7 +7,7 @@ h6 {
 
 @font-face {
     font-family: 'Minecraft';
-    src: url(assets/Minecraft.woff);
+    src: url(assets/Minecraft.woff) format('woff');
 }
 
 body {
