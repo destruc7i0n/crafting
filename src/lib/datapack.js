@@ -48,14 +48,14 @@ export const generateTags = (tags = []) => {
   }))
 }
 
-export const generateDatapack = (craftingRecipe, craftingName, rawTags) => {
+export const generateDatapack = (minecraftVersion, craftingRecipe, craftingName, rawTags) => {
   const generatedTags = generateTags(rawTags)
 
   let zip = new JSZip()
   // add the pack file
   zip.file('pack.mcmeta', JSON.stringify({
     pack: {
-      pack_format: getPackFormat(),
+      pack_format: getPackFormat(minecraftVersion),
       description: 'Generated with TheDestruc7i0n\'s Crafting Generator: https://crafting.thedestruc7i0n.ca'
     }
   }))

@@ -212,7 +212,7 @@ class Output extends Component {
           </Button>
           {minecraftVersion !== 'bedrock' ? (
             <Button
-              onClick={() => generateDatapack(json, name, tags)}
+              onClick={() => generateDatapack(minecraftVersion, json, name, tags)}
               className='download-button'
               bsStyle='primary'
               block
