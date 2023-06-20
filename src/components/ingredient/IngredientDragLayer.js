@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { DragLayer } from 'react-dnd'
+import React from 'react'
+import { useDragLayer } from 'react-dnd'
 
 import IngredientDragPreview from './IngredientDragPreview'
 
@@ -13,8 +13,7 @@ const layerStyles = {
   height: '100px'
 }
 
-function getItemStyles (props) {
-  const { currentOffset } = props
+function getItemStyles (currentOffset) {
   if (!currentOffset) {
     return {
       display: 'none'
@@ -25,43 +24,40 @@ function getItemStyles (props) {
 
   const transform = `translate(${x}px, ${y}px)`
   return {
-    WebkitTransform: transform,
-    transform
+    transform,
+    WebkitTransform: transform
   }
 }
 
-class IngredientDragLayer extends Component {
-  renderItem (type, item) {
-    switch (type) {
+const IngredientDragLayer = () => {
+  const { itemType, isDragging, item, currentOffset } =
+    useDragLayer((monitor) => ({
+      item: monitor.getItem(),
+      itemType: monitor.getItemType(),
+      currentOffset: monitor.getSourceClientOffset(),
+      isDragging: monitor.isDragging()
+    }))
+
+  function renderItem () {
+    switch (itemType) {
       case 'ingredient':
-        return (
-          <IngredientDragPreview ingredient={item.ingredient} />
-        )
+        return <IngredientDragPreview ingredient={item.ingredient} />
       default:
         return null
     }
   }
-
-  render () {
-    const { item, itemType, isDragging } = this.props
-
-    if (!isDragging) {
-      return null
-    }
-
-    return (
-      <div style={layerStyles}>
-        <div style={getItemStyles(this.props)}>
-          {this.renderItem(itemType, item)}
-        </div>
-      </div>
-    )
+  if (!isDragging) {
+    return null
   }
+  return (
+    <div style={layerStyles}>
+      <div
+        style={getItemStyles(currentOffset)}
+      >
+        {renderItem()}
+      </div>
+    </div>
+  )
 }
 
-export default DragLayer((monitor) => ({
-  item: monitor.getItem(),
-  itemType: monitor.getItemType(),
-  currentOffset: monitor.getSourceClientOffset(),
-  isDragging: monitor.isDragging()
-}))(IngredientDragLayer)
+export default IngredientDragLayer

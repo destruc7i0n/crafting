@@ -1,30 +1,16 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { memo } from 'react'
 
 import { NoTextureTexture } from '../../classes/Ingredient'
 
 import './IngredientDragPreview.css'
 
-const IngredientDragPreview = ({ ingredient, tags = [], updateTimer = {} }) => {
-  let texture = ingredient.texture || NoTextureTexture
-  if (ingredient.ingredient_type === 'tag') {
-    const { index = 0 } = updateTimer
-    if (tags[ingredient.tag] && tags[ingredient.tag].items[index]) texture = tags[ingredient.tag].items[index].texture
-  }
+const IngredientDragPreview = memo(({ ingredient: { texture = NoTextureTexture } }) => {
   return (
     <div style={{ display: 'inline-block' }}>
       <img className='item-shake' src={texture || ''} alt='' />
     </div>
   )
-}
+})
+IngredientDragPreview.displayName = 'IngredientDragPreview'
 
-export default connect((store, props) => {
-  // only inject if dragging a tag
-  if (props.ingredient && props.ingredient.ingredient_type === 'tag') {
-    return {
-      tags: store.Data.tags,
-      updateTimer: store.Data.tagUpdateTimers[props.ingredient.tag] // grab the update timer for this tag
-    }
-  }
-  return {}
-})(IngredientDragPreview)
+export default IngredientDragPreview

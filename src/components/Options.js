@@ -21,7 +21,6 @@ import NumericInput from 'react-numeric-input'
 import { versions } from 'minecraft-textures'
 
 import {
-  Alert,
   Checkbox,
   ControlLabel,
   FormControl,

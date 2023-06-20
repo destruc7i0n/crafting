@@ -3,8 +3,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import { DndProvider } from 'react-dnd'
-import MultiBackend from 'react-dnd-multi-backend'
-import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch'
+import { MultiBackend } from 'react-dnd-multi-backend'
+import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 
 import { isMobile } from 'react-device-detect'
 
