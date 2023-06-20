@@ -1,16 +1,25 @@
-import React, { memo } from 'react'
+import React from 'react'
+
+import { usePreview } from 'react-dnd-preview'
 
 import { NoTextureTexture } from '../../classes/Ingredient'
 
 import './IngredientDragPreview.css'
 
-const IngredientDragPreview = memo(({ ingredient: { texture = NoTextureTexture } }) => {
+const IngredientDragPreview = () => {
+  const { display, item, itemType, style } = usePreview()
+
+  if (!display || itemType !== 'ingredient') {
+    return null
+  }
+
+  const { ingredient: { texture = NoTextureTexture } } = item
+
   return (
-    <div style={{ display: 'inline-block' }}>
+    <div style={{ ...style, zIndex: 100 }}>
       <img className='item-shake' src={texture || ''} alt='' />
     </div>
   )
-})
-IngredientDragPreview.displayName = 'IngredientDragPreview'
+}
 
 export default IngredientDragPreview
