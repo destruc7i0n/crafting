@@ -175,7 +175,7 @@ class Options extends Component {
             value={minecraftVersion}
             onChange={this.setMinecraftVersion}
           >
-            <option value='bedrock' key='bedrock'>Bedrock 1.19</option>
+            <option value='bedrock' key='bedrock'>Bedrock 1.20</option>
             {sortedVersions.map(v => {
               if (v.toString() !== '1.12') {
                 return (<option value={v} key={v}>Java {v}</option>)
@@ -263,11 +263,6 @@ class Options extends Component {
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body collapsible>
-          {minecraftVersion === 'bedrock' ? (
-            <Alert>
-              <strong>Note</strong>: Bedrock support is still a WIP.
-            </Alert>
-          ) : null}
           {versionSelector}
           {minecraftVersion === 'bedrock' ? (
             // set the identifier for bedrock

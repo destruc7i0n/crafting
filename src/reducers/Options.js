@@ -25,7 +25,7 @@ export default function Options (state = {
   bedrockIdentifier: 'crafting:recipe',
   bedrockPriority: 0,
 
-  minecraftVersion: Number(latestVersion)
+  minecraftVersion: latestVersion
 }, action) {
   return produce(state, draft => {
     switch (action.type) {

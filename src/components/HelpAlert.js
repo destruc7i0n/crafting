@@ -41,7 +41,7 @@ class HelpAlert extends Component {
               <li>Drag and drop the items from the "Ingredients" panel into the crafting table to generate your recipe.</li>
               <li>Once you are done creating your recipe, either copy the recipe from the JSON panel, or click the "Download" button download the recipe as a JSON file or datapack.</li>
             </ol>
-            Notes:
+            <strong>Notes:</strong>
             <ul>
               <li>To set the count for the resultant item, right click the resultant item and click "Set Count".<br /></li>
               <li>To create a tag, right click an item in the crafting grid and select "Create Tag".<br /></li>

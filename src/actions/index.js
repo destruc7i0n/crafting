@@ -230,7 +230,7 @@ export const updateTimers = () => ({
 export const SET_MINECRAFT_VERSION = 'SET_MINECRAFT_VERSION'
 export const setMinecraftVersion = (version) => ({
   type: SET_MINECRAFT_VERSION,
-  payload: !isNaN(version) ? Number(version) : version
+  payload: version.toString()
 })
 
 export const ADD_ITEM = 'ADD_ITEM'

@@ -17,8 +17,7 @@
     "jszip": "^3.10.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
-    "minecraft-textures": "^1.19.0",
-    "node-sass": "^6.0.1",
+    "minecraft-textures": "^1.20.0",
     "react": "16.14",
     "react-bootstrap": "0.32.1",
     "react-contextmenu": "^2.13.0",
@@ -34,6 +33,7 @@
     "redux": "^4.2.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.1",
+    "sass": "^1.63.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -47,7 +47,7 @@
     "eslint-plugin-react": "^7.27.1",
     "jsdom": "17.0.0",
     "react-dnd-test-backend": "^14.0.1",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.1",
     "react-test-renderer": "16",
     "redux-mock-store": "^1.5.4",
     "standard": "^16.0.3"

@@ -5,27 +5,30 @@ import { saveAs } from 'file-saver'
 export const getPackFormat = (minecraftVersion) => {
   // https://minecraft.fandom.com/wiki/Pack_format
   switch (minecraftVersion) {
-    case 1.12: {
+    case '1.12': {
       return 3
     }
-    case 1.13:
-    case 1.14: {
+    case '1.13':
+    case '1.14': {
       return 4
     }
-    case 1.15: {
+    case '1.15': {
       return 5
     }
-    case 1.16: {
+    case '1.16': {
       return 6
     }
-    case 1.17: {
+    case '1.17': {
       return 7
     }
-    case 1.18: {
+    case '1.18': {
       return 8
     }
-    case 1.19: {
+    case '1.19': {
       return 9
+    }
+    case '1.20': {
+      return 15
     }
     default: {
       return 1
