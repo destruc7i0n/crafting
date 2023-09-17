@@ -461,13 +461,15 @@ class CraftingGenerator {
 
     // only if populated
     if (ingredient && ingredient.isPopulated()) {
-      shape.ingredient = this.getItemType(ingredient, false)
+      ingredient = this.getItemType(ingredient, false)
 
       // handle tags...
-      if (ingredient.tag) {
+      if (ingredient && ingredient.tag) {
         const tag = this.tags[ingredient.tag.tag]
-        shape.ingredient = this.handleTags(tag)
+        ingredient = this.handleTags(tag)
       }
+
+      shape.ingredient = ingredient
     }
 
     if (output.isPopulated()) {
