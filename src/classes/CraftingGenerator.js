@@ -150,6 +150,16 @@ class CraftingGenerator {
     }
   }
 
+  getSmithingWithTemplateDefault () {
+    return {
+      type: 'minecraft:smithing_transform',
+      template: {},
+      base: {},
+      addition: {},
+      result: {}
+    }
+  }
+
   /**
    * Returns a character for an item
    * @param item
@@ -507,6 +517,37 @@ class CraftingGenerator {
 
     if (output.isPopulated()) {
       shape.result = getIngredient(output)
+    }
+
+    return shape
+  }
+
+  smithingWithTemplate () {
+    const { input, output, extras: { trim } } = this
+
+    let shape = { ...this.getSmithingWithTemplateDefault() }
+
+    const getIngredient = (ingredient) => {
+      ingredient = this.getItemType(ingredient, false)
+
+      // handle tags...
+      if (ingredient && ingredient.tag) {
+        const tag = this.tags[ingredient.tag.tag]
+        ingredient = this.handleTags(tag)
+      }
+
+      return ingredient
+    }
+
+    if (trim && trim.isPopulated()) shape.template = getIngredient(trim)
+    if (input[0] && input[0].isPopulated()) shape.base = getIngredient(input[0])
+    if (input[1] && input[1].isPopulated()) shape.addition = getIngredient(input[1])
+
+    if (output.isPopulated()) {
+      shape.result = getIngredient(output)
+      shape.type = 'minecraft:smithing_trim'
+    } else {
+      delete shape.result
     }
 
     return shape

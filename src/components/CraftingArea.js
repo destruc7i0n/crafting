@@ -7,10 +7,10 @@ import { invert } from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import FileSaver from 'file-saver'
-import domtoimage from 'dom-to-image-more'
 
 import CraftingGrid from './crafting/CraftingGrid'
 import { CookingTypes, CraftingType, CraftingTypes } from '../lib/const'
+import { compareMinecraftVersions } from '../lib/versions'
 
 import './CraftingArea.scss'
 
@@ -39,11 +39,11 @@ class CraftingArea extends Component {
     this.downloadCraftingGridImage = this.downloadCraftingGridImage.bind(this)
   }
 
-  downloadCraftingGridImage () {
+  async downloadCraftingGridImage () {
     const scale = 2
 
     // credits to KamiADN#0960 on Discord
-    let el = this.craftingGridRef.current
+    const el = this.craftingGridRef.current
     const options = {
       bgcolor: '#C6C6C6',
       height: el.offsetHeight * scale,
@@ -56,18 +56,26 @@ class CraftingArea extends Component {
       }
     }
 
-    domtoimage.toBlob(this.craftingGridRef.current, options)
-      .then((blob) => {
-        FileSaver.saveAs(blob, 'crafting-grid.png')
-      })
-      .catch((e) => {
-        console.error('Image generation error', e)
-        alert('Could not download crafting grid image.')
-      })
+    try {
+      await import('dom-to-image-more')
+        .then((domtoimage) => {
+          domtoimage.toBlob(this.craftingGridRef.current, options)
+            .then((blob) => {
+              FileSaver.saveAs(blob, 'crafting-grid.png')
+            })
+            .catch((e) => {
+              console.error('Image generation error', e)
+              alert('Could not download crafting grid image.')
+            })
+        })
+    } catch (e) {
+      console.error('Image generation error', e)
+      alert('Could not download crafting grid image.')
+    }
   }
 
   render () {
-    const { dispatch, crafting, furnace, generic, output, tab, twoByTwo } = this.props
+    const { dispatch, crafting, furnace, generic, output, tab, twoByTwo, minecraftVersion } = this.props
     const selectedTab = parseInt(invert(this.keyMapping)[tab], 10) // grab the selected tab index
 
     const titles = {
@@ -111,6 +119,8 @@ class CraftingArea extends Component {
       </Tooltip>
     )
 
+    const isAfter120 = minecraftVersion === 'bedrock' || compareMinecraftVersions(minecraftVersion, '1.20') <= 0
+
     return (
       <div className='panel panel-default'>
         <div className='panel-heading'>
@@ -148,7 +158,7 @@ class CraftingArea extends Component {
                     ? (
                       <div className='horizontal'>
                         <CraftingGrid index={0} ingredient={generic.input[0]} size='large' type='generic' />
-                        <div className='plus' />
+                        {isAfter120 ? <CraftingGrid index={2} ingredient={generic.input[2]} size='large' type='generic' /> : <div className='plus' />}
                         <CraftingGrid index={1} ingredient={generic.input[1]} size='large' type='generic' />
                       </div>
                       )

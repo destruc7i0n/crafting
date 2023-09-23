@@ -47,7 +47,7 @@ export default function Data (state = {
     experience: 0.1
   },
   generic: {
-    input: [new Ingredient(), new Ingredient()]
+    input: [new Ingredient(), new Ingredient(), new Ingredient()]
   },
   output: new Ingredient(),
   group: '',
@@ -67,7 +67,7 @@ export default function Data (state = {
           experience: 0.1
         }
         draft.generic = {
-          input: [new Ingredient(), new Ingredient()]
+          input: [new Ingredient(), new Ingredient(), new Ingredient()]
         }
         draft.output = new Ingredient()
         break

@@ -27,7 +27,7 @@ class Ingredients extends Component {
   }
 
   async componentDidMount () {
-    await this.getTextures()
+    await this.getTextures(this.props.minecraftVersion)
   }
 
   async componentDidUpdate (prevProps, prevState, snapshot) {
@@ -51,10 +51,8 @@ class Ingredients extends Component {
   }
 
   async getTextures (version) {
-    let minecraftVersion = latestVersion
-    if (typeof version === 'number') {
-      minecraftVersion = version
-    } else if (typeof version === 'string') {
+    let minecraftVersion = version ?? latestVersion
+    if (version === 'bedrock') {
       // bedrock
       minecraftVersion = '1.20'
     }

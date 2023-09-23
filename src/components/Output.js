@@ -17,6 +17,7 @@ import IngredientClass from '../classes/Ingredient'
 
 import { BEDROCK_PRIORITY, CraftingType } from '../lib/const'
 import { generateDatapack } from '../lib/datapack'
+import { compareMinecraftVersions } from '../lib/versions'
 
 import './Output.css'
 
@@ -73,6 +74,9 @@ class Output extends Component {
     let json, generator
     let bedrockRecipeType
 
+    const isAfter120 = minecraftVersion === 'bedrock' || compareMinecraftVersions(minecraftVersion, '1.20') <= 0
+    let bedrockFormatVersion = '1.12'
+
     switch (tab) {
       case CraftingType.CRAFTING: {
         let craftingInput = input
@@ -123,14 +127,29 @@ class Output extends Component {
         break
       }
       case CraftingType.SMITHING: {
-        if (isBedrock) {
-          generator = new CraftingGenerator([generic.input[0], generic.input[1]], output, tags, { group })
-          json = generator.shapeless()
+        if (!isAfter120) {
+          if (isBedrock) {
+            generator = new CraftingGenerator([generic.input[0], generic.input[1]], output, tags, { group })
+            json = generator.shapeless()
 
-          bedrockRecipeType = 'minecraft:recipe_shapeless'
+            bedrockRecipeType = 'minecraft:recipe_shapeless'
+          } else {
+            generator = new CraftingGenerator(generic.input, output, tags, { group })
+            json = generator.smithing(tab)
+          }
         } else {
-          generator = new CraftingGenerator(generic.input, output, tags, { group })
-          json = generator.smithing(tab)
+          bedrockFormatVersion = '1.17'
+
+          generator = new CraftingGenerator([generic.input[0], generic.input[1]], output, tags, { group, trim: generic.input[2] })
+          json = generator.smithingWithTemplate()
+
+          if (isBedrock) {
+            if (json.result) {
+              bedrockRecipeType = 'minecraft:recipe_smithing_transform'
+            } else {
+              bedrockRecipeType = 'minecraft:recipe_smithing_trim'
+            }
+          }
         }
         break
       }
@@ -164,7 +183,7 @@ class Output extends Component {
       }
 
       json = {
-        format_version: '1.12',
+        format_version: bedrockFormatVersion,
         [bedrockRecipeType]: {
           description: {
             identifier: bedrockIdentifier
