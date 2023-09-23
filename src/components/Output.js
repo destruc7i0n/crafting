@@ -140,7 +140,7 @@ class Output extends Component {
         } else {
           bedrockFormatVersion = '1.17'
 
-          generator = new CraftingGenerator([generic.input[0], generic.input[1]], output, tags, { group, trim: generic.input[2] })
+          generator = new CraftingGenerator([generic.input[0], generic.input[1], generic.input[2]], output, tags, { group })
           json = generator.smithingWithTemplate()
 
           if (isBedrock) {

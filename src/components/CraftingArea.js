@@ -155,13 +155,19 @@ class CraftingArea extends Component {
                       )
                     : null}
                   {tab === CraftingType.SMITHING
-                    ? (
+                    ? isAfter120 ? (
                       <div className='horizontal'>
+                        <CraftingGrid index={2} ingredient={generic.input[2]} size='large' type='generic' />
                         <CraftingGrid index={0} ingredient={generic.input[0]} size='large' type='generic' />
-                        {isAfter120 ? <CraftingGrid index={2} ingredient={generic.input[2]} size='large' type='generic' /> : <div className='plus' />}
                         <CraftingGrid index={1} ingredient={generic.input[1]} size='large' type='generic' />
                       </div>
-                      )
+                    ) : (
+                      <div className='horizontal'>
+                        <CraftingGrid index={0} ingredient={generic.input[0]} size='large' type='generic' />
+                        <div className='plus' />
+                        <CraftingGrid index={1} ingredient={generic.input[1]} size='large' type='generic' />
+                      </div>
+                    )
                     : null}
                   {tab === CraftingType.STONECUTTER
                     ? <CraftingGrid index={0} ingredient={generic.input[0]} output={false} type='generic' size='large' />

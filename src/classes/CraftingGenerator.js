@@ -523,7 +523,7 @@ class CraftingGenerator {
   }
 
   smithingWithTemplate () {
-    const { input, output, extras: { trim } } = this
+    const { input, output } = this
 
     let shape = { ...this.getSmithingWithTemplateDefault() }
 
@@ -539,7 +539,7 @@ class CraftingGenerator {
       return ingredient
     }
 
-    if (trim && trim.isPopulated()) shape.template = getIngredient(trim)
+    if (input[2] && input[2].isPopulated()) shape.template = getIngredient(input[2])
     if (input[0] && input[0].isPopulated()) shape.base = getIngredient(input[0])
     if (input[1] && input[1].isPopulated()) shape.addition = getIngredient(input[1])
 
