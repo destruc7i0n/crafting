@@ -3,7 +3,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 
 export const getPackFormat = (minecraftVersion) => {
-  // https://minecraft.fandom.com/wiki/Pack_format
+  // https://minecraft.wiki/w/Pack_format
   switch (minecraftVersion) {
     case '1.12': {
       return 3
