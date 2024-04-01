@@ -1,41 +1,30 @@
-# Crafting Generator
-This is a generator for the new Minecraft recipes, that are [coming soon](https://twitter.com/Dinnerbone/status/856505341479145472).
+# React + TypeScript + Vite
 
-[![Issue Stats](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![Travis](https://img.shields.io/travis/destruc7i0n/crafting.svg)](https://travis-ci.org/destruc7i0n/crafting)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-[![Preview](http://i.thedestruc7i0n.ca/ctcMwh.png)](https://crafting.thedestruc7i0n.ca)
+Currently, two official plugins are available:
 
-## Live Demo
-There's an online demo for this [here](https://crafting.thedestruc7i0n.ca).
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Features
-- Simple drag and drop interface
-- Search bar for searching items
-- Button to easily download the crafting recipe output
-- Options
-    - Allow for shapeless output
-    - Ensure that the recipe should be placed exactly where place in grid
-    - Set output recipe
-    - Set the group for the recipe
+## Expanding the ESLint configuration
 
-## Building
-To build this, get yarn (or npm) and run these commands:
-```sh
-yarn
-yarn run build
-```
-You'll find the built assets in the `build/` folder.
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-## Testing
-To run the tests included, run:
-```sh
-yarn run test
+- Configure the top-level `parserOptions` property like this:
+
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
 ```
 
-## Contribute
-I am very happy for any input and potential contributions for this project.
-Please ensure that the code meets the [standard](https://standardjs.com) code style.
-
-## Licence
-MIT
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
