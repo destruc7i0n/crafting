@@ -1,6 +1,8 @@
 import { Header } from "./header";
 
-export function Layout({ children }: { children: React.ReactNode }) {
+type LayoutProps = { children: React.ReactNode };
+
+export function Layout({ children }: LayoutProps) {
   return (
     <div className="flex flex-col">
       <div className="flex min-h-screen flex-col">

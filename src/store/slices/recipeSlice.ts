@@ -61,8 +61,8 @@ const initialState: RecipeSliceState = {
 };
 
 // If you are not using async thunks you can use the standalone `createSlice`.
-export const settingsSlice = createAppSlice({
-  name: "settings",
+export const recipeSlice = createAppSlice({
+  name: "recipe",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
