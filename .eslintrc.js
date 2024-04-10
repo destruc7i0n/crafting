@@ -33,6 +33,14 @@ module.exports = {
     "import/order": [
       "error",
       {
+        pathGroups: [
+          {
+            pattern: "react",
+            group: "external",
+            position: "before",
+          },
+        ],
+        pathGroupsExcludedImportTypes: ["react"],
         groups: [
           "builtin",
           "external",

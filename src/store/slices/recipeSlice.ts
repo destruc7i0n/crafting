@@ -104,3 +104,13 @@ export const recipeSlice = createAppSlice({
   }),
   selectors: {},
 });
+
+export const {
+  setGroup,
+  setSlot,
+  setCrafting,
+  setCraftingShapeless,
+  setCraftingKeepWhitespace,
+  setCookingTime,
+  setCookingExperience,
+} = recipeSlice.actions;

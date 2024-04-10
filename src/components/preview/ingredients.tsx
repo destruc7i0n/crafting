@@ -32,7 +32,11 @@ export const Ingredients = () => {
       {registry.map((_key, item) => {
         return (
           <GridItem>
-            <Ingredient item={item} key={item.id.toString()} />
+            <Ingredient
+              item={item}
+              key={item.id.toString()}
+              container="ingredients"
+            />
           </GridItem>
         );
       })}
