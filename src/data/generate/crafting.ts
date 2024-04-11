@@ -27,7 +27,7 @@ function getPattern(
     const rowIndex = Math.floor(index / 3);
     pattern[rowIndex] = pattern[rowIndex] || "";
     if (item) {
-      pattern[rowIndex] += reverseMap[item.id.toString()];
+      pattern[rowIndex] += reverseMap[item.id.raw];
     } else if (keepWhitespace) {
       pattern[rowIndex] += " ";
     }
@@ -47,7 +47,7 @@ function getPattern(
   return pattern;
 }
 
-function dinnerboneChallenge(item: ItemModel): string {
+function dinnerboneChallenge(item: ItemModel): string | null {
   const itemId = item.id.id;
 
   const isStick = itemId.includes("stick");
@@ -67,7 +67,7 @@ function dinnerboneChallenge(item: ItemModel): string {
   if (isNugget) {
     return ".";
   }
-  return itemId[0].toUpperCase();
+  return null;
 }
 
 function getKeyForGrid(grid: (ItemModel | undefined)[]): {
@@ -79,21 +79,46 @@ function getKeyForGrid(grid: (ItemModel | undefined)[]): {
 
   for (const item of grid) {
     if (!item) continue;
-    if (reverse[item.id.toString()]) continue;
+    if (reverse[item.id.raw]) continue;
+
+    const id = item.id.id;
 
     let keyName = "#";
     if (keyName in key) {
-      keyName = dinnerboneChallenge(item);
-      while (keyName in key) {
-        // if the key already exists, use a random letter in upper or lower case
-        keyName =
-          PATTERN_CHARACTERS[
-            Math.floor(Math.random() * PATTERN_CHARACTERS.length)
-          ];
+      let found = false;
+
+      const firstChar = id[0];
+      const upper = firstChar.toUpperCase();
+      const lower = firstChar.toLowerCase();
+
+      const possibilities = [
+        dinnerboneChallenge(item),
+        upper,
+        lower,
+        PATTERN_CHARACTERS[id.length % PATTERN_CHARACTERS.length],
+      ];
+
+      for (const possibility of possibilities) {
+        if (possibility && !(possibility in key)) {
+          keyName = possibility;
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        while (keyName in key) {
+          // just randomly pick a character
+          keyName =
+            PATTERN_CHARACTERS[
+              Math.floor(Math.random() * PATTERN_CHARACTERS.length)
+            ];
+        }
       }
     }
+
     key[keyName] = item;
-    reverse[item.id.toString()] = keyName;
+    reverse[item.id.raw] = keyName;
   }
 
   return { key, reverse };
