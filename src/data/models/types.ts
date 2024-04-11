@@ -1,3 +1,5 @@
+import { MinecraftVersion } from "../types";
+
 export interface MinecraftIdentifier {
   raw: string;
 
@@ -10,4 +12,5 @@ export interface Item {
   id: MinecraftIdentifier;
   displayName: string;
   count?: number;
+  _version: MinecraftVersion;
 }

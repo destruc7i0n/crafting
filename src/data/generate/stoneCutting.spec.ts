@@ -1,8 +1,6 @@
 import { RecipeSliceState } from "@/store/slices/recipeSlice";
 
 import { generate } from "./stoneCutting";
-import { MinecraftIdentifier } from "../models/identifier/MinecraftIdentifier";
-import { Item as ItemModel } from "../models/item/Item";
 import { MinecraftVersion, RecipeType } from "../types";
 
 describe("generate stonecutting", () => {
@@ -13,15 +11,21 @@ describe("generate stonecutting", () => {
         group: "",
         slots: {
           "stonecutting.ingredient": {
-  id: { raw: "minecraft:stone", id: "", namespace: "minecraft" },
-  displayName: "stone",
-  count: 1,
-},
+            id: { raw: "minecraft:stone", id: "", namespace: "minecraft" },
+            displayName: "stone",
+            count: 1,
+            _version: MinecraftVersion.V114,
+          },
           "stonecutting.result": {
-  id: { raw: "minecraft:cobblestone", id: "", namespace: "minecraft" },
-  displayName: "cobblestone",
-  count: 10,
-},
+            id: {
+              raw: "minecraft:cobblestone",
+              id: "",
+              namespace: "minecraft",
+            },
+            displayName: "cobblestone",
+            count: 10,
+            _version: MinecraftVersion.V114,
+          },
         },
         cooking: {
           experience: 0,

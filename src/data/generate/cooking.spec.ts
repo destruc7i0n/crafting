@@ -14,6 +14,7 @@ describe("generate cooking", () => {
             id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
             displayName: "stone",
             count: 1,
+            _version: MinecraftVersion.V113,
           },
           "cooking.result": {
             id: {
@@ -23,6 +24,7 @@ describe("generate cooking", () => {
             },
             displayName: "cobblestone",
             count: 10,
+            _version: MinecraftVersion.V113,
           },
         },
         crafting: {
@@ -60,6 +62,7 @@ describe("generate cooking", () => {
             },
             displayName: "stone",
             count: 1,
+            _version: MinecraftVersion.V114,
           },
           "cooking.result": {
             id: {
@@ -69,6 +72,7 @@ describe("generate cooking", () => {
             },
             displayName: "cobblestone",
             count: 10,
+            _version: MinecraftVersion.V114,
           },
         },
         crafting: {
@@ -104,6 +108,7 @@ describe("generate cooking", () => {
             },
             displayName: "potato",
             count: 1,
+            _version: MinecraftVersion.V114,
           },
           "cooking.result": {
             id: {
@@ -113,6 +118,7 @@ describe("generate cooking", () => {
             },
             displayName: "baked_potato",
             count: 10,
+            _version: MinecraftVersion.V114,
           },
         },
         crafting: {
@@ -144,6 +150,7 @@ describe("generate cooking", () => {
             id: { raw: "minecraft:beef", id: "beef", namespace: "minecraft" },
             displayName: "beef",
             count: 1,
+            _version: MinecraftVersion.V114,
           },
           "cooking.result": {
             id: {
@@ -153,6 +160,7 @@ describe("generate cooking", () => {
             },
             displayName: "cooked_beef",
             count: 10,
+            _version: MinecraftVersion.V114,
           },
         },
         crafting: {
@@ -188,6 +196,7 @@ describe("generate cooking", () => {
             },
             displayName: "iron_ore",
             count: 1,
+            _version: MinecraftVersion.V114,
           },
           "cooking.result": {
             id: {
@@ -197,6 +206,7 @@ describe("generate cooking", () => {
             },
             displayName: "iron_ingot",
             count: 10,
+            _version: MinecraftVersion.V114,
           },
         },
         crafting: {

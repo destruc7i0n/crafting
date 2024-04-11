@@ -20,6 +20,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.2": {
               id: {
@@ -30,6 +31,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.result": {
               id: {
@@ -39,6 +41,7 @@ describe("generate crafting", () => {
               },
               displayName: "cobblestone",
               count: 10,
+              _version: MinecraftVersion.V112,
             },
           },
           crafting: {
@@ -76,6 +79,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.2": {
               id: {
@@ -86,6 +90,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.4": {
               id: {
@@ -96,6 +101,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.5": {
               id: {
@@ -106,6 +112,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.7": {
               id: {
@@ -116,6 +123,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.8": {
               id: {
@@ -126,6 +134,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.result": {
               id: {
@@ -135,6 +144,7 @@ describe("generate crafting", () => {
               },
               displayName: "cobblestone",
               count: 10,
+              _version: MinecraftVersion.V112,
             },
           },
           crafting: {
@@ -170,6 +180,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.2": {
               id: {
@@ -180,6 +191,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.4": {
               id: {
@@ -190,6 +202,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.5": {
               id: {
@@ -200,6 +213,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.7": {
               id: {
@@ -210,6 +224,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.8": {
               id: {
@@ -220,6 +235,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V112,
             },
             "crafting.result": {
               id: {
@@ -229,6 +245,7 @@ describe("generate crafting", () => {
               },
               displayName: "cobblestone",
               count: 10,
+              _version: MinecraftVersion.V112,
             },
           },
           crafting: {
@@ -270,6 +287,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.2": {
               id: {
@@ -279,6 +297,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.result": {
               id: {
@@ -288,6 +307,7 @@ describe("generate crafting", () => {
               },
               displayName: "cobblestone",
               count: 10,
+              _version: MinecraftVersion.V114,
             },
           },
           crafting: {
@@ -324,6 +344,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.2": {
               id: {
@@ -333,6 +354,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.4": {
               id: {
@@ -342,6 +364,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.5": {
               id: {
@@ -351,6 +374,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.7": {
               id: {
@@ -360,6 +384,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.8": {
               id: {
@@ -369,6 +394,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.result": {
               id: {
@@ -378,6 +404,7 @@ describe("generate crafting", () => {
               },
               displayName: "cobblestone",
               count: 10,
+              _version: MinecraftVersion.V114,
             },
           },
           crafting: {
@@ -412,6 +439,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.2": {
               id: {
@@ -421,6 +449,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.4": {
               id: {
@@ -430,6 +459,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.5": {
               id: {
@@ -439,6 +469,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.7": {
               id: {
@@ -448,6 +479,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.8": {
               id: {
@@ -457,6 +489,7 @@ describe("generate crafting", () => {
               },
               displayName: "stone",
               count: 1,
+              _version: MinecraftVersion.V114,
             },
             "crafting.result": {
               id: {
@@ -466,6 +499,7 @@ describe("generate crafting", () => {
               },
               displayName: "cobblestone",
               count: 10,
+              _version: MinecraftVersion.V114,
             },
           },
           crafting: {

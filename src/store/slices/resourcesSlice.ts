@@ -50,7 +50,10 @@ export const resourcesSlice = createAppSlice({
           const textures: Record<string, string> = {};
 
           for (const mcTexturesItem of mcTexturesItems) {
-            const item = transformMinecraftTexturesItem(mcTexturesItem);
+            const item = transformMinecraftTexturesItem(
+              mcTexturesItem,
+              action.meta.arg,
+            );
             items.push(item);
             itemsById[item.id.raw] = item;
             textures[item.id.raw] = mcTexturesItem.texture;

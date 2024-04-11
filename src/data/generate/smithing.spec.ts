@@ -18,6 +18,7 @@ describe("generate stonecutting", () => {
             },
             displayName: "diamond_sword",
             count: 1,
+            _version: MinecraftVersion.V116,
           },
           "smithing.addition": {
             id: {
@@ -27,6 +28,7 @@ describe("generate stonecutting", () => {
             },
             displayName: "netherite_ingot",
             count: 1,
+            _version: MinecraftVersion.V116,
           },
           "smithing.result": {
             id: {
@@ -36,6 +38,7 @@ describe("generate stonecutting", () => {
             },
             displayName: "netherite_sword",
             count: 1,
+            _version: MinecraftVersion.V116,
           },
         },
         cooking: {
@@ -78,6 +81,7 @@ describe("generate stonecutting", () => {
               },
               displayName: "netherite_upgrade_smithing_template",
               count: 1,
+              _version: MinecraftVersion.V119,
             },
             "smithing.base": {
               id: {
@@ -87,6 +91,7 @@ describe("generate stonecutting", () => {
               },
               displayName: "diamond_sword",
               count: 1,
+              _version: MinecraftVersion.V119,
             },
             "smithing.addition": {
               id: {
@@ -96,6 +101,7 @@ describe("generate stonecutting", () => {
               },
               displayName: "netherite_ingot",
               count: 1,
+              _version: MinecraftVersion.V119,
             },
           },
           cooking: {
@@ -137,6 +143,7 @@ describe("generate stonecutting", () => {
               },
               displayName: "netherite_upgrade_smithing_template",
               count: 1,
+              _version: MinecraftVersion.V119,
             },
             "smithing.base": {
               id: {
@@ -146,6 +153,7 @@ describe("generate stonecutting", () => {
               },
               displayName: "diamond_sword",
               count: 1,
+              _version: MinecraftVersion.V119,
             },
             "smithing.addition": {
               id: {
@@ -155,6 +163,7 @@ describe("generate stonecutting", () => {
               },
               displayName: "netherite_ingot",
               count: 1,
+              _version: MinecraftVersion.V119,
             },
             "smithing.result": {
               id: {
@@ -164,6 +173,7 @@ describe("generate stonecutting", () => {
               },
               displayName: "netherite_sword",
               count: 1,
+              _version: MinecraftVersion.V119,
             },
           },
           cooking: {

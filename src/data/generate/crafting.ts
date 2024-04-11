@@ -1,7 +1,7 @@
 import { RecipeSliceState } from "@/store/slices/recipeSlice";
 
 import { get112ItemOutputFormat, get113ItemOutputFormat } from "./shared";
-import { Item as ItemModel } from "../models/item/Item";
+import { Item } from "../models/types";
 import { MinecraftVersion, ShapedRecipe, ShapelessRecipe } from "../types";
 import {
   Shaped112RecipeFormat,
@@ -17,7 +17,7 @@ const PATTERN_CHARACTERS = [
 ];
 
 function getPattern(
-  grid: (ItemModel | undefined)[],
+  grid: (Item | undefined)[],
   reverseMap: Record<string, string>,
   keepWhitespace: boolean,
 ): string[] {
@@ -47,7 +47,7 @@ function getPattern(
   return pattern;
 }
 
-function dinnerboneChallenge(item: ItemModel): string | null {
+function dinnerboneChallenge(item: Item): string | null {
   const itemId = item.id.id;
 
   const isStick = itemId.includes("stick");
@@ -70,11 +70,11 @@ function dinnerboneChallenge(item: ItemModel): string | null {
   return null;
 }
 
-function getKeyForGrid(grid: (ItemModel | undefined)[]): {
-  key: Record<string, ItemModel>;
+function getKeyForGrid(grid: (Item | undefined)[]): {
+  key: Record<string, Item>;
   reverse: Record<string, string>;
 } {
-  const key: Record<string, ItemModel> = {};
+  const key: Record<string, Item> = {};
   const reverse: Record<string, string> = {};
 
   for (const item of grid) {
@@ -128,7 +128,7 @@ export function generate(
   recipeSlice: RecipeSliceState,
   version: MinecraftVersion,
 ): object {
-  const grid: (ItemModel | undefined)[] = [
+  const grid: (Item | undefined)[] = [
     recipeSlice.slots["crafting.1"],
     recipeSlice.slots["crafting.2"],
     recipeSlice.slots["crafting.3"],
