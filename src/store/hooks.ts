@@ -15,7 +15,23 @@ export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
 
 export const selectSettings = (state: RootState) => state.settings;
+export const selectMinecraftVersion = createSelector(
+  selectSettings,
+  (state) => state.minecraftVersion,
+);
 
 export const selectRecipe = (state: RootState) => state.recipe;
 export const selectRecipeSlot = (slot: RecipeSlot) =>
   createSelector(selectRecipe, (state) => state.slots[slot]);
+
+export const selectResources = (state: RootState) => state.resources;
+export const selectResourcesByVersion = createSelector(
+  [selectResources, selectMinecraftVersion],
+  (state, version) => state[version],
+);
+
+export const selectResourceById = (id: string) =>
+  createSelector(selectResourcesByVersion, (state) => state?.itemsById[id]);
+
+export const selectTextureById = (id: string) =>
+  createSelector(selectResourcesByVersion, (state) => state?.textures[id]);

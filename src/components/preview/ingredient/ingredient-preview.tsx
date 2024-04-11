@@ -1,21 +1,24 @@
 import { ComponentPropsWithoutRef, forwardRef, memo } from "react";
 
-import { Item } from "@/data/models/item/Item";
+import { NoTextureTexture } from "@/data/constants";
 
 type IngredientProps = {
-  item: Item;
+  alt?: string;
+  texture?: string;
 } & ComponentPropsWithoutRef<"img">;
 
 export const IngredientPreview = memo(
-  forwardRef<HTMLImageElement, IngredientProps>(({ item, ...props }, ref) => {
-    return (
-      <img
-        {...props}
-        ref={ref}
-        src={item.texture}
-        alt={item.displayName}
-        className="h-[32px] w-[32px] [image-rendering:crisp-edges] [image-rendering:pixelated]"
-      />
-    );
-  }),
+  forwardRef<HTMLImageElement, IngredientProps>(
+    ({ texture, alt, ...props }, ref) => {
+      return (
+        <img
+          {...props}
+          ref={ref}
+          src={texture ?? NoTextureTexture}
+          alt={alt}
+          className="h-[32px] w-[32px] [image-rendering:crisp-edges] [image-rendering:pixelated]"
+        />
+      );
+    },
+  ),
 );

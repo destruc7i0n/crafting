@@ -1,8 +1,6 @@
 import { RecipeSliceState } from "@/store/slices/recipeSlice";
 
 import { generate } from "./cooking";
-import { MinecraftIdentifier } from "../models/identifier/MinecraftIdentifier";
-import { Item as ItemModel } from "../models/item/Item";
 import { MinecraftVersion, RecipeType } from "../types";
 
 describe("generate cooking", () => {
@@ -12,16 +10,20 @@ describe("generate cooking", () => {
         recipeType: RecipeType.Smelting,
         group: "",
         slots: {
-          "cooking.ingredient": new ItemModel(
-            MinecraftIdentifier.from("minecraft:stone"),
-            "stone",
-            1,
-          ),
-          "cooking.result": new ItemModel(
-            MinecraftIdentifier.from("minecraft:cobblestone"),
-            "cobblestone",
-            10,
-          ),
+          "cooking.ingredient": {
+            id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
+            displayName: "stone",
+            count: 1,
+          },
+          "cooking.result": {
+            id: {
+              raw: "minecraft:cobblestone",
+              id: "cobblestone",
+              namespace: "minecraft",
+            },
+            displayName: "cobblestone",
+            count: 10,
+          },
         },
         crafting: {
           shapeless: true,
@@ -50,16 +52,24 @@ describe("generate cooking", () => {
         recipeType: RecipeType.Smelting,
         group: "",
         slots: {
-          "cooking.ingredient": new ItemModel(
-            MinecraftIdentifier.from("minecraft:porkchop"),
-            "stone",
-            1,
-          ),
-          "cooking.result": new ItemModel(
-            MinecraftIdentifier.from("minecraft:cooked_porkchop"),
-            "cobblestone",
-            10,
-          ),
+          "cooking.ingredient": {
+            id: {
+              raw: "minecraft:porkchop",
+              id: "porkchop",
+              namespace: "minecraft",
+            },
+            displayName: "stone",
+            count: 1,
+          },
+          "cooking.result": {
+            id: {
+              raw: "minecraft:cooked_porkchop",
+              id: "cooked_porkchop",
+              namespace: "minecraft",
+            },
+            displayName: "cobblestone",
+            count: 10,
+          },
         },
         crafting: {
           shapeless: true,
@@ -86,16 +96,24 @@ describe("generate cooking", () => {
         recipeType: RecipeType.CampfireCooking,
         group: "",
         slots: {
-          "cooking.ingredient": new ItemModel(
-            MinecraftIdentifier.from("minecraft:potato"),
-            "potato",
-            1,
-          ),
-          "cooking.result": new ItemModel(
-            MinecraftIdentifier.from("minecraft:baked_potato"),
-            "baked_potato",
-            10,
-          ),
+          "cooking.ingredient": {
+            id: {
+              raw: "minecraft:potato",
+              id: "potato",
+              namespace: "minecraft",
+            },
+            displayName: "potato",
+            count: 1,
+          },
+          "cooking.result": {
+            id: {
+              raw: "minecraft:baked_potato",
+              id: "baked_potato",
+              namespace: "minecraft",
+            },
+            displayName: "baked_potato",
+            count: 10,
+          },
         },
         crafting: {
           shapeless: true,
@@ -122,16 +140,20 @@ describe("generate cooking", () => {
         recipeType: RecipeType.Smoking,
         group: "",
         slots: {
-          "cooking.ingredient": new ItemModel(
-            MinecraftIdentifier.from("minecraft:beef"),
-            "beef",
-            1,
-          ),
-          "cooking.result": new ItemModel(
-            MinecraftIdentifier.from("minecraft:cooked_beef"),
-            "cooked_beef",
-            10,
-          ),
+          "cooking.ingredient": {
+            id: { raw: "minecraft:beef", id: "beef", namespace: "minecraft" },
+            displayName: "beef",
+            count: 1,
+          },
+          "cooking.result": {
+            id: {
+              raw: "minecraft:cooked_beef",
+              id: "cooked_beef",
+              namespace: "minecraft",
+            },
+            displayName: "cooked_beef",
+            count: 10,
+          },
         },
         crafting: {
           shapeless: true,
@@ -158,16 +180,24 @@ describe("generate cooking", () => {
         recipeType: RecipeType.Blasting,
         group: "",
         slots: {
-          "cooking.ingredient": new ItemModel(
-            MinecraftIdentifier.from("minecraft:iron_ore"),
-            "iron_ore",
-            1,
-          ),
-          "cooking.result": new ItemModel(
-            MinecraftIdentifier.from("minecraft:iron_ingot"),
-            "iron_ingot",
-            10,
-          ),
+          "cooking.ingredient": {
+            id: {
+              raw: "minecraft:iron_ore",
+              id: "iron_ore",
+              namespace: "minecraft",
+            },
+            displayName: "iron_ore",
+            count: 1,
+          },
+          "cooking.result": {
+            id: {
+              raw: "minecraft:iron_ingot",
+              id: "iron_ingot",
+              namespace: "minecraft",
+            },
+            displayName: "iron_ingot",
+            count: 10,
+          },
         },
         crafting: {
           shapeless: true,

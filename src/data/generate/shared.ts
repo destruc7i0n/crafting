@@ -1,25 +1,25 @@
-import { Item as ItemModel } from "../models/item/Item";
-import type { Item, ItemWithData } from "../types";
+import { Item } from "../models/types";
+import type { OutputItem, OutputItemWithData } from "../types";
 import { MinecraftVersion } from "../types";
 
 export const get112ItemOutputFormat = (
-  item: ItemModel,
+  item: Item,
   includeCount: boolean,
-): ItemWithData => {
+): OutputItemWithData => {
   return {
     item: item.id.id,
-    count: includeCount && item.count > 0 ? item.count : undefined,
-    data: item.id.rest.length > 0 ? Number(item.id.rest[0]) : undefined,
+    count: (includeCount && item?.count) ?? 0 > 0 ? item.count : undefined,
+    data: item.id.data,
   };
 };
 
 export const get113ItemOutputFormat = (
-  item: ItemModel,
+  item: Item,
   includeCount: boolean,
-): Item => {
+): OutputItem => {
   return {
-    item: item.id.toString(),
-    count: includeCount && item.count > 0 ? item.count : undefined,
+    item: item.id.raw,
+    count: (includeCount && item?.count) ?? 0 > 0 ? item.count : undefined,
   };
 };
 

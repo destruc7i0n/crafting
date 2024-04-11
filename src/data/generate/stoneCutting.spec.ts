@@ -12,16 +12,16 @@ describe("generate stonecutting", () => {
         recipeType: RecipeType.StoneCutting,
         group: "",
         slots: {
-          "stonecutting.ingredient": new ItemModel(
-            MinecraftIdentifier.from("minecraft:stone"),
-            "stone",
-            1,
-          ),
-          "stonecutting.result": new ItemModel(
-            MinecraftIdentifier.from("minecraft:cobblestone"),
-            "cobblestone",
-            10,
-          ),
+          "stonecutting.ingredient": {
+  id: { raw: "minecraft:stone", id: "", namespace: "minecraft" },
+  displayName: "stone",
+  count: 1,
+},
+          "stonecutting.result": {
+  id: { raw: "minecraft:cobblestone", id: "", namespace: "minecraft" },
+  displayName: "cobblestone",
+  count: 10,
+},
         },
         cooking: {
           experience: 0,

@@ -1,13 +1,15 @@
-export interface Item {
+// Output item types
+
+export interface OutputItem {
   item: string;
   count?: number;
 }
 
-export interface ItemWithData extends Item {
+export interface OutputItemWithData extends OutputItem {
   data?: number;
 }
 
-export interface ItemWithComponents extends Item {
+export interface ItemWithComponents extends OutputItem {
   components: unknown[];
 }
 
@@ -48,30 +50,30 @@ export interface Shaped112RecipeFormat {
   type: string;
   group?: string;
   pattern: string[];
-  key: Record<string, { item: ItemWithData }>;
-  result: OrEmpty<ItemWithData>;
+  key: Record<string, { item: OutputItemWithData }>;
+  result: OrEmpty<OutputItemWithData>;
 }
 
 export interface Shapeless112RecipeFormat {
   type: string;
   group?: string;
-  ingredients: ItemWithData[];
-  result: OrEmpty<ItemWithData>;
+  ingredients: OutputItemWithData[];
+  result: OrEmpty<OutputItemWithData>;
 }
 
 export interface Shaped114RecipeFormat {
   type: string;
   group?: string;
   pattern: string[];
-  key: Record<string, { item: Item }>;
-  result: OrEmpty<Item>;
+  key: Record<string, { item: OutputItem }>;
+  result: OrEmpty<OutputItem>;
 }
 
 export interface Shapeless114RecipeFormat {
   type: string;
   group?: string;
-  ingredients: Item[];
-  result: OrEmpty<Item>;
+  ingredients: OutputItem[];
+  result: OrEmpty<OutputItem>;
 }
 
 export type ShapedRecipe = Shaped112RecipeFormat | Shaped114RecipeFormat;
@@ -86,7 +88,7 @@ export interface CookingRecipe113Format {
   group?: string;
   experience?: number;
   cookingtime?: number;
-  ingredient: OrEmpty<ItemWithData>;
+  ingredient: OrEmpty<OutputItemWithData>;
   result: string;
 }
 
@@ -95,7 +97,7 @@ export interface CookingRecipe114Format {
   group?: string;
   experience?: number;
   cookingtime?: number;
-  ingredient: OrEmpty<Item>;
+  ingredient: OrEmpty<OutputItem>;
   result: string;
 }
 
@@ -106,7 +108,7 @@ export type CookingRecipe = CookingRecipe113Format | CookingRecipe114Format;
 export interface StonecuttingRecipe114Format {
   type: string;
   group?: string;
-  ingredient: OrEmpty<Item>;
+  ingredient: OrEmpty<OutputItem>;
   result: string;
   count: number;
 }
@@ -115,24 +117,24 @@ export interface StonecuttingRecipe114Format {
 
 export interface SmithingRecipe116Format {
   type: string;
-  base: OrEmpty<Item>;
-  addition: OrEmpty<Item>;
-  result: OrEmpty<Item>;
+  base: OrEmpty<OutputItem>;
+  addition: OrEmpty<OutputItem>;
+  result: OrEmpty<OutputItem>;
 }
 
 export interface SmithingRecipeTrim119Format {
   type: string;
-  template: OrEmpty<Item>;
-  base: OrEmpty<Item>;
-  addition: OrEmpty<Item>;
+  template: OrEmpty<OutputItem>;
+  base: OrEmpty<OutputItem>;
+  addition: OrEmpty<OutputItem>;
 }
 
 export interface SmithingRecipeTransform119Format {
   type: string;
-  template: OrEmpty<Item>;
-  base: OrEmpty<Item>;
-  addition: OrEmpty<Item>;
-  result: OrEmpty<Item>;
+  template: OrEmpty<OutputItem>;
+  base: OrEmpty<OutputItem>;
+  addition: OrEmpty<OutputItem>;
+  result: OrEmpty<OutputItem>;
 }
 
 export type SmithingRecipe =

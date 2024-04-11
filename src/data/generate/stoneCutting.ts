@@ -16,7 +16,7 @@ export function generate(
       recipeSlice.slots["stonecutting.ingredient"]!,
       false,
     ),
-    result: recipeSlice.slots["stonecutting.result"]?.id.toString() ?? "",
+    result: recipeSlice.slots["stonecutting.result"]?.id.raw ?? "",
     count: recipeSlice.slots["stonecutting.result"]?.count ?? 1,
   } satisfies StonecuttingRecipe114Format;
 }

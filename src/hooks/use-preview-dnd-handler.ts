@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
-import { Item } from "@/data/models/item/Item";
+import { Item } from "@/data/models/types";
 import { useAppDispatch } from "@/store/hooks";
 import { RecipeSlot, setSlot } from "@/store/slices/recipeSlice";
 
@@ -15,8 +15,6 @@ export const usePreviewDndHandler = () => {
         return source.data.type === "item";
       },
       onDrop: ({ source, location }) => {
-        console.log(source, location);
-
         // if from a slot, remove the item from the previous slot
         const sourceDropTarget = location.initial.dropTargets[0];
         if (sourceDropTarget) {

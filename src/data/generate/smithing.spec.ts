@@ -1,8 +1,6 @@
 import { RecipeSliceState } from "@/store/slices/recipeSlice";
 
 import { generate } from "./smithing";
-import { MinecraftIdentifier } from "../models/identifier/MinecraftIdentifier";
-import { Item as ItemModel } from "../models/item/Item";
 import { MinecraftVersion, RecipeType } from "../types";
 
 describe("generate stonecutting", () => {
@@ -12,21 +10,33 @@ describe("generate stonecutting", () => {
         recipeType: RecipeType.Smithing,
         group: "",
         slots: {
-          "smithing.base": new ItemModel(
-            MinecraftIdentifier.from("minecraft:diamond_sword"),
-            "diamond_sword",
-            1,
-          ),
-          "smithing.addition": new ItemModel(
-            MinecraftIdentifier.from("minecraft:netherite_ingot"),
-            "netherite_ingot",
-            1,
-          ),
-          "smithing.result": new ItemModel(
-            MinecraftIdentifier.from("minecraft:netherite_sword"),
-            "netherite_sword",
-            1,
-          ),
+          "smithing.base": {
+            id: {
+              raw: "minecraft:diamond_sword",
+              id: "diamond_sword",
+              namespace: "minecraft",
+            },
+            displayName: "diamond_sword",
+            count: 1,
+          },
+          "smithing.addition": {
+            id: {
+              raw: "minecraft:netherite_ingot",
+              id: "netherite_ingot",
+              namespace: "minecraft",
+            },
+            displayName: "netherite_ingot",
+            count: 1,
+          },
+          "smithing.result": {
+            id: {
+              raw: "minecraft:netherite_sword",
+              id: "netherite_sword",
+              namespace: "minecraft",
+            },
+            displayName: "netherite_sword",
+            count: 1,
+          },
         },
         cooking: {
           experience: 0,
@@ -60,23 +70,33 @@ describe("generate stonecutting", () => {
           recipeType: RecipeType.SmithingTrim,
           group: "",
           slots: {
-            "smithing.template": new ItemModel(
-              MinecraftIdentifier.from(
-                "minecraft:netherite_upgrade_smithing_template",
-              ),
-              "netherite_upgrade_smithing_template",
-              1,
-            ),
-            "smithing.base": new ItemModel(
-              MinecraftIdentifier.from("minecraft:diamond_sword"),
-              "diamond_sword",
-              1,
-            ),
-            "smithing.addition": new ItemModel(
-              MinecraftIdentifier.from("minecraft:netherite_ingot"),
-              "netherite_ingot",
-              1,
-            ),
+            "smithing.template": {
+              id: {
+                raw: "minecraft:netherite_upgrade_smithing_template",
+                id: "netherite_upgrade_smithing_template",
+                namespace: "minecraft",
+              },
+              displayName: "netherite_upgrade_smithing_template",
+              count: 1,
+            },
+            "smithing.base": {
+              id: {
+                raw: "minecraft:diamond_sword",
+                id: "diamond_sword",
+                namespace: "minecraft",
+              },
+              displayName: "diamond_sword",
+              count: 1,
+            },
+            "smithing.addition": {
+              id: {
+                raw: "minecraft:netherite_ingot",
+                id: "netherite_ingot",
+                namespace: "minecraft",
+              },
+              displayName: "netherite_ingot",
+              count: 1,
+            },
           },
           cooking: {
             experience: 0,
@@ -109,28 +129,42 @@ describe("generate stonecutting", () => {
           recipeType: RecipeType.SmithingTransform,
           group: "",
           slots: {
-            "smithing.template": new ItemModel(
-              MinecraftIdentifier.from(
-                "minecraft:netherite_upgrade_smithing_template",
-              ),
-              "netherite_upgrade_smithing_template",
-              1,
-            ),
-            "smithing.base": new ItemModel(
-              MinecraftIdentifier.from("minecraft:diamond_sword"),
-              "diamond_sword",
-              1,
-            ),
-            "smithing.addition": new ItemModel(
-              MinecraftIdentifier.from("minecraft:netherite_ingot"),
-              "netherite_ingot",
-              1,
-            ),
-            "smithing.result": new ItemModel(
-              MinecraftIdentifier.from("minecraft:netherite_sword"),
-              "netherite_sword",
-              1,
-            ),
+            "smithing.template": {
+              id: {
+                raw: "minecraft:netherite_upgrade_smithing_template",
+                id: "netherite_upgrade_smithing_template",
+                namespace: "minecraft",
+              },
+              displayName: "netherite_upgrade_smithing_template",
+              count: 1,
+            },
+            "smithing.base": {
+              id: {
+                raw: "minecraft:diamond_sword",
+                id: "diamond_sword",
+                namespace: "minecraft",
+              },
+              displayName: "diamond_sword",
+              count: 1,
+            },
+            "smithing.addition": {
+              id: {
+                raw: "minecraft:netherite_ingot",
+                id: "netherite_ingot",
+                namespace: "minecraft",
+              },
+              displayName: "netherite_ingot",
+              count: 1,
+            },
+            "smithing.result": {
+              id: {
+                raw: "minecraft:netherite_sword",
+                id: "netherite_sword",
+                namespace: "minecraft",
+              },
+              displayName: "netherite_sword",
+              count: 1,
+            },
           },
           cooking: {
             experience: 0,

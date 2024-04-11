@@ -33,7 +33,7 @@ export function generate(
       recipeSlice.cooking.time > 0 ? recipeSlice.cooking.time : undefined,
 
     ingredient: input ? itemFormatter(input, false) : {},
-    result: output ? output.id.toString() : "",
+    result: output ? output.id.raw : "",
   };
 
   if (version === MinecraftVersion.V113) {

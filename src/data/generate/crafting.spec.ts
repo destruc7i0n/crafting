@@ -1,9 +1,6 @@
 import { RecipeSliceState } from "@/store/slices/recipeSlice";
 
 import { generate } from "./crafting";
-import { MinecraftIdentifier } from "../models/identifier/MinecraftIdentifier";
-import { MinecraftIdentifierNoNamespace } from "../models/identifier/MinecraftIdentifierNoNamespace";
-import { Item as ItemModel } from "../models/item/Item";
 import { MinecraftVersion, RecipeType } from "../types";
 
 describe("generate crafting", () => {
@@ -14,21 +11,35 @@ describe("generate crafting", () => {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
-            "crafting.1": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.2": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.result": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("cobblestone"),
-              "cobblestone",
-              10,
-            ),
+            "crafting.1": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.2": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.result": {
+              id: {
+                raw: "cobblestone",
+                id: "cobblestone",
+                namespace: "minecraft",
+              },
+              displayName: "cobblestone",
+              count: 10,
+            },
           },
           crafting: {
             shapeless: true,
@@ -56,41 +67,75 @@ describe("generate crafting", () => {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
-            "crafting.1": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.2": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.4": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.5": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.7": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.8": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.result": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("cobblestone"),
-              "cobblestone",
-              10,
-            ),
+            "crafting.1": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.2": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.4": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.5": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.7": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.8": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.result": {
+              id: {
+                raw: "cobblestone",
+                id: "cobblestone",
+                namespace: "minecraft",
+              },
+              displayName: "cobblestone",
+              count: 10,
+            },
           },
           crafting: {
             shapeless: false,
@@ -116,41 +161,75 @@ describe("generate crafting", () => {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
-            "crafting.1": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.2": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("paper:1"),
-              "stone",
-              1,
-            ),
-            "crafting.4": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.5": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("iron_ingot:1"),
-              "stone",
-              1,
-            ),
-            "crafting.7": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stone:1"),
-              "stone",
-              1,
-            ),
-            "crafting.8": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("stick:1"),
-              "stone",
-              1,
-            ),
-            "crafting.result": new ItemModel(
-              MinecraftIdentifierNoNamespace.from("cobblestone"),
-              "cobblestone",
-              10,
-            ),
+            "crafting.1": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.2": {
+              id: {
+                raw: "paper:1",
+                id: "paper",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.4": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.5": {
+              id: {
+                raw: "iron_ingot:1",
+                id: "iron_ingot",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.7": {
+              id: {
+                raw: "stone:1",
+                id: "stone",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.8": {
+              id: {
+                raw: "stick:1",
+                id: "stick",
+                namespace: "minecraft",
+                data: 1,
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.result": {
+              id: {
+                raw: "cobblestone",
+                id: "cobblestone",
+                namespace: "minecraft",
+              },
+              displayName: "cobblestone",
+              count: 10,
+            },
           },
           crafting: {
             shapeless: false,
@@ -183,21 +262,33 @@ describe("generate crafting", () => {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
-            "crafting.1": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.2": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.result": new ItemModel(
-              MinecraftIdentifier.from("minecraft:cobblestone"),
-              "cobblestone",
-              10,
-            ),
+            "crafting.1": {
+              id: {
+                raw: "minecraft:stone",
+                id: "",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.2": {
+              id: {
+                raw: "minecraft:stone",
+                id: "",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.result": {
+              id: {
+                raw: "minecraft:cobblestone",
+                id: "",
+                namespace: "minecraft",
+              },
+              displayName: "cobblestone",
+              count: 10,
+            },
           },
           crafting: {
             shapeless: true,
@@ -225,41 +316,69 @@ describe("generate crafting", () => {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
-            "crafting.1": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.2": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.4": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.5": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.7": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.8": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.result": new ItemModel(
-              MinecraftIdentifier.from("minecraft:cobblestone"),
-              "cobblestone",
-              10,
-            ),
+            "crafting.1": {
+              id: {
+                raw: "minecraft:stone",
+                id: "stone",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.2": {
+              id: {
+                raw: "minecraft:stone",
+                id: "stone",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.4": {
+              id: {
+                raw: "minecraft:stone",
+                id: "stone",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.5": {
+              id: {
+                raw: "minecraft:stone",
+                id: "stone",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.7": {
+              id: {
+                raw: "minecraft:stone",
+                id: "stone",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.8": {
+              id: {
+                raw: "minecraft:stone",
+                id: "stone",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.result": {
+              id: {
+                raw: "minecraft:cobblestone",
+                id: "cobblestone",
+                namespace: "minecraft",
+              },
+              displayName: "cobblestone",
+              count: 10,
+            },
           },
           crafting: {
             shapeless: false,
@@ -285,41 +404,69 @@ describe("generate crafting", () => {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
-            "crafting.1": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.2": new ItemModel(
-              MinecraftIdentifier.from("minecraft:paper"),
-              "stone",
-              1,
-            ),
-            "crafting.4": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.5": new ItemModel(
-              MinecraftIdentifier.from("minecraft:iron_ingot"),
-              "stone",
-              1,
-            ),
-            "crafting.7": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stone"),
-              "stone",
-              1,
-            ),
-            "crafting.8": new ItemModel(
-              MinecraftIdentifier.from("minecraft:stick"),
-              "stone",
-              1,
-            ),
-            "crafting.result": new ItemModel(
-              MinecraftIdentifier.from("minecraft:cobblestone"),
-              "cobblestone",
-              10,
-            ),
+            "crafting.1": {
+              id: {
+                raw: "minecraft:stone",
+                id: "stone",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.2": {
+              id: {
+                raw: "minecraft:paper",
+                id: "paper",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.4": {
+              id: {
+                raw: "minecraft:stone",
+                id: "stone",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.5": {
+              id: {
+                raw: "minecraft:iron_ingot",
+                id: "iron_ingot",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.7": {
+              id: {
+                raw: "minecraft:stone",
+                id: "stone",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.8": {
+              id: {
+                raw: "minecraft:stick",
+                id: "stick",
+                namespace: "minecraft",
+              },
+              displayName: "stone",
+              count: 1,
+            },
+            "crafting.result": {
+              id: {
+                raw: "minecraft:cobblestone",
+                id: "cobblestone",
+                namespace: "minecraft",
+              },
+              displayName: "cobblestone",
+              count: 10,
+            },
           },
           crafting: {
             shapeless: false,

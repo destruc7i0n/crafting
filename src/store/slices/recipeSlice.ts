@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { Item as ItemModel } from "@/data/models/item/Item";
+import { Item as ItemModel } from "@/data/models/types";
 import { RecipeType } from "@/data/types";
 
 import { createAppSlice } from "../createAppSlice";
@@ -51,7 +51,7 @@ const initialState: RecipeSliceState = {
   slots: {},
   crafting: {
     shapeless: false,
-    keepWhitespace: false,
+    keepWhitespace: true,
   },
   cooking: {
     time: 0,
