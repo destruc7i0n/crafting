@@ -12,6 +12,7 @@ import { Item } from "@/data/models/types";
 import { useResourceTexture } from "@/hooks/use-resource-texture";
 
 import { IngredientPreview } from "./ingredient-preview";
+import { Tooltip } from "./tooltip/tooltip";
 
 type IngredientProps = {
   item: Item;
@@ -23,6 +24,26 @@ export const Ingredient = ({ item, container }: IngredientProps) => {
   const [dragging, setDragging] = useState(false);
 
   const texture = useResourceTexture(item);
+
+  const [tooltipOffset, setTooltipOffset] = useState<[number, number]>([0, 0]);
+
+  useEffect(() => {
+    const el = ref.current;
+
+    const onMove = (e: MouseEvent) => {
+      requestAnimationFrame(() => {
+        if (el) {
+          const x = e.offsetX;
+          const y = e.offsetY;
+
+          setTooltipOffset([x, y]);
+        }
+      });
+    };
+
+    el?.addEventListener("mousemove", onMove);
+    return () => el?.removeEventListener("mousemove", onMove);
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -55,13 +76,26 @@ export const Ingredient = ({ item, container }: IngredientProps) => {
   }, [texture, item, container]);
 
   return (
-    <IngredientPreview
-      alt={item.displayName}
-      texture={texture}
-      ref={ref}
-      style={{
-        opacity: dragging ? 0.5 : 1,
-      }}
-    />
+    <div className="ingredient relative">
+      <IngredientPreview
+        alt={item.displayName}
+        texture={texture}
+        ref={ref}
+        style={{
+          opacity: dragging ? 0.5 : 1,
+        }}
+      />
+
+      {!dragging && (
+        <Tooltip
+          title={item.displayName}
+          description={item.id.raw}
+          style={{
+            top: tooltipOffset[1],
+            left: tooltipOffset[0],
+          }}
+        />
+      )}
+    </div>
   );
 };

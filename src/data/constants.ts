@@ -25,7 +25,7 @@ export const recipeTypeToJavaType: Record<RecipeType, string> = {
   [RecipeType.CampfireCooking]: "minecraft:campfire_cooking",
   [RecipeType.Blasting]: "minecraft:blasting",
   [RecipeType.Smoking]: "minecraft:smoking",
-  [RecipeType.StoneCutting]: "minecraft:stonecutting",
+  [RecipeType.Stonecutter]: "minecraft:stonecutting",
   [RecipeType.Smithing]: "minecraft:smithing",
   [RecipeType.SmithingTrim]: "minecraft:smithing_trim",
   [RecipeType.SmithingTransform]: "minecraft:smithing_transform",

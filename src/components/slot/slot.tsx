@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef, forwardRef } from "react";
 
 import { cn } from "@/lib/utils";
 
-export type GridItemProps = {
+export type SlotProps = {
   width?: number;
   height?: number;
   hover?: boolean;
@@ -11,7 +11,7 @@ export type GridItemProps = {
 
 import classes from "./slot.module.css";
 
-export const GridItem = forwardRef<HTMLDivElement, GridItemProps>(
+export const Slot = forwardRef<HTMLDivElement, SlotProps>(
   ({ width = 36, height = 36, hover, children, ...props }, ref) => {
     return (
       <div
@@ -30,4 +30,4 @@ export const GridItem = forwardRef<HTMLDivElement, GridItemProps>(
   },
 );
 
-GridItem.displayName = "GridItem";
+Slot.displayName = "Slot";

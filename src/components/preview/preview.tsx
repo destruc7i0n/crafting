@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import { RecipeType } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
@@ -7,7 +9,7 @@ import { FurnacePreview } from "./furnace";
 import { SmithingPreview } from "./smithing";
 import { StonecutterPreview } from "./stonecutter";
 
-export const MinecraftUIPreview = () => {
+export const Preview = memo(() => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
 
   switch (recipeType) {
@@ -31,4 +33,6 @@ export const MinecraftUIPreview = () => {
       return null;
     }
   }
-};
+});
+
+Preview.displayName = "Preview";

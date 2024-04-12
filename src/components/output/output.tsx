@@ -1,4 +1,4 @@
-import { generate } from "@/data/generate/crafting";
+import { generate } from "@/data/generate";
 import { RecipeType } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
