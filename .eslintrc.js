@@ -39,6 +39,11 @@ module.exports = {
             group: "external",
             position: "before",
           },
+          {
+            pattern: "react-dom**",
+            group: "external",
+            position: "before",
+          },
         ],
         pathGroupsExcludedImportTypes: ["react"],
         groups: [

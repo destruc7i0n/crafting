@@ -7,14 +7,17 @@ import { RecipeSlot } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
 
-import { GridItem } from "./grid-item";
-import { Ingredient } from "../../ingredient/ingredient";
+import { GridItem, GridItemProps } from "./slot";
+import { Ingredient } from "../ingredient/ingredient";
 
 type ConnectedGridItemProps = {
   slot: RecipeSlot;
-};
+} & GridItemProps;
 
-export const ConnectedGridItem = ({ slot }: ConnectedGridItemProps) => {
+export const ConnectedGridItem = ({
+  slot,
+  ...props
+}: ConnectedGridItemProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
 
@@ -34,7 +37,7 @@ export const ConnectedGridItem = ({ slot }: ConnectedGridItemProps) => {
   }, [slot]);
 
   return (
-    <GridItem ref={ref} hover={isDraggedOver}>
+    <GridItem ref={ref} hover={isDraggedOver} {...props}>
       {slotValue && <Ingredient item={slotValue} container="preview" />}
     </GridItem>
   );

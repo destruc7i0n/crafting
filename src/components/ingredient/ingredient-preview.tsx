@@ -22,3 +22,5 @@ export const IngredientPreview = memo(
     },
   ),
 );
+
+IngredientPreview.displayName = "IngredientPreview";

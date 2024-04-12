@@ -35,7 +35,7 @@ export enum RecipeType {
   Blasting = "blasting",
   Smoking = "smoking",
 
-  StoneCutting = "stonecutting",
+  Stonecutter = "stonecutter",
 
   Smithing = "smithing",
   SmithingTrim = "smithing_trim",
@@ -61,13 +61,13 @@ type SmithingSlots =
   | "smithing.base"
   | "smithing.addition"
   | "smithing.result";
-type StonecuttingSlots = "stonecutting.ingredient" | "stonecutting.result";
+type StonecutterSlots = "stonecutter.ingredient" | "stonecutter.result";
 
 export type RecipeSlot =
   | CraftingSlots
   | CookingSlots
   | SmithingSlots
-  | StonecuttingSlots;
+  | StonecutterSlots;
 
 //// CRAFTING RECIPE FORMATS ////
 

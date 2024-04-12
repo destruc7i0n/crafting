@@ -9,3 +9,8 @@ export const selectCurrentRecipe = (state: RecipeState) =>
 
 export const selectCurrentRecipeSlot = (slot: RecipeSlot) =>
   createSelector(selectCurrentRecipe, (recipe) => recipe?.slots[slot]);
+
+export const selectCurrentRecipeType = createSelector(
+  selectCurrentRecipe,
+  (recipe) => recipe?.recipeType,
+);

@@ -1,7 +1,7 @@
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 
-import { Ingredient } from "./ingredient/ingredient";
-import { GridItem } from "./minecraft/grid-item/grid-item";
+import { Ingredient } from "../ingredient/ingredient";
+import { GridItem } from "../slot/slot";
 
 export const Ingredients = () => {
   const { resources } = useResourcesForVersion();

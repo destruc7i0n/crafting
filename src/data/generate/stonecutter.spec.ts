@@ -1,22 +1,22 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
-import { generate } from "./stoneCutting";
+import { generate } from "./stonecutter";
 import { MinecraftVersion, RecipeType } from "../types";
 
 describe("generate stonecutting", () => {
   describe("1.14", () => {
     it("should generate a stonecutting recipe", () => {
       const recipeSlice: SingleRecipeState = {
-        recipeType: RecipeType.StoneCutting,
+        recipeType: RecipeType.Stonecutter,
         group: "",
         slots: {
-          "stonecutting.ingredient": {
+          "stonecutter.ingredient": {
             id: { raw: "minecraft:stone", id: "", namespace: "minecraft" },
             displayName: "stone",
             count: 1,
             _version: MinecraftVersion.V114,
           },
-          "stonecutting.result": {
+          "stonecutter.result": {
             id: {
               raw: "minecraft:cobblestone",
               id: "",

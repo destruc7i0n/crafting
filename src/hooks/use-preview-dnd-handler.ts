@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
+import { cloneItem } from "@/data/models/item/utilities";
 import { Item } from "@/data/models/types";
 import { RecipeSlot } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
@@ -35,7 +36,7 @@ export const usePreviewDndHandler = () => {
         const { item } = source.data as { item: Item };
 
         if (slot) {
-          setRecipeSlot(slot, item);
+          setRecipeSlot(slot, cloneItem(item));
         }
       },
     });

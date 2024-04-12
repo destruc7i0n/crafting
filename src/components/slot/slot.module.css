@@ -1,0 +1,35 @@
+/* relative flex items-center justify-center border-2 border-b-white border-l-[#373737] border-r-white border-t-[#373737] bg-[#8b8b8b] */
+.slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 2px;
+  border-color: #373737 #ffffff #ffffff #373737;
+  background-color: #8b8b8b;
+}
+
+.slot:hover,
+.active {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.slot:before,
+.slot:after {
+  background-color: #8b8b8b;
+  content: "";
+  height: 2px;
+  pointer-events: none;
+  position: absolute;
+  width: 2px;
+}
+
+.slot:before {
+  right: -2px;
+  top: -2px;
+}
+
+.slot:after {
+  bottom: -2px;
+  left: -2px;
+}

@@ -12,8 +12,10 @@ export function generate(
   return {
     type: "minecraft:stonecutting",
     group: state.group.length > 0 ? state.group : undefined,
-    ingredient: outputFormatter(state.slots["stonecutting.ingredient"]!, false),
-    result: state.slots["stonecutting.result"]?.id.raw ?? "",
-    count: state.slots["stonecutting.result"]?.count ?? 1,
+    ingredient: state.slots["stonecutter.ingredient"]
+      ? outputFormatter(state.slots["stonecutter.ingredient"], false)
+      : {},
+    result: state.slots["stonecutter.result"]?.id.raw ?? "",
+    count: state.slots["stonecutter.result"]?.count ?? 1,
   } satisfies StonecuttingRecipe114Format;
 }
