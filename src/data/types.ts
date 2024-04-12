@@ -42,6 +42,33 @@ export enum RecipeType {
   SmithingTransform = "smithing_transform",
 }
 
+// Store Types
+
+type CraftingSlots =
+  | "crafting.1"
+  | "crafting.2"
+  | "crafting.3"
+  | "crafting.4"
+  | "crafting.5"
+  | "crafting.6"
+  | "crafting.7"
+  | "crafting.8"
+  | "crafting.9"
+  | "crafting.result";
+type CookingSlots = "cooking.ingredient" | "cooking.result";
+type SmithingSlots =
+  | "smithing.template"
+  | "smithing.base"
+  | "smithing.addition"
+  | "smithing.result";
+type StonecuttingSlots = "stonecutting.ingredient" | "stonecutting.result";
+
+export type RecipeSlot =
+  | CraftingSlots
+  | CookingSlots
+  | SmithingSlots
+  | StonecuttingSlots;
+
 //// CRAFTING RECIPE FORMATS ////
 
 type OrEmpty<T> = T | Record<string, never>;

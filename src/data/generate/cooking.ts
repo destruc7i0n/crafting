@@ -1,4 +1,4 @@
-import { RecipeSliceState } from "@/store/slices/recipeSlice";
+import { SingleRecipeState } from "@/stores/recipe";
 
 import { getItemOutputFormatterForVersion } from "./shared";
 import { recipeTypeToJavaType } from "../constants";
@@ -10,13 +10,13 @@ import {
 } from "../types";
 
 export function generate(
-  recipeSlice: RecipeSliceState,
+  state: SingleRecipeState,
   version: MinecraftVersion,
 ): object {
-  const group = recipeSlice.group.length > 0 ? recipeSlice.group : undefined;
+  const group = state.group.length > 0 ? state.group : undefined;
 
-  const input = recipeSlice.slots["cooking.ingredient"];
-  const output = recipeSlice.slots["cooking.result"];
+  const input = state.slots["cooking.ingredient"];
+  const output = state.slots["cooking.result"];
 
   const itemFormatter = getItemOutputFormatterForVersion(version);
 
@@ -26,11 +26,8 @@ export function generate(
   > = {
     group,
     experience:
-      recipeSlice.cooking.experience > 0
-        ? recipeSlice.cooking.experience
-        : undefined,
-    cookingtime:
-      recipeSlice.cooking.time > 0 ? recipeSlice.cooking.time : undefined,
+      state.cooking.experience > 0 ? state.cooking.experience : undefined,
+    cookingtime: state.cooking.time > 0 ? state.cooking.time : undefined,
 
     ingredient: input ? itemFormatter(input, false) : {},
     result: output ? output.id.raw : "",
@@ -43,7 +40,7 @@ export function generate(
     } satisfies CookingRecipe113Format;
   } else {
     return {
-      type: recipeTypeToJavaType[recipeSlice.recipeType],
+      type: recipeTypeToJavaType[state.recipeType],
       ...constantFields,
     } satisfies CookingRecipe114Format;
   }

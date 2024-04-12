@@ -1,4 +1,4 @@
-import { RecipeSliceState } from "@/store/slices/recipeSlice";
+import { SingleRecipeState } from "@/stores/recipe";
 
 import { getItemOutputFormatterForVersion } from "./shared";
 import {
@@ -11,15 +11,15 @@ import {
 } from "../types";
 
 export function generate(
-  recipeSlice: RecipeSliceState,
+  state: SingleRecipeState,
   version: MinecraftVersion,
 ): object {
   const outputFormatter = getItemOutputFormatterForVersion(version);
 
-  const templateItem = recipeSlice.slots["smithing.template"];
-  const baseItem = recipeSlice.slots["smithing.base"];
-  const additionItem = recipeSlice.slots["smithing.addition"];
-  const resultItem = recipeSlice.slots["smithing.result"];
+  const templateItem = state.slots["smithing.template"];
+  const baseItem = state.slots["smithing.base"];
+  const additionItem = state.slots["smithing.addition"];
+  const resultItem = state.slots["smithing.result"];
 
   const constantFields: Pick<SmithingRecipe, "base" | "addition"> = {
     base: baseItem ? outputFormatter(baseItem, false) : {},
@@ -31,7 +31,7 @@ export function generate(
 
   if (
     version === MinecraftVersion.V116 ||
-    recipeSlice.recipeType === RecipeType.Smithing
+    state.recipeType === RecipeType.Smithing
   ) {
     return {
       type: "minecraft:smithing",
@@ -39,7 +39,7 @@ export function generate(
       ...constantFields,
     } satisfies SmithingRecipe116Format;
   } else {
-    if (recipeSlice.recipeType === RecipeType.SmithingTrim) {
+    if (state.recipeType === RecipeType.SmithingTrim) {
       return {
         type: "minecraft:smithing_trim",
         template,

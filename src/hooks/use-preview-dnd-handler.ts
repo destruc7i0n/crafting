@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
 import { Item } from "@/data/models/types";
-import { useAppDispatch } from "@/store/hooks";
-import { RecipeSlot, setSlot } from "@/store/slices/recipeSlice";
+import { RecipeSlot } from "@/data/types";
+import { useRecipeStore } from "@/stores/recipe";
 
 export const usePreviewDndHandler = () => {
-  const dispatch = useAppDispatch();
+  const setRecipeSlot = useRecipeStore((state) => state.setRecipeSlot);
 
   useEffect(() => {
     return monitorForElements({
@@ -20,7 +20,7 @@ export const usePreviewDndHandler = () => {
         if (sourceDropTarget) {
           const { slot } = sourceDropTarget.data as { slot?: RecipeSlot };
           if (slot) {
-            dispatch(setSlot({ slot, item: undefined }));
+            setRecipeSlot(slot, undefined);
           }
         }
 
@@ -35,9 +35,9 @@ export const usePreviewDndHandler = () => {
         const { item } = source.data as { item: Item };
 
         if (slot) {
-          dispatch(setSlot({ slot, item }));
+          setRecipeSlot(slot, item);
         }
       },
     });
-  }, [dispatch]);
+  }, [setRecipeSlot]);
 };

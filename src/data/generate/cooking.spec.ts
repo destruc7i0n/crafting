@@ -1,4 +1,4 @@
-import { RecipeSliceState } from "@/store/slices/recipeSlice";
+import { SingleRecipeState } from "@/stores/recipe";
 
 import { generate } from "./cooking";
 import { MinecraftVersion, RecipeType } from "../types";
@@ -6,7 +6,7 @@ import { MinecraftVersion, RecipeType } from "../types";
 describe("generate cooking", () => {
   describe("1.13", () => {
     it("should generate a smelting recipe", () => {
-      const recipeSlice: RecipeSliceState = {
+      const recipeSlice: SingleRecipeState = {
         recipeType: RecipeType.Smelting,
         group: "",
         slots: {
@@ -50,7 +50,7 @@ describe("generate cooking", () => {
 
   describe("1.14 - 1.20", () => {
     it("should generate a smelting recipe", () => {
-      const recipeSlice: RecipeSliceState = {
+      const recipeSlice: SingleRecipeState = {
         recipeType: RecipeType.Smelting,
         group: "",
         slots: {
@@ -96,7 +96,7 @@ describe("generate cooking", () => {
     });
 
     it("should generate a campfire cooking recipe", () => {
-      const recipeSlice: RecipeSliceState = {
+      const recipeSlice: SingleRecipeState = {
         recipeType: RecipeType.CampfireCooking,
         group: "",
         slots: {
@@ -142,7 +142,7 @@ describe("generate cooking", () => {
     });
 
     it("should generate a smoking recipe", () => {
-      const recipeSlice: RecipeSliceState = {
+      const recipeSlice: SingleRecipeState = {
         recipeType: RecipeType.Smoking,
         group: "",
         slots: {
@@ -184,7 +184,7 @@ describe("generate cooking", () => {
     });
 
     it("should generate a blasting recipe", () => {
-      const recipeSlice: RecipeSliceState = {
+      const recipeSlice: SingleRecipeState = {
         recipeType: RecipeType.Blasting,
         group: "",
         slots: {

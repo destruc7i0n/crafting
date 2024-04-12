@@ -1,4 +1,4 @@
-import { RecipeSliceState } from "@/store/slices/recipeSlice";
+import { SingleRecipeState } from "@/stores/recipe";
 
 import { get112ItemOutputFormat, get113ItemOutputFormat } from "./shared";
 import { Item } from "../models/types";
@@ -125,23 +125,23 @@ function getKeyForGrid(grid: (Item | undefined)[]): {
 }
 
 export function generate(
-  recipeSlice: RecipeSliceState,
+  state: SingleRecipeState,
   version: MinecraftVersion,
 ): object {
   const grid: (Item | undefined)[] = [
-    recipeSlice.slots["crafting.1"],
-    recipeSlice.slots["crafting.2"],
-    recipeSlice.slots["crafting.3"],
-    recipeSlice.slots["crafting.4"],
-    recipeSlice.slots["crafting.5"],
-    recipeSlice.slots["crafting.6"],
-    recipeSlice.slots["crafting.7"],
-    recipeSlice.slots["crafting.8"],
-    recipeSlice.slots["crafting.9"],
+    state.slots["crafting.1"],
+    state.slots["crafting.2"],
+    state.slots["crafting.3"],
+    state.slots["crafting.4"],
+    state.slots["crafting.5"],
+    state.slots["crafting.6"],
+    state.slots["crafting.7"],
+    state.slots["crafting.8"],
+    state.slots["crafting.9"],
   ];
   const populatedSlots = grid.filter(Boolean);
 
-  const group = recipeSlice.group.length > 0 ? recipeSlice.group : undefined;
+  const group = state.group.length > 0 ? state.group : undefined;
 
   const getOutputFormat =
     version === MinecraftVersion.V112
@@ -150,8 +150,8 @@ export function generate(
 
   const { key, reverse } = getKeyForGrid(grid);
 
-  const resultItem = recipeSlice.slots["crafting.result"]
-    ? getOutputFormat(recipeSlice.slots["crafting.result"]!, true)
+  const resultItem = state.slots["crafting.result"]
+    ? getOutputFormat(state.slots["crafting.result"]!, true)
     : {};
 
   const constantFields: Pick<
@@ -163,7 +163,7 @@ export function generate(
   };
 
   if (version === MinecraftVersion.V112 || version === MinecraftVersion.V113) {
-    if (recipeSlice.crafting.shapeless) {
+    if (state.crafting.shapeless) {
       return {
         type: "crafting_shapeless",
         ingredients: populatedSlots.map((item) =>
@@ -174,7 +174,7 @@ export function generate(
     } else {
       return {
         type: "crafting_shaped",
-        pattern: getPattern(grid, reverse, recipeSlice.crafting.keepWhitespace),
+        pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
         key: Object.entries(key).reduce(
           (acc, [keyName, item]) => ({
             ...acc,
@@ -194,7 +194,7 @@ export function generate(
     version === MinecraftVersion.V119 ||
     version === MinecraftVersion.V120
   ) {
-    if (recipeSlice.crafting.shapeless) {
+    if (state.crafting.shapeless) {
       return {
         type: "minecraft:crafting_shapeless",
         ingredients: populatedSlots.map((item) =>
@@ -205,7 +205,7 @@ export function generate(
     } else {
       return {
         type: "minecraft:crafting_shaped",
-        pattern: getPattern(grid, reverse, recipeSlice.crafting.keepWhitespace),
+        pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
         key: Object.entries(key).reduce(
           (acc, [keyName, item]) => ({
             ...acc,

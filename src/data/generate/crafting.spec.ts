@@ -1,4 +1,4 @@
-import { RecipeSliceState } from "@/store/slices/recipeSlice";
+import { SingleRecipeState } from "@/stores/recipe";
 
 import { generate } from "./crafting";
 import { MinecraftVersion, RecipeType } from "../types";
@@ -7,7 +7,7 @@ describe("generate crafting", () => {
   describe("1.12", () => {
     describe("shapeless", () => {
       it("should generate a shapeless recipe", () => {
-        const recipeSlice: RecipeSliceState = {
+        const recipeSlice: SingleRecipeState = {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -66,7 +66,7 @@ describe("generate crafting", () => {
 
     describe("shaped", () => {
       it("should generate a shaped recipe without keeping whitespace", () => {
-        const recipeSlice: RecipeSliceState = {
+        const recipeSlice: SingleRecipeState = {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -167,7 +167,7 @@ describe("generate crafting", () => {
       });
 
       it("should generate a shaped recipe keeping whitespace", () => {
-        const recipeSlice: RecipeSliceState = {
+        const recipeSlice: SingleRecipeState = {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -275,7 +275,7 @@ describe("generate crafting", () => {
   describe("1.14 - 1.20", () => {
     describe("shapeless", () => {
       it("should generate a shapeless recipe", () => {
-        const recipeSlice: RecipeSliceState = {
+        const recipeSlice: SingleRecipeState = {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -332,7 +332,7 @@ describe("generate crafting", () => {
 
     describe("shaped", () => {
       it("should generate a shaped recipe without keeping whitespace", () => {
-        const recipeSlice: RecipeSliceState = {
+        const recipeSlice: SingleRecipeState = {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -427,7 +427,7 @@ describe("generate crafting", () => {
       });
 
       it("should generate a shaped recipe keeping whitespace", () => {
-        const recipeSlice: RecipeSliceState = {
+        const recipeSlice: SingleRecipeState = {
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {

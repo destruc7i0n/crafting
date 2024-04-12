@@ -1,4 +1,4 @@
-import { RecipeSliceState } from "@/store/slices/recipeSlice";
+import { SingleRecipeState } from "@/stores/recipe";
 
 import { generate } from "./smithing";
 import { MinecraftVersion, RecipeType } from "../types";
@@ -6,7 +6,7 @@ import { MinecraftVersion, RecipeType } from "../types";
 describe("generate stonecutting", () => {
   describe("1.16", () => {
     it("should generate a stonecutting recipe", () => {
-      const recipeSlice: RecipeSliceState = {
+      const recipeSlice: SingleRecipeState = {
         recipeType: RecipeType.Smithing,
         group: "",
         slots: {
@@ -69,7 +69,7 @@ describe("generate stonecutting", () => {
   describe("1.19", () => {
     describe("smithing trim", () => {
       it("should generate a smithing trim recipe", () => {
-        const recipeSlice: RecipeSliceState = {
+        const recipeSlice: SingleRecipeState = {
           recipeType: RecipeType.SmithingTrim,
           group: "",
           slots: {
@@ -131,7 +131,7 @@ describe("generate stonecutting", () => {
 
     describe("smithing transform", () => {
       it("should generate a smithing transform recipe", () => {
-        const recipeSlice: RecipeSliceState = {
+        const recipeSlice: SingleRecipeState = {
           recipeType: RecipeType.SmithingTransform,
           group: "",
           slots: {

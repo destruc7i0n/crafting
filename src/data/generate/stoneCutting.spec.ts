@@ -1,4 +1,4 @@
-import { RecipeSliceState } from "@/store/slices/recipeSlice";
+import { SingleRecipeState } from "@/stores/recipe";
 
 import { generate } from "./stoneCutting";
 import { MinecraftVersion, RecipeType } from "../types";
@@ -6,7 +6,7 @@ import { MinecraftVersion, RecipeType } from "../types";
 describe("generate stonecutting", () => {
   describe("1.14", () => {
     it("should generate a stonecutting recipe", () => {
-      const recipeSlice: RecipeSliceState = {
+      const recipeSlice: SingleRecipeState = {
         recipeType: RecipeType.StoneCutting,
         group: "",
         slots: {

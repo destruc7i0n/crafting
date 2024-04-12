@@ -1,15 +1,14 @@
 import { generate } from "@/data/generate/crafting";
-import {
-  selectMinecraftVersion,
-  selectRecipe,
-  useAppSelector,
-} from "@/store/hooks";
+import { useRecipeStore } from "@/stores/recipe";
+import { selectCurrentRecipe } from "@/stores/recipe/selectors";
+import { useSettingsStore } from "@/stores/settings";
+import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
 export const Output = () => {
-  const minecraftVersion = useAppSelector(selectMinecraftVersion);
-  const recipeSlice = useAppSelector(selectRecipe);
+  const minecraftVersion = useSettingsStore(selectMinecraftVersion);
+  const recipeState = useRecipeStore(selectCurrentRecipe);
 
-  const result = generate(recipeSlice, minecraftVersion);
+  const result = generate(recipeState, minecraftVersion);
 
   return (
     <div>

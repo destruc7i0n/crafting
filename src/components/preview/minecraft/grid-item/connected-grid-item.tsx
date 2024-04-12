@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import invariant from "tiny-invariant";
 
-import { selectRecipeSlot, useAppSelector } from "@/store/hooks";
-import { RecipeSlot } from "@/store/slices/recipeSlice";
+import { RecipeSlot } from "@/data/types";
+import { useRecipeStore } from "@/stores/recipe";
+import { selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
 
 import { GridItem } from "./grid-item";
 import { Ingredient } from "../../ingredient/ingredient";
@@ -17,7 +18,7 @@ export const ConnectedGridItem = ({ slot }: ConnectedGridItemProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
 
-  const slotValue = useAppSelector(selectRecipeSlot(slot));
+  const slotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
 
   useEffect(() => {
     const el = ref.current;

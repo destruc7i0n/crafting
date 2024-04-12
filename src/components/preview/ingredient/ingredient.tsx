@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 
-import ReactDOM from "react-dom";
-
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { centerUnderPointer } from "@atlaskit/pragmatic-drag-and-drop/element/center-under-pointer";
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unhandled";
+import ReactDOM from "react-dom";
 import invariant from "tiny-invariant";
 
 import { Item } from "@/data/models/types";
-import { selectTextureById, useAppSelector } from "@/store/hooks";
+import { useResourceTexture } from "@/hooks/use-resource-texture";
 
 import { IngredientPreview } from "./ingredient-preview";
 
@@ -22,7 +21,7 @@ export const Ingredient = ({ item, container }: IngredientProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
   const [dragging, setDragging] = useState(false);
 
-  const texture = useAppSelector(selectTextureById(item.id.raw));
+  const texture = useResourceTexture(item);
 
   useEffect(() => {
     const el = ref.current;
