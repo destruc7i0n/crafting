@@ -28,7 +28,10 @@ export const Tooltip = ({
   const [isHovering, setIsHovering] = useState(false);
   const [mouseCoords, setMouseCoords] = useState<[number, number]>([0, 0]);
 
-  const shouldShowTooltip = isHovering && visible;
+  const [mouseX, mouseY] = mouseCoords;
+  const [tooltipWidth, tooltipHeight] = tooltipDimensions;
+
+  const shouldShowTooltip = isHovering && visible && mouseY > 0;
 
   useLayoutEffect(() => {
     const el = tooltipRef.current;
@@ -47,8 +50,6 @@ export const Tooltip = ({
   );
 
   // calculate the position of the tooltip based on the mouse position
-  const [mouseX, mouseY] = mouseCoords;
-  const [tooltipWidth, tooltipHeight] = tooltipDimensions;
   let left = mouseX + TOOLTIP_OFFSET; // offset the tooltip to the right
   const top = mouseY - tooltipHeight / 2; // center the tooltip vertically
 
@@ -56,9 +57,6 @@ export const Tooltip = ({
   if (mouseX + tooltipWidth + 20 > document.body.clientWidth) {
     left = mouseX - tooltipWidth - TOOLTIP_OFFSET;
   }
-
-  // mousemove might not have been triggered yet
-  const shouldRenderTooltip = shouldShowTooltip && top > 0;
 
   return (
     <div
@@ -69,7 +67,7 @@ export const Tooltip = ({
     >
       {children}
 
-      {shouldRenderTooltip &&
+      {shouldShowTooltip &&
         createPortal(
           <TooltipDisplay
             ref={tooltipRef}
