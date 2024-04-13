@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { createPortal } from "react-dom";
 
@@ -11,6 +17,8 @@ type TooltipProps = {
   children: React.ReactNode;
 };
 
+const TOOLTIP_OFFSET = 20;
+
 export const Tooltip = ({
   title,
   description,
@@ -20,62 +28,64 @@ export const Tooltip = ({
   const ref = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
+  const [tooltipDimensions, setTooltipDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
   const [isHovering, setIsHovering] = useState(false);
-  const [tooltipCoords, setTooltipCoords] = useState<[number, number]>([0, 0]);
+  const [mouseCoords, setMouseCoords] = useState<[number, number]>([0, 0]);
 
-  const handleMouseLeave = useCallback(() => {
-    setIsHovering(false);
-    setTooltipCoords([0, 0]);
-  }, []);
+  const shouldShowTooltip = isHovering && visible;
+
+  useLayoutEffect(() => {
+    const el = tooltipRef.current;
+    if (!shouldShowTooltip || !el) return;
+
+    // calculate the width of the tooltip before render
+    const { width, height } = el.getBoundingClientRect();
+    setTooltipDimensions({ width, height });
+  }, [shouldShowTooltip]);
 
   useEffect(() => {
     const el = ref.current;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const x = e.clientX;
-      const y = e.clientY;
-
-      const tooltipEl = tooltipRef.current;
-
-      // wait for tooltip to be rendered before calculating width
-      if (tooltipEl) {
-        const width = tooltipEl.getBoundingClientRect().width;
-
-        let left = x;
-        if (x + width + 20 > document.body.clientWidth) {
-          left = x - width;
-        }
-
-        setTooltipCoords([left, y]);
-      }
+      setMouseCoords([e.clientX, e.clientY]);
     };
 
     el?.addEventListener("mousemove", handleMouseMove);
     return () => el?.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  const shouldShowTooltip =
-    isHovering && !!tooltipCoords[0] && !!tooltipCoords[1] && visible;
+  // calculate the position of the tooltip based on the mouse position
+  const [mouseX, mouseY] = mouseCoords;
+  const { width: tooltipWidth, height: tooltipHeight } = tooltipDimensions;
+  let left = mouseX + TOOLTIP_OFFSET; // offset the tooltip to the right
+  const top = mouseY - tooltipHeight / 2; // center the tooltip vertically
+
+  // if the tooltip is going off the right side of the screen, move it to the left
+  if (mouseX + tooltipWidth + 20 > document.body.clientWidth) {
+    left = mouseX - tooltipWidth - TOOLTIP_OFFSET;
+  }
 
   return (
     <div
       ref={ref}
       onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={handleMouseLeave}
+      onMouseLeave={() => setIsHovering(false)}
       onMouseOver={() => setIsHovering(true)}
     >
       {children}
 
-      {isHovering &&
+      {shouldShowTooltip &&
         createPortal(
           <TooltipDisplay
             ref={tooltipRef}
             title={title}
             description={description}
             style={{
-              visibility: shouldShowTooltip ? "visible" : "hidden",
-              top: `${tooltipCoords[1]}px`,
-              left: `${tooltipCoords[0]}px`,
+              top: `${top}px`,
+              left: `${left}px`,
             }}
           />,
           document.body,
