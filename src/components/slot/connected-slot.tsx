@@ -8,7 +8,7 @@ import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
 
 import { Slot, SlotProps } from "./slot";
-import { Ingredient } from "../ingredient/ingredient";
+import { Item } from "../item/item";
 
 type ConnectedGridItemProps = {
   slot: RecipeSlot;
@@ -38,7 +38,7 @@ export const ConnectedGridItem = ({
 
   return (
     <Slot ref={ref} hover={isDraggedOver} {...props}>
-      {slotValue && <Ingredient item={slotValue} container="preview" />}
+      {slotValue && <Item item={slotValue} container="preview" />}
     </Slot>
   );
 };

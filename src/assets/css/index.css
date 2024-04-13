@@ -57,3 +57,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@font-face {
+  font-family: "Minecraft";
+  src:
+    url("/public/fonts/Minecraft.woff") format("woff"),
+    url("/public/fonts/Minecraft.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}

@@ -8,42 +8,22 @@ import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/el
 import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unhandled";
 import invariant from "tiny-invariant";
 
-import { Item } from "@/data/models/types";
+import { Item as ItemType } from "@/data/models/types";
 import { useResourceTexture } from "@/hooks/use-resource-texture";
 
-import { IngredientPreview } from "./ingredient-preview";
-import { Tooltip } from "./tooltip/tooltip";
+import { IngredientPreview } from "./item-preview";
+import { Tooltip } from "../tooltip/tooltip";
 
 type IngredientProps = {
-  item: Item;
+  item: ItemType;
   container: "preview" | "ingredients";
 };
 
-export const Ingredient = ({ item, container }: IngredientProps) => {
+export const Item = ({ item, container }: IngredientProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
   const [dragging, setDragging] = useState(false);
 
   const texture = useResourceTexture(item);
-
-  const [tooltipOffset, setTooltipOffset] = useState<[number, number]>([0, 0]);
-
-  useEffect(() => {
-    const el = ref.current;
-
-    const onMove = (e: MouseEvent) => {
-      requestAnimationFrame(() => {
-        if (el) {
-          const x = e.offsetX;
-          const y = e.offsetY;
-
-          setTooltipOffset([x, y]);
-        }
-      });
-    };
-
-    el?.addEventListener("mousemove", onMove);
-    return () => el?.removeEventListener("mousemove", onMove);
-  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -76,7 +56,11 @@ export const Ingredient = ({ item, container }: IngredientProps) => {
   }, [texture, item, container]);
 
   return (
-    <div className="ingredient relative">
+    <Tooltip
+      title={item.displayName}
+      description={item.id.raw}
+      visible={!dragging}
+    >
       <IngredientPreview
         alt={item.displayName}
         texture={texture}
@@ -85,17 +69,6 @@ export const Ingredient = ({ item, container }: IngredientProps) => {
           opacity: dragging ? 0.5 : 1,
         }}
       />
-
-      {!dragging && (
-        <Tooltip
-          title={item.displayName}
-          description={item.id.raw}
-          style={{
-            top: tooltipOffset[1],
-            left: tooltipOffset[0],
-          }}
-        />
-      )}
-    </div>
+    </Tooltip>
   );
 };

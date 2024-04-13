@@ -1,5 +1,4 @@
 .tooltip {
-  display: none;
   text-align: left;
   position: absolute;
   top: 0;
@@ -17,10 +16,6 @@
   margin: 0.125em 0.25em;
   pointer-events: none;
   z-index: 99;
-}
-
-:global(.ingredient):hover .tooltip {
-  display: block;
 }
 
 .tooltip:before {
@@ -48,7 +43,7 @@
 }
 
 .tooltip > .tooltip-description {
-  font-size: 12px;
+  font-size: 14px;
   display: block;
   margin-top: 4px;
 }

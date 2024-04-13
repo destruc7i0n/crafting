@@ -1,6 +1,6 @@
+import { Items } from "./components/items";
 import { Layout } from "./components/layout/layout";
 import { Output } from "./components/output/output";
-import { Ingredients } from "./components/preview/ingredients";
 import { Preview } from "./components/preview/preview";
 import { useMinecraftTexturesData } from "./hooks/use-minecraft-textures-data";
 import { usePreviewDndHandler } from "./hooks/use-preview-dnd-handler";
@@ -17,7 +17,7 @@ function App() {
           <Output />
         </div>
         <div className="flex-1">
-          <Ingredients />
+          <Items />
         </div>
       </div>
     </Layout>
