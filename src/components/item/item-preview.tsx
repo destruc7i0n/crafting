@@ -7,7 +7,7 @@ type IngredientProps = {
   texture?: string;
 } & ComponentPropsWithoutRef<"img">;
 
-export const IngredientPreview = memo(
+export const ItemPreview = memo(
   forwardRef<HTMLImageElement, IngredientProps>(
     ({ texture, alt, ...props }, ref) => {
       return (
@@ -23,4 +23,4 @@ export const IngredientPreview = memo(
   ),
 );
 
-IngredientPreview.displayName = "IngredientPreview";
+ItemPreview.displayName = "ItemPreview";

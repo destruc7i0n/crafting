@@ -1,17 +1,11 @@
-import CraftingTableUI from "@/assets/ui/crafting_table.png";
-
 import { ConnectedGridItem } from "../slot/connected-slot";
 
 export const CraftingGridPreview = () => {
   return (
-    <div className="relative h-[172px] w-[352px]">
-      <img
-        src={CraftingTableUI}
-        alt="Crafting Table"
-        draggable={false}
-        className="h-full w-full select-none [image-rendering:pixelated]"
-      />
-
+    <div
+      className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
+      style={{ backgroundImage: `url(/assets/ui/crafting_table.png)` }}
+    >
       <ConnectedGridItem
         slot="crafting.1"
         style={{ position: "absolute", top: 32, left: 58 }}

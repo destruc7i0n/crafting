@@ -11,7 +11,7 @@ import invariant from "tiny-invariant";
 import { Item as ItemType } from "@/data/models/types";
 import { useResourceTexture } from "@/hooks/use-resource-texture";
 
-import { IngredientPreview } from "./item-preview";
+import { ItemPreview } from "./item-preview";
 import { Tooltip } from "../tooltip/tooltip";
 
 type IngredientProps = {
@@ -46,7 +46,7 @@ export const Item = ({ item, container }: IngredientProps) => {
         setCustomNativeDragPreview({
           getOffset: centerUnderPointer,
           render({ container }) {
-            ReactDOM.render(<IngredientPreview texture={texture} />, container);
+            ReactDOM.render(<ItemPreview texture={texture} />, container);
             return () => ReactDOM.unmountComponentAtNode(container);
           },
           nativeSetDragImage,
@@ -61,7 +61,7 @@ export const Item = ({ item, container }: IngredientProps) => {
       description={item.id.raw}
       visible={!dragging}
     >
-      <IngredientPreview
+      <ItemPreview
         alt={item.displayName}
         texture={texture}
         ref={ref}
