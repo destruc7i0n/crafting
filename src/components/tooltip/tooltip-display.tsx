@@ -1,22 +1,23 @@
-import { ComponentProps } from "react";
+import { ComponentPropsWithoutRef, forwardRef, memo } from "react";
 
 import classes from "./tooltip.module.css";
-console.log(classes);
 
 type TooltipProps = {
   title: string;
   description: string;
-} & ComponentProps<"div">;
+} & ComponentPropsWithoutRef<"div">;
 
-export const TooltipDisplay = ({
-  title,
-  description,
-  ...props
-}: TooltipProps) => {
-  return (
-    <div className={classes.tooltip} {...props}>
-      <div className={classes.tooltipTitle}>{title}</div>
-      <div className={classes.tooltipDescription}>{description}</div>
-    </div>
-  );
-};
+export const TooltipDisplay = memo(
+  forwardRef<HTMLDivElement, TooltipProps>(
+    ({ title, description, ...props }, ref) => {
+      return (
+        <div ref={ref} className={classes.tooltip} {...props}>
+          <div className={classes.tooltipTitle}>{title}</div>
+          <div className={classes.tooltipDescription}>{description}</div>
+        </div>
+      );
+    },
+  ),
+);
+
+TooltipDisplay.displayName = "TooltipDisplay";

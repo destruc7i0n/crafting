@@ -11,7 +11,7 @@ function App() {
 
   return (
     <Layout>
-      <div className="mx-auto flex max-w-screen-lg flex-row">
+      <div className="mx-auto max-w-screen-lg flex-row lg:flex">
         <div className="flex-1">
           <Preview />
           <Output />

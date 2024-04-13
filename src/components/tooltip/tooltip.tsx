@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { createPortal } from "react-dom";
 
@@ -18,25 +18,41 @@ export const Tooltip = ({
   visible = true,
 }: TooltipProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
   const [isHovering, setIsHovering] = useState(false);
   const [tooltipCoords, setTooltipCoords] = useState<[number, number]>([0, 0]);
 
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    const x = e.clientX;
+    const y = e.clientY;
+
+    const tooltipEl = tooltipRef.current;
+
+    // wait for tooltip to be rendered before calculating width
+    if (tooltipEl) {
+      const width = tooltipEl.getBoundingClientRect().width;
+
+      let left = x;
+      if (x + width + 20 > document.body.clientWidth) {
+        left = x - width;
+      }
+
+      setTooltipCoords([left, y]);
+    }
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovering(false);
+    setTooltipCoords([0, 0]);
+  }, []);
+
   useEffect(() => {
     const el = ref.current;
 
-    const onMove = (e: MouseEvent) => {
-      if (el) {
-        const x = e.clientX;
-        const y = e.clientY;
-
-        setTooltipCoords([x, y]);
-      }
-    };
-
-    el?.addEventListener("pointermove", onMove);
-    return () => el?.removeEventListener("pointermove", onMove);
-  }, []);
+    el?.addEventListener("mousemove", handleMouseMove);
+    return () => el?.removeEventListener("mousemove", handleMouseMove);
+  }, [handleMouseMove]);
 
   const shouldShowTooltip =
     isHovering && !!tooltipCoords[0] && !!tooltipCoords[1] && visible;
@@ -45,19 +61,21 @@ export const Tooltip = ({
     <div
       ref={ref}
       onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onMouseLeave={handleMouseLeave}
       onMouseOver={() => setIsHovering(true)}
     >
       {children}
 
-      {shouldShowTooltip &&
+      {isHovering &&
         createPortal(
           <TooltipDisplay
+            ref={tooltipRef}
             title={title}
             description={description}
             style={{
-              top: tooltipCoords[1],
-              left: tooltipCoords[0],
+              visibility: shouldShowTooltip ? "visible" : "hidden",
+              top: `${tooltipCoords[1]}px`,
+              left: `${tooltipCoords[0]}px`,
             }}
           />,
           document.body,

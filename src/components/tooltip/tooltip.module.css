@@ -1,8 +1,6 @@
 .tooltip {
   text-align: left;
   position: absolute;
-  top: 0;
-  left: 0;
   background-color: #100010;
   background-color: rgba(16, 0, 16, 0.94);
   color: #fff;
