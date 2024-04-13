@@ -23,25 +23,6 @@ export const Tooltip = ({
   const [isHovering, setIsHovering] = useState(false);
   const [tooltipCoords, setTooltipCoords] = useState<[number, number]>([0, 0]);
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    const x = e.clientX;
-    const y = e.clientY;
-
-    const tooltipEl = tooltipRef.current;
-
-    // wait for tooltip to be rendered before calculating width
-    if (tooltipEl) {
-      const width = tooltipEl.getBoundingClientRect().width;
-
-      let left = x;
-      if (x + width + 20 > document.body.clientWidth) {
-        left = x - width;
-      }
-
-      setTooltipCoords([left, y]);
-    }
-  }, []);
-
   const handleMouseLeave = useCallback(() => {
     setIsHovering(false);
     setTooltipCoords([0, 0]);
@@ -50,9 +31,28 @@ export const Tooltip = ({
   useEffect(() => {
     const el = ref.current;
 
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = e.clientX;
+      const y = e.clientY;
+
+      const tooltipEl = tooltipRef.current;
+
+      // wait for tooltip to be rendered before calculating width
+      if (tooltipEl) {
+        const width = tooltipEl.getBoundingClientRect().width;
+
+        let left = x;
+        if (x + width + 20 > document.body.clientWidth) {
+          left = x - width;
+        }
+
+        setTooltipCoords([left, y]);
+      }
+    };
+
     el?.addEventListener("mousemove", handleMouseMove);
     return () => el?.removeEventListener("mousemove", handleMouseMove);
-  }, [handleMouseMove]);
+  }, []);
 
   const shouldShowTooltip =
     isHovering && !!tooltipCoords[0] && !!tooltipCoords[1] && visible;
