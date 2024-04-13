@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
 import { createPortal } from "react-dom";
 
@@ -28,10 +22,9 @@ export const Tooltip = ({
   const ref = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
-  const [tooltipDimensions, setTooltipDimensions] = useState({
-    width: 0,
-    height: 0,
-  });
+  const [tooltipDimensions, setTooltipDimensions] = useState<[number, number]>([
+    0, 0,
+  ]);
   const [isHovering, setIsHovering] = useState(false);
   const [mouseCoords, setMouseCoords] = useState<[number, number]>([0, 0]);
 
@@ -43,23 +36,19 @@ export const Tooltip = ({
 
     // calculate the width of the tooltip before render
     const { width, height } = el.getBoundingClientRect();
-    setTooltipDimensions({ width, height });
+    setTooltipDimensions([width, height]);
   }, [shouldShowTooltip]);
 
-  useEffect(() => {
-    const el = ref.current;
-
-    const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = useCallback(
+    (e: Pick<MouseEvent, "clientX" | "clientY">) => {
       setMouseCoords([e.clientX, e.clientY]);
-    };
-
-    el?.addEventListener("mousemove", handleMouseMove);
-    return () => el?.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+    },
+    [],
+  );
 
   // calculate the position of the tooltip based on the mouse position
   const [mouseX, mouseY] = mouseCoords;
-  const { width: tooltipWidth, height: tooltipHeight } = tooltipDimensions;
+  const [tooltipWidth, tooltipHeight] = tooltipDimensions;
   let left = mouseX + TOOLTIP_OFFSET; // offset the tooltip to the right
   const top = mouseY - tooltipHeight / 2; // center the tooltip vertically
 
@@ -68,16 +57,19 @@ export const Tooltip = ({
     left = mouseX - tooltipWidth - TOOLTIP_OFFSET;
   }
 
+  // mousemove might not have been triggered yet
+  const shouldRenderTooltip = shouldShowTooltip && top > 0;
+
   return (
     <div
       ref={ref}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
-      onMouseOver={() => setIsHovering(true)}
+      onMouseMove={(e) => handleMouseMove(e)}
     >
       {children}
 
-      {shouldShowTooltip &&
+      {shouldRenderTooltip &&
         createPortal(
           <TooltipDisplay
             ref={tooltipRef}
