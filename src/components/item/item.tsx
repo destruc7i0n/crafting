@@ -9,7 +9,7 @@ import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unha
 import invariant from "tiny-invariant";
 
 import { Item as ItemType } from "@/data/models/types";
-import { useResourceTexture } from "@/hooks/use-resource-texture";
+import { defaultTextures } from "@/data/textures";
 
 import { ItemPreview } from "./item-preview";
 import { Tooltip } from "../tooltip/tooltip";
@@ -23,7 +23,7 @@ export const Item = ({ item, container }: IngredientProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
   const [dragging, setDragging] = useState(false);
 
-  const texture = useResourceTexture(item);
+  const texture = defaultTextures[item._version]?.[item.id.raw];
 
   useEffect(() => {
     const el = ref.current;

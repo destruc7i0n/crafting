@@ -4,6 +4,7 @@ import { TexturesType as MinecraftTexturesType } from "minecraft-textures";
 
 import { transformMinecraftTexturesItem } from "@/data/models/item/utilities";
 import { Item } from "@/data/models/types";
+import { storeGlobalTexturesVersion } from "@/data/textures";
 import { useResourcesStore } from "@/stores/resources";
 
 import { useResourcesForVersion } from "./use-resources-for-version";
@@ -35,10 +36,11 @@ export const useMinecraftTexturesData = () => {
         textures[item.id.raw] = mcTexturesItem.texture;
       }
 
+      storeGlobalTexturesVersion(version, textures);
+
       setResourceData(version, {
         items,
         itemsById,
-        textures,
       });
     };
 
