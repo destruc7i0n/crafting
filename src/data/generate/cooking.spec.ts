@@ -11,12 +11,14 @@ describe("generate cooking", () => {
         group: "",
         slots: {
           "cooking.ingredient": {
+            type: "default_item",
             id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
             displayName: "stone",
             count: 1,
             _version: MinecraftVersion.V113,
           },
           "cooking.result": {
+            type: "default_item",
             id: {
               raw: "minecraft:cobblestone",
               id: "cobblestone",
@@ -55,6 +57,7 @@ describe("generate cooking", () => {
         group: "",
         slots: {
           "cooking.ingredient": {
+            type: "default_item",
             id: {
               raw: "minecraft:porkchop",
               id: "porkchop",
@@ -65,6 +68,7 @@ describe("generate cooking", () => {
             _version: MinecraftVersion.V114,
           },
           "cooking.result": {
+            type: "default_item",
             id: {
               raw: "minecraft:cooked_porkchop",
               id: "cooked_porkchop",
@@ -101,6 +105,7 @@ describe("generate cooking", () => {
         group: "",
         slots: {
           "cooking.ingredient": {
+            type: "default_item",
             id: {
               raw: "minecraft:potato",
               id: "potato",
@@ -111,6 +116,7 @@ describe("generate cooking", () => {
             _version: MinecraftVersion.V114,
           },
           "cooking.result": {
+            type: "default_item",
             id: {
               raw: "minecraft:baked_potato",
               id: "baked_potato",
@@ -147,12 +153,14 @@ describe("generate cooking", () => {
         group: "",
         slots: {
           "cooking.ingredient": {
+            type: "default_item",
             id: { raw: "minecraft:beef", id: "beef", namespace: "minecraft" },
             displayName: "beef",
             count: 1,
             _version: MinecraftVersion.V114,
           },
           "cooking.result": {
+            type: "default_item",
             id: {
               raw: "minecraft:cooked_beef",
               id: "cooked_beef",
@@ -189,6 +197,7 @@ describe("generate cooking", () => {
         group: "",
         slots: {
           "cooking.ingredient": {
+            type: "default_item",
             id: {
               raw: "minecraft:iron_ore",
               id: "iron_ore",
@@ -199,6 +208,7 @@ describe("generate cooking", () => {
             _version: MinecraftVersion.V114,
           },
           "cooking.result": {
+            type: "default_item",
             id: {
               raw: "minecraft:iron_ingot",
               id: "iron_ingot",

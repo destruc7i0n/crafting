@@ -11,6 +11,7 @@ describe("generate stonecutting", () => {
         group: "",
         slots: {
           "smithing.base": {
+            type: "default_item",
             id: {
               raw: "minecraft:diamond_sword",
               id: "diamond_sword",
@@ -21,6 +22,7 @@ describe("generate stonecutting", () => {
             _version: MinecraftVersion.V116,
           },
           "smithing.addition": {
+            type: "default_item",
             id: {
               raw: "minecraft:netherite_ingot",
               id: "netherite_ingot",
@@ -31,6 +33,7 @@ describe("generate stonecutting", () => {
             _version: MinecraftVersion.V116,
           },
           "smithing.result": {
+            type: "default_item",
             id: {
               raw: "minecraft:netherite_sword",
               id: "netherite_sword",
@@ -74,6 +77,7 @@ describe("generate stonecutting", () => {
           group: "",
           slots: {
             "smithing.template": {
+              type: "default_item",
               id: {
                 raw: "minecraft:netherite_upgrade_smithing_template",
                 id: "netherite_upgrade_smithing_template",
@@ -84,6 +88,7 @@ describe("generate stonecutting", () => {
               _version: MinecraftVersion.V119,
             },
             "smithing.base": {
+              type: "default_item",
               id: {
                 raw: "minecraft:diamond_sword",
                 id: "diamond_sword",
@@ -94,6 +99,7 @@ describe("generate stonecutting", () => {
               _version: MinecraftVersion.V119,
             },
             "smithing.addition": {
+              type: "default_item",
               id: {
                 raw: "minecraft:netherite_ingot",
                 id: "netherite_ingot",
@@ -136,6 +142,7 @@ describe("generate stonecutting", () => {
           group: "",
           slots: {
             "smithing.template": {
+              type: "default_item",
               id: {
                 raw: "minecraft:netherite_upgrade_smithing_template",
                 id: "netherite_upgrade_smithing_template",
@@ -146,6 +153,7 @@ describe("generate stonecutting", () => {
               _version: MinecraftVersion.V119,
             },
             "smithing.base": {
+              type: "default_item",
               id: {
                 raw: "minecraft:diamond_sword",
                 id: "diamond_sword",
@@ -156,6 +164,7 @@ describe("generate stonecutting", () => {
               _version: MinecraftVersion.V119,
             },
             "smithing.addition": {
+              type: "default_item",
               id: {
                 raw: "minecraft:netherite_ingot",
                 id: "netherite_ingot",
@@ -166,6 +175,7 @@ describe("generate stonecutting", () => {
               _version: MinecraftVersion.V119,
             },
             "smithing.result": {
+              type: "default_item",
               id: {
                 raw: "minecraft:netherite_sword",
                 id: "netherite_sword",

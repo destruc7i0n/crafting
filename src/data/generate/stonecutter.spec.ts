@@ -11,12 +11,14 @@ describe("generate stonecutting", () => {
         group: "",
         slots: {
           "stonecutter.ingredient": {
+            type: "default_item",
             id: { raw: "minecraft:stone", id: "", namespace: "minecraft" },
             displayName: "stone",
             count: 1,
             _version: MinecraftVersion.V114,
           },
           "stonecutter.result": {
+            type: "default_item",
             id: {
               raw: "minecraft:cobblestone",
               id: "",

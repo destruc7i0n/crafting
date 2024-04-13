@@ -8,9 +8,18 @@ export interface MinecraftIdentifier {
   data?: number;
 }
 
-export interface Item {
+export interface BaseItem {
   id: MinecraftIdentifier;
   displayName: string;
   count?: number;
   _version: MinecraftVersion;
+}
+
+export interface Item extends BaseItem {
+  type: "default_item";
+}
+
+export interface CustomItem extends BaseItem {
+  type: "custom_item";
+  texture: string;
 }

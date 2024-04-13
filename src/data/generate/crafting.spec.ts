@@ -12,6 +12,7 @@ describe("generate crafting", () => {
           group: "",
           slots: {
             "crafting.1": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -23,6 +24,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.2": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -34,6 +36,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.result": {
+              type: "default_item",
               id: {
                 raw: "cobblestone",
                 id: "cobblestone",
@@ -71,6 +74,7 @@ describe("generate crafting", () => {
           group: "",
           slots: {
             "crafting.1": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -82,6 +86,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.2": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -93,6 +98,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.4": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -104,6 +110,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.5": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -115,6 +122,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.7": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -126,6 +134,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.8": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -137,6 +146,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.result": {
+              type: "default_item",
               id: {
                 raw: "cobblestone",
                 id: "cobblestone",
@@ -172,6 +182,7 @@ describe("generate crafting", () => {
           group: "",
           slots: {
             "crafting.1": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -183,6 +194,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.2": {
+              type: "default_item",
               id: {
                 raw: "paper:1",
                 id: "paper",
@@ -194,6 +206,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.4": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -205,6 +218,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.5": {
+              type: "default_item",
               id: {
                 raw: "iron_ingot:1",
                 id: "iron_ingot",
@@ -216,6 +230,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.7": {
+              type: "default_item",
               id: {
                 raw: "stone:1",
                 id: "stone",
@@ -227,6 +242,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.8": {
+              type: "default_item",
               id: {
                 raw: "stick:1",
                 id: "stick",
@@ -238,6 +254,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V112,
             },
             "crafting.result": {
+              type: "default_item",
               id: {
                 raw: "cobblestone",
                 id: "cobblestone",
@@ -280,6 +297,7 @@ describe("generate crafting", () => {
           group: "",
           slots: {
             "crafting.1": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "",
@@ -290,6 +308,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.2": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "",
@@ -300,6 +319,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.result": {
+              type: "default_item",
               id: {
                 raw: "minecraft:cobblestone",
                 id: "",
@@ -337,6 +357,7 @@ describe("generate crafting", () => {
           group: "",
           slots: {
             "crafting.1": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "stone",
@@ -347,6 +368,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.2": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "stone",
@@ -357,6 +379,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.4": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "stone",
@@ -367,6 +390,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.5": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "stone",
@@ -377,6 +401,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.7": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "stone",
@@ -387,6 +412,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.8": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "stone",
@@ -397,6 +423,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.result": {
+              type: "default_item",
               id: {
                 raw: "minecraft:cobblestone",
                 id: "cobblestone",
@@ -432,6 +459,7 @@ describe("generate crafting", () => {
           group: "",
           slots: {
             "crafting.1": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "stone",
@@ -442,6 +470,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.2": {
+              type: "default_item",
               id: {
                 raw: "minecraft:paper",
                 id: "paper",
@@ -452,6 +481,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.4": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "stone",
@@ -462,6 +492,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.5": {
+              type: "default_item",
               id: {
                 raw: "minecraft:iron_ingot",
                 id: "iron_ingot",
@@ -472,6 +503,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.7": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stone",
                 id: "stone",
@@ -482,6 +514,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.8": {
+              type: "default_item",
               id: {
                 raw: "minecraft:stick",
                 id: "stick",
@@ -492,6 +525,7 @@ describe("generate crafting", () => {
               _version: MinecraftVersion.V114,
             },
             "crafting.result": {
+              type: "default_item",
               id: {
                 raw: "minecraft:cobblestone",
                 id: "cobblestone",
