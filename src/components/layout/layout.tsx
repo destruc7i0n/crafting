@@ -4,12 +4,14 @@ type LayoutProps = { children: React.ReactNode };
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex flex-col">
-      <div className="flex min-h-screen flex-col">
+    <>
+      <div className="flex flex-col lg:h-screen">
         <Header />
-        <main className="flex-1 flex-col">{children}</main>
+        <main className="mx-auto w-full max-w-screen-lg flex-1 gap-4 p-4 lg:flex lg:overflow-hidden">
+          {children}
+        </main>
       </div>
       Test
-    </div>
+    </>
   );
 }

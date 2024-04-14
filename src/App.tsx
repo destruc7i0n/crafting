@@ -1,4 +1,5 @@
-import { Items } from "./components/items";
+import { RecipeTypeSelector } from "./components/fields/recipe-type-selector";
+import { ItemsList } from "./components/items-list/items-list";
 import { Layout } from "./components/layout/layout";
 import { Output } from "./components/output/output";
 import { Preview } from "./components/preview/preview";
@@ -11,14 +12,15 @@ function App() {
 
   return (
     <Layout>
-      <div className="mx-auto max-w-screen-lg flex-row lg:flex">
-        <div className="flex-1">
+      <div className="flex w-full flex-col">
+        <Output />
+      </div>
+      <div className="flex w-full flex-col items-center gap-4">
+        <div className="flex w-full flex-col items-center gap-4 rounded-md border p-4 shadow">
+          <RecipeTypeSelector />
           <Preview />
-          <Output />
         </div>
-        <div className="flex-1">
-          <Items />
-        </div>
+        <ItemsList />
       </div>
     </Layout>
   );
