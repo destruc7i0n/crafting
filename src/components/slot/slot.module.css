@@ -1,25 +1,20 @@
 .slot {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-width: 2px;
+  @apply relative flex items-center justify-center border-2;
   border-color: #373737 #ffffff #ffffff #373737;
-  background-color: #8b8b8b;
+  background-color: hsl(var(--minecraft-slot-bg));
 }
 
 .slot:hover,
 .active {
-  background-color: rgba(255, 255, 255, 0.4);
+  @apply bg-white/40;
 }
 
 .slot:before,
 .slot:after {
-  background-color: #8b8b8b;
+  background-color: hsl(var(--minecraft-slot-bg));
+  @apply pointer-events-none absolute;
   content: "";
   height: 2px;
-  pointer-events: none;
-  position: absolute;
   width: 2px;
 }
 

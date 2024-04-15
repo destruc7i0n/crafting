@@ -8,5 +8,7 @@ type JsonOutputProps = {
 };
 
 export const JsonOutput = ({ json }: JsonOutputProps) => {
-  return <Refractor language="json" value={json} />;
+  return (
+    <Refractor language="json" value={json} className="!m-0 overflow-x-auto" />
+  );
 };
