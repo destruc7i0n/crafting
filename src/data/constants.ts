@@ -31,6 +31,18 @@ export const recipeTypeToJavaType: Record<RecipeType, string> = {
   [RecipeType.SmithingTransform]: "minecraft:smithing_transform",
 };
 
+export const recipeTypeToName: Record<RecipeType, string> = {
+  [RecipeType.Crafting]: "Crafting",
+  [RecipeType.Smelting]: "Smelting",
+  [RecipeType.CampfireCooking]: "Campfire Cooking",
+  [RecipeType.Blasting]: "Blasting",
+  [RecipeType.Smoking]: "Smoking",
+  [RecipeType.Stonecutter]: "Stonecutting",
+  [RecipeType.Smithing]: "Smithing",
+  [RecipeType.SmithingTrim]: "Smithing Trim",
+  [RecipeType.SmithingTransform]: "Smithing Transform",
+};
+
 // 1.12:
 // [
 //   "crafting_shaped",

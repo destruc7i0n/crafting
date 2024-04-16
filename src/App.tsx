@@ -13,7 +13,7 @@ function App() {
 
   return (
     <Layout>
-      <div className="mx-auto grid h-full w-full max-w-screen-lg grid-cols-1 gap-4 overflow-y-hidden p-4 [grid-template-areas:'options''preview''items''left'] lg:grid-cols-2 lg:grid-rows-[auto_auto_minmax(0,1fr)] lg:[grid-template-areas:'options_options''left_preview''left_items']">
+      <div className="mx-auto grid h-full w-full max-w-screen-lg grid-cols-1 gap-4 p-4 [grid-template-areas:'options''preview''items''left'] lg:grid-cols-2 lg:grid-rows-[auto_auto_minmax(0,1fr)] lg:[grid-template-areas:'options_options''left_preview''left_items']">
         <div className="col-span-2 flex items-center justify-between rounded-md border p-2 [grid-area:options]">
           Test
           <VersionSelector />

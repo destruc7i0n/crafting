@@ -1,0 +1,5 @@
+export const Footer = () => (
+  <footer className="mx-auto flex w-full max-w-screen-lg items-center justify-center bg-background p-4 pb-8">
+    By destruc7i0n
+  </footer>
+);

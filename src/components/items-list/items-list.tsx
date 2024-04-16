@@ -19,7 +19,7 @@ export const ItemsList = () => {
     : resources.items;
 
   return (
-    <div className="flex max-h-[700px] w-full flex-1 flex-col gap-2 rounded-md border p-2 shadow lg:max-h-none">
+    <div className="flex max-h-[768px] w-full flex-1 flex-col gap-2 rounded-md border p-2 shadow">
       <input
         type="text"
         className="focus:shadow-outline w-full appearance-none rounded-md border px-3 py-2 text-sm leading-tight text-gray-700 focus:outline-none"

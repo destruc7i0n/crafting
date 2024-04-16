@@ -1,10 +1,18 @@
+import { recipeTypeToName } from "@/data/constants";
 import { RecipeType } from "@/data/types";
+import { getSupportedRecipeTypesForVersion } from "@/data/versions";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
+import { useSettingsStore } from "@/stores/settings";
+import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
 export const RecipeTypeSelector = () => {
+  const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const recipeType = useRecipeStore(selectCurrentRecipeType);
   const setRecipeType = useRecipeStore((state) => state.setRecipeType);
+
+  const supportedRecipeTypes =
+    getSupportedRecipeTypesForVersion(minecraftVersion);
 
   return (
     <select
@@ -12,14 +20,11 @@ export const RecipeTypeSelector = () => {
       onChange={(e) => setRecipeType(e.target.value as RecipeType)}
       value={recipeType}
     >
-      <option value={RecipeType.Crafting}>Crafting</option>
-      <option value={RecipeType.Smelting}>Smelting</option>
-      <option value={RecipeType.Blasting}>Blasting</option>
-      <option value={RecipeType.CampfireCooking}>Campfire Cooking</option>
-      <option value={RecipeType.Smithing}>Smithing</option>
-      <option value={RecipeType.SmithingTransform}>Smithing Transform</option>
-      <option value={RecipeType.SmithingTrim}>Smithing Trim</option>
-      <option value={RecipeType.Stonecutter}>Stonecutter</option>
+      {supportedRecipeTypes.map((type) => (
+        <option key={type} value={type}>
+          {recipeTypeToName[type]}
+        </option>
+      ))}
     </select>
   );
 };
