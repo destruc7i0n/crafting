@@ -11,6 +11,7 @@ export interface MinecraftIdentifier {
 export interface BaseItem {
   id: MinecraftIdentifier;
   displayName: string;
+  texture: string;
   count?: number;
   _version: MinecraftVersion;
 }
@@ -21,5 +22,4 @@ export interface Item extends BaseItem {
 
 export interface CustomItem extends BaseItem {
   type: "custom_item";
-  texture: string;
 }

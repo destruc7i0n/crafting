@@ -9,7 +9,6 @@ import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unha
 import invariant from "tiny-invariant";
 
 import { Item as ItemType } from "@/data/models/types";
-import { defaultTextures } from "@/data/textures";
 
 import { ItemPreview } from "./item-preview";
 import { Tooltip } from "../tooltip/tooltip";
@@ -22,8 +21,6 @@ type IngredientProps = {
 export const Item = ({ item, container }: IngredientProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
   const [dragging, setDragging] = useState(false);
-
-  const texture = defaultTextures[item._version]?.[item.id.raw];
 
   useEffect(() => {
     const el = ref.current;
@@ -46,14 +43,14 @@ export const Item = ({ item, container }: IngredientProps) => {
         setCustomNativeDragPreview({
           getOffset: centerUnderPointer,
           render({ container }) {
-            ReactDOM.render(<ItemPreview texture={texture} />, container);
+            ReactDOM.render(<ItemPreview texture={item.texture} />, container);
             return () => ReactDOM.unmountComponentAtNode(container);
           },
           nativeSetDragImage,
         });
       },
     });
-  }, [texture, item, container]);
+  }, [item, container]);
 
   return (
     <Tooltip
@@ -63,11 +60,12 @@ export const Item = ({ item, container }: IngredientProps) => {
     >
       <ItemPreview
         alt={item.displayName}
-        texture={texture}
+        texture={item.texture}
         ref={ref}
         style={{
           opacity: dragging ? 0.5 : 1,
         }}
+        className="cursor-move"
       />
     </Tooltip>
   );

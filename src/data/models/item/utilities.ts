@@ -13,6 +13,7 @@ export function transformMinecraftTexturesItem(
     type: "default_item",
     id: parseStringToMinecraftIdentifier(item.id),
     displayName: item.readable,
+    texture: item.texture,
     _version: version,
   };
 }
@@ -23,6 +24,7 @@ export function cloneItem(item: Item | CustomItem): Item | CustomItem {
   const baseItem: BaseItem = {
     id: { ...item.id },
     displayName: item.displayName,
+    texture: item.texture,
     count: item.count,
     _version: item._version,
   };
