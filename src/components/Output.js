@@ -75,6 +75,7 @@ class Output extends Component {
     let bedrockRecipeType
 
     const isAfter120 = minecraftVersion === 'bedrock' || compareMinecraftVersions(minecraftVersion, '1.20') <= 0
+    const isAfter121 = minecraftVersion === 'bedrock' || compareMinecraftVersions(minecraftVersion, '1.21') <= 0
     let bedrockFormatVersion = '1.12'
 
     switch (tab) {
@@ -158,6 +159,15 @@ class Output extends Component {
 
     if (json && json.result && json.result.item && ![CraftingType.SMITHING].includes(tab)) {
       json.result.count = output.count
+    }
+
+    if (isAfter121 && json.result && json.result.item && !isBedrock) {
+      const itemId = json.result.item
+      delete json.result.item
+      json.result = {
+        id: itemId,
+        ...json.result
+      }
     }
 
     // remove the prefix for 1.13

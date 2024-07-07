@@ -174,7 +174,7 @@ class Options extends Component {
             value={minecraftVersion}
             onChange={this.setMinecraftVersion}
           >
-            <option value='bedrock' key='bedrock'>Bedrock 1.20</option>
+            <option value='bedrock' key='bedrock'>Bedrock 1.21</option>
             {sortedVersions.map(v => {
               if (v.toString() !== '1.12') {
                 return (<option value={v} key={v}>Java {v}</option>)
