@@ -1,15 +1,20 @@
 // Output item types
 
-export interface OutputItem {
+export interface OutputItem112 {
   item: string;
   count?: number;
 }
 
-export interface OutputItemWithData extends OutputItem {
+export interface OutputItem112WithData extends OutputItem112 {
   data?: number;
 }
 
-export interface ItemWithComponents extends OutputItem {
+export interface OutputItem121 {
+  id: string;
+  count?: number;
+}
+
+export interface ItemWithComponents extends OutputItem121 {
   components: unknown[];
 }
 
@@ -77,36 +82,46 @@ export interface Shaped112RecipeFormat {
   type: string;
   group?: string;
   pattern: string[];
-  key: Record<string, { item: OutputItemWithData }>;
-  result: OrEmpty<OutputItemWithData>;
+  key: Record<string, { item: OutputItem112WithData }>;
+  result: OrEmpty<OutputItem112WithData>;
 }
 
 export interface Shapeless112RecipeFormat {
   type: string;
   group?: string;
-  ingredients: OutputItemWithData[];
-  result: OrEmpty<OutputItemWithData>;
+  ingredients: OutputItem112WithData[];
+  result: OrEmpty<OutputItem112WithData>;
 }
 
 export interface Shaped114RecipeFormat {
   type: string;
   group?: string;
   pattern: string[];
-  key: Record<string, { item: OutputItem }>;
-  result: OrEmpty<OutputItem>;
+  key: Record<string, { item: OutputItem112 }>;
+  result: OrEmpty<OutputItem112>;
 }
 
 export interface Shapeless114RecipeFormat {
   type: string;
   group?: string;
-  ingredients: OutputItem[];
-  result: OrEmpty<OutputItem>;
+  ingredients: OutputItem112[];
+  result: OrEmpty<OutputItem112>;
 }
 
-export type ShapedRecipe = Shaped112RecipeFormat | Shaped114RecipeFormat;
-export type ShapelessRecipe =
-  | Shapeless112RecipeFormat
-  | Shapeless114RecipeFormat;
+export interface Shaped121RecipeFormat {
+  type: string;
+  group?: string;
+  pattern: string[];
+  key: Record<string, { item: OutputItem112 }>;
+  result: OrEmpty<OutputItem121>;
+}
+
+export interface Shapeless121RecipeFormat {
+  type: string;
+  group?: string;
+  ingredients: OutputItem112[];
+  result: OrEmpty<OutputItem121>;
+}
 
 //// COOKING RECIPE FORMATS ////
 
@@ -115,7 +130,7 @@ export interface CookingRecipe113Format {
   group?: string;
   experience?: number;
   cookingtime?: number;
-  ingredient: OrEmpty<OutputItemWithData>;
+  ingredient: OrEmpty<OutputItem112WithData>;
   result: string;
 }
 
@@ -124,47 +139,71 @@ export interface CookingRecipe114Format {
   group?: string;
   experience?: number;
   cookingtime?: number;
-  ingredient: OrEmpty<OutputItem>;
+  ingredient: OrEmpty<OutputItem112>;
   result: string;
 }
 
-export type CookingRecipe = CookingRecipe113Format | CookingRecipe114Format;
+export interface CookingRecipe121Format {
+  type: string;
+  group?: string;
+  experience?: number;
+  cookingtime?: number;
+  ingredient: OrEmpty<OutputItem112>;
+  result: OrEmpty<OutputItem121>;
+}
 
 //// STONECUTTING RECIPE FORMATS ////
 
 export interface StonecuttingRecipe114Format {
   type: string;
   group?: string;
-  ingredient: OrEmpty<OutputItem>;
+  ingredient: OrEmpty<OutputItem112>;
   result: string;
   count: number;
+}
+
+export interface StonecuttingRecipe121Format {
+  type: string;
+  group?: string;
+  ingredient: OrEmpty<OutputItem112>;
+  result: OrEmpty<OutputItem121>;
 }
 
 //// SMITHING RECIPE FORMATS ////
 
 export interface SmithingRecipe116Format {
   type: string;
-  base: OrEmpty<OutputItem>;
-  addition: OrEmpty<OutputItem>;
-  result: OrEmpty<OutputItem>;
+  base: OrEmpty<OutputItem112>;
+  addition: OrEmpty<OutputItem112>;
+  result: OrEmpty<OutputItem112>;
 }
 
 export interface SmithingRecipeTrim119Format {
   type: string;
-  template: OrEmpty<OutputItem>;
-  base: OrEmpty<OutputItem>;
-  addition: OrEmpty<OutputItem>;
+  template: OrEmpty<OutputItem112>;
+  base: OrEmpty<OutputItem112>;
+  addition: OrEmpty<OutputItem112>;
+}
+
+export interface SmithingRecipeTrim121Format {
+  type: string;
+  template: OrEmpty<OutputItem112>;
+  base: OrEmpty<OutputItem112>;
+  addition: OrEmpty<OutputItem121>;
 }
 
 export interface SmithingRecipeTransform119Format {
   type: string;
-  template: OrEmpty<OutputItem>;
-  base: OrEmpty<OutputItem>;
-  addition: OrEmpty<OutputItem>;
-  result: OrEmpty<OutputItem>;
+  template: OrEmpty<OutputItem112>;
+  base: OrEmpty<OutputItem112>;
+  addition: OrEmpty<OutputItem112>;
+  result: OrEmpty<OutputItem112>;
 }
 
-export type SmithingRecipe =
-  | SmithingRecipe116Format
-  | SmithingRecipeTrim119Format
-  | SmithingRecipeTransform119Format;
+export interface SmithingRecipeTransform121Format {
+  type: string;
+  template: OrEmpty<OutputItem112>;
+  base: OrEmpty<OutputItem112>;
+  addition: OrEmpty<OutputItem112>;
+  result: OrEmpty<OutputItem121>;
+}

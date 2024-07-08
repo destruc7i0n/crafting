@@ -1,16 +1,15 @@
 .tooltip {
+  @apply font-minecraft;
   text-align: left;
   position: fixed;
   background-color: #100010;
   background-color: rgba(16, 0, 16, 0.94);
   color: #fff;
   padding: 0.375em;
-  font-family: Minecraft, sans-serif;
   font-size: 16px;
   word-spacing: 4px;
   white-space: nowrap;
   line-height: 1.25em;
-  text-shadow: 0.125em 0.125em 0 #3f3f3f;
   margin: 0.125em 0.25em;
   pointer-events: none;
   z-index: 99;
@@ -41,7 +40,8 @@
 }
 
 .tooltip > .tooltip-description {
-  font-size: 14px;
+  font-size: 16px;
+  color: #555555;
   display: block;
-  margin-top: 4px;
+  margin-top: 2px;
 }

@@ -21,6 +21,7 @@ export const SmithingPreview = () => {
 
       <ConnectedGridItem
         slot="smithing.result"
+        showCount
         style={{ position: "absolute", bottom: 42, left: 194 }}
       />
     </div>

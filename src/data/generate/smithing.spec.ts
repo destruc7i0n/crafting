@@ -3,9 +3,9 @@ import { SingleRecipeState } from "@/stores/recipe";
 import { generate } from "./smithing";
 import { MinecraftVersion, RecipeType } from "../types";
 
-describe("generate stonecutting", () => {
+describe("generate smithing", () => {
   describe("1.16", () => {
-    it("should generate a stonecutting recipe", () => {
+    it("should generate a smithing recipe", () => {
       const recipeSlice: SingleRecipeState = {
         recipeType: RecipeType.Smithing,
         group: "",
@@ -18,6 +18,7 @@ describe("generate stonecutting", () => {
               namespace: "minecraft",
             },
             displayName: "diamond_sword",
+            texture: "",
             count: 1,
             _version: MinecraftVersion.V116,
           },
@@ -29,6 +30,7 @@ describe("generate stonecutting", () => {
               namespace: "minecraft",
             },
             displayName: "netherite_ingot",
+            texture: "",
             count: 1,
             _version: MinecraftVersion.V116,
           },
@@ -40,6 +42,7 @@ describe("generate stonecutting", () => {
               namespace: "minecraft",
             },
             displayName: "netherite_sword",
+            texture: "",
             count: 1,
             _version: MinecraftVersion.V116,
           },
@@ -54,7 +57,7 @@ describe("generate stonecutting", () => {
         },
       };
 
-      expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+      expect(generate(recipeSlice, MinecraftVersion.V116)).toEqual({
         type: "minecraft:smithing",
         base: {
           item: "minecraft:diamond_sword",
@@ -84,6 +87,7 @@ describe("generate stonecutting", () => {
                 namespace: "minecraft",
               },
               displayName: "netherite_upgrade_smithing_template",
+              texture: "",
               count: 1,
               _version: MinecraftVersion.V119,
             },
@@ -95,6 +99,7 @@ describe("generate stonecutting", () => {
                 namespace: "minecraft",
               },
               displayName: "diamond_sword",
+              texture: "",
               count: 1,
               _version: MinecraftVersion.V119,
             },
@@ -106,6 +111,7 @@ describe("generate stonecutting", () => {
                 namespace: "minecraft",
               },
               displayName: "netherite_ingot",
+              texture: "",
               count: 1,
               _version: MinecraftVersion.V119,
             },
@@ -149,6 +155,7 @@ describe("generate stonecutting", () => {
                 namespace: "minecraft",
               },
               displayName: "netherite_upgrade_smithing_template",
+              texture: "",
               count: 1,
               _version: MinecraftVersion.V119,
             },
@@ -160,6 +167,7 @@ describe("generate stonecutting", () => {
                 namespace: "minecraft",
               },
               displayName: "diamond_sword",
+              texture: "",
               count: 1,
               _version: MinecraftVersion.V119,
             },
@@ -171,6 +179,7 @@ describe("generate stonecutting", () => {
                 namespace: "minecraft",
               },
               displayName: "netherite_ingot",
+              texture: "",
               count: 1,
               _version: MinecraftVersion.V119,
             },
@@ -182,6 +191,7 @@ describe("generate stonecutting", () => {
                 namespace: "minecraft",
               },
               displayName: "netherite_sword",
+              texture: "",
               count: 1,
               _version: MinecraftVersion.V119,
             },

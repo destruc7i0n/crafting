@@ -10,15 +10,17 @@ import invariant from "tiny-invariant";
 
 import { Item as ItemType } from "@/data/models/types";
 
+import { ItemCount } from "./item-count";
 import { ItemPreview } from "./item-preview";
 import { Tooltip } from "../tooltip/tooltip";
 
 type IngredientProps = {
   item: ItemType;
+  showCount?: boolean;
   container: "preview" | "ingredients";
 };
 
-export const Item = ({ item, container }: IngredientProps) => {
+export const Item = ({ item, container, showCount }: IngredientProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -67,6 +69,7 @@ export const Item = ({ item, container }: IngredientProps) => {
         }}
         className="cursor-move"
       />
+      {showCount && <ItemCount count={item.count ?? 1} />}
     </Tooltip>
   );
 };

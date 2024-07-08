@@ -1,8 +1,16 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
-import { get112ItemOutputFormat, get113ItemOutputFormat } from "./shared";
+import {
+  get112ItemOutputFormat,
+  get113ItemOutputFormat,
+  get121ItemOutputFormat,
+} from "./shared";
 import { Item } from "../models/types";
-import { MinecraftVersion, ShapedRecipe, ShapelessRecipe } from "../types";
+import {
+  MinecraftVersion,
+  Shaped121RecipeFormat,
+  Shapeless121RecipeFormat,
+} from "../types";
 import {
   Shaped112RecipeFormat,
   Shaped114RecipeFormat,
@@ -143,81 +151,106 @@ export function generate(
 
   const group = state.group.length > 0 ? state.group : undefined;
 
-  const getOutputFormat =
-    version === MinecraftVersion.V112
-      ? get112ItemOutputFormat
-      : get113ItemOutputFormat;
-
   const { key, reverse } = getKeyForGrid(grid);
 
-  const resultItem = state.slots["crafting.result"]
-    ? getOutputFormat(state.slots["crafting.result"]!, true)
-    : {};
+  const hasResult = state.slots["crafting.result"] !== undefined;
 
-  const constantFields: Pick<
-    ShapedRecipe | ShapelessRecipe,
-    "group" | "result"
-  > = {
-    group,
-    result: resultItem,
-  };
-
-  if (version === MinecraftVersion.V112 || version === MinecraftVersion.V113) {
-    if (state.crafting.shapeless) {
-      return {
-        type: "crafting_shapeless",
-        ingredients: populatedSlots.map((item) =>
-          getOutputFormat(item!, false),
-        ),
-        ...constantFields,
-      } satisfies Shapeless112RecipeFormat;
-    } else {
-      return {
-        type: "crafting_shaped",
-        pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
-        key: Object.entries(key).reduce(
-          (acc, [keyName, item]) => ({
-            ...acc,
-            [keyName]: getOutputFormat(item, false),
-          }),
-          {},
-        ),
-        ...constantFields,
-      } satisfies Shaped112RecipeFormat;
-    }
-  } else if (
-    version === MinecraftVersion.V114 ||
-    version === MinecraftVersion.V115 ||
-    version === MinecraftVersion.V116 ||
-    version === MinecraftVersion.V117 ||
-    version === MinecraftVersion.V118 ||
-    version === MinecraftVersion.V119 ||
-    version === MinecraftVersion.V120
-  ) {
-    if (state.crafting.shapeless) {
-      return {
-        type: "minecraft:crafting_shapeless",
-        ingredients: populatedSlots.map((item) =>
-          get113ItemOutputFormat(item!, false),
-        ),
-        ...constantFields,
-      } satisfies Shapeless114RecipeFormat;
-    } else {
-      return {
-        type: "minecraft:crafting_shaped",
-        pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
-        key: Object.entries(key).reduce(
-          (acc, [keyName, item]) => ({
-            ...acc,
-            [keyName]: get113ItemOutputFormat(item, false),
-          }),
-          {},
-        ),
-        ...constantFields,
-      } satisfies Shaped114RecipeFormat;
-    }
-  } else {
-    // TODO
-    return {};
+  switch (version) {
+    case MinecraftVersion.V112:
+    case MinecraftVersion.V113:
+      if (state.crafting.shapeless) {
+        return {
+          type: "crafting_shapeless",
+          ingredients: populatedSlots.map((item) =>
+            get112ItemOutputFormat(item!, false),
+          ),
+          group,
+          result: hasResult
+            ? get112ItemOutputFormat(state.slots["crafting.result"]!, true)
+            : {},
+        } satisfies Shapeless112RecipeFormat;
+      } else {
+        return {
+          type: "crafting_shaped",
+          pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
+          key: Object.entries(key).reduce(
+            (acc, [keyName, item]) => ({
+              ...acc,
+              [keyName]: get112ItemOutputFormat(item, false),
+            }),
+            {},
+          ),
+          group,
+          result: hasResult
+            ? get112ItemOutputFormat(state.slots["crafting.result"]!, true)
+            : {},
+        } satisfies Shaped112RecipeFormat;
+      }
+    case MinecraftVersion.V114:
+    case MinecraftVersion.V115:
+    case MinecraftVersion.V116:
+    case MinecraftVersion.V117:
+    case MinecraftVersion.V118:
+    case MinecraftVersion.V119:
+    case MinecraftVersion.V120:
+      if (state.crafting.shapeless) {
+        return {
+          type: "minecraft:crafting_shapeless",
+          ingredients: populatedSlots.map((item) =>
+            get113ItemOutputFormat(item!, false),
+          ),
+          group,
+          result: hasResult
+            ? get113ItemOutputFormat(state.slots["crafting.result"]!, true)
+            : {},
+        } satisfies Shapeless114RecipeFormat;
+      } else {
+        return {
+          type: "minecraft:crafting_shaped",
+          pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
+          key: Object.entries(key).reduce(
+            (acc, [keyName, item]) => ({
+              ...acc,
+              [keyName]: get113ItemOutputFormat(item, false),
+            }),
+            {},
+          ),
+          group,
+          result: hasResult
+            ? get113ItemOutputFormat(state.slots["crafting.result"]!, true)
+            : {},
+        } satisfies Shaped114RecipeFormat;
+      }
+    case MinecraftVersion.V121:
+      if (state.crafting.shapeless) {
+        return {
+          type: "minecraft:crafting_shapeless",
+          ingredients: populatedSlots.map((item) =>
+            get113ItemOutputFormat(item!, false),
+          ),
+          group,
+          result: hasResult
+            ? get121ItemOutputFormat(state.slots["crafting.result"]!, false)
+            : {},
+        } satisfies Shapeless121RecipeFormat;
+      } else {
+        return {
+          type: "minecraft:crafting_shaped",
+          pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
+          key: Object.entries(key).reduce(
+            (acc, [keyName, item]) => ({
+              ...acc,
+              [keyName]: get113ItemOutputFormat(item, false),
+            }),
+            {},
+          ),
+          group,
+          result: hasResult
+            ? get121ItemOutputFormat(state.slots["crafting.result"]!, true)
+            : {},
+        } satisfies Shaped121RecipeFormat;
+      }
+    default:
+      return {};
   }
 }

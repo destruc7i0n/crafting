@@ -18,6 +18,7 @@ export const Preview = memo(() => {
     }
     case RecipeType.Smelting:
     case RecipeType.Blasting:
+    case RecipeType.Smoking:
     case RecipeType.CampfireCooking: {
       return <FurnacePreview />;
     }

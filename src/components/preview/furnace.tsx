@@ -13,6 +13,7 @@ export const FurnacePreview = () => {
 
       <ConnectedGridItem
         slot="cooking.result"
+        showCount
         height={52}
         width={52}
         style={{ position: "absolute", top: 60, right: 78 }}

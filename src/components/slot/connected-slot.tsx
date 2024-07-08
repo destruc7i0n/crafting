@@ -12,10 +12,12 @@ import { Item } from "../item/item";
 
 type ConnectedGridItemProps = {
   slot: RecipeSlot;
+  showCount?: boolean;
 } & SlotProps;
 
 export const ConnectedGridItem = ({
   slot,
+  showCount = false,
   ...props
 }: ConnectedGridItemProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -38,7 +40,9 @@ export const ConnectedGridItem = ({
 
   return (
     <Slot ref={ref} hover={isDraggedOver} {...props}>
-      {slotValue && <Item item={slotValue} container="preview" />}
+      {slotValue && (
+        <Item item={slotValue} container="preview" showCount={showCount} />
+      )}
     </Slot>
   );
 };

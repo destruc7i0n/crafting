@@ -26,12 +26,29 @@ export const ItemsList = () => {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      <div className="bg-minecraft-inventory-bg flex w-full flex-1 flex-wrap overflow-y-auto rounded-md p-2">
-        {items.map((item) => (
-          <Slot key={item.id.raw}>
-            <Item key={item.id.raw} item={item} container="ingredients" />
-          </Slot>
-        ))}
+      <div className="flex w-full flex-1 flex-col overflow-y-auto rounded-md bg-minecraft-inventory-bg">
+        <div className="flex flex-col">
+          <span className="sticky top-0 z-10 bg-minecraft-inventory-bg/95 p-2 font-minecraft">
+            Custom Items
+          </span>
+        </div>
+        <div className="flex flex-col">
+          <span className="sticky top-0 z-10 bg-minecraft-inventory-bg/95 p-2 font-minecraft">
+            Custom Tags
+          </span>
+        </div>
+        <div className="flex flex-col">
+          <span className="sticky top-0 z-10 bg-minecraft-inventory-bg/95 p-2 font-minecraft">
+            Vanilla Items
+          </span>
+          <div className="flex w-full flex-wrap p-2 pt-0">
+            {items.map((item) => (
+              <Slot key={item.id.raw}>
+                <Item key={item.id.raw} item={item} container="ingredients" />
+              </Slot>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

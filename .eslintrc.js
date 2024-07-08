@@ -71,6 +71,7 @@ module.exports = {
         allowSeparatedGroups: true,
       },
     ],
+    "@typescript-eslint/switch-exhaustiveness-check": "error",
   },
   settings: {
     react: { version: "detect" },

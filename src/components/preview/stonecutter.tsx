@@ -13,6 +13,7 @@ export const StonecutterPreview = () => {
 
       <ConnectedGridItem
         slot="stonecutter.result"
+        showCount
         width={52}
         height={52}
         style={{ position: "absolute", top: 56, right: 24 }}

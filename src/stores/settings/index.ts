@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+import { latestMinecraftVersion } from "@/data/constants";
 import { MinecraftVersion } from "@/data/types";
 
 export interface SettingsState {
@@ -12,7 +13,7 @@ type SettingsActions = {
 
 export const useSettingsStore = create<SettingsState & SettingsActions>()(
   (set) => ({
-    minecraftVersion: MinecraftVersion.V120,
+    minecraftVersion: latestMinecraftVersion,
 
     setMinecraftVersion: (version: MinecraftVersion) =>
       set({ minecraftVersion: version }),

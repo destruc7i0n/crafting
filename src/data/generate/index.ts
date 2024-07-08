@@ -15,6 +15,7 @@ export function generate(
       return generateCrafting(state, version);
     case RecipeType.Smelting:
     case RecipeType.Blasting:
+    case RecipeType.Smoking:
     case RecipeType.CampfireCooking:
       return generateCooking(state, version);
     case RecipeType.Smithing:
