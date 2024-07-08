@@ -428,7 +428,7 @@ class CraftingGenerator {
    * @param tab
    * @returns {object}
    */
-  cooking (time = 0, experience = 0, tab) {
+  cooking (time = 0, experience = 0, resultObject = false, tab) {
     const { input, output } = this
 
     let shape = { ...this.getCookingDefault(tab) }
@@ -447,8 +447,14 @@ class CraftingGenerator {
       }
     }
 
-    if (output.isPopulated()) {
-      shape.result = output.fullId()
+    if (!resultObject) {
+      if (output.isPopulated()) {
+        shape.result = output.fullId()
+      }
+    } else {
+      shape.result = {
+        id: output.fullId()
+      }
     }
 
     shape.cookingtime = time || 0
@@ -461,7 +467,7 @@ class CraftingGenerator {
    * Returns a generic type crafting of the input provided
    * @returns {object}
    */
-  generic (type) {
+  generic (type, resultObject = false) {
     const { input, output } = this
 
     let shape = { ...this.getGenericDefault(type) }
@@ -482,11 +488,18 @@ class CraftingGenerator {
       shape.ingredient = ingredient
     }
 
-    if (output.isPopulated()) {
-      shape.result = output.fullId()
-    }
+    if (resultObject) {
+      shape.result = {
+        id: output.fullId(),
+        count: output.count
+      }
+    } else {
+      if (output.isPopulated()) {
+        shape.result = output.fullId()
+      }
 
-    shape.count = output.count
+      shape.count = output.count
+    }
 
     return shape
   }

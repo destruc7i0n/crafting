@@ -110,7 +110,7 @@ class Output extends Component {
       case CraftingType.CAMPFIRE:
       case CraftingType.SMOKING: {
         generator = new CraftingGenerator(furnace.input, output, tags, { group })
-        json = generator.cooking(furnace.cookingTime, furnace.experience, tab)
+        json = generator.cooking(furnace.cookingTime, furnace.experience, isAfter121, tab)
 
         bedrockRecipeType = 'minecraft:recipe_furnace'
         break
@@ -123,7 +123,7 @@ class Output extends Component {
           bedrockRecipeType = 'minecraft:recipe_shapeless'
         } else {
           generator = new CraftingGenerator(generic.input[0], output, tags, { group })
-          json = generator.generic(tab)
+          json = generator.generic(tab, isAfter121)
         }
         break
       }
