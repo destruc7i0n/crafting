@@ -6,7 +6,7 @@ export interface OutputItem112 {
 }
 
 export interface OutputItem112WithData extends OutputItem112 {
-  data?: number;
+  data: number | undefined;
 }
 
 export interface OutputItem121 {
@@ -82,7 +82,7 @@ export interface Shaped112RecipeFormat {
   type: string;
   group?: string;
   pattern: string[];
-  key: Record<string, { item: OutputItem112WithData }>;
+  key: Record<string, OutputItem112WithData>;
   result: OrEmpty<OutputItem112WithData>;
 }
 
@@ -97,7 +97,7 @@ export interface Shaped114RecipeFormat {
   type: string;
   group?: string;
   pattern: string[];
-  key: Record<string, { item: OutputItem112 }>;
+  key: Record<string, OutputItem112>;
   result: OrEmpty<OutputItem112>;
 }
 
@@ -112,7 +112,7 @@ export interface Shaped121RecipeFormat {
   type: string;
   group?: string;
   pattern: string[];
-  key: Record<string, { item: OutputItem112 }>;
+  key: Record<string, OutputItem112>;
   result: OrEmpty<OutputItem121>;
 }
 

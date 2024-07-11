@@ -173,12 +173,11 @@ export function generate(
         return {
           type: "crafting_shaped",
           pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
-          key: Object.entries(key).reduce(
-            (acc, [keyName, item]) => ({
-              ...acc,
-              [keyName]: get112ItemOutputFormat(item, false),
-            }),
-            {},
+          key: Object.fromEntries(
+            Object.entries(key).map(([keyName, item]) => [
+              keyName,
+              get112ItemOutputFormat(item, false),
+            ]),
           ),
           group,
           result: hasResult
@@ -208,12 +207,11 @@ export function generate(
         return {
           type: "minecraft:crafting_shaped",
           pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
-          key: Object.entries(key).reduce(
-            (acc, [keyName, item]) => ({
-              ...acc,
-              [keyName]: get113ItemOutputFormat(item, false),
-            }),
-            {},
+          key: Object.fromEntries(
+            Object.entries(key).map(([keyName, item]) => [
+              keyName,
+              get113ItemOutputFormat(item, false),
+            ]),
           ),
           group,
           result: hasResult
@@ -237,12 +235,11 @@ export function generate(
         return {
           type: "minecraft:crafting_shaped",
           pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
-          key: Object.entries(key).reduce(
-            (acc, [keyName, item]) => ({
-              ...acc,
-              [keyName]: get113ItemOutputFormat(item, false),
-            }),
-            {},
+          key: Object.fromEntries(
+            Object.entries(key).map(([keyName, item]) => [
+              keyName,
+              get113ItemOutputFormat(item, false),
+            ]),
           ),
           group,
           result: hasResult

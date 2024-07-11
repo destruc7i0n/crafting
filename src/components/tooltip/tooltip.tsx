@@ -54,7 +54,7 @@ export const Tooltip = ({
   const top = mouseY - tooltipHeight / 2; // center the tooltip vertically
 
   // if the tooltip is going off the right side of the screen, move it to the left
-  if (mouseX + tooltipWidth + 20 > document.body.clientWidth) {
+  if (mouseX + tooltipWidth + TOOLTIP_OFFSET + 8 > document.body.clientWidth) {
     left = mouseX - tooltipWidth - TOOLTIP_OFFSET;
   }
 

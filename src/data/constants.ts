@@ -43,6 +43,18 @@ export const recipeTypeToName: Record<RecipeType, string> = {
   [RecipeType.SmithingTransform]: "Smithing Transform",
 };
 
+export const recipeTypeToItemId: Record<RecipeType, string> = {
+  [RecipeType.Crafting]: "minecraft:crafting_table",
+  [RecipeType.Smelting]: "minecraft:furnace",
+  [RecipeType.CampfireCooking]: "minecraft:campfire",
+  [RecipeType.Blasting]: "minecraft:blast_furnace",
+  [RecipeType.Smoking]: "minecraft:smoker",
+  [RecipeType.Stonecutter]: "minecraft:stonecutter",
+  [RecipeType.Smithing]: "minecraft:smithing_table",
+  [RecipeType.SmithingTrim]: "minecraft:smithing_table",
+  [RecipeType.SmithingTransform]: "minecraft:smithing_table",
+};
+
 // 1.12:
 // [
 //   "crafting_shaped",

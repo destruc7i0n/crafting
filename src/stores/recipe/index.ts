@@ -1,3 +1,4 @@
+import rfdc from "rfdc";
 import { v4 as uuid } from "uuid";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
@@ -6,6 +7,7 @@ import { Item as ItemModel } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
 
 export interface SingleRecipeState {
+  recipeName: string;
   recipeType: RecipeType;
   group: string;
   slots: Partial<Record<RecipeSlot, ItemModel>>;
@@ -21,11 +23,12 @@ export interface SingleRecipeState {
 }
 
 export type RecipeState = {
-  recipes: { [key: string]: SingleRecipeState };
-  selectedRecipe: string;
+  recipes: SingleRecipeState[];
+  selectedRecipe: number;
 };
 
 type RecipeActions = {
+  selectRecipe: (index: number) => void;
   createRecipe: () => void;
 
   setRecipeType: (type: RecipeType) => void;
@@ -37,8 +40,10 @@ type RecipeActions = {
   setRecipeCoolingExperience: (experience: number) => void;
 };
 
+const clone = rfdc();
 const getDefaultRecipe = (): SingleRecipeState => {
   const recipe: SingleRecipeState = {
+    recipeName: "recipe-1",
     recipeType: RecipeType.Crafting,
     group: "",
     slots: {},
@@ -53,23 +58,27 @@ const getDefaultRecipe = (): SingleRecipeState => {
     // smithing: {},
   };
 
-  return recipe;
+  return clone(recipe);
 };
 
 export const useRecipeStore = create<RecipeState & RecipeActions>()(
   immer((set) => ({
-    recipes: {
-      recipe: getDefaultRecipe(),
-    },
-    selectedRecipe: "recipe",
+    recipes: [getDefaultRecipe()],
+    selectedRecipe: 0,
 
+    selectRecipe: (index: number) => {
+      set((state) => {
+        state.selectedRecipe = index;
+      });
+    },
     createRecipe: () => {
       set((state) => {
         const recipe: SingleRecipeState = getDefaultRecipe();
+        const name = `recipe-${uuid()}`;
+        recipe.recipeName = name;
 
-        const key = `recipe-${uuid()}`;
-        state.recipes[key] = recipe;
-        state.selectedRecipe = key;
+        state.recipes.push(recipe);
+        state.selectedRecipe = state.recipes.length - 1;
       });
     },
     setRecipeType: (type: RecipeType) => {
