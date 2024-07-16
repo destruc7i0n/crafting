@@ -2,6 +2,8 @@ import JSZip from 'jszip'
 
 import { saveAs } from 'file-saver'
 
+import { compareMinecraftVersions } from './versions'
+
 export const getPackFormat = (minecraftVersion) => {
   // https://minecraft.wiki/w/Pack_format
   switch (minecraftVersion) {
@@ -57,6 +59,9 @@ export const generateTags = (tags = []) => {
 export const generateDatapack = (minecraftVersion, craftingRecipe, craftingName, rawTags) => {
   const generatedTags = generateTags(rawTags)
 
+  const isAfter121 = compareMinecraftVersions(minecraftVersion, '1.21') <= 0
+  const path = isAfter121 ? 'data/crafting/recipe/' : 'data/crafting/recipes/'
+
   let zip = new JSZip()
   // add the pack file
   zip.file('pack.mcmeta', JSON.stringify({
@@ -66,7 +71,7 @@ export const generateDatapack = (minecraftVersion, craftingRecipe, craftingName,
     }
   }))
   // add the crafting recipe
-  zip.file(`data/crafting/recipes/${craftingName}`, JSON.stringify(craftingRecipe, null, 4))
+  zip.file(path + craftingName, JSON.stringify(craftingRecipe, null, 4))
   // add all the tags
   generatedTags.forEach(({ namespace, name, data }) => {
     zip.file(`data/${namespace}/tags/items/${name}.json`, JSON.stringify(data, null, 4))
