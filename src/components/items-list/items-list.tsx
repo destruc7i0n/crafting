@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 
+import { PlusIcon } from "lucide-react";
+
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 
 import { Item } from "../item/item";
@@ -34,6 +36,11 @@ export const ItemsList = () => {
           <span className="sticky top-0 z-10 bg-minecraft-inventory-bg/95 p-2 font-minecraft">
             Tags
           </span>
+          <div className="flex w-full flex-wrap p-2 pt-0">
+            <Slot onClick={() => {}} className="cursor-pointer select-none">
+              <PlusIcon size={32} />
+            </Slot>
+          </div>
         </div>
         <div className="flex flex-col">
           <span className="sticky top-0 z-10 bg-minecraft-inventory-bg/95 p-2 font-minecraft">

@@ -8,7 +8,7 @@ import { JsonOutput } from "./json-output";
 
 import "@jongwooo/prism-theme-github/themes/prism-github-default-light.min.css";
 
-export const Output = () => {
+export const ItemOutput = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const recipeState = useRecipeStore(selectCurrentRecipe);
 

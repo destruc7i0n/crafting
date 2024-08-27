@@ -207,3 +207,9 @@ export interface SmithingRecipeTransform121Format {
   addition: OrEmpty<OutputItem112>;
   result: OrEmpty<OutputItem121>;
 }
+
+// Output Tag
+
+export interface OutputTag {
+  values: string[];
+}

@@ -17,7 +17,7 @@ export const Slot = forwardRef<HTMLDivElement, SlotProps>(
       <div
         {...props}
         ref={ref}
-        className={cn(classes.slot, hover && classes.active)}
+        className={cn(classes.slot, hover && classes.active, props.className)}
         style={{
           width: `${width}px`,
           height: `${height}px`,
