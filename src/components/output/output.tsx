@@ -15,9 +15,8 @@ export const Output = () => {
   const result = generate(recipeState, minecraftVersion);
 
   return (
-    <div className="flex flex-col gap-4 rounded-md border p-2 shadow">
-      <h2>Output</h2>
-      <JsonOutput json={JSON.stringify(result, null, 2)} />
+    <div className="flex flex-col gap-4 rounded-md border-2">
+      <JsonOutput json={result} />
     </div>
   );
 };

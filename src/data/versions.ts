@@ -10,10 +10,10 @@ export const getSupportedRecipeTypesForVersion = (
       return [RecipeType.Crafting, RecipeType.Smelting];
     case MinecraftVersion.V114:
       return [
-        RecipeType.Blasting,
-        RecipeType.CampfireCooking,
         RecipeType.Crafting,
         RecipeType.Smelting,
+        RecipeType.Blasting,
+        RecipeType.CampfireCooking,
         RecipeType.Smoking,
         RecipeType.Stonecutter,
       ];
@@ -21,20 +21,20 @@ export const getSupportedRecipeTypesForVersion = (
     case MinecraftVersion.V117:
     case MinecraftVersion.V118:
       return [
-        RecipeType.Blasting,
-        RecipeType.CampfireCooking,
         RecipeType.Crafting,
         RecipeType.Smelting,
+        RecipeType.Blasting,
+        RecipeType.CampfireCooking,
         RecipeType.Smoking,
         RecipeType.Stonecutter,
         RecipeType.Smithing,
       ];
     default:
       return [
-        RecipeType.Blasting,
-        RecipeType.CampfireCooking,
         RecipeType.Crafting,
         RecipeType.Smelting,
+        RecipeType.Blasting,
+        RecipeType.CampfireCooking,
         RecipeType.Smoking,
         RecipeType.Stonecutter,
         RecipeType.SmithingTransform,

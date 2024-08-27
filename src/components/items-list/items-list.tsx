@@ -21,7 +21,7 @@ export const ItemsList = () => {
   }, [resourceItems, search]);
 
   return (
-    <div className="flex max-h-[768px] w-full flex-1 flex-col gap-2 rounded-md border p-2 shadow">
+    <div className="flex max-h-[768px] w-full flex-1 flex-col gap-2 rounded-md border-2 p-2">
       <input
         type="text"
         className="focus:shadow-outline w-full appearance-none rounded-md border px-3 py-2 text-sm leading-tight text-gray-700 placeholder:font-minecraft focus:outline-none"

@@ -17,11 +17,11 @@ export function parseStringToMinecraftIdentifier(
     const hasData = !isNaN(lastPart);
 
     // legacy format, e.g. stone:1
-    if (parts.length === 2 && hasData) {
+    if (parts.length === 3 && hasData) {
       return {
         raw: input,
-        namespace: MINECRAFT_NAMESPACE,
-        id: parts[0],
+        namespace: parts[0],
+        id: parts[1],
         data: lastPart,
       };
     }

@@ -24,7 +24,7 @@ export interface SingleRecipeState {
 
 export type RecipeState = {
   recipes: SingleRecipeState[];
-  selectedRecipe: number;
+  selectedRecipeIndex: number;
 };
 
 type RecipeActions = {
@@ -64,11 +64,11 @@ const getDefaultRecipe = (): SingleRecipeState => {
 export const useRecipeStore = create<RecipeState & RecipeActions>()(
   immer((set) => ({
     recipes: [getDefaultRecipe()],
-    selectedRecipe: 0,
+    selectedRecipeIndex: 0,
 
     selectRecipe: (index: number) => {
       set((state) => {
-        state.selectedRecipe = index;
+        state.selectedRecipeIndex = index;
       });
     },
     createRecipe: () => {
@@ -78,43 +78,44 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
         recipe.recipeName = name;
 
         state.recipes.push(recipe);
-        state.selectedRecipe = state.recipes.length - 1;
+        state.selectedRecipeIndex = state.recipes.length - 1;
       });
     },
     setRecipeType: (type: RecipeType) => {
       set((state) => {
-        state.recipes[state.selectedRecipe].recipeType = type;
+        state.recipes[state.selectedRecipeIndex].recipeType = type;
       });
     },
     setRecipeGroup: (group: string) => {
       set((state) => {
-        state.recipes[state.selectedRecipe].group = group;
+        state.recipes[state.selectedRecipeIndex].group = group;
       });
     },
     setRecipeSlot: (slot: RecipeSlot, item?: ItemModel) => {
       set((state) => {
-        state.recipes[state.selectedRecipe].slots[slot] = item;
+        state.recipes[state.selectedRecipeIndex].slots[slot] = item;
       });
     },
     setRecipeCraftingShapeless: (shapeless: boolean) => {
       set((state) => {
-        state.recipes[state.selectedRecipe].crafting.shapeless = shapeless;
+        state.recipes[state.selectedRecipeIndex].crafting.shapeless = shapeless;
       });
     },
     setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => {
       set((state) => {
-        state.recipes[state.selectedRecipe].crafting.keepWhitespace =
+        state.recipes[state.selectedRecipeIndex].crafting.keepWhitespace =
           keepWhitespace;
       });
     },
     setRecipeCookingTime: (time: number) => {
       set((state) => {
-        state.recipes[state.selectedRecipe].cooking.time = time;
+        state.recipes[state.selectedRecipeIndex].cooking.time = time;
       });
     },
     setRecipeCoolingExperience: (experience: number) => {
       set((state) => {
-        state.recipes[state.selectedRecipe].cooking.experience = experience;
+        state.recipes[state.selectedRecipeIndex].cooking.experience =
+          experience;
       });
     },
   })),

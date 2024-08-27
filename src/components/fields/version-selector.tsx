@@ -10,7 +10,7 @@ export const VersionSelector = () => {
 
   return (
     <select
-      className="focus:shadow-outline appearance-none rounded-md border px-3 py-2 text-sm leading-tight text-gray-700 focus:outline-none"
+      className="focus:shadow-outline rounded-md border px-3 py-2 text-sm leading-tight text-gray-700 focus:outline-none"
       onChange={(e) => setMinecraftVersion(e.target.value as MinecraftVersion)}
       value={minecraftVersion}
     >
