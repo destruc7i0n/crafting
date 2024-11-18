@@ -14,3 +14,8 @@ export const selectCurrentRecipeType = createSelector(
   selectCurrentRecipe,
   (recipe) => recipe?.recipeType,
 );
+
+export const selectCurrentRecipeName = createSelector(
+  selectCurrentRecipe,
+  (recipe) => recipe?.recipeName,
+);

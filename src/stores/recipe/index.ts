@@ -30,7 +30,9 @@ export type RecipeState = {
 type RecipeActions = {
   selectRecipe: (index: number) => void;
   createRecipe: () => void;
+  deleteRecipe: (index: number) => void;
 
+  setRecipeName: (name: string) => void;
   setRecipeType: (type: RecipeType) => void;
   setRecipeGroup: (group: string) => void;
   setRecipeSlot: (slot: RecipeSlot, item?: ItemModel) => void;
@@ -43,7 +45,7 @@ type RecipeActions = {
 const clone = rfdc();
 const getDefaultRecipe = (): SingleRecipeState => {
   const recipe: SingleRecipeState = {
-    recipeName: "recipe-1",
+    recipeName: "recipe_1",
     recipeType: RecipeType.Crafting,
     group: "",
     slots: {},
@@ -74,11 +76,23 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
     createRecipe: () => {
       set((state) => {
         const recipe: SingleRecipeState = getDefaultRecipe();
-        const name = `recipe-${uuid()}`;
+        const name = `recipe_${uuid()}`;
         recipe.recipeName = name;
 
         state.recipes.push(recipe);
         state.selectedRecipeIndex = state.recipes.length - 1;
+      });
+    },
+    deleteRecipe: (index: number) => {
+      set((state) => {
+        // set the selected recipe to the next one
+        state.selectedRecipeIndex = Math.max(0, index - 1);
+        state.recipes.splice(index, 1);
+      });
+    },
+    setRecipeName: (name: string) => {
+      set((state) => {
+        state.recipes[state.selectedRecipeIndex].recipeName = name;
       });
     },
     setRecipeType: (type: RecipeType) => {

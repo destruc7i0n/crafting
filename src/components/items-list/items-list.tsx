@@ -1,11 +1,9 @@
 import { useMemo, useState } from "react";
 
-import { PlusIcon } from "lucide-react";
-
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 
-import { Item } from "../item/item";
-import { Slot } from "../slot/slot";
+import { ItemsSection } from "./items-section";
+import { TagsSection } from "./tags-section";
 
 export const ItemsList = () => {
   const { resources } = useResourcesForVersion();
@@ -32,28 +30,8 @@ export const ItemsList = () => {
       />
 
       <div className="flex w-full flex-1 flex-col overflow-y-auto rounded-md bg-minecraft-inventory-bg">
-        <div className="flex flex-col">
-          <span className="sticky top-0 z-10 bg-minecraft-inventory-bg/95 p-2 font-minecraft">
-            Tags
-          </span>
-          <div className="flex w-full flex-wrap p-2 pt-0">
-            <Slot onClick={() => {}} className="cursor-pointer select-none">
-              <PlusIcon size={32} />
-            </Slot>
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <span className="sticky top-0 z-10 bg-minecraft-inventory-bg/95 p-2 font-minecraft">
-            Items
-          </span>
-          <div className="flex w-full flex-wrap p-2 pt-0">
-            {items.map((item) => (
-              <Slot key={item.id.raw}>
-                <Item key={item.id.raw} item={item} container="ingredients" />
-              </Slot>
-            ))}
-          </div>
-        </div>
+        <TagsSection search={search} />
+        <ItemsSection search={search} items={items} />
       </div>
     </div>
   );

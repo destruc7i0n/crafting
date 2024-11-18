@@ -1,4 +1,4 @@
-import { ConnectedGridItem } from "../slot/connected-slot";
+import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
 
 export const FurnacePreview = () => {
   return (
@@ -6,12 +6,12 @@ export const FurnacePreview = () => {
       className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
       style={{ backgroundImage: `url(/assets/ui/furnace.png)` }}
     >
-      <ConnectedGridItem
+      <ItemPreviewDropTarget
         slot="cooking.ingredient"
         style={{ position: "absolute", top: 32, left: 110 }}
       />
 
-      <ConnectedGridItem
+      <ItemPreviewDropTarget
         slot="cooking.result"
         showCount
         height={52}

@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import { Header } from "./header";
 import { Footer } from "../footer";
 import { ItemsList } from "../items-list/items-list";
@@ -5,7 +7,7 @@ import { Topbar } from "../topbar/topbar";
 
 type LayoutProps = { children: React.ReactNode };
 
-export function Layout({ children }: LayoutProps) {
+const Layout = memo(({ children }: LayoutProps) => {
   return (
     <>
       <div className="flex min-h-screen flex-col">
@@ -15,7 +17,9 @@ export function Layout({ children }: LayoutProps) {
           <div className="[grid-area:topbar]">
             <Topbar />
           </div>
-          {children}
+
+          <div className="[grid-area:left]">{children}</div>
+
           <div className="flex [grid-area:items]">
             <ItemsList />
           </div>
@@ -24,4 +28,6 @@ export function Layout({ children }: LayoutProps) {
       <Footer />
     </>
   );
-}
+});
+
+export { Layout };

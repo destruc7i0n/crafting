@@ -1,4 +1,4 @@
-import { ConnectedGridItem } from "../slot/connected-slot";
+import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
 
 export const StonecutterPreview = () => {
   return (
@@ -6,12 +6,12 @@ export const StonecutterPreview = () => {
       className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
       style={{ backgroundImage: `url(/assets/ui/stonecutter.png)` }}
     >
-      <ConnectedGridItem
+      <ItemPreviewDropTarget
         slot="stonecutter.ingredient"
         style={{ position: "absolute", top: 64, left: 38 }}
       />
 
-      <ConnectedGridItem
+      <ItemPreviewDropTarget
         slot="stonecutter.result"
         showCount
         width={52}

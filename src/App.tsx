@@ -1,15 +1,15 @@
 import { Layout } from "./components/layout/layout";
+import { useDndMonitor } from "./hooks/use-dnd-monitor";
 import { useMinecraftTexturesData } from "./hooks/use-minecraft-textures-data";
-import { usePreviewDndHandler } from "./hooks/use-preview-dnd-handler";
-import { Main } from "./views/main";
+import { Index } from "./views/index";
 
 function App() {
   useMinecraftTexturesData();
-  usePreviewDndHandler();
+  useDndMonitor();
 
   return (
     <Layout>
-      <Main />
+      <Index />
     </Layout>
   );
 }

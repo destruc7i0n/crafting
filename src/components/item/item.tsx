@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 import ReactDOM from "react-dom";
 
@@ -9,6 +9,7 @@ import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unha
 import invariant from "tiny-invariant";
 
 import { Item as ItemType } from "@/data/models/types";
+import { ItemDraggableContainer, ItemDraggableData } from "@/lib/dnd";
 
 import { ItemCount } from "./item-count";
 import { ItemPreview } from "./item-preview";
@@ -17,10 +18,10 @@ import { Tooltip } from "../tooltip/tooltip";
 type IngredientProps = {
   item: ItemType;
   showCount?: boolean;
-  container: "preview" | "ingredients";
+  container: ItemDraggableContainer;
 };
 
-export const Item = ({ item, container, showCount }: IngredientProps) => {
+export const Item = memo(({ item, container, showCount }: IngredientProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -30,7 +31,8 @@ export const Item = ({ item, container, showCount }: IngredientProps) => {
 
     return draggable({
       element: el,
-      getInitialData: () => ({ type: "item", item, container }),
+      getInitialData: () =>
+        ({ type: "item", item, container }) satisfies ItemDraggableData,
       getInitialDataForExternal: () => ({ "text/plain": item.id.raw }),
       onDragStart: () => {
         if (container === "preview") {
@@ -72,4 +74,4 @@ export const Item = ({ item, container, showCount }: IngredientProps) => {
       {showCount && <ItemCount count={item.count ?? 1} />}
     </Tooltip>
   );
-};
+});
