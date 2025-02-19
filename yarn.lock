@@ -3152,9 +3152,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001464, caniuse-lite@^1.0.30001503:
-  version "1.0.30001505"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001505.tgz#10a343e49d31cbbfdae298ef73cb0a9f46670dc5"
-  integrity sha512-jaAOR5zVtxHfL0NjZyflVTtXm3D3J9P15zSJ7HmQF8dSKGA6tqzQq+0ZI3xkjyQj46I4/M0K2GbMpcAFOcbr3A==
+  version "1.0.30001640"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001640.tgz"
+  integrity sha512-lA4VMpW0PSUrFnkmVuEKBUovSWKhj7puyCg8StBChgu298N1AtuF1sKWEvfDuimSEDbhlb/KqPKC3fs1HbuQUA==
 
 case-sensitive-paths-webpack-plugin@^2.4.0:
   version "2.4.0"
@@ -6931,10 +6931,10 @@ mimic-fn@^2.1.0:
   resolved "https://registry.npmjs.org/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-minecraft-textures@^1.21.0:
-  version "1.21.0"
-  resolved "https://registry.npmjs.org/minecraft-textures/-/minecraft-textures-1.21.0.tgz#5101411918d3e8ba952ef9f8ab68010745ae0b19"
-  integrity sha512-xgtqeju/GvjpIXQkoHnijLUCd4hupzW22sIS2C7AHtsHljOgtLzF+xXvXKSoWBidhtZQ3uI75UASODR+0bKarQ==
+minecraft-textures@^1.21.4:
+  version "1.21.4"
+  resolved "https://registry.npmjs.org/minecraft-textures/-/minecraft-textures-1.21.4.tgz#27d7d3ea098d786e046c95cfe82b6779059a7b0b"
+  integrity sha512-jY7j6/XZ3wiovXMcTYmYWgsTv9AfRvL2QAHKwrO0kLpO0pqZSStUleyKg+IR+FcgMd29g3Z67CtLQXNHqyOTWQ==
 
 mini-css-extract-plugin@^2.4.5:
   version "2.7.6"

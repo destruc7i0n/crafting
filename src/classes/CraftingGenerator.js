@@ -9,11 +9,12 @@ class CraftingGenerator {
    * @param isBedrock
    * @param extras
    */
-  constructor (input, output, tags, { ...extras }) {
+  constructor (input, output, tags, { ...extras }, options = {}) {
     this.input = input || []
     this.output = output || []
     this.tags = tags || {}
     this.extras = extras || {}
+    this.options = options || {}
   }
 
   /**
@@ -244,6 +245,21 @@ class CraftingGenerator {
   }
 
   /**
+   * Formats an item for string output (1.21.2+)
+   * @param {Object} item - item formatted for output
+   * @returns {string}
+   */
+  #stringFormat (item) {
+    if (this.options.stringItem) {
+      if (item.tag) {
+        return `#${item.tag}`
+      }
+      return item.item
+    }
+    return item
+  }
+
+  /**
    * Returns a shapeless crafting of the input and output provided
    * @returns {object}
    */
@@ -270,7 +286,8 @@ class CraftingGenerator {
         const tag = this.tags[ingredient.tag.tag]
         return this.handleTags(tag)
       }
-      return ingredient
+      const formatted = this.#stringFormat(ingredient)
+      return formatted
     })
 
     if (output.isPopulated()) {
@@ -372,6 +389,7 @@ class CraftingGenerator {
         if (value.item_h) delete value.item_h
         acc[key] = value
       }
+      acc[key] = this.#stringFormat(acc[key])
       return acc
     }, {})
     // append the keymap
@@ -445,6 +463,8 @@ class CraftingGenerator {
         const tag = this.tags[shape.ingredient.tag.tag]
         shape.ingredient = this.handleTags(tag)
       }
+
+      shape.ingredient = this.#stringFormat(shape.ingredient)
     }
 
     if (!resultObject) {
@@ -467,8 +487,8 @@ class CraftingGenerator {
    * Returns a generic type crafting of the input provided
    * @returns {object}
    */
-  generic (type, resultObject = false) {
-    const { input, output } = this
+  generic (type) {
+    const { input, output, options: { objectResultFormat = false } = {} } = this
 
     let shape = { ...this.getGenericDefault(type) }
 
@@ -485,10 +505,12 @@ class CraftingGenerator {
         ingredient = this.handleTags(tag)
       }
 
+      ingredient = this.#stringFormat(ingredient)
+
       shape.ingredient = ingredient
     }
 
-    if (resultObject) {
+    if (objectResultFormat) {
       shape.result = {
         id: output.fullId(),
         count: output.count
@@ -513,7 +535,7 @@ class CraftingGenerator {
 
     let shape = { ...this.getSmithingDefault() }
 
-    const getIngredient = (ingredient) => {
+    const getIngredient = (ingredient, stringFormat = true) => {
       ingredient = this.getItemType(ingredient, false)
 
       // handle tags...
@@ -522,14 +544,15 @@ class CraftingGenerator {
         ingredient = this.handleTags(tag)
       }
 
-      return ingredient
+      const formatted = stringFormat ? this.#stringFormat(ingredient) : ingredient
+      return formatted
     }
 
     if (input[0] && input[0].isPopulated()) shape.base = getIngredient(input[0])
     if (input[1] && input[1].isPopulated()) shape.addition = getIngredient(input[1])
 
     if (output.isPopulated()) {
-      shape.result = getIngredient(output)
+      shape.result = getIngredient(output, false)
     }
 
     return shape
@@ -540,7 +563,7 @@ class CraftingGenerator {
 
     let shape = { ...this.getSmithingWithTemplateDefault() }
 
-    const getIngredient = (ingredient) => {
+    const getIngredient = (ingredient, stringFormat = true) => {
       ingredient = this.getItemType(ingredient, false)
 
       // handle tags...
@@ -549,7 +572,8 @@ class CraftingGenerator {
         ingredient = this.handleTags(tag)
       }
 
-      return ingredient
+      const formatted = stringFormat ? this.#stringFormat(ingredient) : ingredient
+      return formatted
     }
 
     if (input[2] && input[2].isPopulated()) shape.template = getIngredient(input[2])
@@ -557,7 +581,7 @@ class CraftingGenerator {
     if (input[1] && input[1].isPopulated()) shape.addition = getIngredient(input[1])
 
     if (output.isPopulated()) {
-      shape.result = getIngredient(output)
+      shape.result = getIngredient(output, false)
       shape.type = 'minecraft:smithing_trim'
     } else {
       delete shape.result

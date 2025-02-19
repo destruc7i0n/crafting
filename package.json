@@ -17,7 +17,7 @@
     "jszip": "^3.10.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
-    "minecraft-textures": "^1.21.0",
+    "minecraft-textures": "^1.21.4",
     "rdndmb-html5-to-touch": "^8.0.1",
     "react": "16.14",
     "react-bootstrap": "0.32.1",

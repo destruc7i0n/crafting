@@ -75,7 +75,8 @@ class Output extends Component {
     let bedrockRecipeType
 
     const isAfter120 = minecraftVersion === 'bedrock' || compareMinecraftVersions(minecraftVersion, '1.20') <= 0
-    const isAfter121 = minecraftVersion === 'bedrock' || compareMinecraftVersions(minecraftVersion, '1.21') <= 0
+    const isObjectResultFormat = minecraftVersion === 'bedrock' || compareMinecraftVersions(minecraftVersion, '1.21') <= 0
+    const isStringItem = minecraftVersion !== 'bedrock' && (compareMinecraftVersions(minecraftVersion, '1.21.2') <= 0)
     let bedrockFormatVersion = '1.12'
 
     switch (tab) {
@@ -93,7 +94,7 @@ class Output extends Component {
           /* eslint-enable */
         }
 
-        generator = new CraftingGenerator(craftingInput, output, tags, { group })
+        generator = new CraftingGenerator(craftingInput, output, tags, { group }, { objectResultFormat: isObjectResultFormat, stringItem: isStringItem && !isBedrock })
         if (shape === 'shapeless') {
           json = generator.shapeless()
 
@@ -109,39 +110,39 @@ class Output extends Component {
       case CraftingType.BLAST:
       case CraftingType.CAMPFIRE:
       case CraftingType.SMOKING: {
-        generator = new CraftingGenerator(furnace.input, output, tags, { group })
-        json = generator.cooking(furnace.cookingTime, furnace.experience, isAfter121, tab)
+        generator = new CraftingGenerator(furnace.input, output, tags, { group }, { objectResultFormat: isObjectResultFormat, stringItem: isStringItem && !isBedrock })
+        json = generator.cooking(furnace.cookingTime, furnace.experience, isObjectResultFormat, tab)
 
         bedrockRecipeType = 'minecraft:recipe_furnace'
         break
       }
       case CraftingType.STONECUTTER: {
         if (isBedrock) {
-          generator = new CraftingGenerator([generic.input[0]], output, tags, { group })
+          generator = new CraftingGenerator([generic.input[0]], output, tags, { group }, { })
           json = generator.shapeless()
 
           bedrockRecipeType = 'minecraft:recipe_shapeless'
         } else {
-          generator = new CraftingGenerator(generic.input[0], output, tags, { group })
-          json = generator.generic(tab, isAfter121)
+          generator = new CraftingGenerator(generic.input[0], output, tags, { group }, { objectResultFormat: isObjectResultFormat, stringItem: isStringItem })
+          json = generator.generic(tab, isObjectResultFormat)
         }
         break
       }
       case CraftingType.SMITHING: {
         if (!isAfter120) {
           if (isBedrock) {
-            generator = new CraftingGenerator([generic.input[0], generic.input[1]], output, tags, { group })
+            generator = new CraftingGenerator([generic.input[0], generic.input[1]], output, tags, { group }, { })
             json = generator.shapeless()
 
             bedrockRecipeType = 'minecraft:recipe_shapeless'
           } else {
-            generator = new CraftingGenerator(generic.input, output, tags, { group })
+            generator = new CraftingGenerator(generic.input, output, tags, { group }, { objectResultFormat: isObjectResultFormat, stringItem: isStringItem })
             json = generator.smithing(tab)
           }
         } else {
           bedrockFormatVersion = '1.17'
 
-          generator = new CraftingGenerator([generic.input[0], generic.input[1], generic.input[2]], output, tags, { group })
+          generator = new CraftingGenerator([generic.input[0], generic.input[1], generic.input[2]], output, tags, { group }, { stringItem: isStringItem })
           json = generator.smithingWithTemplate()
 
           if (isBedrock) {
@@ -161,7 +162,7 @@ class Output extends Component {
       json.result.count = output.count
     }
 
-    if (isAfter121 && json.result && json.result.item && !isBedrock) {
+    if (isObjectResultFormat && json.result && json.result.item && !isBedrock) {
       const itemId = json.result.item
       delete json.result.item
       json.result = {
