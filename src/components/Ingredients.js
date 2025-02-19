@@ -54,7 +54,7 @@ class Ingredients extends Component {
     let minecraftVersion = version ?? latestVersion
     if (version === 'bedrock') {
       // bedrock
-      minecraftVersion = '1.21'
+      minecraftVersion = '1.21.4'
     }
     try {
       const textures = await import('minecraft-textures/dist/textures/json/' + minecraftVersion + '.json')

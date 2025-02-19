@@ -35,6 +35,12 @@ export const getPackFormat = (minecraftVersion) => {
     case '1.21': {
       return 48
     }
+    case '1.21.2': {
+      return 57
+    }
+    case '1.21.4': {
+      return 61
+    }
     default: {
       return 1
     }
