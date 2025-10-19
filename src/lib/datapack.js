@@ -1,9 +1,15 @@
 import JSZip from 'jszip'
+// eslint-disable-next-line no-unused-vars
+import { textures } from 'minecraft-textures'
 
 import { saveAs } from 'file-saver'
 
 import { compareMinecraftVersions } from './versions'
 
+/**
+ * @param {typeof textures[number]} minecraftVersion
+ * @returns {number}
+ */
 export const getPackFormat = (minecraftVersion) => {
   // https://minecraft.wiki/w/Pack_format
   switch (minecraftVersion) {
@@ -40,6 +46,12 @@ export const getPackFormat = (minecraftVersion) => {
     }
     case '1.21.4': {
       return 61
+    }
+    case '1.21.7': {
+      return 81
+    }
+    case '1.21.9': {
+      return 88
     }
     default: {
       return 1
