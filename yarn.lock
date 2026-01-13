@@ -6931,10 +6931,10 @@ mimic-fn@^2.1.0:
   resolved "https://registry.npmjs.org/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-minecraft-textures@^1.21.9:
-  version "1.21.9"
-  resolved "https://registry.npmjs.org/minecraft-textures/-/minecraft-textures-1.21.9.tgz#8ecd7ae1477362419626c0bfd0dbceae34bd61dc"
-  integrity sha512-smAISnalkG3++LLT0JmNakWNnkinCPwb5M/OEHYWvZ32PAaeMNdndul9f5qUCRfPsyf0AlTEiEPraBmoJWcFCg==
+minecraft-textures@^1.21.11:
+  version "1.21.11"
+  resolved "https://registry.npmjs.org/minecraft-textures/-/minecraft-textures-1.21.11.tgz#acf98359e4da59ff415f8d07a1a898b95d62998b"
+  integrity sha512-J/Rp/VHzlpbjdixOxasDYIMBDgyX61ipkwjVJDNJ0YuLlrW20uxITD3aycPE9TJ28CL9uFGWNWxh3+2Gp4UQhw==
 
 mini-css-extract-plugin@^2.4.5:
   version "2.7.6"
