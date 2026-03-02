@@ -2,12 +2,7 @@ import React, { memo } from 'react'
 import {
   Dropdown,
   MenuItem,
-  Nav,
-  Navbar,
-  NavItem,
-  OverlayTrigger,
-  Popover,
-  Tooltip
+  Navbar
 } from 'react-bootstrap'
 
 import './Navbar.css'
@@ -23,14 +18,6 @@ const BrandToggle = (props) => {
 }
 
 const CraftingNav = () => {
-  const creatorTooltip = (
-    <Tooltip id='creator'>Site made by destruc7i0n.</Tooltip>
-  )
-  const supportTooltip = (
-    <Popover id='supportMe' title='Support Me'>
-      I've put many hours into making this. Any support is appreciated!
-    </Popover>
-  )
   return (
     <Navbar inverse>
       <Navbar.Header>
@@ -51,21 +38,7 @@ const CraftingNav = () => {
             </MenuItem>
           </Dropdown.Menu>
         </Dropdown>
-        <Navbar.Toggle />
       </Navbar.Header>
-      <Navbar.Collapse>
-        <Nav pullRight>
-          <OverlayTrigger placement='bottom' overlay={creatorTooltip}>
-            <NavItem eventKey={3} href='https://twitter.com/TheDestruc7i0n' target='_blank'>Creator</NavItem>
-          </OverlayTrigger>
-
-          <OverlayTrigger placement='bottom' overlay={supportTooltip}>
-            <NavItem eventKey={2} href='https://patreon.com/destruc7i0n' target='_blank'>
-              Donate
-            </NavItem>
-          </OverlayTrigger>
-        </Nav>
-      </Navbar.Collapse>
     </Navbar>
   )
 }
