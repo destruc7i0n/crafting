@@ -1,5 +1,5 @@
 import { Refractor, registerLanguage } from "react-refractor";
-import json from "refractor/lang/json";
+import json from "refractor/json";
 
 import { JsonButtonCopyButton } from "./json-output-copy-button";
 

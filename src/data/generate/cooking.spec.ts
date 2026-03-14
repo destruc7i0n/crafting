@@ -249,4 +249,71 @@ describe("generate cooking", () => {
       });
     });
   });
+
+  describe("1.21+ and bedrock", () => {
+    it("should generate 1.21 cooking with object result", () => {
+      const recipeSlice: SingleRecipeState = {
+        recipeType: RecipeType.Smelting,
+        group: "",
+        slots: {
+          "cooking.ingredient": {
+            type: "default_item",
+            id: { raw: "minecraft:iron_ore", id: "iron_ore", namespace: "minecraft" },
+            displayName: "iron_ore",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.V121,
+          },
+          "cooking.result": {
+            type: "default_item",
+            id: { raw: "minecraft:iron_ingot", id: "iron_ingot", namespace: "minecraft" },
+            displayName: "iron_ingot",
+            texture: "",
+            count: 2,
+            _version: MinecraftVersion.V121,
+          },
+        },
+        crafting: { shapeless: true, keepWhitespace: false },
+        cooking: { time: 0, experience: 0 },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
+        type: "minecraft:smelting",
+        ingredient: { item: "minecraft:iron_ore" },
+        result: { id: "minecraft:iron_ingot", count: 2 },
+      });
+    });
+
+    it("should generate bedrock furnace body", () => {
+      const recipeSlice: SingleRecipeState = {
+        recipeType: RecipeType.Smelting,
+        group: "",
+        slots: {
+          "cooking.ingredient": {
+            type: "default_item",
+            id: { raw: "minecraft:sand", id: "sand", namespace: "minecraft" },
+            displayName: "sand",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+          "cooking.result": {
+            type: "default_item",
+            id: { raw: "minecraft:glass", id: "glass", namespace: "minecraft" },
+            displayName: "glass",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+        },
+        crafting: { shapeless: true, keepWhitespace: false },
+        cooking: { time: 0, experience: 0 },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+        input: { item: "minecraft:sand" },
+        output: { item: "minecraft:glass", count: 1 },
+      });
+    });
+  });
 });

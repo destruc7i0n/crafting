@@ -17,12 +17,16 @@ export const defaultMinecraftVersions = [
   MinecraftVersion.V121,
   MinecraftVersion.V1212,
   MinecraftVersion.V1214,
+  MinecraftVersion.V1217,
+  MinecraftVersion.V1219,
+  MinecraftVersion.V12111,
 ];
 
-export const latestMinecraftVersion = MinecraftVersion.V1214;
+export const latestMinecraftVersion = MinecraftVersion.V12111;
 
 export const recipeTypeToJavaType: Record<RecipeType, string> = {
   [RecipeType.Crafting]: "minecraft:crafting_shaped",
+  [RecipeType.CraftingTransmute]: "minecraft:crafting_transmute",
   [RecipeType.Smelting]: "minecraft:smelting",
   [RecipeType.CampfireCooking]: "minecraft:campfire_cooking",
   [RecipeType.Blasting]: "minecraft:blasting",
@@ -35,6 +39,7 @@ export const recipeTypeToJavaType: Record<RecipeType, string> = {
 
 export const recipeTypeToName: Record<RecipeType, string> = {
   [RecipeType.Crafting]: "Crafting",
+  [RecipeType.CraftingTransmute]: "Crafting Transmute",
   [RecipeType.Smelting]: "Smelting",
   [RecipeType.CampfireCooking]: "Campfire Cooking",
   [RecipeType.Blasting]: "Blasting",
@@ -47,6 +52,7 @@ export const recipeTypeToName: Record<RecipeType, string> = {
 
 export const recipeTypeToItemId: Record<RecipeType, string> = {
   [RecipeType.Crafting]: "minecraft:crafting_table",
+  [RecipeType.CraftingTransmute]: "minecraft:crafting_table",
   [RecipeType.Smelting]: "minecraft:furnace",
   [RecipeType.CampfireCooking]: "minecraft:campfire",
   [RecipeType.Blasting]: "minecraft:blast_furnace",

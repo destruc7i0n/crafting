@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef, useState } from "react";
 
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { centerUnderPointer } from "@atlaskit/pragmatic-drag-and-drop/element/center-under-pointer";
@@ -47,8 +47,9 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         setCustomNativeDragPreview({
           getOffset: centerUnderPointer,
           render({ container }) {
-            ReactDOM.render(<ItemPreview texture={item.texture} />, container);
-            return () => ReactDOM.unmountComponentAtNode(container);
+            const root = createRoot(container);
+            root.render(<ItemPreview texture={item.texture} />);
+            return () => root.unmount();
           },
           nativeSetDragImage,
         });

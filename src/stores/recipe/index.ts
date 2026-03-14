@@ -7,7 +7,7 @@ import { Item as ItemModel } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
 
 export interface SingleRecipeState {
-  recipeName: string;
+  recipeName?: string;
   recipeType: RecipeType;
   group: string;
   slots: Partial<Record<RecipeSlot, ItemModel>>;
@@ -19,7 +19,10 @@ export interface SingleRecipeState {
     time: number;
     experience: number;
   };
-  bedrock: Record<string, never>;
+  bedrock?: {
+    identifier: string;
+    priority: number;
+  };
   // smithing: {};
 }
 
@@ -41,6 +44,8 @@ type RecipeActions = {
   setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => void;
   setRecipeCookingTime: (time: number) => void;
   setRecipeCoolingExperience: (experience: number) => void;
+  setRecipeBedrockIdentifier: (identifier: string) => void;
+  setRecipeBedrockPriority: (priority: number) => void;
 };
 
 const clone = rfdc();
@@ -58,7 +63,10 @@ const getDefaultRecipe = (): SingleRecipeState => {
       time: 0,
       experience: 0,
     },
-    bedrock: {},
+    bedrock: {
+      identifier: "crafting:recipe",
+      priority: 0,
+    },
     // smithing: {},
   };
 
@@ -132,6 +140,30 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
       set((state) => {
         state.recipes[state.selectedRecipeIndex].cooking.experience =
           experience;
+      });
+    },
+    setRecipeBedrockIdentifier: (identifier: string) => {
+      set((state) => {
+        const recipe = state.recipes[state.selectedRecipeIndex];
+        if (!recipe) return;
+
+        recipe.bedrock ??= {
+          identifier: "crafting:recipe",
+          priority: 0,
+        };
+        recipe.bedrock.identifier = identifier;
+      });
+    },
+    setRecipeBedrockPriority: (priority: number) => {
+      set((state) => {
+        const recipe = state.recipes[state.selectedRecipeIndex];
+        if (!recipe) return;
+
+        recipe.bedrock ??= {
+          identifier: "crafting:recipe",
+          priority: 0,
+        };
+        recipe.bedrock.priority = priority;
       });
     },
   })),

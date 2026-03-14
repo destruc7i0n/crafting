@@ -33,10 +33,24 @@ export const getSupportedRecipeTypesForVersion = (
     case MinecraftVersion.V119:
     case MinecraftVersion.V120:
     case MinecraftVersion.V121:
-    case MinecraftVersion.V1212:
-    case MinecraftVersion.V1214:
       return [
         RecipeType.Crafting,
+        RecipeType.Smelting,
+        RecipeType.Blasting,
+        RecipeType.CampfireCooking,
+        RecipeType.Smoking,
+        RecipeType.Stonecutter,
+        RecipeType.SmithingTransform,
+        RecipeType.SmithingTrim,
+      ];
+    case MinecraftVersion.V1212:
+    case MinecraftVersion.V1214:
+    case MinecraftVersion.V1217:
+    case MinecraftVersion.V1219:
+    case MinecraftVersion.V12111:
+      return [
+        RecipeType.Crafting,
+        RecipeType.CraftingTransmute,
         RecipeType.Smelting,
         RecipeType.Blasting,
         RecipeType.CampfireCooking,

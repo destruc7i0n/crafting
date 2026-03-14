@@ -593,4 +593,80 @@ describe("generate crafting", () => {
       });
     });
   });
+
+  describe("1.21+ and bedrock", () => {
+    it("should generate 1.21 shapeless recipe with id result", () => {
+      const recipeSlice: SingleRecipeState = {
+        recipeType: RecipeType.Crafting,
+        group: "",
+        slots: {
+          "crafting.1": {
+            type: "default_item",
+            id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
+            displayName: "stone",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.V121,
+          },
+          "crafting.result": {
+            type: "default_item",
+            id: { raw: "minecraft:stone_button", id: "stone_button", namespace: "minecraft" },
+            displayName: "stone_button",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.V121,
+          },
+        },
+        crafting: { shapeless: true, keepWhitespace: false },
+        cooking: { time: 0, experience: 0 },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
+        type: "minecraft:crafting_shapeless",
+        ingredients: [{ item: "minecraft:stone" }],
+        result: { id: "minecraft:stone_button", count: 1 },
+      });
+    });
+
+    it("should generate bedrock shaped recipe body", () => {
+      const recipeSlice: SingleRecipeState = {
+        recipeType: RecipeType.Crafting,
+        group: "",
+        slots: {
+          "crafting.1": {
+            type: "default_item",
+            id: { raw: "minecraft:planks", id: "planks", namespace: "minecraft" },
+            displayName: "planks",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+          "crafting.2": {
+            type: "default_item",
+            id: { raw: "minecraft:planks", id: "planks", namespace: "minecraft" },
+            displayName: "planks",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+          "crafting.result": {
+            type: "default_item",
+            id: { raw: "minecraft:stick", id: "stick", namespace: "minecraft" },
+            displayName: "stick",
+            texture: "",
+            count: 4,
+            _version: MinecraftVersion.Bedrock,
+          },
+        },
+        crafting: { shapeless: false, keepWhitespace: false },
+        cooking: { time: 0, experience: 0 },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+        pattern: ["##"],
+        key: { "#": { item: "minecraft:planks" } },
+        result: { item: "minecraft:stick", count: 4 },
+      });
+    });
+  });
 });

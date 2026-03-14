@@ -1,22 +1,16 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
-import {
-  get112ItemOutputFormat,
-  get113ItemOutputFormat,
-  get121ItemOutputFormat,
-} from "./shared";
+import { createFormatStrategy } from "./format/item-formatter";
+import { FormatStrategy } from "./format/types";
 import { Item } from "../models/types";
+import { MinecraftVersion } from "../types";
 import {
-  MinecraftVersion,
-  Shaped121RecipeFormat,
-  Shapeless121RecipeFormat,
-} from "../types";
-import {
-  Shaped112RecipeFormat,
-  Shaped114RecipeFormat,
-  Shapeless112RecipeFormat,
-  Shapeless114RecipeFormat,
-} from "../types";
+  BedrockShapedBody,
+  BedrockShapelessBody,
+  CraftingInput,
+  ShapedCraftingRecipe,
+  ShapelessCraftingRecipe,
+} from "./recipes/types";
 
 const PATTERN_CHARACTERS = [
   "#",
@@ -132,11 +126,80 @@ function getKeyForGrid(grid: (Item | undefined)[]): {
   return { key, reverse };
 }
 
-export function generate(
-  state: SingleRecipeState,
-  version: MinecraftVersion,
-): object {
-  const grid: (Item | undefined)[] = [
+export const buildJava = (
+  state: CraftingInput,
+  formatter: FormatStrategy,
+):
+  | ShapedCraftingRecipe
+  | ShapelessCraftingRecipe => {
+  const grid = state.grid;
+  const populatedSlots = grid.filter(Boolean);
+
+  const group = state.group.length > 0 ? state.group : undefined;
+
+  const { key, reverse } = getKeyForGrid(grid);
+
+  const hasResult = state.result !== undefined;
+
+  const getResult = () =>
+    hasResult ? formatter.objectResult(state.result!.id, state.result!.count) : {};
+
+  if (state.shapeless) {
+    return {
+      type: formatter.recipeType("crafting_shapeless") as ShapelessCraftingRecipe["type"],
+      ingredients: populatedSlots.map((item) => formatter.ingredient(item!.id)),
+      group,
+      result: getResult(),
+    } satisfies ShapelessCraftingRecipe;
+  }
+
+  return {
+    type: formatter.recipeType("crafting_shaped") as ShapedCraftingRecipe["type"],
+    pattern: getPattern(grid, reverse, state.keepWhitespace),
+    key: Object.fromEntries(
+      Object.entries(key).map(([keyName, item]) => [
+        keyName,
+        formatter.ingredient(item.id),
+      ]),
+    ),
+    group,
+    result: getResult(),
+  } satisfies ShapedCraftingRecipe;
+};
+
+export const buildBedrock = (
+  state: CraftingInput,
+  formatter: FormatStrategy,
+): BedrockShapedBody | BedrockShapelessBody => {
+  const grid = state.grid;
+  const populatedSlots = grid.filter(Boolean);
+  const { key, reverse } = getKeyForGrid(grid);
+
+  const result = state.result
+    ? formatter.objectResult(state.result.id, state.result.count)
+    : {};
+
+  if (state.shapeless) {
+    return {
+      ingredients: populatedSlots.map((item) => formatter.ingredient(item!.id)),
+      result,
+    } satisfies BedrockShapelessBody;
+  }
+
+  return {
+    pattern: getPattern(grid, reverse, state.keepWhitespace),
+    key: Object.fromEntries(
+      Object.entries(key).map(([keyName, item]) => [
+        keyName,
+        formatter.ingredient(item.id),
+      ]),
+    ) as BedrockShapedBody["key"],
+    result,
+  } satisfies BedrockShapedBody;
+};
+
+const extractInput = (state: SingleRecipeState): CraftingInput => ({
+  grid: [
     state.slots["crafting.1"],
     state.slots["crafting.2"],
     state.slots["crafting.3"],
@@ -146,112 +209,27 @@ export function generate(
     state.slots["crafting.7"],
     state.slots["crafting.8"],
     state.slots["crafting.9"],
-  ];
-  const populatedSlots = grid.filter(Boolean);
+  ],
+  result: state.slots["crafting.result"],
+  shapeless: state.crafting.shapeless,
+  keepWhitespace: state.crafting.keepWhitespace,
+  group: state.group,
+});
 
-  const group = state.group.length > 0 ? state.group : undefined;
+export const generate = (
+  state: SingleRecipeState,
+  version: MinecraftVersion,
+):
+  | ShapedCraftingRecipe
+  | ShapelessCraftingRecipe
+  | BedrockShapedBody
+  | BedrockShapelessBody => {
+  const input = extractInput(state);
+  const formatter = createFormatStrategy(version);
 
-  const { key, reverse } = getKeyForGrid(grid);
-
-  const hasResult = state.slots["crafting.result"] !== undefined;
-
-  switch (version) {
-    case MinecraftVersion.V112:
-    case MinecraftVersion.V113:
-      if (state.crafting.shapeless) {
-        return {
-          type: "crafting_shapeless",
-          ingredients: populatedSlots.map((item) =>
-            get112ItemOutputFormat(item!, false),
-          ),
-          group,
-          result: hasResult
-            ? get112ItemOutputFormat(state.slots["crafting.result"]!, true)
-            : {},
-        } satisfies Shapeless112RecipeFormat;
-      } else {
-        return {
-          type: "crafting_shaped",
-          pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
-          key: Object.fromEntries(
-            Object.entries(key).map(([keyName, item]) => [
-              keyName,
-              get112ItemOutputFormat(item, false),
-            ]),
-          ),
-          group,
-          result: hasResult
-            ? get112ItemOutputFormat(state.slots["crafting.result"]!, true)
-            : {},
-        } satisfies Shaped112RecipeFormat;
-      }
-    case MinecraftVersion.V114:
-    case MinecraftVersion.V115:
-    case MinecraftVersion.V116:
-    case MinecraftVersion.V117:
-    case MinecraftVersion.V118:
-    case MinecraftVersion.V119:
-    case MinecraftVersion.V120:
-      if (state.crafting.shapeless) {
-        return {
-          type: "minecraft:crafting_shapeless",
-          ingredients: populatedSlots.map((item) =>
-            get113ItemOutputFormat(item!, false),
-          ),
-          group,
-          result: hasResult
-            ? get113ItemOutputFormat(state.slots["crafting.result"]!, true)
-            : {},
-        } satisfies Shapeless114RecipeFormat;
-      } else {
-        return {
-          type: "minecraft:crafting_shaped",
-          pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
-          key: Object.fromEntries(
-            Object.entries(key).map(([keyName, item]) => [
-              keyName,
-              get113ItemOutputFormat(item, false),
-            ]),
-          ),
-          group,
-          result: hasResult
-            ? get113ItemOutputFormat(state.slots["crafting.result"]!, true)
-            : {},
-        } satisfies Shaped114RecipeFormat;
-      }
-    case MinecraftVersion.V121:
-      if (state.crafting.shapeless) {
-        return {
-          type: "minecraft:crafting_shapeless",
-          ingredients: populatedSlots.map((item) =>
-            get113ItemOutputFormat(item!, false),
-          ),
-          group,
-          result: hasResult
-            ? get121ItemOutputFormat(state.slots["crafting.result"]!, false)
-            : {},
-        } satisfies Shapeless121RecipeFormat;
-      } else {
-        return {
-          type: "minecraft:crafting_shaped",
-          pattern: getPattern(grid, reverse, state.crafting.keepWhitespace),
-          key: Object.fromEntries(
-            Object.entries(key).map(([keyName, item]) => [
-              keyName,
-              get113ItemOutputFormat(item, false),
-            ]),
-          ),
-          group,
-          result: hasResult
-            ? get121ItemOutputFormat(state.slots["crafting.result"]!, true)
-            : {},
-        } satisfies Shaped121RecipeFormat;
-      }
-    default:
-      return {};
+  if (version === MinecraftVersion.Bedrock) {
+    return buildBedrock(input, formatter);
   }
-}
 
-export function generateBedrock() {
-  return {};
-}
+  return buildJava(input, formatter);
+};

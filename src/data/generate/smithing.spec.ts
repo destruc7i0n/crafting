@@ -224,4 +224,90 @@ describe("generate smithing", () => {
       });
     });
   });
+
+  describe("bedrock", () => {
+    it("should generate bedrock smithing trim body", () => {
+      const recipeSlice: SingleRecipeState = {
+        recipeType: RecipeType.SmithingTrim,
+        group: "",
+        slots: {
+          "smithing.template": {
+            type: "default_item",
+            id: { raw: "minecraft:trim_templates", id: "trim_templates", namespace: "minecraft" },
+            displayName: "trim_templates",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+          "smithing.base": {
+            type: "default_item",
+            id: { raw: "minecraft:trimmable_armors", id: "trimmable_armors", namespace: "minecraft" },
+            displayName: "trimmable_armors",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+          "smithing.addition": {
+            type: "default_item",
+            id: { raw: "minecraft:trim_materials", id: "trim_materials", namespace: "minecraft" },
+            displayName: "trim_materials",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+        },
+        cooking: { experience: 0, time: 0 },
+        crafting: { keepWhitespace: false, shapeless: false },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+        template: { tag: "minecraft:trim_templates" },
+        base: { tag: "minecraft:trimmable_armors" },
+        addition: { tag: "minecraft:trim_materials" },
+      });
+    });
+
+    it("should generate bedrock legacy smithing body", () => {
+      const recipeSlice: SingleRecipeState = {
+        recipeType: RecipeType.Smithing,
+        group: "",
+        slots: {
+          "smithing.base": {
+            type: "default_item",
+            id: { raw: "minecraft:diamond_sword", id: "diamond_sword", namespace: "minecraft" },
+            displayName: "diamond_sword",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+          "smithing.addition": {
+            type: "default_item",
+            id: { raw: "minecraft:netherite_ingot", id: "netherite_ingot", namespace: "minecraft" },
+            displayName: "netherite_ingot",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+          "smithing.result": {
+            type: "default_item",
+            id: { raw: "minecraft:netherite_sword", id: "netherite_sword", namespace: "minecraft" },
+            displayName: "netherite_sword",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+        },
+        cooking: { experience: 0, time: 0 },
+        crafting: { keepWhitespace: false, shapeless: false },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+        ingredients: [
+          { item: "minecraft:diamond_sword" },
+          { item: "minecraft:netherite_ingot" },
+        ],
+        result: { item: "minecraft:netherite_sword", count: 1 },
+      });
+    });
+  });
 });

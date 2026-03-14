@@ -1,45 +1,58 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
-import { get113ItemOutputFormat, get121ItemOutputFormat } from "./shared";
+import { createFormatStrategy } from "./format/item-formatter";
+import { FormatStrategy } from "./format/types";
+import { MinecraftVersion } from "../types";
 import {
-  MinecraftVersion,
-  StonecuttingRecipe114Format,
-  StonecuttingRecipe121Format,
-} from "../types";
+  BedrockShapelessBody,
+  StonecutterInput,
+  StonecuttingRecipe,
+} from "./recipes/types";
 
-export function generate(
+export const buildJava = (
+  state: StonecutterInput,
+  formatter: FormatStrategy,
+): StonecuttingRecipe => {
+  const result = state.result
+    ? formatter.stonecutterResult(state.result.id, state.result.count)
+    : { result: {} };
+
+  return {
+    type: formatter.recipeType("stonecutting") as "minecraft:stonecutting",
+    group: state.group.length > 0 ? state.group : undefined,
+    ingredient: state.ingredient ? formatter.ingredient(state.ingredient.id) : {},
+    ...result,
+  } satisfies StonecuttingRecipe;
+};
+
+export const buildBedrock = (
+  state: StonecutterInput,
+  formatter: FormatStrategy,
+): BedrockShapelessBody => {
+  return {
+    ingredients: state.ingredient ? [formatter.ingredient(state.ingredient.id)] : [],
+    result: state.result
+      ? formatter.objectResult(state.result.id, state.result.count)
+      : {},
+  } satisfies BedrockShapelessBody;
+};
+
+const extractInput = (state: SingleRecipeState): StonecutterInput => ({
+  ingredient: state.slots["stonecutter.ingredient"],
+  result: state.slots["stonecutter.result"],
+  group: state.group,
+});
+
+export const generate = (
   state: SingleRecipeState,
   version: MinecraftVersion,
-): object {
-  switch (version) {
-    case MinecraftVersion.V114:
-    case MinecraftVersion.V115:
-    case MinecraftVersion.V116:
-    case MinecraftVersion.V117:
-    case MinecraftVersion.V118:
-    case MinecraftVersion.V119:
-    case MinecraftVersion.V120:
-      return {
-        type: "minecraft:stonecutting",
-        group: state.group.length > 0 ? state.group : undefined,
-        ingredient: state.slots["stonecutter.ingredient"]
-          ? get113ItemOutputFormat(state.slots["stonecutter.ingredient"], false)
-          : {},
-        result: state.slots["stonecutter.result"]?.id.raw ?? "",
-        count: state.slots["stonecutter.result"]?.count ?? 1,
-      } satisfies StonecuttingRecipe114Format;
-    case MinecraftVersion.V121:
-      return {
-        type: "minecraft:stonecutting",
-        group: state.group.length > 0 ? state.group : undefined,
-        ingredient: state.slots["stonecutter.ingredient"]
-          ? get113ItemOutputFormat(state.slots["stonecutter.ingredient"], false)
-          : {},
-        result: state.slots["stonecutter.result"]
-          ? get121ItemOutputFormat(state.slots["stonecutter.result"], false)
-          : {},
-      } satisfies StonecuttingRecipe121Format;
-    default:
-      return {};
+): StonecuttingRecipe | BedrockShapelessBody => {
+  const input = extractInput(state);
+  const formatter = createFormatStrategy(version);
+
+  if (version === MinecraftVersion.Bedrock) {
+    return buildBedrock(input, formatter);
   }
-}
+
+  return buildJava(input, formatter);
+};

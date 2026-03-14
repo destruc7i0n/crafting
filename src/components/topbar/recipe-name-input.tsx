@@ -16,7 +16,7 @@ export const RecipeNameInput = () => {
   const selectedRecipeIndex = useRecipeStore(
     (state) => state.selectedRecipeIndex,
   );
-  const recipeName = recipes[selectedRecipeIndex].recipeName;
+  const recipeName = recipes[selectedRecipeIndex]?.recipeName ?? "";
   const setRecipeName = useRecipeStore((state) => state.setRecipeName);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export const RecipeNameInput = () => {
     if (isValid) {
       setRecipeName(recipeInput);
     } else {
-      setRecipeInput(recipeName);
+      setRecipeInput(recipeName ?? "");
     }
     setIsEditing(false);
   };
