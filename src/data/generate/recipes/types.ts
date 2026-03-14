@@ -198,6 +198,7 @@ export interface CraftingInput {
   result: ItemModel | undefined;
   shapeless: boolean;
   keepWhitespace: boolean;
+  twoByTwo?: boolean;
   group: string;
 }
 

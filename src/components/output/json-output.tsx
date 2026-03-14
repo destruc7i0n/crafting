@@ -1,8 +1,6 @@
 import { Refractor, registerLanguage } from "react-refractor";
 import json from "refractor/json";
 
-import { JsonButtonCopyButton } from "./json-output-copy-button";
-
 registerLanguage(json);
 
 type JsonOutputProps = {
@@ -13,12 +11,10 @@ export const JsonOutput = ({ json }: JsonOutputProps) => {
   const preview = JSON.stringify(json, null, 2);
 
   return (
-    <div className="relative">
-      <Refractor language="json" value={preview} className="!m-0 overflow-x-auto" />
-
-      <div className="absolute right-0 top-0">
-        <JsonButtonCopyButton json={json} />
-      </div>
-    </div>
+    <Refractor
+      language="json"
+      value={preview}
+      className="json-refractor !m-0 !rounded-t-none overflow-x-auto p-3 text-sm"
+    />
   );
 };

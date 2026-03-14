@@ -1,5 +1,4 @@
 import rfdc from "rfdc";
-import { v4 as uuid } from "uuid";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
@@ -7,6 +6,7 @@ import { Item as ItemModel } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
 
 export interface SingleRecipeState {
+  id?: string;
   recipeName?: string;
   recipeType: RecipeType;
   group: string;
@@ -14,6 +14,7 @@ export interface SingleRecipeState {
   crafting: {
     shapeless: boolean;
     keepWhitespace: boolean;
+    twoByTwo?: boolean;
   };
   cooking: {
     time: number;
@@ -37,20 +38,27 @@ type RecipeActions = {
   deleteRecipe: (index: number) => void;
 
   setRecipeName: (name: string) => void;
+  setRecipeNameAtIndex: (index: number, name: string) => void;
   setRecipeType: (type: RecipeType) => void;
   setRecipeGroup: (group: string) => void;
   setRecipeSlot: (slot: RecipeSlot, item?: ItemModel) => void;
   setRecipeCraftingShapeless: (shapeless: boolean) => void;
   setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => void;
+  setRecipeCraftingTwoByTwo: (twoByTwo: boolean) => void;
   setRecipeCookingTime: (time: number) => void;
   setRecipeCoolingExperience: (experience: number) => void;
   setRecipeBedrockIdentifier: (identifier: string) => void;
   setRecipeBedrockPriority: (priority: number) => void;
+  clearAllSlots: () => void;
 };
 
 const clone = rfdc();
+const createRecipeId = () =>
+  globalThis.crypto?.randomUUID?.() ?? `recipe-${Math.random().toString(36).slice(2)}`;
+
 const getDefaultRecipe = (): SingleRecipeState => {
   const recipe: SingleRecipeState = {
+    id: createRecipeId(),
     recipeName: "recipe_1",
     recipeType: RecipeType.Crafting,
     group: "",
@@ -58,6 +66,7 @@ const getDefaultRecipe = (): SingleRecipeState => {
     crafting: {
       shapeless: false,
       keepWhitespace: true,
+      twoByTwo: false,
     },
     cooking: {
       time: 0,
@@ -86,8 +95,12 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
     createRecipe: () => {
       set((state) => {
         const recipe: SingleRecipeState = getDefaultRecipe();
-        const name = `recipe_${uuid()}`;
-        recipe.recipeName = name;
+        const existingNumbers = state.recipes
+          .map((r) => r.recipeName?.match(/^recipe_(\d+)$/))
+          .filter(Boolean)
+          .map((m) => Number(m![1]));
+        const next = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+        recipe.recipeName = `recipe_${next}`;
 
         state.recipes.push(recipe);
         state.selectedRecipeIndex = state.recipes.length - 1;
@@ -103,6 +116,11 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
     setRecipeName: (name: string) => {
       set((state) => {
         state.recipes[state.selectedRecipeIndex].recipeName = name;
+      });
+    },
+    setRecipeNameAtIndex: (index: number, name: string) => {
+      set((state) => {
+        state.recipes[index].recipeName = name;
       });
     },
     setRecipeType: (type: RecipeType) => {
@@ -128,6 +146,11 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
     setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => {
       set((state) => {
         state.recipes[state.selectedRecipeIndex].crafting.keepWhitespace = keepWhitespace;
+      });
+    },
+    setRecipeCraftingTwoByTwo: (twoByTwo: boolean) => {
+      set((state) => {
+        state.recipes[state.selectedRecipeIndex].crafting.twoByTwo = twoByTwo;
       });
     },
     setRecipeCookingTime: (time: number) => {
@@ -162,6 +185,13 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
           priority: 0,
         };
         recipe.bedrock.priority = priority;
+      });
+    },
+    clearAllSlots: () => {
+      set((state) => {
+        for (const recipe of state.recipes) {
+          recipe.slots = {};
+        }
       });
     },
   })),

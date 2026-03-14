@@ -6,7 +6,7 @@
 
 .slot:hover,
 .active {
-  @apply bg-white/40;
+  @apply bg-foreground/20;
 }
 
 .slot:before,

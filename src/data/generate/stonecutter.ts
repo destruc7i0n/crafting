@@ -37,6 +37,21 @@ const extractInput = (state: SingleRecipeState): StonecutterInput => ({
   group: state.group,
 });
 
+export const validateStonecutter = (state: SingleRecipeState): string[] => {
+  const input = extractInput(state);
+  const errors: string[] = [];
+
+  if (!input.ingredient) {
+    errors.push("Add an ingredient item");
+  }
+
+  if (!input.result) {
+    errors.push("Add a result item");
+  }
+
+  return errors;
+};
+
 export const generate = (
   state: SingleRecipeState,
   version: MinecraftVersion,

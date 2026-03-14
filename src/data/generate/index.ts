@@ -3,7 +3,11 @@ import { SingleRecipeState } from "@/stores/recipe";
 import { createFormatStrategy } from "./format/item-formatter";
 import { wrapBedrockRecipe } from "./wrapper/bedrock";
 import { buildBedrock as buildBedrockCooking, buildJava as buildJavaCooking } from "./cooking";
-import { buildBedrock as buildBedrockCrafting, buildJava as buildJavaCrafting } from "./crafting";
+import {
+  buildBedrock as buildBedrockCrafting,
+  buildJava as buildJavaCrafting,
+  extractCraftingInput,
+} from "./crafting";
 import { buildBedrock as buildBedrockSmithing, buildJava as buildJavaSmithing } from "./smithing";
 import {
   buildBedrock as buildBedrockStonecutter,
@@ -15,31 +19,12 @@ import {
   BedrockBody,
   BedrockRecipeMeta,
   CookingInput,
-  CraftingInput,
   GeneratedRecipe,
   JavaRecipe,
   SmithingInput,
   StonecutterInput,
   TransmuteInput,
 } from "./recipes/types";
-
-const extractCraftingInput = (state: SingleRecipeState): CraftingInput => ({
-  grid: [
-    state.slots["crafting.1"],
-    state.slots["crafting.2"],
-    state.slots["crafting.3"],
-    state.slots["crafting.4"],
-    state.slots["crafting.5"],
-    state.slots["crafting.6"],
-    state.slots["crafting.7"],
-    state.slots["crafting.8"],
-    state.slots["crafting.9"],
-  ],
-  result: state.slots["crafting.result"],
-  shapeless: state.crafting.shapeless,
-  keepWhitespace: state.crafting.keepWhitespace,
-  group: state.group,
-});
 
 const extractCookingInput = (state: SingleRecipeState): CookingInput => ({
   recipeType: state.recipeType as CookingInput["recipeType"],

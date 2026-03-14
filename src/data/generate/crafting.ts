@@ -26,19 +26,48 @@ function getPattern(
     pattern[rowIndex] = pattern[rowIndex] || "";
     if (item) {
       pattern[rowIndex] += reverseMap[item.id.raw];
-    } else if (keepWhitespace) {
+    } else {
       pattern[rowIndex] += " ";
     }
   }
 
   if (!keepWhitespace) {
-    while (pattern[0].trim() === "") pattern.shift();
-    while (pattern[pattern.length - 1].trim() === "") pattern.pop();
+    while (pattern.length > 0 && (pattern[0] ?? "").trim() === "") pattern.shift();
+    while (pattern.length > 0 && (pattern[pattern.length - 1] ?? "").trim() === "") pattern.pop();
 
-    // pad the pattern with whitespace to make it rectangular
-    const maxLength = Math.max(...pattern.map((row) => row.length));
+    if (pattern.length === 0) {
+      return pattern;
+    }
+
+    let minColumn = Number.POSITIVE_INFINITY;
+    let maxColumn = 0;
+
+    for (const row of pattern) {
+      let firstNonWhitespace = -1;
+      let lastNonWhitespace = -1;
+
+      for (let index = 0; index < row.length; index++) {
+        if (row[index] === " ") {
+          continue;
+        }
+
+        if (firstNonWhitespace === -1) {
+          firstNonWhitespace = index;
+        }
+
+        lastNonWhitespace = index;
+      }
+
+      if (firstNonWhitespace === -1) {
+        continue;
+      }
+
+      minColumn = Math.min(minColumn, firstNonWhitespace);
+      maxColumn = Math.max(maxColumn, lastNonWhitespace + 1);
+    }
+
     for (let i = 0; i < pattern.length; i++) {
-      while (pattern[i].length < maxLength) pattern[i] += " ";
+      pattern[i] = pattern[i].substring(minColumn, maxColumn);
     }
   }
 
@@ -181,7 +210,7 @@ export const buildBedrock = (
   } satisfies BedrockShapedBody;
 };
 
-const extractInput = (state: SingleRecipeState): CraftingInput => ({
+export const extractCraftingInput = (state: SingleRecipeState): CraftingInput => ({
   grid: [
     state.slots["crafting.1"],
     state.slots["crafting.2"],
@@ -192,18 +221,42 @@ const extractInput = (state: SingleRecipeState): CraftingInput => ({
     state.slots["crafting.7"],
     state.slots["crafting.8"],
     state.slots["crafting.9"],
-  ],
+  ].map((item, index) => {
+    const disabledSlots = [2, 5, 6, 7, 8];
+
+    if (!state.crafting.twoByTwo) {
+      return item;
+    }
+
+    return disabledSlots.includes(index) ? undefined : item;
+  }),
   result: state.slots["crafting.result"],
   shapeless: state.crafting.shapeless,
   keepWhitespace: state.crafting.keepWhitespace,
+  twoByTwo: state.crafting.twoByTwo === true,
   group: state.group,
 });
+
+export const validateCrafting = (state: SingleRecipeState): string[] => {
+  const input = extractCraftingInput(state);
+  const errors: string[] = [];
+
+  if (!input.grid.some(Boolean)) {
+    errors.push("Add at least one crafting ingredient");
+  }
+
+  if (!input.result) {
+    errors.push("Add a result item");
+  }
+
+  return errors;
+};
 
 export const generate = (
   state: SingleRecipeState,
   version: MinecraftVersion,
 ): ShapedCraftingRecipe | ShapelessCraftingRecipe | BedrockShapedBody | BedrockShapelessBody => {
-  const input = extractInput(state);
+  const input = extractCraftingInput(state);
   const formatter = createFormatStrategy(version);
 
   if (version === MinecraftVersion.Bedrock) {

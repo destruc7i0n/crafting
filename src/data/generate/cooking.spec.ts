@@ -281,6 +281,8 @@ describe("generate cooking", () => {
         type: "minecraft:smelting",
         ingredient: { item: "minecraft:iron_ore" },
         result: { id: "minecraft:iron_ingot", count: 2 },
+        experience: 0,
+        cookingtime: 0,
       });
     });
 

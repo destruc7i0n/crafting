@@ -81,6 +81,34 @@ const extractInput = (state: SingleRecipeState): SmithingInput => ({
   result: state.slots["smithing.result"],
 });
 
+export const validateSmithing = (state: SingleRecipeState): string[] => {
+  const input = extractInput(state);
+  const errors: string[] = [];
+
+  if (
+    input.recipeType === RecipeType.SmithingTrim ||
+    input.recipeType === RecipeType.SmithingTransform
+  ) {
+    if (!input.template) {
+      errors.push("Add a template item");
+    }
+  }
+
+  if (!input.base) {
+    errors.push("Add a base item");
+  }
+
+  if (!input.addition) {
+    errors.push("Add an addition item");
+  }
+
+  if (input.recipeType !== RecipeType.SmithingTrim && !input.result) {
+    errors.push("Add a result item");
+  }
+
+  return errors;
+};
+
 export const generate = (
   state: SingleRecipeState,
   version: MinecraftVersion,

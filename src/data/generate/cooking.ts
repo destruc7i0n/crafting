@@ -30,8 +30,8 @@ export const buildJava = (state: CookingInput, formatter: FormatStrategy): Cooki
 
   const constantFields: Pick<CookingRecipe, "group" | "experience" | "cookingtime"> = {
     group,
-    experience: state.experience > 0 ? state.experience : undefined,
-    cookingtime: state.time > 0 ? state.time : undefined,
+    experience: state.experience,
+    cookingtime: state.time,
   };
 
   return {
@@ -63,6 +63,21 @@ const extractInput = (state: SingleRecipeState): CookingInput => ({
   experience: state.cooking.experience,
   group: state.group,
 });
+
+export const validateCooking = (state: SingleRecipeState): string[] => {
+  const input = extractInput(state);
+  const errors: string[] = [];
+
+  if (!input.ingredient) {
+    errors.push("Add an ingredient item");
+  }
+
+  if (!input.result) {
+    errors.push("Add a result item");
+  }
+
+  return errors;
+};
 
 export const generate = (
   state: SingleRecipeState,

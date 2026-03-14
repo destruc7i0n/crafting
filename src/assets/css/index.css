@@ -5,51 +5,73 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 224 10% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 224 10% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 142.1 76.2% 36.3%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --popover-foreground: 224 10% 10%;
+    --primary: 152 60% 36%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 150 10% 95%;
+    --secondary-foreground: 220 9% 12%;
+    --muted: 150 10% 95%;
+    --muted-foreground: 220 8% 40%;
+    --accent: 150 14% 93%;
+    --accent-foreground: 220 9% 12%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 142.1 76.2% 36.3%;
+    --border: 210 12% 86%;
+    --input: 210 12% 86%;
+    --ring: 152 60% 36%;
     --radius: 0.5rem;
+
+    --header-bg: 0 0% 13.3%;
+    --header-fg: 0 0% 96%;
 
     --minecraft-inventory-bg: 0 0% 77.65%;
     --minecraft-slot-bg: 0 0% 54.51%;
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
-    --card: 24 9.8% 10%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 142.1 70.6% 45.3%;
-    --primary-foreground: 144.9 80.4% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 0 0% 98%;
+    --background: 200 10% 6%;
+    --foreground: 210 20% 94%;
+    --card: 200 8% 11%;
+    --card-foreground: 210 20% 94%;
+    --popover: 200 8% 11%;
+    --popover-foreground: 210 20% 94%;
+    --primary: 152 55% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 200 8% 16%;
+    --secondary-foreground: 210 20% 94%;
+    --muted: 200 8% 16%;
+    --muted-foreground: 210 10% 56%;
+    --accent: 200 8% 16%;
+    --accent-foreground: 210 20% 94%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 142.4 71.8% 29.2%;
+    --border: 200 8% 20%;
+    --input: 200 8% 20%;
+    --ring: 152 55% 45%;
+
+    --header-bg: 0 0% 13.3%;
+    --header-fg: 0 0% 96%;
+
+    --minecraft-inventory-bg: 0 0% 77.65%;
+    --minecraft-slot-bg: 0 0% 54.51%;
   }
+}
+
+.dark {
+  --color-fg-default: #c9d1d9;
+  --color-bg-code-block: #161b22;
+  --color-bg-inline-code-block: rgb(110 118 129 / 40%);
+  --color-gray: #8b949e;
+  --color-red: #ff7b72;
+  --color-green: #7ee787;
+  --color-blue: #79c0ff;
+  --color-indigo: #a5d6ff;
+  --color-purple: #d2a8ff;
+  --color-brown: #ffa657;
 }
 
 @layer base {
@@ -58,6 +80,16 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }
 

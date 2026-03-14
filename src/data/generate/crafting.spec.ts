@@ -477,6 +477,81 @@ describe("generate crafting", () => {
         });
       });
 
+      it("should preserve internal offsets when trimming whitespace", () => {
+        const recipeSlice: SingleRecipeState = {
+          recipeType: RecipeType.Crafting,
+          group: "",
+          slots: {
+            "crafting.2": {
+              type: "default_item",
+              id: {
+                raw: "minecraft:birch_wood",
+                id: "birch_wood",
+                namespace: "minecraft",
+              },
+              displayName: "birch_wood",
+              texture: "",
+              count: 1,
+              _version: MinecraftVersion.V114,
+            },
+            "crafting.5": {
+              type: "default_item",
+              id: {
+                raw: "minecraft:birch_wood",
+                id: "birch_wood",
+                namespace: "minecraft",
+              },
+              displayName: "birch_wood",
+              texture: "",
+              count: 1,
+              _version: MinecraftVersion.V114,
+            },
+            "crafting.9": {
+              type: "default_item",
+              id: {
+                raw: "minecraft:smooth_stone_slab",
+                id: "smooth_stone_slab",
+                namespace: "minecraft",
+              },
+              displayName: "smooth_stone_slab",
+              texture: "",
+              count: 1,
+              _version: MinecraftVersion.V114,
+            },
+            "crafting.result": {
+              type: "default_item",
+              id: {
+                raw: "minecraft:cobblestone",
+                id: "cobblestone",
+                namespace: "minecraft",
+              },
+              displayName: "cobblestone",
+              texture: "",
+              count: 10,
+              _version: MinecraftVersion.V114,
+            },
+          },
+          crafting: {
+            shapeless: false,
+            keepWhitespace: false,
+          },
+          cooking: {
+            time: 0,
+            experience: 0,
+          },
+        };
+
+        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: ["# ", "# ", " _"],
+          key: {
+            "#": { item: "minecraft:birch_wood" },
+            _: { item: "minecraft:smooth_stone_slab" },
+          },
+          result: { item: "minecraft:cobblestone", count: 10 },
+        });
+      });
+
       it("should generate a shaped recipe keeping whitespace", () => {
         const recipeSlice: SingleRecipeState = {
           recipeType: RecipeType.Crafting,

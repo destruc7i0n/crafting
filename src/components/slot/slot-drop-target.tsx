@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import invariant from "tiny-invariant";
 
+import { isItemDraggableData } from "@/lib/dnd";
+
 import { Slot, SlotProps } from "./slot";
 
 type SlotDropTargetProps<T extends Record<string, unknown>> = {
@@ -24,6 +26,7 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
 
     return dropTargetForElements({
       element: el,
+      canDrop: ({ source }) => isItemDraggableData(source.data),
       getData: () => data,
       onDragEnter: () => setIsDraggedOver(true),
       onDragLeave: () => setIsDraggedOver(false),

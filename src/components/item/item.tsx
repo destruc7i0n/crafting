@@ -10,6 +10,9 @@ import invariant from "tiny-invariant";
 
 import { Item as ItemType } from "@/data/models/types";
 import { ItemDraggableContainer, ItemDraggableData } from "@/lib/dnd";
+import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
+import { cn } from "@/lib/utils";
+import { useUIStore } from "@/stores/ui";
 
 import { ItemCount } from "./item-count";
 import { ItemPreview } from "./item-preview";
@@ -24,6 +27,12 @@ type IngredientProps = {
 export const Item = memo(({ item, container, showCount }: IngredientProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
   const [dragging, setDragging] = useState(false);
+  const isTouchDevice = useIsTouchDevice();
+  const selectedIngredient = useUIStore((state) => state.selectedIngredient);
+  const setSelectedIngredient = useUIStore((state) => state.setSelectedIngredient);
+
+  const isSelectedFromIngredients =
+    container === "ingredients" && selectedIngredient?.id.raw === item.id.raw;
 
   useEffect(() => {
     const el = ref.current;
@@ -38,6 +47,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
           // we can drop out from the preview container
           preventUnhandled.start();
         }
+        setSelectedIngredient(undefined);
         setDragging(true);
       },
       onDrop: () => setDragging(false),
@@ -54,7 +64,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         });
       },
     });
-  }, [item, container]);
+  }, [item, container, setSelectedIngredient]);
 
   return (
     <Tooltip title={item.displayName} description={item.id.raw} visible={!dragging}>
@@ -65,7 +75,12 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         style={{
           opacity: dragging ? 0.5 : 1,
         }}
-        className="cursor-move"
+        className={cn("cursor-move", isSelectedFromIngredients && "rounded ring-2 ring-primary")}
+        onClick={() => {
+          if (!isTouchDevice || container !== "ingredients") return;
+
+          setSelectedIngredient(item);
+        }}
       />
       {showCount && <ItemCount count={item.count ?? 1} />}
     </Tooltip>

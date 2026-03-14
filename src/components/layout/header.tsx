@@ -1,12 +1,30 @@
+import { ListIcon } from "lucide-react";
+
+import { useUIStore } from "@/stores/ui";
+
+import { ThemeToggle } from "./theme-toggle";
 import { VersionSelector } from "../fields/version-selector";
 
 export function Header() {
+  const setRecipeSidebarOpen = useUIStore((state) => state.setRecipeSidebarOpen);
+
   return (
-    <div className="px-4">
-      <header className="mx-auto my-4 flex max-w-screen-lg flex-1 items-center justify-between rounded-md border bg-background p-2">
-        <h1 className="text-2xl font-bold">Crafting Generator</h1>
+    <header className="flex items-center justify-between bg-[hsl(var(--header-bg))] px-4 py-3 text-[hsl(var(--header-fg))]">
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => setRecipeSidebarOpen(true)}
+          className="rounded-md p-2 transition-colors hover:bg-white/10 active:bg-white/20 lg:hidden"
+        >
+          <ListIcon size={16} />
+        </button>
+        <h1 className="text-xl font-bold">Crafting</h1>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
         <VersionSelector />
-      </header>
-    </div>
+      </div>
+    </header>
   );
 }

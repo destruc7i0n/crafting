@@ -21,13 +21,17 @@ export const ItemsList = () => {
   }, [resourceItems, search]);
 
   return (
-    <div className="flex max-h-[768px] w-full flex-1 flex-col gap-2 rounded-md border-2 p-2">
+    <div className="flex h-full w-full flex-1 min-h-0 flex-col gap-2 rounded-lg border p-2">
       <input
         type="text"
-        className="focus:shadow-outline w-full appearance-none rounded-md border px-3 py-2 text-sm leading-tight text-gray-700 placeholder:font-minecraft focus:outline-none"
+        className="w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-sm leading-tight text-foreground outline-none transition-colors placeholder:font-minecraft placeholder:text-muted-foreground hover:bg-accent focus:ring-2 focus:ring-ring"
         placeholder="Search Items and Tags..."
         onChange={(e) => setSearch(e.target.value)}
       />
+
+      <p className="text-xs text-muted-foreground lg:hidden">
+        Mobile tip: tap an item, then tap a recipe slot to place it.
+      </p>
 
       <div className="flex w-full flex-1 flex-col overflow-y-auto rounded-md bg-minecraft-inventory-bg">
         <TagsSection search={search} />

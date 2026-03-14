@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, type ReactNode } from "react";
 
 import { RecipeType } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
@@ -12,28 +12,44 @@ import { StonecutterPreview } from "./stonecutter";
 export const Preview = memo(() => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
 
+  let preview: ReactNode = null;
+
   switch (recipeType) {
     case RecipeType.Crafting: {
-      return <CraftingGridPreview />;
+      preview = <CraftingGridPreview />;
+      break;
     }
     case RecipeType.Smelting:
     case RecipeType.Blasting:
     case RecipeType.Smoking:
     case RecipeType.CampfireCooking: {
-      return <FurnacePreview />;
+      preview = <FurnacePreview />;
+      break;
     }
     case RecipeType.Smithing:
     case RecipeType.SmithingTransform:
     case RecipeType.SmithingTrim: {
-      return <SmithingPreview />;
+      preview = <SmithingPreview />;
+      break;
     }
     case RecipeType.Stonecutter: {
-      return <StonecutterPreview />;
+      preview = <StonecutterPreview />;
+      break;
     }
     default: {
-      return null;
+      preview = null;
     }
   }
+
+  if (!preview) {
+    return null;
+  }
+
+  return (
+    <div className="w-full overflow-x-auto pb-1">
+      <div className="mx-auto w-[352px]">{preview}</div>
+    </div>
+  );
 });
 
 Preview.displayName = "Preview";
