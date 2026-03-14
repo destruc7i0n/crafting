@@ -19,6 +19,7 @@ export interface SingleRecipeState {
     time: number;
     experience: number;
   };
+  bedrock: Record<string, never>;
   // smithing: {};
 }
 
@@ -57,6 +58,7 @@ const getDefaultRecipe = (): SingleRecipeState => {
       time: 0,
       experience: 0,
     },
+    bedrock: {},
     // smithing: {},
   };
 

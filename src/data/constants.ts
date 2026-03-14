@@ -15,9 +15,11 @@ export const defaultMinecraftVersions = [
   MinecraftVersion.V119,
   MinecraftVersion.V120,
   MinecraftVersion.V121,
+  MinecraftVersion.V1212,
+  MinecraftVersion.V1214,
 ];
 
-export const latestMinecraftVersion = MinecraftVersion.V121;
+export const latestMinecraftVersion = MinecraftVersion.V1214;
 
 export const recipeTypeToJavaType: Record<RecipeType, string> = {
   [RecipeType.Crafting]: "minecraft:crafting_shaped",

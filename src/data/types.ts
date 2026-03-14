@@ -30,6 +30,8 @@ export enum MinecraftVersion {
   V119 = "1.19",
   V120 = "1.20",
   V121 = "1.21",
+  V1212 = "1.21.2",
+  V1214 = "1.21.4",
 }
 
 export enum RecipeType {
@@ -212,4 +214,84 @@ export interface SmithingRecipeTransform121Format {
 
 export interface OutputTag {
   values: string[];
+}
+
+//// BEDROCK RECIPE FORMATS ////
+
+export interface BedrockShapedRecipeFormat {
+  format_version: string;
+  "minecraft:recipe_shaped": {
+    description: {
+      identifier: string;
+    };
+    tags: string[];
+    group?: string;
+    pattern: string[];
+    key: Record<string, OutputItem112WithData>;
+    result: OrEmpty<OutputItem112WithData>;
+  };
+}
+
+export interface BedrockShapelessRecipeFormat {
+  format_version: string;
+  "minecraft:recipe_shapeless": {
+    description: {
+      identifier: string;
+    };
+    tags: string[];
+    group?: string;
+    ingredients: OutputItem112WithData[];
+    result: OrEmpty<OutputItem112WithData>;
+  };
+}
+
+export interface BedrockCookingRecipeFormat {
+  format_version: string;
+  "minecraft:recipe_furnace": {
+    description: {
+      identifier: string;
+    };
+    tags: string[];
+    input: string;
+    output: string;
+  };
+}
+
+export type BedrockStonecuttingRecipeFormat = Omit<
+  BedrockShapelessRecipeFormat,
+  "minecraft:recipe_shapeless"
+> & {
+  "minecraft:recipe_shapeless": Omit<
+    BedrockShapelessRecipeFormat["minecraft:recipe_shapeless"],
+    "tags"
+  > & {
+    tags: ["stonecutter"];
+  };
+};
+
+export interface BedrockSmithingTrimRecipeFormat {
+  format_version: string;
+  "minecraft:recipe_smithing_trim": {
+    description: {
+      identifier: string;
+    };
+    tags: string[];
+    template: string;
+    base: string;
+    addition: string;
+  };
+}
+
+export interface BedrockSmithingTransformRecipeFormat {
+  format_version: string;
+  "minecraft:recipe_smithing_transform": {
+    description: {
+      identifier: string;
+    };
+    tags: string[];
+    template: string;
+    base: string;
+    addition: string;
+    result: string;
+  };
 }

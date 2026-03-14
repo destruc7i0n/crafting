@@ -251,3 +251,7 @@ export function generate(
       return {};
   }
 }
+
+export function generateBedrock() {
+  return {};
+}
