@@ -361,10 +361,7 @@ describe("generate crafting", () => {
         };
         expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shapeless",
-          ingredients: [
-            { item: "minecraft:stone" },
-            { item: "minecraft:stone" },
-          ],
+          ingredients: [{ item: "minecraft:stone" }, { item: "minecraft:stone" }],
           result: { item: "minecraft:cobblestone", count: 10 },
         });
       });

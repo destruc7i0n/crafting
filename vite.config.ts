@@ -12,7 +12,7 @@ export default defineConfig({
   css: {
     modules: {
       localsConvention: "camelCaseOnly",
-    }
+    },
   },
   test: {
     globals: true,

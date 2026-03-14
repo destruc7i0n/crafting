@@ -20,13 +20,8 @@ export const ItemPreviewDropTarget = ({
   const slotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
 
   return (
-    <SlotDropTarget<ItemPreviewDropTargetData>
-      data={{ type: "preview", slot }}
-      {...props}
-    >
-      {slotValue && (
-        <Item item={slotValue} container="preview" showCount={showCount} />
-      )}
+    <SlotDropTarget<ItemPreviewDropTargetData> data={{ type: "preview", slot }} {...props}>
+      {slotValue && <Item item={slotValue} container="preview" showCount={showCount} />}
     </SlotDropTarget>
   );
 };

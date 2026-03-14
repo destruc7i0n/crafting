@@ -13,9 +13,7 @@ export const RecipeNameInput = () => {
   const [isValid, setIsValid] = useState(true);
 
   const recipes = useRecipeStore((state) => state.recipes);
-  const selectedRecipeIndex = useRecipeStore(
-    (state) => state.selectedRecipeIndex,
-  );
+  const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
   const recipeName = recipes[selectedRecipeIndex]?.recipeName ?? "";
   const setRecipeName = useRecipeStore((state) => state.setRecipeName);
 
@@ -35,8 +33,7 @@ export const RecipeNameInput = () => {
     }
 
     const isDuplicate = recipes.some(
-      (recipe, index) =>
-        recipe.recipeName === formattedValue && index !== selectedRecipeIndex,
+      (recipe, index) => recipe.recipeName === formattedValue && index !== selectedRecipeIndex,
     );
     if (isDuplicate) {
       setIsValid(false);

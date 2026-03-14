@@ -16,10 +16,7 @@ import {
 export const buildJava = (
   state: SmithingInput,
   formatter: FormatStrategy,
-):
-  | SmithingRecipe
-  | SmithingTrimRecipe
-  | SmithingTransformRecipe => {
+): SmithingRecipe | SmithingTrimRecipe | SmithingTransformRecipe => {
   if (state.recipeType === RecipeType.Smithing) {
     return {
       type: formatter.recipeType("smithing") as "minecraft:smithing",
@@ -39,9 +36,7 @@ export const buildJava = (
   }
 
   return {
-    type: formatter.recipeType(
-      "smithing_transform",
-    ) as "minecraft:smithing_transform",
+    type: formatter.recipeType("smithing_transform") as "minecraft:smithing_transform",
     template: state.template ? formatter.ingredient(state.template.id) : {},
     base: state.base ? formatter.ingredient(state.base.id) : {},
     addition: state.addition ? formatter.ingredient(state.addition.id) : {},
@@ -52,10 +47,7 @@ export const buildJava = (
 export const buildBedrock = (
   state: SmithingInput,
   formatter: FormatStrategy,
-):
-  | BedrockSmithingTrimBody
-  | BedrockSmithingTransformBody
-  | BedrockShapelessBody => {
+): BedrockSmithingTrimBody | BedrockSmithingTransformBody | BedrockShapelessBody => {
   if (state.recipeType === RecipeType.SmithingTrim) {
     return {
       template: state.template ? { tag: state.template.id.raw } : {},
@@ -77,9 +69,7 @@ export const buildBedrock = (
     ingredients: [state.base, state.addition]
       .filter(Boolean)
       .map((item) => formatter.ingredient(item!.id)),
-    result: state.result
-      ? formatter.objectResult(state.result.id, state.result.count)
-      : {},
+    result: state.result ? formatter.objectResult(state.result.id, state.result.count) : {},
   } satisfies BedrockShapelessBody;
 };
 

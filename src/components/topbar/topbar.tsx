@@ -7,9 +7,7 @@ import { RecipeSelectorTab } from "./recipe-selector";
 
 export function Topbar() {
   const recipeCount = useRecipeStore((state) => state.recipes.length);
-  const selectedRecipeIndex = useRecipeStore(
-    (state) => state.selectedRecipeIndex,
-  );
+  const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
 
   const createRecipe = useRecipeStore((state) => state.createRecipe);
   const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
@@ -31,17 +29,11 @@ export function Topbar() {
         <RecipeNameInput />
       </div>
       <div className="flex items-center gap-2">
-        <button
-          onClick={handleCreateRecipe}
-          className="rounded-md border px-3 py-2 leading-tight"
-        >
+        <button onClick={handleCreateRecipe} className="rounded-md border px-3 py-2 leading-tight">
           <PlusIcon size={16} />
         </button>
         <RecipeSelectorTab />
-        <button
-          onClick={handleDeleteRecipe}
-          className="rounded-md border px-3 py-2 leading-tight"
-        >
+        <button onClick={handleDeleteRecipe} className="rounded-md border px-3 py-2 leading-tight">
           <Trash2Icon size={16} />
         </button>
       </div>

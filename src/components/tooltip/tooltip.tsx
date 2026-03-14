@@ -13,18 +13,11 @@ type TooltipProps = {
 
 const TOOLTIP_OFFSET = 20;
 
-export const Tooltip = ({
-  title,
-  description,
-  children,
-  visible = true,
-}: TooltipProps) => {
+export const Tooltip = ({ title, description, children, visible = true }: TooltipProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
-  const [tooltipDimensions, setTooltipDimensions] = useState<[number, number]>([
-    0, 0,
-  ]);
+  const [tooltipDimensions, setTooltipDimensions] = useState<[number, number]>([0, 0]);
   const [isHovering, setIsHovering] = useState(false);
   const [mouseCoords, setMouseCoords] = useState<[number, number]>([0, 0]);
 
@@ -42,12 +35,9 @@ export const Tooltip = ({
     setTooltipDimensions([width, height]);
   }, [shouldShowTooltip]);
 
-  const handleMouseMove = useCallback(
-    (e: Pick<MouseEvent, "clientX" | "clientY">) => {
-      setMouseCoords([e.clientX, e.clientY]);
-    },
-    [],
-  );
+  const handleMouseMove = useCallback((e: Pick<MouseEvent, "clientX" | "clientY">) => {
+    setMouseCoords([e.clientX, e.clientY]);
+  }, []);
 
   // calculate the position of the tooltip based on the mouse position
   let left = mouseX + TOOLTIP_OFFSET; // offset the tooltip to the right

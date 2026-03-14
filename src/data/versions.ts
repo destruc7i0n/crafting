@@ -1,8 +1,6 @@
 import { MinecraftVersion, RecipeType } from "./types";
 
-export const getSupportedRecipeTypesForVersion = (
-  version: MinecraftVersion,
-): RecipeType[] => {
+export const getSupportedRecipeTypesForVersion = (version: MinecraftVersion): RecipeType[] => {
   switch (version) {
     case MinecraftVersion.V112:
       return [RecipeType.Crafting];

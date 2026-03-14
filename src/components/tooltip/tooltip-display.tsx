@@ -8,16 +8,14 @@ type TooltipProps = {
 } & ComponentPropsWithoutRef<"div">;
 
 export const TooltipDisplay = memo(
-  forwardRef<HTMLDivElement, TooltipProps>(
-    ({ title, description, ...props }, ref) => {
-      return (
-        <div ref={ref} className={classes.tooltip} {...props}>
-          <div className={classes.tooltipTitle}>{title}</div>
-          <div className={classes.tooltipDescription}>{description}</div>
-        </div>
-      );
-    },
-  ),
+  forwardRef<HTMLDivElement, TooltipProps>(({ title, description, ...props }, ref) => {
+    return (
+      <div ref={ref} className={classes.tooltip} {...props}>
+        <div className={classes.tooltipTitle}>{title}</div>
+        <div className={classes.tooltipDescription}>{description}</div>
+      </div>
+    );
+  }),
 );
 
 TooltipDisplay.displayName = "TooltipDisplay";

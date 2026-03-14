@@ -11,11 +11,8 @@ type SettingsActions = {
   setMinecraftVersion: (version: MinecraftVersion) => void;
 };
 
-export const useSettingsStore = create<SettingsState & SettingsActions>()(
-  (set) => ({
-    minecraftVersion: latestMinecraftVersion,
+export const useSettingsStore = create<SettingsState & SettingsActions>()((set) => ({
+  minecraftVersion: latestMinecraftVersion,
 
-    setMinecraftVersion: (version: MinecraftVersion) =>
-      set({ minecraftVersion: version }),
-  }),
-);
+  setMinecraftVersion: (version: MinecraftVersion) => set({ minecraftVersion: version }),
+}));

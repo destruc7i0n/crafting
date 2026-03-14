@@ -19,11 +19,14 @@ export interface StonecutterResultShape {
 }
 
 export interface FormatStrategy {
-  ingredient: (id: {
-    raw: string;
-    id: string;
-    data?: number;
-  }, includeData?: boolean) => FormatIngredient;
+  ingredient: (
+    id: {
+      raw: string;
+      id: string;
+      data?: number;
+    },
+    includeData?: boolean,
+  ) => FormatIngredient;
   ingredientTag: (tagId: string) => FormatIngredient;
   objectResult: (
     id: {

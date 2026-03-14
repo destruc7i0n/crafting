@@ -241,7 +241,11 @@ describe("generate smithing", () => {
           },
           "smithing.base": {
             type: "default_item",
-            id: { raw: "minecraft:trimmable_armors", id: "trimmable_armors", namespace: "minecraft" },
+            id: {
+              raw: "minecraft:trimmable_armors",
+              id: "trimmable_armors",
+              namespace: "minecraft",
+            },
             displayName: "trimmable_armors",
             texture: "",
             count: 1,
@@ -302,10 +306,7 @@ describe("generate smithing", () => {
       };
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
-        ingredients: [
-          { item: "minecraft:diamond_sword" },
-          { item: "minecraft:netherite_ingot" },
-        ],
+        ingredients: [{ item: "minecraft:diamond_sword" }, { item: "minecraft:netherite_ingot" }],
         result: { item: "minecraft:netherite_sword", count: 1 },
       });
     });

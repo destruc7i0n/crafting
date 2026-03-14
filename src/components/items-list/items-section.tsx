@@ -14,9 +14,7 @@ export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
   const filteredItems = useMemo(() => {
     if (!items) return [];
     if (!search) return items;
-    return items.filter((item) =>
-      item.displayName.toLowerCase().includes(search.toLowerCase()),
-    );
+    return items.filter((item) => item.displayName.toLowerCase().includes(search.toLowerCase()));
   }, [items, search]);
 
   return (

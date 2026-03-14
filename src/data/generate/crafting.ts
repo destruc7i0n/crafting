@@ -12,11 +12,7 @@ import {
   ShapelessCraftingRecipe,
 } from "./recipes/types";
 
-const PATTERN_CHARACTERS = [
-  "#",
-  ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-  ..."abcdefghijklmnopqrstuvwxyz",
-];
+const PATTERN_CHARACTERS = ["#", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ", ..."abcdefghijklmnopqrstuvwxyz"];
 
 function getPattern(
   grid: (Item | undefined)[],
@@ -111,10 +107,7 @@ function getKeyForGrid(grid: (Item | undefined)[]): {
       if (!found) {
         while (keyName in key) {
           // just randomly pick a character
-          keyName =
-            PATTERN_CHARACTERS[
-              Math.floor(Math.random() * PATTERN_CHARACTERS.length)
-            ];
+          keyName = PATTERN_CHARACTERS[Math.floor(Math.random() * PATTERN_CHARACTERS.length)];
         }
       }
     }
@@ -129,9 +122,7 @@ function getKeyForGrid(grid: (Item | undefined)[]): {
 export const buildJava = (
   state: CraftingInput,
   formatter: FormatStrategy,
-):
-  | ShapedCraftingRecipe
-  | ShapelessCraftingRecipe => {
+): ShapedCraftingRecipe | ShapelessCraftingRecipe => {
   const grid = state.grid;
   const populatedSlots = grid.filter(Boolean);
 
@@ -157,10 +148,7 @@ export const buildJava = (
     type: formatter.recipeType("crafting_shaped") as ShapedCraftingRecipe["type"],
     pattern: getPattern(grid, reverse, state.keepWhitespace),
     key: Object.fromEntries(
-      Object.entries(key).map(([keyName, item]) => [
-        keyName,
-        formatter.ingredient(item.id),
-      ]),
+      Object.entries(key).map(([keyName, item]) => [keyName, formatter.ingredient(item.id)]),
     ),
     group,
     result: getResult(),
@@ -175,9 +163,7 @@ export const buildBedrock = (
   const populatedSlots = grid.filter(Boolean);
   const { key, reverse } = getKeyForGrid(grid);
 
-  const result = state.result
-    ? formatter.objectResult(state.result.id, state.result.count)
-    : {};
+  const result = state.result ? formatter.objectResult(state.result.id, state.result.count) : {};
 
   if (state.shapeless) {
     return {
@@ -189,10 +175,7 @@ export const buildBedrock = (
   return {
     pattern: getPattern(grid, reverse, state.keepWhitespace),
     key: Object.fromEntries(
-      Object.entries(key).map(([keyName, item]) => [
-        keyName,
-        formatter.ingredient(item.id),
-      ]),
+      Object.entries(key).map(([keyName, item]) => [keyName, formatter.ingredient(item.id)]),
     ) as BedrockShapedBody["key"],
     result,
   } satisfies BedrockShapedBody;
@@ -219,11 +202,7 @@ const extractInput = (state: SingleRecipeState): CraftingInput => ({
 export const generate = (
   state: SingleRecipeState,
   version: MinecraftVersion,
-):
-  | ShapedCraftingRecipe
-  | ShapelessCraftingRecipe
-  | BedrockShapedBody
-  | BedrockShapelessBody => {
+): ShapedCraftingRecipe | ShapelessCraftingRecipe | BedrockShapedBody | BedrockShapelessBody => {
   const input = extractInput(state);
   const formatter = createFormatStrategy(version);
 

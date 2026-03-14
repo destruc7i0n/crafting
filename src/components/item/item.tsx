@@ -31,8 +31,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
 
     return draggable({
       element: el,
-      getInitialData: () =>
-        ({ type: "item", item, container }) satisfies ItemDraggableData,
+      getInitialData: () => ({ type: "item", item, container }) satisfies ItemDraggableData,
       getInitialDataForExternal: () => ({ "text/plain": item.id.raw }),
       onDragStart: () => {
         if (container === "preview") {
@@ -58,11 +57,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
   }, [item, container]);
 
   return (
-    <Tooltip
-      title={item.displayName}
-      description={item.id.raw}
-      visible={!dragging}
-    >
+    <Tooltip title={item.displayName} description={item.id.raw} visible={!dragging}>
       <ItemPreview
         alt={item.displayName}
         texture={item.texture}

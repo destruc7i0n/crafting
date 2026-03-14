@@ -26,9 +26,7 @@ describe("createItemFormatter", () => {
       item: "minecraft:stone",
       count: 2,
     });
-    expect(formatter.recipeType("crafting_shaped")).toBe(
-      "minecraft:crafting_shaped",
-    );
+    expect(formatter.recipeType("crafting_shaped")).toBe("minecraft:crafting_shaped");
     expect(formatter.cookingResult(id, 2)).toBe("minecraft:stone");
     expect(formatter.stonecutterResult(id, 2)).toEqual({
       result: "minecraft:stone",

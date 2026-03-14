@@ -5,7 +5,10 @@ import { wrapBedrockRecipe } from "./wrapper/bedrock";
 import { buildBedrock as buildBedrockCooking, buildJava as buildJavaCooking } from "./cooking";
 import { buildBedrock as buildBedrockCrafting, buildJava as buildJavaCrafting } from "./crafting";
 import { buildBedrock as buildBedrockSmithing, buildJava as buildJavaSmithing } from "./smithing";
-import { buildBedrock as buildBedrockStonecutter, buildJava as buildJavaStonecutter } from "./stonecutter";
+import {
+  buildBedrock as buildBedrockStonecutter,
+  buildJava as buildJavaStonecutter,
+} from "./stonecutter";
 import { buildJava as buildJavaTransmute } from "./transmute";
 import { MinecraftVersion, RecipeType } from "../types";
 import {
@@ -183,10 +186,7 @@ const generateBedrockInner = (
   }
 };
 
-export function generate(
-  state: SingleRecipeState,
-  version: MinecraftVersion,
-): GeneratedRecipe {
+export function generate(state: SingleRecipeState, version: MinecraftVersion): GeneratedRecipe {
   const formatter = createFormatStrategy(version);
 
   if (version === MinecraftVersion.Bedrock) {

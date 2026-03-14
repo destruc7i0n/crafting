@@ -27,10 +27,7 @@ export function compareMinecraftVersions(a: string, b: string): number {
   return 0;
 }
 
-export function isVersionAtLeast(
-  version: MinecraftVersion,
-  minimum: MinecraftVersion,
-): boolean {
+export function isVersionAtLeast(version: MinecraftVersion, minimum: MinecraftVersion): boolean {
   if (version === MinecraftVersion.Bedrock) {
     return false;
   }

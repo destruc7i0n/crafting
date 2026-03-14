@@ -2,11 +2,17 @@ import { useEffect } from "react";
 
 import { TexturesType as MinecraftTexturesType } from "minecraft-textures";
 
+import { latestMinecraftVersion } from "@/data/constants";
 import { transformMinecraftTexturesItem } from "@/data/models/item/utilities";
 import { Item } from "@/data/models/types";
+import { MinecraftVersion } from "@/data/types";
 import { useResourcesStore } from "@/stores/resources";
 
 import { useResourcesForVersion } from "./use-resources-for-version";
+
+const textureLoaders = import.meta.glob<{ default: MinecraftTexturesType }>(
+  "/node_modules/minecraft-textures/dist/textures/json/*.json",
+);
 
 export const useMinecraftTexturesData = () => {
   const { version, resources } = useResourcesForVersion();
@@ -18,9 +24,21 @@ export const useMinecraftTexturesData = () => {
         return;
       }
 
-      const module: MinecraftTexturesType = await import(
-        `../../node_modules/minecraft-textures/dist/textures/json/${version}.json`
-      );
+      const textureVersion =
+        version === MinecraftVersion.Bedrock ? latestMinecraftVersion : version;
+      const texturePath = `/node_modules/minecraft-textures/dist/textures/json/${textureVersion}.json`;
+
+      const loadTextureModule =
+        textureLoaders[texturePath] ??
+        textureLoaders[
+          `/node_modules/minecraft-textures/dist/textures/json/${latestMinecraftVersion}.json`
+        ];
+
+      if (!loadTextureModule) {
+        throw new Error(`No texture dataset found for version ${textureVersion}`);
+      }
+
+      const module = (await loadTextureModule()).default;
 
       const mcTexturesItems = module.items;
 

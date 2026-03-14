@@ -20,23 +20,15 @@ describe("compareMinecraftVersions", () => {
 
 describe("isVersionAtLeast", () => {
   it("returns true for same version", () => {
-    expect(isVersionAtLeast(MinecraftVersion.V1212, MinecraftVersion.V1212)).toBe(
-      true,
-    );
+    expect(isVersionAtLeast(MinecraftVersion.V1212, MinecraftVersion.V1212)).toBe(true);
   });
 
   it("returns false for bedrock comparisons", () => {
-    expect(isVersionAtLeast(MinecraftVersion.Bedrock, MinecraftVersion.V1212)).toBe(
-      false,
-    );
+    expect(isVersionAtLeast(MinecraftVersion.Bedrock, MinecraftVersion.V1212)).toBe(false);
   });
 
   it("returns expected values across versions", () => {
-    expect(isVersionAtLeast(MinecraftVersion.V12111, MinecraftVersion.V1212)).toBe(
-      true,
-    );
-    expect(isVersionAtLeast(MinecraftVersion.V120, MinecraftVersion.V121)).toBe(
-      false,
-    );
+    expect(isVersionAtLeast(MinecraftVersion.V12111, MinecraftVersion.V1212)).toBe(true);
+    expect(isVersionAtLeast(MinecraftVersion.V120, MinecraftVersion.V121)).toBe(false);
   });
 });

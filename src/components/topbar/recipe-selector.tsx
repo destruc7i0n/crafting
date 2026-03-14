@@ -2,9 +2,7 @@ import { useRecipeStore } from "@/stores/recipe";
 
 export const RecipeSelectorTab = () => {
   const recipes = useRecipeStore((state) => state.recipes);
-  const selectedRecipeIndex = useRecipeStore(
-    (state) => state.selectedRecipeIndex,
-  );
+  const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
   const selectRecipe = useRecipeStore((state) => state.selectRecipe);
 
   return (

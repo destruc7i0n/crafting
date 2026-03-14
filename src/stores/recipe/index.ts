@@ -127,8 +127,7 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
     },
     setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => {
       set((state) => {
-        state.recipes[state.selectedRecipeIndex].crafting.keepWhitespace =
-          keepWhitespace;
+        state.recipes[state.selectedRecipeIndex].crafting.keepWhitespace = keepWhitespace;
       });
     },
     setRecipeCookingTime: (time: number) => {
@@ -138,8 +137,7 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
     },
     setRecipeCoolingExperience: (experience: number) => {
       set((state) => {
-        state.recipes[state.selectedRecipeIndex].cooking.experience =
-          experience;
+        state.recipes[state.selectedRecipeIndex].cooking.experience = experience;
       });
     },
     setRecipeBedrockIdentifier: (identifier: string) => {

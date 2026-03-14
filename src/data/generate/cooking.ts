@@ -3,11 +3,7 @@ import { SingleRecipeState } from "@/stores/recipe";
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { MinecraftVersion, RecipeType } from "../types";
-import {
-  BedrockFurnaceBody,
-  CookingInput,
-  CookingRecipe,
-} from "./recipes/types";
+import { BedrockFurnaceBody, CookingInput, CookingRecipe } from "./recipes/types";
 
 const recipeTypeToBaseCookingType: Record<
   RecipeType.Smelting | RecipeType.Blasting | RecipeType.CampfireCooking | RecipeType.Smoking,
@@ -19,18 +15,14 @@ const recipeTypeToBaseCookingType: Record<
   [RecipeType.Smoking]: "smoking",
 };
 
-export const buildJava = (
-  state: CookingInput,
-  formatter: FormatStrategy,
-): CookingRecipe => {
+export const buildJava = (state: CookingInput, formatter: FormatStrategy): CookingRecipe => {
   const group = state.group.length > 0 ? state.group : undefined;
 
   const input = state.ingredient;
   const output = state.result;
 
-  const baseType = recipeTypeToBaseCookingType[
-    state.recipeType as keyof typeof recipeTypeToBaseCookingType
-  ];
+  const baseType =
+    recipeTypeToBaseCookingType[state.recipeType as keyof typeof recipeTypeToBaseCookingType];
 
   if (!baseType) {
     throw new Error(`Unsupported cooking recipe type: ${state.recipeType}`);

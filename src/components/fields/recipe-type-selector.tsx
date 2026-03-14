@@ -14,11 +14,9 @@ export const RecipeTypeSelector = () => {
 
   const { resources } = useResourcesForVersion();
 
-  const supportedRecipeTypes =
-    getSupportedRecipeTypesForVersion(minecraftVersion);
+  const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
 
-  const recipeTexture =
-    resources?.itemsById?.[recipeTypeToItemId[recipeType]!].texture;
+  const recipeTexture = resources?.itemsById?.[recipeTypeToItemId[recipeType]!].texture;
 
   const recipeImage = recipeTexture ? (
     <img src={recipeTexture} className="pointer-events-none h-8 w-8" />

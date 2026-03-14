@@ -10,11 +10,7 @@ export type BedrockItemIngredient = { item: string; data?: number };
 export type BedrockTagIngredient = { tag: string };
 export type BedrockIngredient = BedrockItemIngredient | BedrockTagIngredient;
 
-export type IngredientRef =
-  | V112Ingredient
-  | V113Ingredient
-  | V1212Ingredient
-  | BedrockIngredient;
+export type IngredientRef = V112Ingredient | V113Ingredient | V1212Ingredient | BedrockIngredient;
 
 export type V112Result = { item: string; data?: number; count?: number };
 export type V113Result = { item: string; count?: number };
@@ -185,8 +181,7 @@ export interface BedrockSmithingTrimRecipe {
 
 export interface BedrockSmithingTransformRecipe {
   format_version: BedrockFormatVersion;
-  "minecraft:recipe_smithing_transform": BedrockBaseWrapper &
-    BedrockSmithingTransformBody;
+  "minecraft:recipe_smithing_transform": BedrockBaseWrapper & BedrockSmithingTransformBody;
 }
 
 export type BedrockRecipe =
@@ -233,10 +228,7 @@ export interface TransmuteInput {
 }
 
 export interface SmithingInput {
-  recipeType:
-    | RecipeType.Smithing
-    | RecipeType.SmithingTrim
-    | RecipeType.SmithingTransform;
+  recipeType: RecipeType.Smithing | RecipeType.SmithingTrim | RecipeType.SmithingTransform;
   template: ItemModel | undefined;
   base: ItemModel | undefined;
   addition: ItemModel | undefined;
@@ -249,6 +241,5 @@ export interface BedrockRecipeMeta {
   formatVersion: BedrockFormatVersion;
 }
 
-export const isBedrockVersion = (
-  version: MinecraftVersion,
-): version is MinecraftVersion.Bedrock => version === MinecraftVersion.Bedrock;
+export const isBedrockVersion = (version: MinecraftVersion): version is MinecraftVersion.Bedrock =>
+  version === MinecraftVersion.Bedrock;

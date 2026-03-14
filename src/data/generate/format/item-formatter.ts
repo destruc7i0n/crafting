@@ -24,14 +24,9 @@ const addMinecraftPrefix = (baseType: string): string => {
 
 export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy => {
   const useObjectResult =
-    version === MinecraftVersion.Bedrock ||
-    isAtLeast(version, MinecraftVersion.V121);
+    version === MinecraftVersion.Bedrock || isAtLeast(version, MinecraftVersion.V121);
 
-  const getObjectResultValue = (identifier: {
-    raw: string;
-    id: string;
-    data?: number;
-  }) => {
+  const getObjectResultValue = (identifier: { raw: string; id: string; data?: number }) => {
     if (version === MinecraftVersion.V112) {
       return { item: identifier.id, data: identifier.data };
     }
@@ -62,9 +57,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
       if (version === MinecraftVersion.Bedrock) {
         return {
           item: identifier.raw,
-          ...(includeData && identifier.data !== undefined
-            ? { data: identifier.data }
-            : {}),
+          ...(includeData && identifier.data !== undefined ? { data: identifier.data } : {}),
         };
       }
 
@@ -150,10 +143,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
       };
     },
     recipeType: (baseType) => {
-      if (
-        version === MinecraftVersion.V112 ||
-        version === MinecraftVersion.V113
-      ) {
+      if (version === MinecraftVersion.V112 || version === MinecraftVersion.V113) {
         return baseType;
       }
 

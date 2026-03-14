@@ -5,9 +5,7 @@ import { MinecraftIdentifier } from "../types";
 const MINECRAFT_NAMESPACE = "minecraft";
 const SEPARATOR = ":";
 
-export function parseStringToMinecraftIdentifier(
-  input: string,
-): MinecraftIdentifier {
+export function parseStringToMinecraftIdentifier(input: string): MinecraftIdentifier {
   const idx = input.indexOf(SEPARATOR);
   if (idx >= 0) {
     const parts = input.split(SEPARATOR);
@@ -39,19 +37,14 @@ export function parseStringToMinecraftIdentifier(
   };
 }
 
-export function stringifyMinecraftIdentifier(
-  identifier: MinecraftIdentifier,
-): string {
+export function stringifyMinecraftIdentifier(identifier: MinecraftIdentifier): string {
   if (identifier.data) {
     return `${identifier.id}${SEPARATOR}${identifier.data}`;
   }
   return `${identifier.namespace}${SEPARATOR}${identifier.id}`;
 }
 
-export function compareMinecraftVersions(
-  a: MinecraftVersion,
-  b: MinecraftVersion,
-): number {
+export function compareMinecraftVersions(a: MinecraftVersion, b: MinecraftVersion): number {
   if (!a.includes(".")) {
     // make this one rank higher
     return -1;

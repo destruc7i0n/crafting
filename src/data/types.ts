@@ -54,11 +54,7 @@ type SmithingSlots =
   | "smithing.result";
 type StonecutterSlots = "stonecutter.ingredient" | "stonecutter.result";
 
-export type RecipeSlot =
-  | CraftingSlots
-  | CookingSlots
-  | SmithingSlots
-  | StonecutterSlots;
+export type RecipeSlot = CraftingSlots | CookingSlots | SmithingSlots | StonecutterSlots;
 
 export interface OutputTag {
   values: string[];

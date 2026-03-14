@@ -14,11 +14,7 @@ export const JsonOutput = ({ json }: JsonOutputProps) => {
 
   return (
     <div className="relative">
-      <Refractor
-        language="json"
-        value={preview}
-        className="!m-0 overflow-x-auto"
-      />
+      <Refractor language="json" value={preview} className="!m-0 overflow-x-auto" />
 
       <div className="absolute right-0 top-0">
         <JsonButtonCopyButton json={json} />

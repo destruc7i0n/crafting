@@ -23,11 +23,7 @@ export const JsonButtonCopyButton = ({ json }: JsonButtonCopyButtonProps) => {
       onClick={() => onClick()}
     >
       {clicked ? (
-        <CircleCheckIcon
-          className="text-green-700"
-          color="currentColor"
-          size={16}
-        />
+        <CircleCheckIcon className="text-green-700" color="currentColor" size={16} />
       ) : (
         "Copy"
       )}

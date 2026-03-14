@@ -9,9 +9,7 @@ export const useResourcesForVersion = (): {
   resources: VersionResourceData | undefined;
 } => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
-  const resources = useResourcesStore(
-    selectResourcesForVersion(minecraftVersion),
-  );
+  const resources = useResourcesStore(selectResourcesForVersion(minecraftVersion));
 
   return { version: minecraftVersion, resources };
 };

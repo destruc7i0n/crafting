@@ -13,14 +13,9 @@ export type ResourcesState = {
 };
 
 type ResourcesActions = {
-  setResourceData: (
-    version: MinecraftVersion,
-    data: VersionResourceData,
-  ) => void;
+  setResourceData: (version: MinecraftVersion, data: VersionResourceData) => void;
 };
 
-export const useResourcesStore = create<ResourcesState & ResourcesActions>(
-  (set) => ({
-    setResourceData: (version, data) => set(() => ({ [version]: data })),
-  }),
-);
+export const useResourcesStore = create<ResourcesState & ResourcesActions>((set) => ({
+  setResourceData: (version, data) => set(() => ({ [version]: data })),
+}));
