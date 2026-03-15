@@ -16,12 +16,12 @@ const Layout = memo(({ children }: LayoutProps) => {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col lg:h-screen lg:overflow-hidden">
+      <div className="flex min-h-screen flex-col lg:h-screen lg:overflow-hidden [@media(min-height:1120px)]:lg:min-h-0 [@media(min-height:1120px)]:lg:h-auto [@media(min-height:1120px)]:lg:overflow-visible">
         <Header />
 
         <div
           className={cn(
-            "mx-auto grid min-h-0 flex-1 w-full max-w-screen-2xl grid-cols-1 grid-rows-[50svh_50svh] gap-x-4 gap-y-0 px-0 lg:gap-4 lg:p-4 lg:overflow-hidden lg:grid-rows-[minmax(0,1fr)]",
+            "mx-auto grid min-h-0 flex-1 w-full max-w-screen-2xl grid-cols-1 grid-rows-[50svh_50svh] gap-x-4 gap-y-0 px-0 lg:gap-4 lg:p-4 lg:grid-rows-[minmax(0,1fr)] [@media(min-height:1120px)]:lg:h-[920px] [@media(min-height:1120px)]:lg:max-h-[920px] [@media(min-height:1120px)]:lg:flex-none [@media(min-height:1120px)]:lg:overflow-hidden",
             "[grid-template-areas:'content''items']",
             isSidebarExpanded
               ? "lg:grid-cols-[260px_minmax(0,1fr)_clamp(400px,34vw,480px)]"

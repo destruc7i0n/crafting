@@ -42,10 +42,6 @@ export const ItemOutput = () => {
     }
   })();
 
-  const handleDownloadJson = () => {
-    downloadRecipeJson(recipeState, minecraftVersion);
-  };
-
   const handleCopy = async () => {
     if (copied) return;
 
@@ -66,7 +62,7 @@ export const ItemOutput = () => {
         <button
           type="button"
           className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          onClick={() => setCollapsed((v) => !v)}
+          onClick={() => setCollapsed((value) => !value)}
         >
           <ChevronDownIcon
             size={14}
@@ -91,12 +87,12 @@ export const ItemOutput = () => {
           </button>
           <button
             type="button"
-            onClick={handleDownloadJson}
-            className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            onClick={() => downloadRecipeJson(recipeState, minecraftVersion)}
+            className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-accent/30 px-3 text-xs font-medium text-foreground transition-colors hover:bg-accent"
             title="Download JSON"
           >
             <DownloadIcon size={14} />
-            <span className="sr-only">Download</span>
+            <span>Download</span>
           </button>
         </div>
       </div>

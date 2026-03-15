@@ -129,7 +129,7 @@ export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
       )}
 
       {filteredCustomItems.length > 0 && (
-        <div className="flex max-h-[33%] shrink-0 flex-col gap-2 overflow-y-auto">
+        <div className="grid max-h-[33%] shrink-0 grid-cols-2 content-start gap-2 overflow-y-auto">
           {filteredCustomItems.map((item) => (
             <CustomItemCard
               key={item.id.raw}

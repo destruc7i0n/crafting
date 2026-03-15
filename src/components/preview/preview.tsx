@@ -1,5 +1,8 @@
-import { memo, type ReactNode } from "react";
+import { memo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
+import { DownloadIcon } from "lucide-react";
+
+import { downloadBlob } from "@/data/datapack";
 import { RecipeType } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
@@ -11,6 +14,8 @@ import { StonecutterPreview } from "./stonecutter";
 
 export const Preview = memo(() => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   let preview: ReactNode = null;
 
@@ -45,18 +50,76 @@ export const Preview = memo(() => {
     return null;
   }
 
+  const handleDownloadPreview = async () => {
+    const element = previewRef.current;
+
+    if (!element || isDownloading) {
+      return;
+    }
+
+    try {
+      setIsDownloading(true);
+
+      const scale = 2;
+      const { domToBlob } = await import("modern-screenshot");
+      const blob = await domToBlob(element, {
+        backgroundColor: null,
+        fetch: {
+          bypassingCache: true,
+        },
+        height: element.offsetHeight * scale,
+        style: {
+          height: `${element.offsetHeight}px`,
+          transform: `scale(${scale})`,
+          transformOrigin: "top left",
+          width: `${element.offsetWidth}px`,
+        },
+        width: element.offsetWidth * scale,
+      });
+
+      downloadBlob(
+        blob,
+        recipeType === RecipeType.Crafting ? "crafting-grid.png" : `${recipeType}-preview.png`,
+      );
+    } catch (error) {
+      console.error("Image generation error", error);
+      window.alert("Could not download preview image.");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
-    <div
-      className="w-full overflow-x-auto pb-1"
-      style={
-        {
-          "--minecraft-slot-bg": "0 0% 54.51%",
-          "--minecraft-slot-border-tl": "#373737",
-          "--minecraft-slot-border-br": "#ffffff",
-        } as React.CSSProperties
-      }
-    >
-      <div className="mx-auto w-[352px]">{preview}</div>
+    <div className="w-full pb-1">
+      <div
+        className="w-full overflow-x-auto"
+        style={
+          {
+            "--minecraft-slot-bg": "0 0% 54.51%",
+            "--minecraft-slot-border-tl": "#373737",
+            "--minecraft-slot-border-br": "#ffffff",
+          } as CSSProperties
+        }
+      >
+        <div className="group relative mx-auto w-fit min-w-0">
+          <div ref={previewRef} className="w-fit min-w-0">
+            {preview}
+          </div>
+
+          <div className="pointer-events-none absolute right-2 bottom-2 z-10 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
+            <button
+              type="button"
+              className="pointer-events-auto inline-flex h-6 w-6 items-center justify-center rounded border border-border/60 bg-background/80 text-muted-foreground shadow-sm backdrop-blur-sm transition-colors hover:bg-accent hover:text-foreground disabled:cursor-wait disabled:opacity-60"
+              onClick={handleDownloadPreview}
+              disabled={isDownloading}
+              title={isDownloading ? "Saving screenshot" : "Download screenshot"}
+            >
+              <DownloadIcon size={12} />
+              <span className="sr-only">{isDownloading ? "Saving screenshot" : "Screenshot"}</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 });

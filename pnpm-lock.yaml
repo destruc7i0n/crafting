@@ -32,6 +32,9 @@ importers:
       minecraft-textures:
         specifier: ^1.21.11
         version: 1.21.11
+      modern-screenshot:
+        specifier: ^4.6.8
+        version: 4.6.8
       react:
         specifier: ^19.2.4
         version: 19.2.4
@@ -922,6 +925,9 @@ packages:
   minecraft-textures@1.21.11:
     resolution: {integrity: sha512-J/Rp/VHzlpbjdixOxasDYIMBDgyX61ipkwjVJDNJ0YuLlrW20uxITD3aycPE9TJ28CL9uFGWNWxh3+2Gp4UQhw==}
 
+  modern-screenshot@4.6.8:
+    resolution: {integrity: sha512-GJkv/yWPOJTlxj1LZDU2k474cDyOWL+LVaqTdDWQwQ5d8zIuTz1892+1cV9V0ZpK6HYZFo/+BNLBbierO9d2TA==}
+
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -1795,6 +1801,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
 
   minecraft-textures@1.21.11: {}
+
+  modern-screenshot@4.6.8: {}
 
   nanoid@3.3.11: {}
 

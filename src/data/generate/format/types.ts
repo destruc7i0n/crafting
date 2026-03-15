@@ -1,5 +1,3 @@
-import { MinecraftVersion } from "@/data/types";
-
 import {
   BedrockIngredient,
   EmptyObject,

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, type MouseEvent } from "react";
 
 import { ArrowLeftIcon, DownloadIcon, Trash2Icon } from "lucide-react";
 
@@ -33,6 +33,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
   const items = resources?.items ?? EMPTY_ITEMS;
   const itemsById = resources?.itemsById;
   const normalizedSearch = search.trim().toLowerCase();
+  const tagsByUid = useMemo(() => Object.fromEntries(tags.map((tag) => [tag.uid, tag])), [tags]);
 
   const customTagItems = useMemo(
     () =>
@@ -101,7 +102,27 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
     }
   };
 
+  const handleDownloadTag = (event: MouseEvent<HTMLButtonElement>) => {
+    const tag = tagsByUid[event.currentTarget.value];
+    if (!tag) return;
+
+    const json = generateTag(tag);
+    const blob = new Blob([JSON.stringify(json, null, 2)], {
+      type: "application/json",
+    });
+    downloadBlob(blob, `${tag.name}.json`);
+  };
+
   const expandedTag = tags.find((tag) => tag.uid === expandedTagUid);
+  const handleDownloadExpandedTag = () => {
+    if (!expandedTag) return;
+
+    const json = generateTag(expandedTag);
+    const blob = new Blob([JSON.stringify(json, null, 2)], {
+      type: "application/json",
+    });
+    downloadBlob(blob, `${expandedTag.name}.json`);
+  };
 
   if (expandedTag) {
     const tagItem = customTagItems[expandedTag.uid];
@@ -125,23 +146,13 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
 
           <div className="min-w-0 flex-1">
             <div className="truncate text-sm font-medium">{expandedTag.name}</div>
-            {tagItem && (
-              <div className="truncate text-xs text-muted-foreground">
-                {getTagLabel(tagItem.id.raw)}
-              </div>
-            )}
+            <div className="truncate text-xs text-muted-foreground">{expandedTag.namespace}</div>
           </div>
 
           <button
             type="button"
             className="rounded p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-            onClick={() => {
-              const json = generateTag(expandedTag);
-              const blob = new Blob([JSON.stringify(json, null, 2)], {
-                type: "application/json",
-              });
-              downloadBlob(blob, `${expandedTag.name}.json`);
-            }}
+            onClick={handleDownloadExpandedTag}
             title="Download tag JSON"
           >
             <DownloadIcon size={14} />
@@ -177,7 +188,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
       )}
 
       {filteredCustomTags.length > 0 && (
-        <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {filteredCustomTags.map((tag) => {
             const tagItem = customTagItems[tag.uid];
             if (!tagItem) return null;
@@ -185,7 +196,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
             return (
               <div
                 key={tag.uid}
-                className="flex items-center gap-3 rounded-md border border-border bg-muted/50 p-2"
+                className="flex min-w-0 items-start gap-2 rounded-md border border-border bg-muted/50 p-1.5"
               >
                 <Slot className="shrink-0">
                   <IngredientItem item={tagItem} container="ingredients" />
@@ -193,38 +204,35 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
 
                 <button
                   type="button"
-                  className="flex min-w-0 flex-1 flex-col text-left"
-                  onClick={() => setExpandedTagUid(tag.uid)}
+                  value={tag.uid}
+                  className="flex min-w-0 flex-1 flex-col overflow-hidden pt-0.5 text-left"
+                  onClick={(event) => setExpandedTagUid(event.currentTarget.value)}
                 >
                   <span className="truncate text-sm font-medium">{tag.name}</span>
-                  <span className="truncate text-xs text-muted-foreground">
-                    {getTagLabel(tagItem.id.raw)}
-                  </span>
+                  <span className="truncate text-xs text-muted-foreground">{tag.namespace}</span>
                 </button>
 
-                <button
-                  type="button"
-                  className="rounded p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                  onClick={() => {
-                    const json = generateTag(tag);
-                    const blob = new Blob([JSON.stringify(json, null, 2)], {
-                      type: "application/json",
-                    });
-                    downloadBlob(blob, `${tag.name}.json`);
-                  }}
-                  title="Download tag JSON"
-                >
-                  <DownloadIcon size={14} />
-                </button>
+                <div className="flex shrink-0 items-center gap-0.5">
+                  <button
+                    type="button"
+                    value={tag.uid}
+                    className="rounded p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    onClick={handleDownloadTag}
+                    title="Download tag JSON"
+                  >
+                    <DownloadIcon size={14} />
+                  </button>
 
-                <button
-                  type="button"
-                  className="rounded p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-                  onClick={() => handleDeleteTag(tag.uid)}
-                >
-                  <Trash2Icon size={14} />
-                  <span className="sr-only">Delete tag</span>
-                </button>
+                  <button
+                    type="button"
+                    value={tag.uid}
+                    className="rounded p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                    onClick={(event) => handleDeleteTag(event.currentTarget.value)}
+                  >
+                    <Trash2Icon size={14} />
+                    <span className="sr-only">Delete tag</span>
+                  </button>
+                </div>
               </div>
             );
           })}
@@ -235,20 +243,18 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
         Vanilla Tags
       </span>
 
-      <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-2 gap-2">
         {filteredVanillaTagItems.map((tagItem) => (
           <div
             key={tagItem.id.raw}
-            className="flex items-center gap-3 rounded-md border border-border bg-muted/50 p-2"
+            className="flex min-w-0 items-start gap-2 rounded-md border border-border bg-muted/50 p-1.5"
           >
             <Slot className="shrink-0">
               <IngredientItem item={tagItem} container="ingredients" />
             </Slot>
-            <div className="min-w-0 flex-1">
+            <div className="min-w-0 flex-1 pt-0.5">
               <div className="truncate text-sm font-medium">{tagItem.id.id}</div>
-              <div className="truncate text-xs text-muted-foreground">
-                {getTagLabel(tagItem.id.raw)}
-              </div>
+              <div className="truncate text-xs text-muted-foreground">{tagItem.id.namespace}</div>
             </div>
           </div>
         ))}

@@ -57,14 +57,18 @@ export const CustomItemCard = ({
 
   if (!isExpanded) {
     return (
-      <div className="flex items-center gap-3 rounded-md border border-border bg-muted/50 p-2">
+      <div className="flex min-w-0 items-start gap-2 rounded-md border border-border bg-muted/50 p-1.5">
         <Slot className="shrink-0">
           <Item item={item} container="ingredients" />
         </Slot>
 
-        <button type="button" className="flex min-w-0 flex-1 flex-col text-left" onClick={onToggle}>
+        <button
+          type="button"
+          className="flex min-w-0 flex-1 flex-col overflow-hidden pt-0.5 text-left"
+          onClick={onToggle}
+        >
           <span className="truncate text-sm font-medium">{item.displayName}</span>
-          <span className="truncate text-xs text-muted-foreground">{item.id.raw}</span>
+          <span className="truncate text-xs text-muted-foreground">{item.id.namespace}</span>
         </button>
 
         <button
