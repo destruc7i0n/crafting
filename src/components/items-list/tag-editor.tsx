@@ -116,7 +116,7 @@ export const TagEditor = ({
           Namespace
           <input
             value={draftNamespace}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
+            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
             onBlur={commitTag}
             onChange={(event) => setDraftNamespace(event.target.value)}
           />
@@ -126,7 +126,7 @@ export const TagEditor = ({
           Name
           <input
             value={draftName}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
+            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
             onBlur={commitTag}
             onChange={(event) => setDraftName(event.target.value)}
           />
@@ -224,7 +224,7 @@ const MemberCandidateList = ({
         value={memberSearch}
         onChange={(event) => onSearchChange(event.target.value)}
         placeholder="Search items and tags..."
-        className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
+        className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
       />
 
       <div

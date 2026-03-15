@@ -21,7 +21,7 @@ export const Select = ({
       <select
         {...props}
         className={cn(
-          "h-9 w-full appearance-none rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm leading-tight text-foreground outline-none transition-colors hover:bg-accent focus:ring-2 focus:ring-inset focus:ring-ring",
+          "h-9 w-full appearance-none rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm leading-tight text-foreground outline-hidden transition-colors hover:bg-accent focus:ring-2 focus:ring-inset focus:ring-ring",
           className,
         )}
       >

@@ -82,7 +82,7 @@ export const RecipeOptions = () => {
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
   const textInputClassName =
-    "h-9 rounded-md border border-input bg-background px-2 py-1 text-foreground outline-none transition-colors hover:bg-accent focus:ring-2 focus:ring-inset focus:ring-ring";
+    "h-9 rounded-md border border-input bg-background px-2 py-1 text-foreground outline-hidden transition-colors hover:bg-accent focus:ring-2 focus:ring-inset focus:ring-ring";
   const selectInputClassName = `${textInputClassName} pr-8`;
   const compoundInputClassName =
     "flex h-9 items-center rounded-md border border-input bg-background transition-colors hover:bg-accent focus-within:ring-2 focus-within:ring-ring";
@@ -240,7 +240,7 @@ export const RecipeOptions = () => {
                     type="text"
                     value={recipe.recipeName ?? ""}
                     onChange={(e) => setRecipeName(sanitizeRecipeName(e.target.value))}
-                    className="h-full w-full bg-transparent px-2 py-1 text-foreground outline-none"
+                    className="h-full w-full bg-transparent px-2 py-1 text-foreground outline-hidden"
                   />
                   <span className="flex h-full shrink-0 items-center border-l border-input px-2 py-1 text-xs text-muted-foreground">
                     .json
@@ -256,7 +256,7 @@ export const RecipeOptions = () => {
 
               <button
                 type="button"
-                className="flex items-center gap-1 self-start px-0.5 py-0 text-left text-xs font-medium text-muted-foreground/80 outline-none transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-0"
+                className="flex items-center gap-1 self-start px-0.5 py-0 text-left text-xs font-medium text-muted-foreground/80 outline-hidden transition-colors hover:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-0"
                 onClick={() => setAdvancedOpen((value) => !value)}
               >
                 <ChevronDownIcon

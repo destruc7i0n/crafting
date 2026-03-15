@@ -70,7 +70,7 @@ export const AddItemForm = () => {
             placeholder="Display name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
+            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
           />
         </label>
         <label className="flex flex-col gap-1 text-xs text-muted-foreground">
@@ -80,7 +80,7 @@ export const AddItemForm = () => {
             placeholder="namespace:item"
             value={itemId}
             onChange={(e) => setItemId(e.target.value)}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
+            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
           />
         </label>
       </div>

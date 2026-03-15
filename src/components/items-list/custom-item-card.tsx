@@ -117,7 +117,7 @@ export const CustomItemCard = ({
           Name
           <input
             value={draftName}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
+            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
             onBlur={commitChanges}
             onChange={(event) => setDraftName(event.target.value)}
           />
@@ -126,7 +126,7 @@ export const CustomItemCard = ({
           Id
           <input
             value={draftId}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
+            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
             onBlur={commitChanges}
             onChange={(event) => setDraftId(event.target.value)}
           />

@@ -1,5 +1,5 @@
 .tooltip {
-  @apply font-minecraft;
+  font-family: "Minecraft", sans-serif;
   text-align: left;
   position: fixed;
   background-color: #100010;

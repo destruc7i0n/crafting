@@ -112,7 +112,7 @@ export const ItemPreviewDropTarget = ({
           min={1}
           max={64}
           value={countDraft}
-          className="absolute bottom-1 right-1 z-20 h-6 w-12 rounded border border-input bg-background px-1 text-right text-xs text-foreground outline-none focus:ring-2 focus:ring-inset focus:ring-ring"
+          className="absolute bottom-1 right-1 z-20 h-6 w-12 rounded border border-input bg-background px-1 text-right text-xs text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
           onBlur={commitCount}
           onChange={(event) => setCountDraft(event.target.value)}
           onClick={(event) => event.stopPropagation()}
