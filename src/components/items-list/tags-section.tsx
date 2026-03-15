@@ -180,7 +180,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-1 lg:p-0">
+    <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
       {filteredCustomTags.length > 0 && (
         <span className="hidden text-xs font-medium text-muted-foreground lg:block">
           Custom Tags
@@ -188,7 +188,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
       )}
 
       {filteredCustomTags.length > 0 && (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-y-auto lg:overflow-x-hidden lg:pb-0">
           {filteredCustomTags.map((tag) => {
             const tagItem = customTagItems[tag.uid];
             if (!tagItem) return null;
@@ -196,7 +196,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
             return (
               <div
                 key={tag.uid}
-                className="flex min-w-0 items-start gap-2 rounded-md border border-border bg-muted/50 p-1.5"
+                className="flex min-w-[180px] items-start gap-1.5 rounded-md border border-border bg-muted/50 p-1 sm:gap-2 sm:p-1.5 lg:min-w-0"
               >
                 <Slot className="shrink-0">
                   <IngredientItem item={tagItem} container="ingredients" />
@@ -208,8 +208,10 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
                   className="flex min-w-0 flex-1 flex-col overflow-hidden pt-0.5 text-left"
                   onClick={(event) => setExpandedTagUid(event.currentTarget.value)}
                 >
-                  <span className="truncate text-sm font-medium">{tag.name}</span>
-                  <span className="truncate text-xs text-muted-foreground">{tag.namespace}</span>
+                  <span className="truncate text-xs font-medium sm:text-sm">{tag.name}</span>
+                  <span className="truncate text-[10px] text-muted-foreground sm:text-xs">
+                    {tag.namespace}
+                  </span>
                 </button>
 
                 <div className="flex shrink-0 items-center gap-0.5">
@@ -243,21 +245,14 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
         Vanilla Tags
       </span>
 
-      <div className="grid grid-cols-2 gap-2">
-        {filteredVanillaTagItems.map((tagItem) => (
-          <div
-            key={tagItem.id.raw}
-            className="flex min-w-0 items-start gap-2 rounded-md border border-border bg-muted/50 p-1.5"
-          >
-            <Slot className="shrink-0">
+      <div className="min-h-0 flex-1 overflow-y-auto rounded-md bg-minecraft-inventory-bg">
+        <div className="flex flex-wrap content-start gap-0">
+          {filteredVanillaTagItems.map((tagItem) => (
+            <Slot key={tagItem.id.raw}>
               <IngredientItem item={tagItem} container="ingredients" />
             </Slot>
-            <div className="min-w-0 flex-1 pt-0.5">
-              <div className="truncate text-sm font-medium">{tagItem.id.id}</div>
-              <div className="truncate text-xs text-muted-foreground">{tagItem.id.namespace}</div>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

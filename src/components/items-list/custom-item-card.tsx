@@ -4,6 +4,7 @@ import { ArrowLeftIcon, Trash2Icon } from "lucide-react";
 
 import { NoTextureTexture } from "@/data/constants";
 import { CustomItem } from "@/data/models/types";
+import { cn } from "@/lib/utils";
 import { useCustomItemStore } from "@/stores/custom-item";
 
 import { Item } from "../item/item";
@@ -14,10 +15,12 @@ export const CustomItemCard = ({
   item,
   isExpanded,
   onToggle,
+  className,
 }: {
   item: CustomItem;
   isExpanded: boolean;
   onToggle: () => void;
+  className?: string;
 }) => {
   const updateCustomItem = useCustomItemStore((state) => state.updateCustomItem);
   const deleteCustomItem = useCustomItemStore((state) => state.deleteCustomItem);
@@ -57,7 +60,12 @@ export const CustomItemCard = ({
 
   if (!isExpanded) {
     return (
-      <div className="flex min-w-0 items-start gap-2 rounded-md border border-border bg-muted/50 p-1.5">
+      <div
+        className={cn(
+          "flex min-w-0 items-start gap-1.5 rounded-md border border-border bg-muted/50 p-1 sm:gap-2 sm:p-1.5",
+          className,
+        )}
+      >
         <Slot className="shrink-0">
           <Item item={item} container="ingredients" />
         </Slot>
@@ -67,8 +75,10 @@ export const CustomItemCard = ({
           className="flex min-w-0 flex-1 flex-col overflow-hidden pt-0.5 text-left"
           onClick={onToggle}
         >
-          <span className="truncate text-sm font-medium">{item.displayName}</span>
-          <span className="truncate text-xs text-muted-foreground">{item.id.namespace}</span>
+          <span className="truncate text-xs font-medium sm:text-sm">{item.displayName}</span>
+          <span className="truncate text-[10px] text-muted-foreground sm:text-xs">
+            {item.id.namespace}
+          </span>
         </button>
 
         <button

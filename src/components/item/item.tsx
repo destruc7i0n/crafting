@@ -33,6 +33,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
   const dndCleanupRef = useRef<(() => void) | null>(null);
   const [dragging, setDragging] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
   const isTouchDevice = useIsTouchDevice();
 
   const isSelectedFromIngredients = useUIStore(
@@ -67,7 +68,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
             const root = createRoot(container);
             root.render(
               item.type === "tag_item" ? (
-                <CyclingItemPreview itemIds={item.values} alt={item.displayName} />
+                <CyclingItemPreview itemIds={item.values} alt={item.displayName} active={false} />
               ) : (
                 <ItemPreview texture={item.texture} alt={item.displayName} />
               ),
@@ -115,10 +116,16 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
     useUIStore.getState().setSelectedIngredient(item);
   };
 
+  const isTagPreviewActive =
+    container === "preview" ||
+    (!isTouchDevice && isHovering) ||
+    (isTouchDevice && isSelectedFromIngredients);
+
   const preview =
     item.type === "tag_item" ? (
       <CyclingItemPreview
         alt={item.displayName}
+        active={isTagPreviewActive}
         itemIds={item.values}
         ref={ref}
         style={{ opacity: dragging ? 0.5 : 1 }}
@@ -129,6 +136,8 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         )}
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       />
     ) : (
       <ItemPreview

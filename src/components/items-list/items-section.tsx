@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
 
@@ -22,9 +22,11 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
+
+    setContainerWidth(el.clientWidth);
 
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
@@ -129,13 +131,14 @@ export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
       )}
 
       {filteredCustomItems.length > 0 && (
-        <div className="grid max-h-[33%] shrink-0 grid-cols-2 content-start gap-2 overflow-y-auto">
+        <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-y-auto lg:overflow-x-hidden lg:pb-0">
           {filteredCustomItems.map((item) => (
             <CustomItemCard
               key={item.id.raw}
               item={item}
               isExpanded={false}
               onToggle={() => setExpandedItemId(item.id.raw)}
+              className="min-w-[180px] snap-start lg:min-w-0"
             />
           ))}
         </div>

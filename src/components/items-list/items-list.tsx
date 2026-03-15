@@ -2,6 +2,7 @@ import { useDeferredValue, useMemo, useState } from "react";
 
 import { PlusIcon } from "lucide-react";
 
+import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { supportsItemTagsForVersion } from "@/lib/tags";
 import { useTagStore } from "@/stores/tag";
@@ -21,12 +22,20 @@ export const ItemsList = () => {
   const [activeTab, setActiveTab] = useState<"items" | "tags">("items");
   const [expandedTagUid, setExpandedTagUid] = useState<string | null>(null);
 
+  const isTouchDevice = useIsTouchDevice();
   const showAddItemForm = useUIStore((state) => state.showAddItemForm);
+  const selectedIngredient = useUIStore((state) => state.selectedIngredient);
+  const setSelectedIngredient = useUIStore((state) => state.setSelectedIngredient);
   const toggleAddItemForm = useUIStore((state) => state.toggleAddItemForm);
   const createTag = useTagStore((state) => state.createTag);
 
   const tab: "items" | "tags" = !supportsTags && activeTab === "tags" ? "items" : activeTab;
   const isCreating = tab === "items" && showAddItemForm;
+  const showSelectionPreview =
+    isTouchDevice &&
+    !!selectedIngredient &&
+    !showAddItemForm &&
+    !(tab === "tags" && expandedTagUid !== null);
 
   const handleCreateAction = () => {
     if (tab === "items") {
@@ -36,6 +45,11 @@ export const ItemsList = () => {
 
     const uid = createTag();
     setExpandedTagUid(uid);
+  };
+
+  const handleTabChange = (nextTab: "items" | "tags") => {
+    setSelectedIngredient(undefined);
+    setActiveTab(nextTab);
   };
 
   const items = useMemo(() => {
@@ -61,9 +75,10 @@ export const ItemsList = () => {
           <button
             type="button"
             className="shrink-0 rounded-md border border-border px-2 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
-            onClick={() => setActiveTab(activeTab === "items" ? "tags" : "items")}
+            onClick={() => handleTabChange(activeTab === "items" ? "tags" : "items")}
+            title={tab === "items" ? "Switch to tags" : "Switch to items"}
           >
-            {tab === "items" ? "Items" : "Tags"}
+            {tab === "items" ? "Tags" : "Items"}
           </button>
         )}
 
@@ -90,7 +105,7 @@ export const ItemsList = () => {
                   ? "bg-primary/10 text-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
-              onClick={() => setActiveTab("items")}
+              onClick={() => handleTabChange("items")}
             >
               Items
             </button>
@@ -101,7 +116,7 @@ export const ItemsList = () => {
                   ? "bg-primary/10 text-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
-              onClick={() => setActiveTab("tags")}
+              onClick={() => handleTabChange("tags")}
             >
               Tags
             </button>
@@ -128,6 +143,15 @@ export const ItemsList = () => {
         placeholder={tab === "tags" ? "Search Tags..." : "Search Items..."}
         onChange={(event) => setSearch(event.target.value)}
       />
+
+      {showSelectionPreview && (
+        <div className="rounded-md border border-border bg-muted/40 px-2 py-1 text-xs leading-tight">
+          <div className="truncate text-foreground">
+            <span className="font-medium">{selectedIngredient.displayName}</span>
+            <span className="text-muted-foreground">{` · ${selectedIngredient.id.raw}`}</span>
+          </div>
+        </div>
+      )}
 
       <div className="flex w-full min-h-0 flex-1 flex-col rounded-md">
         {tab === "tags" ? (
