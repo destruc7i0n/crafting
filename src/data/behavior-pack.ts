@@ -22,7 +22,9 @@ export const getBehaviorPackRecipeFileName = (identifier: string) => {
   return `${sanitizeRecipeFileName(identifier)}.json`;
 };
 
-export const createBehaviorPackBlob = async (recipeFiles: BehaviorPackRecipeFile[]): Promise<Blob> => {
+export const createBehaviorPackBlob = async (
+  recipeFiles: BehaviorPackRecipeFile[],
+): Promise<Blob> => {
   const zip = new JSZip();
   const headerUuid = crypto.randomUUID();
   const moduleUuid = crypto.randomUUID();

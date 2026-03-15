@@ -321,35 +321,35 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
       {downloadConfig && (
         <div className="relative mt-auto flex flex-col gap-2 border-t border-border pt-3">
           {showIssues && (
-          <div className="absolute bottom-full left-0 right-0 z-10 mb-2 max-h-64 overflow-y-auto rounded-md border border-border bg-card p-3 shadow-lg">
-            <div className="mb-2 flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-foreground">
-                <AlertTriangleIcon size={14} className="text-amber-500" />
-                Recipe issues
+            <div className="absolute bottom-full left-0 right-0 z-10 mb-2 max-h-64 overflow-y-auto rounded-md border border-border bg-card p-3 shadow-lg">
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                  <AlertTriangleIcon size={14} className="text-amber-500" />
+                  Recipe issues
+                </div>
+
+                <button
+                  type="button"
+                  className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                  onClick={() => setIssuesOpen(false)}
+                >
+                  Close
+                </button>
               </div>
 
-              <button
-                type="button"
-                className="text-xs text-muted-foreground transition-colors hover:text-foreground"
-                onClick={() => setIssuesOpen(false)}
-              >
-                Close
-              </button>
+              <ul className="space-y-2 text-xs text-muted-foreground">
+                {invalidRecipes.map((recipe, index) => (
+                  <li key={`${recipe.name}-${index}`}>
+                    <span className="font-medium text-foreground">{recipe.name}</span>
+                    <ul className="mt-1 list-disc space-y-1 pl-4">
+                      {recipe.errors.map((error) => (
+                        <li key={error}>{error}</li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            <ul className="space-y-2 text-xs text-muted-foreground">
-              {invalidRecipes.map((recipe, index) => (
-                <li key={`${recipe.name}-${index}`}>
-                  <span className="font-medium text-foreground">{recipe.name}</span>
-                  <ul className="mt-1 list-disc space-y-1 pl-4">
-                    {recipe.errors.map((error) => (
-                      <li key={error}>{error}</li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          </div>
           )}
 
           <button
@@ -371,7 +371,8 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
               <div className="flex min-w-0 items-center gap-2">
                 <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
                 <span className="truncate">
-                  {invalidRecipes.length} invalid {invalidRecipes.length === 1 ? "recipe" : "recipes"}
+                  {invalidRecipes.length} invalid{" "}
+                  {invalidRecipes.length === 1 ? "recipe" : "recipes"}
                 </span>
               </div>
 

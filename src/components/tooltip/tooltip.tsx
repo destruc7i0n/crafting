@@ -77,7 +77,10 @@ const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) 
       nextPosition = getPosition(getFallbackPlacement(placement));
     }
 
-    if (placement === "bottom" && nextPosition.top + tooltipHeight > window.innerHeight - VIEWPORT_PADDING) {
+    if (
+      placement === "bottom" &&
+      nextPosition.top + tooltipHeight > window.innerHeight - VIEWPORT_PADDING
+    ) {
       nextPosition = getPosition(getFallbackPlacement(placement));
     }
 
@@ -85,7 +88,10 @@ const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) 
       nextPosition = getPosition(getFallbackPlacement(placement));
     }
 
-    if (placement === "right" && nextPosition.left + tooltipWidth > window.innerWidth - VIEWPORT_PADDING) {
+    if (
+      placement === "right" &&
+      nextPosition.left + tooltipWidth > window.innerWidth - VIEWPORT_PADDING
+    ) {
       nextPosition = getPosition(getFallbackPlacement(placement));
     }
 

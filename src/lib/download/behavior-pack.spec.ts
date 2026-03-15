@@ -4,21 +4,22 @@ import { SingleRecipeState } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
 
-const { createBehaviorPackBlob, downloadBlob, generate, getBehaviorPackRecipeFileName } = vi.hoisted(() => ({
-  createBehaviorPackBlob: vi.fn(),
-  downloadBlob: vi.fn(),
-  generate: vi.fn(),
-  getBehaviorPackRecipeFileName: vi.fn((identifier: string) => {
-    const sanitized =
-      identifier
-        .trim()
-        .replace(/[:/\\]+/g, "_")
-        .replace(/[^a-zA-Z0-9._-]+/g, "_")
-        .replace(/^_+|_+$/g, "") || "recipe";
+const { createBehaviorPackBlob, downloadBlob, generate, getBehaviorPackRecipeFileName } =
+  vi.hoisted(() => ({
+    createBehaviorPackBlob: vi.fn(),
+    downloadBlob: vi.fn(),
+    generate: vi.fn(),
+    getBehaviorPackRecipeFileName: vi.fn((identifier: string) => {
+      const sanitized =
+        identifier
+          .trim()
+          .replace(/[:/\\]+/g, "_")
+          .replace(/[^a-zA-Z0-9._-]+/g, "_")
+          .replace(/^_+|_+$/g, "") || "recipe";
 
-    return `${sanitized}.json`;
-  }),
-}));
+      return `${sanitized}.json`;
+    }),
+  }));
 
 vi.mock("@/data/behavior-pack", () => ({
   createBehaviorPackBlob,

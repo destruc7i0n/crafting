@@ -43,7 +43,9 @@ export const downloadBehaviorPack = async (
   }
 
   if (invalidRecipes.length > 0) {
-    alert(`Failed to generate all recipes for the behavior pack:\n\n- ${invalidRecipes.join("\n- ")}`);
+    alert(
+      `Failed to generate all recipes for the behavior pack:\n\n- ${invalidRecipes.join("\n- ")}`,
+    );
     return;
   }
 
