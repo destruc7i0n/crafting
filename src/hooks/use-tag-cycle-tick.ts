@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from "react";
+import { useCallback, useRef, useSyncExternalStore } from "react";
 
 let tick = 0;
 let intervalId: number | undefined;
@@ -40,6 +40,13 @@ const subscribe = (listener: () => void) => {
   };
 };
 
-const getSnapshot = () => tick;
+const noopSubscribe = () => () => {};
 
-export const useTagCycleTick = () => useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+export const useTagCycleIndex = (itemCount: number) => {
+  const countRef = useRef(itemCount);
+  countRef.current = itemCount;
+
+  const getIndex = useCallback(() => (countRef.current > 1 ? tick % countRef.current : 0), []);
+
+  return useSyncExternalStore(itemCount > 1 ? subscribe : noopSubscribe, getIndex, getIndex);
+};

@@ -109,7 +109,12 @@ export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
     if (expandedItem) {
       return (
         <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
-          <CustomItemCard item={expandedItem} isExpanded onToggle={() => setExpandedItemId(null)} />
+          <CustomItemCard
+            key={expandedItem.id.raw}
+            item={expandedItem}
+            isExpanded
+            onToggle={() => setExpandedItemId(null)}
+          />
         </div>
       );
     }

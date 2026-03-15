@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useState } from "react";
 
 import {
   AlertTriangleIcon,
@@ -29,7 +29,7 @@ interface RecipeSidebarProps {
   mobile?: boolean;
 }
 
-export const RecipeSidebar = ({ collapsed = false, mobile = false }: RecipeSidebarProps) => {
+export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: RecipeSidebarProps) => {
   const recipes = useRecipeStore((state) => state.recipes);
   const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
   const createRecipe = useRecipeStore((state) => state.createRecipe);
@@ -39,7 +39,6 @@ export const RecipeSidebar = ({ collapsed = false, mobile = false }: RecipeSideb
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const setRecipeSidebarOpen = useUIStore((state) => state.setRecipeSidebarOpen);
   const toggleSidebar = useUIStore((state) => state.toggleSidebar);
-  const tags = useTagStore((state) => state.tags);
 
   const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
   const invalidRecipes = recipes.flatMap((recipe) => {
@@ -63,18 +62,7 @@ export const RecipeSidebar = ({ collapsed = false, mobile = false }: RecipeSideb
   const [issuesOpen, setIssuesOpen] = useState(false);
   const setRecipeNameAtIndex = useRecipeStore((state) => state.setRecipeNameAtIndex);
 
-  useEffect(() => {
-    if (editingIndex === null) return;
-
-    const recipeName = recipes[editingIndex]?.recipeName ?? "";
-    setEditingValue(recipeName);
-  }, [editingIndex, recipes]);
-
-  useEffect(() => {
-    if (canDownloadDatapack) {
-      setIssuesOpen(false);
-    }
-  }, [canDownloadDatapack]);
+  const showIssues = issuesOpen && !canDownloadDatapack;
 
   const handleSelectRecipe = (index: number) => {
     selectRecipe(index);
@@ -114,7 +102,7 @@ export const RecipeSidebar = ({ collapsed = false, mobile = false }: RecipeSideb
       return;
     }
 
-    await downloadDatapack(recipes, minecraftVersion, tags);
+    await downloadDatapack(recipes, minecraftVersion, useTagStore.getState().tags);
   };
 
   if (collapsed) {
@@ -262,6 +250,7 @@ export const RecipeSidebar = ({ collapsed = false, mobile = false }: RecipeSideb
                   onDoubleClick={(e) => {
                     e.stopPropagation();
                     setEditingIndex(index);
+                    setEditingValue(recipes[index]?.recipeName ?? "");
                   }}
                 >
                   <span className="truncate text-sm">{recipe.recipeName}</span>
@@ -295,7 +284,7 @@ export const RecipeSidebar = ({ collapsed = false, mobile = false }: RecipeSideb
       </div>
 
       <div className="relative mt-auto flex flex-col gap-2 border-t border-border pt-3">
-        {!canDownloadDatapack && issuesOpen && (
+        {showIssues && (
           <div className="absolute bottom-full left-0 right-0 z-10 mb-2 max-h-64 overflow-y-auto rounded-md border border-border bg-card p-3 shadow-lg">
             <div className="mb-2 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-sm font-medium text-foreground">
@@ -359,11 +348,12 @@ export const RecipeSidebar = ({ collapsed = false, mobile = false }: RecipeSideb
               className="shrink-0 font-medium text-foreground transition-colors hover:text-primary"
               onClick={() => setIssuesOpen((value) => !value)}
             >
-              {issuesOpen ? "Hide issues" : "View issues"}
+              {showIssues ? "Hide issues" : "View issues"}
             </button>
           </div>
         )}
       </div>
     </div>
   );
-};
+});
+RecipeSidebar.displayName = "RecipeSidebar";

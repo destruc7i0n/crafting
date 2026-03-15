@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { ArrowLeftIcon, DownloadIcon, Trash2Icon } from "lucide-react";
 
@@ -9,7 +9,6 @@ import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
 import { useRecipeStore } from "@/stores/recipe";
 import { useTagStore } from "@/stores/tag";
-import { useUIStore } from "@/stores/ui";
 
 import { Item as IngredientItem } from "../item/item";
 import { Slot } from "../slot/slot";
@@ -17,22 +16,18 @@ import { TagEditor } from "./tag-editor";
 
 interface TagsSectionProps {
   search: string;
+  expandedTagUid: string | null;
+  setExpandedTagUid: (uid: string | null) => void;
 }
 
 const EMPTY_TAGS: Record<string, string[]> = {};
 const EMPTY_ITEMS: Item[] = [];
 
-export const TagsSection = ({ search }: TagsSectionProps) => {
+export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsSectionProps) => {
   const { resources, version } = useResourcesForVersion();
   const tags = useTagStore((state) => state.tags);
-  const createTag = useTagStore((state) => state.createTag);
   const removeTag = useTagStore((state) => state.removeTag);
-  const syncCustomTagInSlots = useRecipeStore((state) => state.syncCustomTagInSlots);
   const removeCustomTagFromSlots = useRecipeStore((state) => state.removeCustomTagFromSlots);
-  const showAddForm = useUIStore((state) => state.showAddTagForm);
-  const toggleAddTagForm = useUIStore((state) => state.toggleAddTagForm);
-
-  const [expandedTagUid, setExpandedTagUid] = useState<string | null>(null);
 
   const vanillaTags = resources?.vanillaTags ?? EMPTY_TAGS;
   const items = resources?.items ?? EMPTY_ITEMS;
@@ -98,15 +93,6 @@ export const TagsSection = ({ search }: TagsSectionProps) => {
     [normalizedSearch, vanillaTagItems],
   );
 
-  useEffect(() => {
-    for (const tag of tags) {
-      const tagItem = customTagItems[tag.uid];
-      if (tagItem) {
-        syncCustomTagInSlots(tag.uid, tagItem);
-      }
-    }
-  }, [customTagItems, syncCustomTagInSlots, tags]);
-
   const handleDeleteTag = (tagUid: string) => {
     removeTag(tagUid);
     removeCustomTagFromSlots(tagUid);
@@ -116,14 +102,6 @@ export const TagsSection = ({ search }: TagsSectionProps) => {
   };
 
   const expandedTag = tags.find((tag) => tag.uid === expandedTagUid);
-
-  useEffect(() => {
-    if (showAddForm) {
-      const uid = createTag();
-      setExpandedTagUid(uid);
-      toggleAddTagForm();
-    }
-  }, [showAddForm, createTag, toggleAddTagForm]);
 
   if (expandedTag) {
     const tagItem = customTagItems[expandedTag.uid];

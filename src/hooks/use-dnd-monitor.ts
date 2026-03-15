@@ -9,7 +9,6 @@ import { useRecipeStore } from "@/stores/recipe";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 
 export const useDndMonitor = () => {
-  const setRecipeSlot = useRecipeStore((state) => state.setRecipeSlot);
   const isTouchDevice = useIsTouchDevice();
 
   useEffect(() => {
@@ -26,7 +25,7 @@ export const useDndMonitor = () => {
 
         const sourceDropTarget = location.initial.dropTargets[0];
         if (sourceDropTarget && isItemPreviewDropTargetData(sourceDropTarget.data)) {
-          setRecipeSlot(sourceDropTarget.data.slot, undefined);
+          useRecipeStore.getState().setRecipeSlot(sourceDropTarget.data.slot, undefined);
         }
 
         const destination = location.current.dropTargets[0];
@@ -46,9 +45,9 @@ export const useDndMonitor = () => {
             return;
           }
 
-          setRecipeSlot(dropTargetData.slot, cloneItem(item));
+          useRecipeStore.getState().setRecipeSlot(dropTargetData.slot, cloneItem(item));
         }
       },
     });
-  }, [setRecipeSlot, isTouchDevice]);
+  }, [isTouchDevice]);
 };

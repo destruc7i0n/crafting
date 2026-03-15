@@ -2,7 +2,7 @@ import rfdc from "rfdc";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-import { IngredientItem, TagItem } from "@/data/models/types";
+import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
 
 export interface SingleRecipeState {
@@ -50,7 +50,6 @@ type RecipeActions = {
   setRecipeCoolingExperience: (experience: number) => void;
   setRecipeBedrockIdentifier: (identifier: string) => void;
   setRecipeBedrockPriority: (priority: number) => void;
-  syncCustomTagInSlots: (tagUid: string, item: TagItem) => void;
   removeCustomTagFromSlots: (tagUid: string) => void;
   clearAllSlots: () => void;
 };
@@ -198,25 +197,6 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
           priority: 0,
         };
         recipe.bedrock.priority = priority;
-      });
-    },
-    syncCustomTagInSlots: (tagUid: string, item: TagItem) => {
-      set((state) => {
-        for (const recipe of state.recipes) {
-          for (const [slot, slotItem] of Object.entries(recipe.slots) as [
-            RecipeSlot,
-            IngredientItem | undefined,
-          ][]) {
-            if (slotItem?.type !== "tag_item" || slotItem.tagUid !== tagUid) {
-              continue;
-            }
-
-            recipe.slots[slot] = {
-              ...item,
-              count: slotItem.count,
-            };
-          }
-        }
       });
     },
     removeCustomTagFromSlots: (tagUid: string) => {

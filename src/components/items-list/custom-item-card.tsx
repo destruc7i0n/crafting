@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { ArrowLeftIcon, Trash2Icon } from "lucide-react";
 
@@ -25,11 +25,6 @@ export const CustomItemCard = ({
   const [draftName, setDraftName] = useState(item.displayName);
   const [draftId, setDraftId] = useState(item.id.raw);
   const editFileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    setDraftName(item.displayName);
-    setDraftId(item.id.raw);
-  }, [item.displayName, item.id.raw]);
 
   const commitChanges = () => {
     const updates: Parameters<typeof updateCustomItem>[1] = {};
