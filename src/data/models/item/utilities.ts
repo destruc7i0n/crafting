@@ -32,7 +32,7 @@ export function cloneItem(item: IngredientItem): IngredientItem {
   }
 
   if (item.type === "custom_item") {
-    return { type: "custom_item", ...baseItem, texture: item.texture };
+    return { type: "custom_item", ...baseItem, uid: item.uid, texture: item.texture };
   }
 
   return {

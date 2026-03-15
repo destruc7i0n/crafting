@@ -81,7 +81,7 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
 export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
   const customItems = useCustomItemStore((state) => state.customItems);
   const showForm = useUIStore((state) => state.showAddItemForm);
-  const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
+  const [expandedItemUid, setExpandedItemUid] = useState<string | null>(null);
 
   const filteredItems = useMemo(() => {
     if (!items) return [];
@@ -106,16 +106,16 @@ export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
     );
   }
 
-  if (expandedItemId) {
-    const expandedItem = customItems.find((item) => item.id.raw === expandedItemId);
+  if (expandedItemUid) {
+    const expandedItem = customItems.find((item) => item.uid === expandedItemUid);
     if (expandedItem) {
       return (
         <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
           <CustomItemCard
-            key={expandedItem.id.raw}
+            key={expandedItem.uid}
             item={expandedItem}
             isExpanded
-            onToggle={() => setExpandedItemId(null)}
+            onToggle={() => setExpandedItemUid(null)}
           />
         </div>
       );
@@ -134,10 +134,10 @@ export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
         <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-y-auto lg:overflow-x-hidden lg:pb-0">
           {filteredCustomItems.map((item) => (
             <CustomItemCard
-              key={item.id.raw}
+              key={item.uid}
               item={item}
               isExpanded={false}
-              onToggle={() => setExpandedItemId(item.id.raw)}
+              onToggle={() => setExpandedItemUid(item.uid)}
               className="min-w-[180px] snap-start lg:min-w-0"
             />
           ))}

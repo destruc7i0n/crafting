@@ -3,7 +3,8 @@ import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 import { Tag, TagValue } from "@/data/models/types";
-import { createEmptyTag } from "@/lib/tags";
+import { createEmptyTag, getCustomTagIdentifier, getTagLabel } from "@/lib/tags";
+import { useRecipeStore } from "@/stores/recipe";
 
 export interface TagState {
   tags: Tag[];
@@ -32,6 +33,8 @@ export const useTagStore = create<TagState & TagActions>()(
         return tag.uid;
       },
       updateTag: (uid, updates) => {
+        let nextIdentifier: ReturnType<typeof getCustomTagIdentifier> | undefined;
+
         set((state) => {
           const tag = state.tags.find((value) => value.uid === uid);
           if (!tag) {
@@ -45,7 +48,23 @@ export const useTagStore = create<TagState & TagActions>()(
           if (updates.namespace !== undefined) {
             tag.namespace = updates.namespace;
           }
+
+          nextIdentifier = getCustomTagIdentifier(tag);
         });
+
+        if (!nextIdentifier) {
+          return;
+        }
+
+        const identifier = nextIdentifier;
+
+        useRecipeStore.getState().syncCustomSlotItem(
+          (slotItem) => slotItem.type === "tag_item" && slotItem.tagUid === uid,
+          (slotItem) => {
+            slotItem.id = { ...identifier };
+            slotItem.displayName = getTagLabel(identifier.raw);
+          },
+        );
       },
       removeTag: (uid) => {
         set((state) => {

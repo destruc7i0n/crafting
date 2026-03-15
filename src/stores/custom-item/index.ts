@@ -6,6 +6,7 @@ import { NoTextureTexture } from "@/data/constants";
 import { CustomItem } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { parseMinecraftIdentifierInput } from "@/lib/minecraft-identifier";
+import { useRecipeStore } from "@/stores/recipe";
 
 export interface CustomItemState {
   customItems: CustomItem[];
@@ -17,12 +18,15 @@ type CustomItemUpdates = Partial<Pick<CustomItem, "displayName" | "texture">> & 
 
 type CustomItemActions = {
   addCustomItem: (name: string, rawId: string, texture: string, version: MinecraftVersion) => void;
-  updateCustomItem: (currentRawId: string, updates: CustomItemUpdates) => void;
-  deleteCustomItem: (rawId: string) => void;
+  updateCustomItem: (uid: string, updates: CustomItemUpdates) => void;
+  deleteCustomItem: (uid: string) => void;
 };
 
 const getCustomItemIdentifierVersion = (version: MinecraftVersion) =>
   version === MinecraftVersion.Bedrock ? MinecraftVersion.V12111 : version;
+
+const createCustomItemUid = () =>
+  globalThis.crypto?.randomUUID?.() ?? `custom-item-${Math.random().toString(36).slice(2)}`;
 
 export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
   persist(
@@ -38,6 +42,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
 
         const item: CustomItem = {
           type: "custom_item",
+          uid: createCustomItemUid(),
           id,
           displayName: name,
           texture: texture || NoTextureTexture,
@@ -49,9 +54,11 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
         });
       },
 
-      updateCustomItem: (currentRawId, updates) => {
+      updateCustomItem: (uid, updates) => {
+        let syncedItem: CustomItem | undefined;
+
         set((state) => {
-          const item = state.customItems.find((i) => i.id.raw === currentRawId);
+          const item = state.customItems.find((i) => i.uid === uid);
           if (!item) return;
 
           if (updates.displayName !== undefined) {
@@ -68,18 +75,38 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
               getCustomItemIdentifierVersion(item._version),
             );
             const duplicate = state.customItems.some(
-              (i) => i.id.raw !== currentRawId && i.id.raw === newId.raw,
+              (i) => i.uid !== uid && i.id.raw === newId.raw,
             );
             if (!duplicate) {
               item.id = newId;
             }
           }
+
+          syncedItem = {
+            ...item,
+            id: { ...item.id },
+          };
         });
+
+        if (!syncedItem) {
+          return;
+        }
+
+        const nextSyncedItem = syncedItem;
+
+        useRecipeStore.getState().syncCustomSlotItem(
+          (slotItem) => slotItem.type === "custom_item" && slotItem.uid === nextSyncedItem.uid,
+          (slotItem) => {
+            slotItem.id = nextSyncedItem.id;
+            slotItem.displayName = nextSyncedItem.displayName;
+            slotItem.texture = nextSyncedItem.texture;
+          },
+        );
       },
 
-      deleteCustomItem: (rawId) => {
+      deleteCustomItem: (uid) => {
         set((state) => {
-          state.customItems = state.customItems.filter((item) => item.id.raw !== rawId);
+          state.customItems = state.customItems.filter((item) => item.uid !== uid);
         });
       },
     })),

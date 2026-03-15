@@ -46,7 +46,7 @@ export const CustomItemCard = ({
     }
 
     if (Object.keys(updates).length > 0) {
-      updateCustomItem(item.id.raw, updates);
+      updateCustomItem(item.uid, updates);
     }
   };
 
@@ -57,7 +57,7 @@ export const CustomItemCard = ({
     const reader = new FileReader();
     reader.onloadend = () => {
       if (typeof reader.result === "string") {
-        updateCustomItem(item.id.raw, { texture: reader.result });
+        updateCustomItem(item.uid, { texture: reader.result });
       }
     };
     reader.readAsDataURL(file);
@@ -89,7 +89,7 @@ export const CustomItemCard = ({
         <button
           type="button"
           className="rounded p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-          onClick={() => deleteCustomItem(item.id.raw)}
+          onClick={() => deleteCustomItem(item.uid)}
         >
           <Trash2Icon size={14} />
           <span className="sr-only">Delete item</span>
@@ -122,7 +122,7 @@ export const CustomItemCard = ({
           type="button"
           className="rounded p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
           onClick={() => {
-            deleteCustomItem(item.id.raw);
+            deleteCustomItem(item.uid);
             onToggle();
           }}
         >

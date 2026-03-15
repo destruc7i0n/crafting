@@ -56,6 +56,10 @@ type RecipeActions = {
   setRecipeCoolingExperience: (experience: number) => void;
   setRecipeBedrockIdentifier: (identifier: string) => void;
   setRecipeBedrockPriority: (priority: number) => void;
+  syncCustomSlotItem: (
+    match: (item: IngredientItem) => boolean,
+    update: (item: IngredientItem) => void,
+  ) => void;
   removeCustomTagFromSlots: (tagUid: string) => void;
   clearAllSlots: () => void;
 };
@@ -218,6 +222,20 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
           priority: 0,
         };
         recipe.bedrock.priority = priority;
+      });
+    },
+    syncCustomSlotItem: (match, update) => {
+      set((state) => {
+        for (const recipe of state.recipes) {
+          for (const [, slotItem] of Object.entries(recipe.slots) as [
+            RecipeSlot,
+            IngredientItem | undefined,
+          ][]) {
+            if (slotItem && match(slotItem)) {
+              update(slotItem);
+            }
+          }
+        }
       });
     },
     removeCustomTagFromSlots: (tagUid: string) => {

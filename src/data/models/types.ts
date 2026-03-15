@@ -22,6 +22,7 @@ export interface Item extends BaseItem {
 
 export interface CustomItem extends BaseItem {
   type: "custom_item";
+  uid: string;
 }
 
 export interface TagItem extends BaseItem {

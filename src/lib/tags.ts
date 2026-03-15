@@ -168,5 +168,9 @@ export const isSameIngredient = (
     );
   }
 
+  if (left.type === "custom_item" && right.type === "custom_item") {
+    return left.uid === right.uid;
+  }
+
   return left.id.raw === right.id.raw;
 };
