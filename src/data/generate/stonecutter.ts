@@ -3,7 +3,7 @@ import { SingleRecipeState } from "@/stores/recipe";
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { formatIngredient } from "./ingredient";
-import { MinecraftVersion } from "../types";
+import { MinecraftVersion, SLOTS } from "../types";
 import { BedrockShapelessBody, StonecutterInput, StonecuttingRecipe } from "./recipes/types";
 
 export const buildJava = (
@@ -35,8 +35,8 @@ export const buildBedrock = (
 };
 
 const extractInput = (state: SingleRecipeState): StonecutterInput => ({
-  ingredient: state.slots["stonecutter.ingredient"],
-  result: state.slots["stonecutter.result"],
+  ingredient: state.slots[SLOTS.stonecutter.ingredient],
+  result: state.slots[SLOTS.stonecutter.result],
   group: state.group,
 });
 

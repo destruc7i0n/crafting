@@ -12,12 +12,12 @@ describe("wrapBedrockRecipe", () => {
       {
         identifier: "crafting:test",
         priority: 0,
-        formatVersion: "1.12",
+        formatVersion: "1.20.10",
       },
     );
 
     expect(wrapped).toEqual({
-      format_version: "1.12",
+      format_version: "1.20.10",
       "minecraft:recipe_shapeless": {
         description: {
           identifier: "crafting:test",

@@ -3,21 +3,21 @@ import { SingleRecipeState } from "@/stores/recipe";
 import { formatIngredient } from "./ingredient";
 import { FormatStrategy } from "./format/types";
 import { isVersionAtLeast } from "./version-utils";
-import { MinecraftVersion } from "../types";
+import { MinecraftVersion, SLOTS } from "../types";
 import { CraftingTransmuteRecipe, TransmuteInput } from "./recipes/types";
 
 export const validateTransmute = (state: SingleRecipeState): string[] => {
   const errors: string[] = [];
 
-  if (!state.slots["crafting.1"]) {
+  if (!state.slots[SLOTS.crafting.slot1]) {
     errors.push("Add an input item");
   }
 
-  if (!state.slots["crafting.2"]) {
+  if (!state.slots[SLOTS.crafting.slot2]) {
     errors.push("Add a material item");
   }
 
-  if (!state.slots["crafting.result"]) {
+  if (!state.slots[SLOTS.crafting.result]) {
     errors.push("Add a result item");
   }
 

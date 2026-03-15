@@ -5,7 +5,7 @@ import { FormatStrategy } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import { isVersionAtLeast } from "./version-utils";
 import { IngredientItem } from "../models/types";
-import { MinecraftVersion } from "../types";
+import { MinecraftVersion, SLOTS } from "../types";
 import {
   BedrockShapedBody,
   BedrockShapelessBody,
@@ -140,10 +140,9 @@ function getKeyForGrid(grid: (IngredientItem | undefined)[]): {
       }
 
       if (!found) {
-        while (keyName in key) {
-          // just randomly pick a character
-          keyName = PATTERN_CHARACTERS[Math.floor(Math.random() * PATTERN_CHARACTERS.length)];
-        }
+        const next = PATTERN_CHARACTERS.find((c) => !(c in key));
+        if (!next) throw new Error("Ran out of pattern characters");
+        keyName = next;
       }
     }
 
@@ -227,15 +226,15 @@ export const buildBedrock = (
 
 export const extractCraftingInput = (state: SingleRecipeState): CraftingInput => ({
   grid: [
-    state.slots["crafting.1"],
-    state.slots["crafting.2"],
-    state.slots["crafting.3"],
-    state.slots["crafting.4"],
-    state.slots["crafting.5"],
-    state.slots["crafting.6"],
-    state.slots["crafting.7"],
-    state.slots["crafting.8"],
-    state.slots["crafting.9"],
+    state.slots[SLOTS.crafting.slot1],
+    state.slots[SLOTS.crafting.slot2],
+    state.slots[SLOTS.crafting.slot3],
+    state.slots[SLOTS.crafting.slot4],
+    state.slots[SLOTS.crafting.slot5],
+    state.slots[SLOTS.crafting.slot6],
+    state.slots[SLOTS.crafting.slot7],
+    state.slots[SLOTS.crafting.slot8],
+    state.slots[SLOTS.crafting.slot9],
   ].map((item, index) => {
     const disabledSlots = [2, 5, 6, 7, 8];
 
@@ -245,7 +244,7 @@ export const extractCraftingInput = (state: SingleRecipeState): CraftingInput =>
 
     return disabledSlots.includes(index) ? undefined : item;
   }),
-  result: state.slots["crafting.result"],
+  result: state.slots[SLOTS.crafting.result],
   shapeless: state.crafting.shapeless,
   keepWhitespace: state.crafting.keepWhitespace,
   twoByTwo: state.crafting.twoByTwo === true,

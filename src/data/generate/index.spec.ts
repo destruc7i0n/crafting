@@ -68,7 +68,7 @@ describe("generate orchestrator", () => {
     };
 
     expect(generate(state, MinecraftVersion.Bedrock)).toEqual({
-      format_version: "1.12",
+      format_version: "1.20.10",
       "minecraft:recipe_furnace": {
         description: { identifier: "crafting:test" },
         tags: ["furnace"],
@@ -122,7 +122,7 @@ describe("generate orchestrator", () => {
     };
 
     expect(generate(state, MinecraftVersion.Bedrock)).toEqual({
-      format_version: "1.17",
+      format_version: "1.20.10",
       "minecraft:recipe_smithing_transform": {
         description: { identifier: "smithing:upgrade" },
         tags: ["smithing_table"],

@@ -28,10 +28,12 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
 
   const getObjectResultValue = (identifier: { raw: string; id: string; data?: number }) => {
     if (version === MinecraftVersion.V112) {
+      // no namespace; always include metadata
       return { item: identifier.id, data: identifier.data };
     }
 
     if (version === MinecraftVersion.Bedrock) {
+      // include metadata when present
       return {
         item: identifier.raw,
         ...(identifier.data !== undefined ? { data: identifier.data } : {}),
@@ -39,9 +41,11 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
     }
 
     if (isAtLeast(version, MinecraftVersion.V121)) {
+      // "id" key replaces "item" in 1.21+
       return { id: identifier.raw };
     }
 
+    // Java 1.13–1.20
     return { item: identifier.raw };
   };
 
@@ -65,15 +69,12 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
         return identifier.raw;
       }
 
+      // Java 1.13–1.21.1
       return {
         item: identifier.raw,
       };
     },
     ingredientTag: (tagId) => {
-      if (version === MinecraftVersion.Bedrock) {
-        return { tag: tagId };
-      }
-
       if (version === MinecraftVersion.V112) {
         throw new Error("Item tags are not supported in Java 1.12");
       }
@@ -82,38 +83,13 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
         return `#${tagId}`;
       }
 
+      // version is Bedrock, or Java 1.13–1.21.1 — both use { tag }
       return { tag: tagId };
     },
-    objectResult: (identifier, count) => {
-      if (version === MinecraftVersion.Bedrock) {
-        return {
-          item: identifier.raw,
-          ...(identifier.data !== undefined ? { data: identifier.data } : {}),
-          ...(hasPositiveCount(count) ? { count } : {}),
-        };
-      }
-
-      if (version === MinecraftVersion.V112) {
-        return {
-          item: identifier.id,
-          data: identifier.data,
-          ...(hasPositiveCount(count) ? { count } : {}),
-        };
-      }
-
-      if (isAtLeast(version, MinecraftVersion.V121)) {
-        return {
-          id: identifier.raw,
-          ...(hasPositiveCount(count) ? { count } : {}),
-        };
-      }
-
-      return {
-        item: identifier.raw,
-        ...(hasPositiveCount(count) ? { count } : {}),
-      };
-    },
-    stringResult: (identifier) => identifier.raw,
+    objectResult: (identifier, count) => ({
+      ...getObjectResultValue(identifier),
+      ...(hasPositiveCount(count) ? { count } : {}),
+    }),
     cookingResult: (identifier, count) => {
       if (!useObjectResult) {
         return identifier.raw;
@@ -141,9 +117,11 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
     },
     recipeType: (baseType) => {
       if (version === MinecraftVersion.V112 || version === MinecraftVersion.V113) {
+        // 1.12 and 1.13 use bare type strings without namespace
         return baseType;
       }
 
+      // 1.14+ and Bedrock require the minecraft: prefix
       return addMinecraftPrefix(baseType);
     },
   };

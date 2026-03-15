@@ -1,3 +1,5 @@
+import { MinecraftVersion } from "@/data/types";
+
 import {
   BedrockIngredient,
   EmptyObject,
@@ -36,7 +38,6 @@ export interface FormatStrategy {
     },
     count?: number,
   ) => ObjectResultRef;
-  stringResult: (id: { raw: string }) => string;
   cookingResult: (
     id: {
       raw: string;

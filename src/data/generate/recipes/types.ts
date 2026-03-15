@@ -138,7 +138,7 @@ export type BedrockBody =
   | BedrockSmithingTrimBody
   | BedrockSmithingTransformBody;
 
-export type BedrockFormatVersion = "1.12" | "1.17" | "1.20.10";
+export type BedrockFormatVersion = "1.20.10";
 
 export type BedrockTag =
   | "crafting_table"

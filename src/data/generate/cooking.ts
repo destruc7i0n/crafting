@@ -4,7 +4,7 @@ import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import { isVersionAtLeast } from "./version-utils";
-import { MinecraftVersion, RecipeType } from "../types";
+import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import { BedrockFurnaceBody, CookingInput, CookingRecipe } from "./recipes/types";
 
 const recipeTypeToBaseCookingType: Record<
@@ -66,8 +66,8 @@ export const buildBedrock = (
 
 const extractInput = (state: SingleRecipeState): CookingInput => ({
   recipeType: state.recipeType as CookingInput["recipeType"],
-  ingredient: state.slots["cooking.ingredient"],
-  result: state.slots["cooking.result"],
+  ingredient: state.slots[SLOTS.cooking.ingredient],
+  result: state.slots[SLOTS.cooking.result],
   time: state.cooking.time,
   experience: state.cooking.experience,
   group: state.group,

@@ -4,7 +4,7 @@ import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { formatIngredient, formatIngredientString } from "./ingredient";
 import { isVersionAtLeast } from "./version-utils";
-import { MinecraftVersion, RecipeType } from "../types";
+import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import {
   BedrockShapelessBody,
   BedrockSmithingTransformBody,
@@ -81,10 +81,10 @@ export const buildBedrock = (
 
 const extractInput = (state: SingleRecipeState): SmithingInput => ({
   recipeType: state.recipeType as SmithingInput["recipeType"],
-  template: state.slots["smithing.template"],
-  base: state.slots["smithing.base"],
-  addition: state.slots["smithing.addition"],
-  result: state.slots["smithing.result"],
+  template: state.slots[SLOTS.smithing.template],
+  base: state.slots[SLOTS.smithing.base],
+  addition: state.slots[SLOTS.smithing.addition],
+  result: state.slots[SLOTS.smithing.result],
   trimPattern: state.smithingTrimPattern,
 });
 
