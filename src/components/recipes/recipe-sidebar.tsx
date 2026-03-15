@@ -13,6 +13,7 @@ import { recipeTypeToItemId, recipeTypeToName } from "@/data/constants";
 import { MinecraftVersion } from "@/data/types";
 import { getSupportedRecipeTypesForVersion } from "@/data/versions";
 
+import { confirmAction } from "@/lib/confirm";
 import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
 import { isDuplicateRecipeName, sanitizeRecipeName } from "@/lib/recipe-name";
@@ -102,8 +103,8 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     }
   };
 
-  const handleDeleteRecipe = (index: number) => {
-    if (!confirm("Are you sure you want to delete this recipe?")) {
+  const handleDeleteRecipe = (index: number, event?: { shiftKey: boolean }) => {
+    if (!confirmAction("Are you sure you want to delete this recipe?", event)) {
       return;
     }
 
@@ -307,7 +308,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                   className="rounded p-1 text-muted-foreground opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteRecipe(index);
+                    handleDeleteRecipe(index, e);
                   }}
                 >
                   <Trash2Icon size={14} />
