@@ -61,7 +61,7 @@ export const ItemOutput = () => {
   };
 
   return (
-    <div className="rounded-lg border bg-card">
+    <div className="rounded-lg border bg-card lg:min-h-0 lg:flex lg:flex-col">
       <div className="flex items-center justify-between px-4 py-2">
         <button
           type="button"
@@ -102,7 +102,7 @@ export const ItemOutput = () => {
       </div>
 
       {!collapsed && (
-        <div className="border-t">
+        <div className="border-t lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
           <JsonOutput json={generatedResult.recipe} />
 
           {generatedResult.error && (

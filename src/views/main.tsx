@@ -5,7 +5,7 @@ import { Preview } from "@/components/preview/preview";
 
 export const Main = () => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 lg:min-h-0 lg:h-full">
       <div className="rounded-lg border bg-card p-4">
         <div className="flex flex-col items-center gap-4">
           <RecipeTypeSelector />
@@ -17,7 +17,9 @@ export const Main = () => {
         <RecipeOptions />
       </div>
 
-      <ItemOutput />
+      <div className="lg:min-h-0 lg:flex lg:flex-col">
+        <ItemOutput />
+      </div>
     </div>
   );
 };
