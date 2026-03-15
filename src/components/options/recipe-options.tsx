@@ -5,7 +5,12 @@ import { ChevronDownIcon, CircleHelpIcon } from "lucide-react";
 import { isVersionAtLeast } from "@/data/generate/version-utils";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { Select } from "@/components/ui/select";
+import {
+  bedrockIdentifierHint,
+  isValidBedrockNamespacedIdentifier,
+} from "@/lib/minecraft-identifier";
 import { sanitizeRecipeName } from "@/lib/recipe-name";
+import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
@@ -130,6 +135,11 @@ export const RecipeOptions = () => {
     recipe.recipeType === RecipeType.SmithingTrim &&
     isVersionAtLeast(minecraftVersion, MinecraftVersion.V1215);
   const supportsAdvancedOptions = !isBedrock;
+  const showBedrockIdentifierError =
+    isBedrock &&
+    recipe.bedrock !== undefined &&
+    recipe.bedrock.identifier.trim().length > 0 &&
+    !isValidBedrockNamespacedIdentifier(recipe.bedrock.identifier);
 
   return (
     <div className="flex flex-col">
@@ -359,15 +369,25 @@ export const RecipeOptions = () => {
 
           {isBedrock && (
             <div className="grid gap-2 sm:grid-cols-2">
-              <label className="flex flex-col gap-1 text-sm sm:col-span-2">
+              <label className="flex flex-col gap-1 text-sm">
                 <span className="text-foreground">Identifier</span>
                 <input
                   type="text"
                   value={recipe.bedrock?.identifier ?? ""}
                   onChange={(e) => setRecipeBedrockIdentifier(e.target.value)}
-                  className={textInputClassName}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  aria-invalid={showBedrockIdentifierError}
+                  className={cn(
+                    textInputClassName,
+                    showBedrockIdentifierError && "border-destructive focus:ring-destructive",
+                  )}
                   placeholder="namespace:name"
                 />
+                {showBedrockIdentifierError && (
+                  <span className="text-[10px] text-destructive">{bedrockIdentifierHint}</span>
+                )}
               </label>
 
               {bedrockPriorityRecipeTypes.includes(

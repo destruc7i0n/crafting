@@ -6,6 +6,12 @@ import { ItemPreview } from "@/components/item/item-preview";
 import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemTooltip } from "@/components/tooltip/item-tooltip";
 import { Item, Tag, TagItem } from "@/data/models/types";
+import {
+  isValidJavaIdentifierNamespace,
+  isValidJavaIdentifierPath,
+  javaIdentifierNamespaceHint,
+  javaIdentifierPathHint,
+} from "@/lib/minecraft-identifier";
 import { cn } from "@/lib/utils";
 import {
   getTagLabel,
@@ -58,7 +64,15 @@ export const TagEditor = ({
     setMemberSearch("");
   }
 
+  const showDraftNamespaceError =
+    draftNamespace.trim().length > 0 && !isValidJavaIdentifierNamespace(draftNamespace);
+  const showDraftNameError = draftName.trim().length > 0 && !isValidJavaIdentifierPath(draftName);
+
   const commitTag = () => {
+    if (showDraftNamespaceError || showDraftNameError) {
+      return;
+    }
+
     const nextName = getTagNameOrFallback(draftName || tag.name);
     const nextNamespace = getTagNamespaceOrFallback(draftNamespace || tag.namespace);
     updateTag(tag.uid, { name: nextName, namespace: nextNamespace });
@@ -116,20 +130,40 @@ export const TagEditor = ({
           Namespace
           <input
             value={draftNamespace}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            aria-invalid={showDraftNamespaceError}
+            className={cn(
+              "rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring",
+              showDraftNamespaceError && "border-destructive focus:ring-destructive",
+            )}
             onBlur={commitTag}
             onChange={(event) => setDraftNamespace(event.target.value)}
           />
+          {showDraftNamespaceError && (
+            <span className="text-[10px] text-destructive">{javaIdentifierNamespaceHint}</span>
+          )}
         </label>
 
         <label className="flex flex-col gap-1 text-xs text-muted-foreground">
           Name
           <input
             value={draftName}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            aria-invalid={showDraftNameError}
+            className={cn(
+              "rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring",
+              showDraftNameError && "border-destructive focus:ring-destructive",
+            )}
             onBlur={commitTag}
             onChange={(event) => setDraftName(event.target.value)}
           />
+          {showDraftNameError && (
+            <span className="text-[10px] text-destructive">{javaIdentifierPathHint}</span>
+          )}
         </label>
       </div>
 

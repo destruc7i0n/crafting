@@ -2,6 +2,11 @@ import { useRef, useState } from "react";
 
 import { ArrowLeftIcon } from "lucide-react";
 
+import {
+  isValidJavaNamespacedIdentifier,
+  javaNamespacedIdentifierHint,
+} from "@/lib/minecraft-identifier";
+import { cn } from "@/lib/utils";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useCustomItemStore } from "@/stores/custom-item";
@@ -34,7 +39,7 @@ export const AddItemForm = () => {
   };
 
   const handleAdd = () => {
-    if (!name || !itemId) return;
+    if (!name.trim() || !isValidJavaNamespacedIdentifier(itemId)) return;
 
     addCustomItem(name, itemId, texture, minecraftVersion);
     setName("");
@@ -47,7 +52,8 @@ export const AddItemForm = () => {
     }
   };
 
-  const canAdd = name.trim().length > 0 && itemId.trim().length > 0;
+  const showItemIdError = itemId.trim().length > 0 && !isValidJavaNamespacedIdentifier(itemId);
+  const canAdd = name.trim().length > 0 && isValidJavaNamespacedIdentifier(itemId);
 
   return (
     <div className="flex flex-1 flex-col gap-3">
@@ -80,8 +86,18 @@ export const AddItemForm = () => {
             placeholder="namespace:item"
             value={itemId}
             onChange={(e) => setItemId(e.target.value)}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            aria-invalid={showItemIdError}
+            className={cn(
+              "rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring",
+              showItemIdError && "border-destructive focus:ring-destructive",
+            )}
           />
+          {showItemIdError && (
+            <span className="text-[10px] text-destructive">{javaNamespacedIdentifierHint}</span>
+          )}
         </label>
       </div>
 

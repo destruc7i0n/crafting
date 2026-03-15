@@ -6,24 +6,21 @@ import {
 import { IngredientItem, Item, Tag, TagItem, TagValue } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 
+import {
+  sanitizeJavaIdentifierNamespace,
+  sanitizeJavaIdentifierPath,
+} from "./minecraft-identifier";
+
 const DEFAULT_TAG_NAME = "custom_tag";
 const DEFAULT_TAG_NAMESPACE = "crafting";
 
 const unique = (values: string[]) => [...new Set(values)];
 
-export const sanitizeTagSegment = (value: string) =>
-  value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9_./-]+/g, "_")
-    .replace(/_+/g, "_")
-    .replace(/^_+|_+$/g, "");
-
 export const getTagNameOrFallback = (value: string) =>
-  sanitizeTagSegment(value) || DEFAULT_TAG_NAME;
+  sanitizeJavaIdentifierPath(value) || DEFAULT_TAG_NAME;
 
 export const getTagNamespaceOrFallback = (value: string) =>
-  sanitizeTagSegment(value) || DEFAULT_TAG_NAMESPACE;
+  sanitizeJavaIdentifierNamespace(value) || DEFAULT_TAG_NAMESPACE;
 
 export const getCustomTagIdentifier = (tag: Pick<Tag, "name" | "namespace">) =>
   parseStringToMinecraftIdentifier(`${tag.namespace}:${tag.name}`);

@@ -3,8 +3,9 @@ import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 import { NoTextureTexture } from "@/data/constants";
-import { CustomItem, MinecraftIdentifier } from "@/data/models/types";
+import { CustomItem } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
+import { parseMinecraftIdentifierInput } from "@/lib/minecraft-identifier";
 
 export interface CustomItemState {
   customItems: CustomItem[];
@@ -20,20 +21,8 @@ type CustomItemActions = {
   deleteCustomItem: (rawId: string) => void;
 };
 
-const parseIdentifier = (raw: string): MinecraftIdentifier => {
-  const trimmed = raw
-    .split(" ")
-    .join("_")
-    .toLowerCase()
-    .replace(/[^a-z0-9_:./-]/g, "");
-
-  const hasNamespace = trimmed.includes(":");
-  const fullId = hasNamespace ? trimmed : `minecraft:${trimmed}`;
-  const [namespace, ...rest] = fullId.split(":");
-  const id = rest.join(":");
-
-  return { raw: fullId, namespace, id };
-};
+const getCustomItemIdentifierVersion = (version: MinecraftVersion) =>
+  version === MinecraftVersion.Bedrock ? MinecraftVersion.V12111 : version;
 
 export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
   persist(
@@ -41,7 +30,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
       customItems: [],
 
       addCustomItem: (name, rawId, texture, version) => {
-        const id = parseIdentifier(rawId);
+        const id = parseMinecraftIdentifierInput(rawId, getCustomItemIdentifierVersion(version));
 
         if (get().customItems.some((item) => item.id.raw === id.raw)) {
           return;
@@ -74,7 +63,10 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
           }
 
           if (updates.rawId !== undefined) {
-            const newId = parseIdentifier(updates.rawId);
+            const newId = parseMinecraftIdentifierInput(
+              updates.rawId,
+              getCustomItemIdentifierVersion(item._version),
+            );
             const duplicate = state.customItems.some(
               (i) => i.id.raw !== currentRawId && i.id.raw === newId.raw,
             );

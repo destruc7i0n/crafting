@@ -4,6 +4,10 @@ import { ArrowLeftIcon, Trash2Icon } from "lucide-react";
 
 import { NoTextureTexture } from "@/data/constants";
 import { CustomItem } from "@/data/models/types";
+import {
+  isValidJavaNamespacedIdentifier,
+  javaNamespacedIdentifierHint,
+} from "@/lib/minecraft-identifier";
 import { cn } from "@/lib/utils";
 import { useCustomItemStore } from "@/stores/custom-item";
 
@@ -28,6 +32,7 @@ export const CustomItemCard = ({
   const [draftName, setDraftName] = useState(item.displayName);
   const [draftId, setDraftId] = useState(item.id.raw);
   const editFileInputRef = useRef<HTMLInputElement>(null);
+  const showDraftIdError = draftId.trim().length === 0 || !isValidJavaNamespacedIdentifier(draftId);
 
   const commitChanges = () => {
     const updates: Parameters<typeof updateCustomItem>[1] = {};
@@ -36,7 +41,7 @@ export const CustomItemCard = ({
       updates.displayName = draftName;
     }
 
-    if (draftId !== item.id.raw) {
+    if (!showDraftIdError && draftId !== item.id.raw) {
       updates.rawId = draftId;
     }
 
@@ -140,10 +145,20 @@ export const CustomItemCard = ({
           Id
           <input
             value={draftId}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            aria-invalid={showDraftIdError}
+            className={cn(
+              "rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring",
+              showDraftIdError && "border-destructive focus:ring-destructive",
+            )}
             onBlur={commitChanges}
             onChange={(event) => setDraftId(event.target.value)}
           />
+          {showDraftIdError && (
+            <span className="text-[10px] text-destructive">{javaNamespacedIdentifierHint}</span>
+          )}
         </label>
       </div>
 
