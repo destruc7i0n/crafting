@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
 
+import { ResourceIcon } from "@/components/item/resource-icon";
 import { recipeTypeToItemId, recipeTypeToName } from "@/data/constants";
 import { getSupportedRecipeTypesForVersion } from "@/data/versions";
-import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
@@ -14,8 +14,6 @@ export const RecipeTypeSelector = () => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
   const setRecipeType = useRecipeStore((state) => state.setRecipeType);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  const { resources } = useResourcesForVersion();
 
   const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
 
@@ -35,8 +33,6 @@ export const RecipeTypeSelector = () => {
     <div ref={scrollRef} className="flex w-full gap-1.5 overflow-x-auto scrollbar-none">
       {supportedRecipeTypes.map((type) => {
         const isSelected = recipeType === type;
-        const texture = resources?.itemsById?.[recipeTypeToItemId[type]!]?.texture;
-
         return (
           <button
             key={type}
@@ -50,16 +46,12 @@ export const RecipeTypeSelector = () => {
                 : "border-transparent hover:bg-accent active:bg-accent/80",
             )}
           >
-            {texture ? (
-              <img
-                src={texture}
-                alt={recipeTypeToName[type]}
-                className="pointer-events-none h-6 w-6"
-                draggable={false}
-              />
-            ) : (
-              <div className="h-6 w-6 rounded bg-muted" />
-            )}
+            <ResourceIcon
+              itemId={recipeTypeToItemId[type]!}
+              alt={recipeTypeToName[type]}
+              className="pointer-events-none h-6 w-6"
+              draggable={false}
+            />
             <span className="text-sm font-medium">{recipeTypeToName[type]}</span>
           </button>
         );

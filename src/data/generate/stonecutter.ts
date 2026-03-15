@@ -2,6 +2,7 @@ import { SingleRecipeState } from "@/stores/recipe";
 
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
+import { formatIngredient } from "./ingredient";
 import { MinecraftVersion } from "../types";
 import { BedrockShapelessBody, StonecutterInput, StonecuttingRecipe } from "./recipes/types";
 
@@ -16,7 +17,7 @@ export const buildJava = (
   return {
     type: formatter.recipeType("stonecutting") as "minecraft:stonecutting",
     group: state.group.length > 0 ? state.group : undefined,
-    ingredient: state.ingredient ? formatter.ingredient(state.ingredient.id) : {},
+    ingredient: formatIngredient(state.ingredient, formatter),
     ...result,
   } satisfies StonecuttingRecipe;
 };
@@ -25,8 +26,10 @@ export const buildBedrock = (
   state: StonecutterInput,
   formatter: FormatStrategy,
 ): BedrockShapelessBody => {
+  const ingredients = state.ingredient ? [formatIngredient(state.ingredient, formatter)] : [];
+
   return {
-    ingredients: state.ingredient ? [formatter.ingredient(state.ingredient.id)] : [],
+    ingredients,
     result: state.result ? formatter.objectResult(state.result.id, state.result.count) : {},
   } satisfies BedrockShapelessBody;
 };

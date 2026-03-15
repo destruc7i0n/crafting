@@ -1,5 +1,6 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
+import { formatIngredient } from "./ingredient";
 import { FormatStrategy } from "./format/types";
 import { CraftingTransmuteRecipe, TransmuteInput } from "./recipes/types";
 
@@ -33,8 +34,8 @@ export const buildJava = (
   return {
     type: "minecraft:crafting_transmute",
     group,
-    input: input ? formatter.ingredient(input.id) : {},
-    material: material ? formatter.ingredient(material.id) : {},
+    input: formatIngredient(input, formatter),
+    material: formatIngredient(material, formatter),
     result: result ? formatter.objectResult(result.id, result.count) : {},
   } satisfies CraftingTransmuteRecipe;
 };

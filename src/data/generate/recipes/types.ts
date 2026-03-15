@@ -1,4 +1,4 @@
-import { Item as ItemModel } from "@/data/models/types";
+import { IngredientItem } from "@/data/models/types";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 
 export type EmptyObject = Record<string, never>;
@@ -194,8 +194,8 @@ export type BedrockRecipe =
 export type GeneratedRecipe = JavaRecipe | BedrockRecipe;
 
 export interface CraftingInput {
-  grid: (ItemModel | undefined)[];
-  result: ItemModel | undefined;
+  grid: (IngredientItem | undefined)[];
+  result: IngredientItem | undefined;
   shapeless: boolean;
   keepWhitespace: boolean;
   twoByTwo?: boolean;
@@ -208,32 +208,32 @@ export interface CookingInput {
     | RecipeType.Blasting
     | RecipeType.CampfireCooking
     | RecipeType.Smoking;
-  ingredient: ItemModel | undefined;
-  result: ItemModel | undefined;
+  ingredient: IngredientItem | undefined;
+  result: IngredientItem | undefined;
   time: number;
   experience: number;
   group: string;
 }
 
 export interface StonecutterInput {
-  ingredient: ItemModel | undefined;
-  result: ItemModel | undefined;
+  ingredient: IngredientItem | undefined;
+  result: IngredientItem | undefined;
   group: string;
 }
 
 export interface TransmuteInput {
-  input: ItemModel | undefined;
-  material: ItemModel | undefined;
-  result: ItemModel | undefined;
+  input: IngredientItem | undefined;
+  material: IngredientItem | undefined;
+  result: IngredientItem | undefined;
   group: string;
 }
 
 export interface SmithingInput {
   recipeType: RecipeType.Smithing | RecipeType.SmithingTrim | RecipeType.SmithingTransform;
-  template: ItemModel | undefined;
-  base: ItemModel | undefined;
-  addition: ItemModel | undefined;
-  result: ItemModel | undefined;
+  template: IngredientItem | undefined;
+  base: IngredientItem | undefined;
+  addition: IngredientItem | undefined;
+  result: IngredientItem | undefined;
 }
 
 export interface BedrockRecipeMeta {

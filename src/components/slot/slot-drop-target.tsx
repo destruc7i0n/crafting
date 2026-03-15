@@ -10,11 +10,13 @@ import { Slot, SlotProps } from "./slot";
 type SlotDropTargetProps<T extends Record<string, unknown>> = {
   data: T;
   children?: React.ReactNode;
+  canDrop?: ({ source }: { source: { data: unknown } }) => boolean;
 } & SlotProps;
 
 export const SlotDropTarget = <T extends Record<string, unknown>>({
   data,
   children,
+  canDrop,
   ...props
 }: SlotDropTargetProps<T>) => {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -26,13 +28,13 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
 
     return dropTargetForElements({
       element: el,
-      canDrop: ({ source }) => isItemDraggableData(source.data),
+      canDrop: ({ source }) => isItemDraggableData(source.data) && (canDrop?.({ source }) ?? true),
       getData: () => data,
       onDragEnter: () => setIsDraggedOver(true),
       onDragLeave: () => setIsDraggedOver(false),
       onDrop: () => setIsDraggedOver(false),
     });
-  }, [data]);
+  }, [canDrop, data]);
 
   return (
     <Slot ref={ref} hover={isDraggedOver} {...props}>

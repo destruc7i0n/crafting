@@ -75,10 +75,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
       }
 
       if (version === MinecraftVersion.V112) {
-        return {
-          item: tagId,
-          data: undefined,
-        };
+        throw new Error("Item tags are not supported in Java 1.12");
       }
 
       if (isAtLeast(version, MinecraftVersion.V1212)) {

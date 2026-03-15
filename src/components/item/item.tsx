@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import { createRoot } from "react-dom/client";
 
@@ -8,81 +8,148 @@ import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/el
 import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unhandled";
 import invariant from "tiny-invariant";
 
-import { Item as ItemType } from "@/data/models/types";
-import { ItemDraggableContainer, ItemDraggableData } from "@/lib/dnd";
+import { cloneItem } from "@/data/models/item/utilities";
+import { IngredientItem } from "@/data/models/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
+import { ItemDraggableContainer, ItemDraggableData } from "@/lib/dnd";
+import { findFirstEmptyRecipeSlot } from "@/lib/recipe-slots";
+import { isSameIngredient } from "@/lib/tags";
 import { cn } from "@/lib/utils";
+import { useRecipeStore } from "@/stores/recipe";
 import { useUIStore } from "@/stores/ui";
 
 import { ItemCount } from "./item-count";
 import { ItemPreview } from "./item-preview";
-import { Tooltip } from "../tooltip/tooltip";
+import { CyclingItemPreview } from "./cycling-item-preview";
+import { ItemTooltip } from "../tooltip/item-tooltip";
 
 type IngredientProps = {
-  item: ItemType;
+  item: IngredientItem;
   showCount?: boolean;
   container: ItemDraggableContainer;
 };
 
 export const Item = memo(({ item, container, showCount }: IngredientProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
+  const dndCleanupRef = useRef<(() => void) | null>(null);
   const [dragging, setDragging] = useState(false);
   const isTouchDevice = useIsTouchDevice();
-  const selectedIngredient = useUIStore((state) => state.selectedIngredient);
-  const setSelectedIngredient = useUIStore((state) => state.setSelectedIngredient);
 
-  const isSelectedFromIngredients =
-    container === "ingredients" && selectedIngredient?.id.raw === item.id.raw;
+  const isSelectedFromIngredients = useUIStore(
+    useCallback(
+      (state) => container === "ingredients" && isSameIngredient(state.selectedIngredient, item),
+      [container, item],
+    ),
+  );
 
-  useEffect(() => {
+  const setupDraggable = useCallback(() => {
+    if (dndCleanupRef.current) return;
+
     const el = ref.current;
     invariant(el);
 
-    return draggable({
+    dndCleanupRef.current = draggable({
       element: el,
       getInitialData: () => ({ type: "item", item, container }) satisfies ItemDraggableData,
       getInitialDataForExternal: () => ({ "text/plain": item.id.raw }),
       onDragStart: () => {
         if (container === "preview") {
-          // we can drop out from the preview container
           preventUnhandled.start();
         }
-        setSelectedIngredient(undefined);
+        useUIStore.getState().setSelectedIngredient(undefined);
         setDragging(true);
       },
       onDrop: () => setDragging(false),
       onGenerateDragPreview: ({ nativeSetDragImage }) => {
-        // use a custom drag preview to center the preview under the pointer
         setCustomNativeDragPreview({
           getOffset: centerUnderPointer,
           render({ container }) {
             const root = createRoot(container);
-            root.render(<ItemPreview texture={item.texture} />);
+            root.render(
+              item.type === "tag_item" ? (
+                <CyclingItemPreview itemIds={item.values} alt={item.displayName} />
+              ) : (
+                <ItemPreview texture={item.texture} alt={item.displayName} />
+              ),
+            );
             return () => root.unmount();
           },
           nativeSetDragImage,
         });
       },
     });
-  }, [item, container, setSelectedIngredient]);
+  }, [item, container]);
 
-  return (
-    <Tooltip title={item.displayName} description={item.id.raw} visible={!dragging}>
+  useEffect(() => {
+    if (isTouchDevice) return;
+
+    const el = ref.current;
+    if (!el) return;
+
+    const handlePointerDown = () => setupDraggable();
+    el.addEventListener("pointerdown", handlePointerDown, { once: true });
+
+    return () => {
+      el.removeEventListener("pointerdown", handlePointerDown);
+      dndCleanupRef.current?.();
+      dndCleanupRef.current = null;
+    };
+  }, [isTouchDevice, setupDraggable]);
+
+  const handleDoubleClick = () => {
+    if (isTouchDevice || container !== "ingredients") return;
+
+    const recipeState = useRecipeStore.getState();
+    const currentRecipe = recipeState.recipes[recipeState.selectedRecipeIndex];
+    if (!currentRecipe) return;
+
+    const slot = findFirstEmptyRecipeSlot(currentRecipe, item);
+    if (!slot) return;
+
+    useRecipeStore.getState().setRecipeSlot(slot, cloneItem(item));
+    useUIStore.getState().setSelectedIngredient(undefined);
+  };
+
+  const handleClick = () => {
+    if (!isTouchDevice || container !== "ingredients") return;
+    useUIStore.getState().setSelectedIngredient(item);
+  };
+
+  const preview =
+    item.type === "tag_item" ? (
+      <CyclingItemPreview
+        alt={item.displayName}
+        itemIds={item.values}
+        ref={ref}
+        style={{ opacity: dragging ? 0.5 : 1 }}
+        className={cn(
+          "touch-action-manipulation",
+          !isTouchDevice && "cursor-move",
+          isSelectedFromIngredients && "rounded ring-2 ring-primary",
+        )}
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
+      />
+    ) : (
       <ItemPreview
         alt={item.displayName}
         texture={item.texture}
         ref={ref}
-        style={{
-          opacity: dragging ? 0.5 : 1,
-        }}
-        className={cn("cursor-move", isSelectedFromIngredients && "rounded ring-2 ring-primary")}
-        onClick={() => {
-          if (!isTouchDevice || container !== "ingredients") return;
-
-          setSelectedIngredient(item);
-        }}
+        style={{ opacity: dragging ? 0.5 : 1 }}
+        className={cn(
+          "touch-action-manipulation",
+          !isTouchDevice && "cursor-move",
+          isSelectedFromIngredients && "rounded ring-2 ring-primary",
+        )}
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
       />
+    );
+
+  return (
+    <ItemTooltip title={item.displayName} description={item.id.raw} visible={!dragging}>
+      {preview}
       {showCount && <ItemCount count={item.count ?? 1} />}
-    </Tooltip>
+    </ItemTooltip>
   );
 });

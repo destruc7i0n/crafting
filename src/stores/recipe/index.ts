@@ -2,7 +2,7 @@ import rfdc from "rfdc";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-import { Item as ItemModel } from "@/data/models/types";
+import { IngredientItem, TagItem } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
 
 export interface SingleRecipeState {
@@ -10,7 +10,7 @@ export interface SingleRecipeState {
   recipeName?: string;
   recipeType: RecipeType;
   group: string;
-  slots: Partial<Record<RecipeSlot, ItemModel>>;
+  slots: Partial<Record<RecipeSlot, IngredientItem>>;
   crafting: {
     shapeless: boolean;
     keepWhitespace: boolean;
@@ -41,7 +41,8 @@ type RecipeActions = {
   setRecipeNameAtIndex: (index: number, name: string) => void;
   setRecipeType: (type: RecipeType) => void;
   setRecipeGroup: (group: string) => void;
-  setRecipeSlot: (slot: RecipeSlot, item?: ItemModel) => void;
+  setRecipeSlot: (slot: RecipeSlot, item?: IngredientItem) => void;
+  setRecipeSlotCount: (slot: RecipeSlot, count: number) => void;
   setRecipeCraftingShapeless: (shapeless: boolean) => void;
   setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => void;
   setRecipeCraftingTwoByTwo: (twoByTwo: boolean) => void;
@@ -49,6 +50,8 @@ type RecipeActions = {
   setRecipeCoolingExperience: (experience: number) => void;
   setRecipeBedrockIdentifier: (identifier: string) => void;
   setRecipeBedrockPriority: (priority: number) => void;
+  syncCustomTagInSlots: (tagUid: string, item: TagItem) => void;
+  removeCustomTagFromSlots: (tagUid: string) => void;
   clearAllSlots: () => void;
 };
 
@@ -133,9 +136,19 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
         state.recipes[state.selectedRecipeIndex].group = group;
       });
     },
-    setRecipeSlot: (slot: RecipeSlot, item?: ItemModel) => {
+    setRecipeSlot: (slot: RecipeSlot, item?: IngredientItem) => {
       set((state) => {
         state.recipes[state.selectedRecipeIndex].slots[slot] = item;
+      });
+    },
+    setRecipeSlotCount: (slot: RecipeSlot, count: number) => {
+      set((state) => {
+        const item = state.recipes[state.selectedRecipeIndex].slots[slot];
+        if (!item || item.type === "tag_item") {
+          return;
+        }
+
+        item.count = count;
       });
     },
     setRecipeCraftingShapeless: (shapeless: boolean) => {
@@ -185,6 +198,39 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
           priority: 0,
         };
         recipe.bedrock.priority = priority;
+      });
+    },
+    syncCustomTagInSlots: (tagUid: string, item: TagItem) => {
+      set((state) => {
+        for (const recipe of state.recipes) {
+          for (const [slot, slotItem] of Object.entries(recipe.slots) as [
+            RecipeSlot,
+            IngredientItem | undefined,
+          ][]) {
+            if (slotItem?.type !== "tag_item" || slotItem.tagUid !== tagUid) {
+              continue;
+            }
+
+            recipe.slots[slot] = {
+              ...item,
+              count: slotItem.count,
+            };
+          }
+        }
+      });
+    },
+    removeCustomTagFromSlots: (tagUid: string) => {
+      set((state) => {
+        for (const recipe of state.recipes) {
+          for (const [slot, slotItem] of Object.entries(recipe.slots) as [
+            RecipeSlot,
+            IngredientItem | undefined,
+          ][]) {
+            if (slotItem?.type === "tag_item" && slotItem.tagUid === tagUid) {
+              recipe.slots[slot] = undefined;
+            }
+          }
+        }
       });
     },
     clearAllSlots: () => {

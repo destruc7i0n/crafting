@@ -30,6 +30,8 @@
 
     --minecraft-inventory-bg: 0 0% 77.65%;
     --minecraft-slot-bg: 0 0% 54.51%;
+    --minecraft-slot-border-tl: #373737;
+    --minecraft-slot-border-br: #ffffff;
   }
 
   .dark {
@@ -44,7 +46,7 @@
     --secondary: 200 8% 16%;
     --secondary-foreground: 210 20% 94%;
     --muted: 200 8% 16%;
-    --muted-foreground: 210 10% 56%;
+    --muted-foreground: 210 10% 65%;
     --accent: 200 8% 16%;
     --accent-foreground: 210 20% 94%;
     --destructive: 0 62.8% 30.6%;
@@ -56,8 +58,10 @@
     --header-bg: 0 0% 13.3%;
     --header-fg: 0 0% 96%;
 
-    --minecraft-inventory-bg: 0 0% 77.65%;
-    --minecraft-slot-bg: 0 0% 54.51%;
+    --minecraft-inventory-bg: 0 0% 20%;
+    --minecraft-slot-bg: 0 0% 14%;
+    --minecraft-slot-border-tl: #0a0a0a;
+    --minecraft-slot-border-br: #3a3a3a;
   }
 }
 

@@ -2,7 +2,8 @@ import { SingleRecipeState } from "@/stores/recipe";
 
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
-import { Item } from "../models/types";
+import { formatIngredient } from "./ingredient";
+import { IngredientItem } from "../models/types";
 import { MinecraftVersion } from "../types";
 import {
   BedrockShapedBody,
@@ -15,7 +16,7 @@ import {
 const PATTERN_CHARACTERS = ["#", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ", ..."abcdefghijklmnopqrstuvwxyz"];
 
 function getPattern(
-  grid: (Item | undefined)[],
+  grid: (IngredientItem | undefined)[],
   reverseMap: Record<string, string>,
   keepWhitespace: boolean,
 ): string[] {
@@ -74,7 +75,11 @@ function getPattern(
   return pattern;
 }
 
-function dinnerboneChallenge(item: Item): string | null {
+function dinnerboneChallenge(item: IngredientItem): string | null {
+  if (item.type === "tag_item") {
+    return null;
+  }
+
   const itemId = item.id.id;
 
   const isStick = itemId.includes("stick");
@@ -97,11 +102,11 @@ function dinnerboneChallenge(item: Item): string | null {
   return null;
 }
 
-function getKeyForGrid(grid: (Item | undefined)[]): {
-  key: Record<string, Item>;
+function getKeyForGrid(grid: (IngredientItem | undefined)[]): {
+  key: Record<string, IngredientItem>;
   reverse: Record<string, string>;
 } {
-  const key: Record<string, Item> = {};
+  const key: Record<string, IngredientItem> = {};
   const reverse: Record<string, string> = {};
 
   for (const item of grid) {
@@ -153,7 +158,7 @@ export const buildJava = (
   formatter: FormatStrategy,
 ): ShapedCraftingRecipe | ShapelessCraftingRecipe => {
   const grid = state.grid;
-  const populatedSlots = grid.filter(Boolean);
+  const populatedSlots = grid.filter((item): item is IngredientItem => Boolean(item));
 
   const group = state.group.length > 0 ? state.group : undefined;
 
@@ -167,7 +172,7 @@ export const buildJava = (
   if (state.shapeless) {
     return {
       type: formatter.recipeType("crafting_shapeless") as ShapelessCraftingRecipe["type"],
-      ingredients: populatedSlots.map((item) => formatter.ingredient(item!.id)),
+      ingredients: populatedSlots.map((item) => formatIngredient(item, formatter)),
       group,
       result: getResult(),
     } satisfies ShapelessCraftingRecipe;
@@ -177,7 +182,7 @@ export const buildJava = (
     type: formatter.recipeType("crafting_shaped") as ShapedCraftingRecipe["type"],
     pattern: getPattern(grid, reverse, state.keepWhitespace),
     key: Object.fromEntries(
-      Object.entries(key).map(([keyName, item]) => [keyName, formatter.ingredient(item.id)]),
+      Object.entries(key).map(([keyName, item]) => [keyName, formatIngredient(item, formatter)]),
     ),
     group,
     result: getResult(),
@@ -189,14 +194,14 @@ export const buildBedrock = (
   formatter: FormatStrategy,
 ): BedrockShapedBody | BedrockShapelessBody => {
   const grid = state.grid;
-  const populatedSlots = grid.filter(Boolean);
+  const populatedSlots = grid.filter((item): item is IngredientItem => Boolean(item));
   const { key, reverse } = getKeyForGrid(grid);
 
   const result = state.result ? formatter.objectResult(state.result.id, state.result.count) : {};
 
   if (state.shapeless) {
     return {
-      ingredients: populatedSlots.map((item) => formatter.ingredient(item!.id)),
+      ingredients: populatedSlots.map((item) => formatIngredient(item, formatter)),
       result,
     } satisfies BedrockShapelessBody;
   }
@@ -204,7 +209,7 @@ export const buildBedrock = (
   return {
     pattern: getPattern(grid, reverse, state.keepWhitespace),
     key: Object.fromEntries(
-      Object.entries(key).map(([keyName, item]) => [keyName, formatter.ingredient(item.id)]),
+      Object.entries(key).map(([keyName, item]) => [keyName, formatIngredient(item, formatter)]),
     ) as BedrockShapedBody["key"],
     result,
   } satisfies BedrockShapedBody;

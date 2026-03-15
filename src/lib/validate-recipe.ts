@@ -7,6 +7,8 @@ import { validateStonecutter } from "@/data/generate/stonecutter";
 import { validateTransmute } from "@/data/generate/transmute";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { getSupportedRecipeTypesForVersion } from "@/data/versions";
+import { isResultSlot } from "@/lib/recipe-slots";
+import { supportsItemTagsForVersion } from "@/lib/tags";
 
 export interface RecipeValidation {
   valid: boolean;
@@ -25,6 +27,22 @@ export const validateRecipe = (
 
   if (!getSupportedRecipeTypesForVersion(version).includes(recipe.recipeType)) {
     errors.push(`Recipe type is not available in ${getVersionLabel(version)}`);
+  }
+
+  const hasTagIngredient = Object.values(recipe.slots).some((item) => item?.type === "tag_item");
+  if (hasTagIngredient && !supportsItemTagsForVersion(version)) {
+    errors.push(`Item tags are not available in ${getVersionLabel(version)}`);
+  }
+
+  const invalidTagResultSlots = Object.entries(recipe.slots)
+    .filter(
+      ([slot, item]) =>
+        item?.type === "tag_item" && isResultSlot(slot as keyof typeof recipe.slots),
+    )
+    .map(([slot]) => slot);
+
+  if (invalidTagResultSlots.length > 0) {
+    errors.push("Result slots must contain items, not tags");
   }
 
   switch (recipe.recipeType) {

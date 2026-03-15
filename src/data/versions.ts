@@ -43,6 +43,8 @@ export const getSupportedRecipeTypesForVersion = (version: MinecraftVersion): Re
       ];
     case MinecraftVersion.V1212:
     case MinecraftVersion.V1214:
+    case MinecraftVersion.V1215:
+    case MinecraftVersion.V1216:
     case MinecraftVersion.V1217:
     case MinecraftVersion.V1219:
     case MinecraftVersion.V12111:

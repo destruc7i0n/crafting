@@ -2,6 +2,7 @@ import { SingleRecipeState } from "@/stores/recipe";
 
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
+import { formatIngredient, formatIngredientString } from "./ingredient";
 import { MinecraftVersion, RecipeType } from "../types";
 import {
   BedrockShapelessBody,
@@ -21,25 +22,25 @@ export const buildJava = (
     return {
       type: formatter.recipeType("smithing") as "minecraft:smithing",
       result: state.result ? formatter.objectResult(state.result.id) : {},
-      base: state.base ? formatter.ingredient(state.base.id) : {},
-      addition: state.addition ? formatter.ingredient(state.addition.id) : {},
+      base: formatIngredient(state.base, formatter),
+      addition: formatIngredient(state.addition, formatter),
     } satisfies SmithingRecipe;
   }
 
   if (state.recipeType === RecipeType.SmithingTrim) {
     return {
       type: formatter.recipeType("smithing_trim") as "minecraft:smithing_trim",
-      template: state.template ? formatter.ingredient(state.template.id) : {},
-      base: state.base ? formatter.ingredient(state.base.id) : {},
-      addition: state.addition ? formatter.ingredient(state.addition.id) : {},
+      template: formatIngredient(state.template, formatter),
+      base: formatIngredient(state.base, formatter),
+      addition: formatIngredient(state.addition, formatter),
     } satisfies SmithingTrimRecipe;
   }
 
   return {
     type: formatter.recipeType("smithing_transform") as "minecraft:smithing_transform",
-    template: state.template ? formatter.ingredient(state.template.id) : {},
-    base: state.base ? formatter.ingredient(state.base.id) : {},
-    addition: state.addition ? formatter.ingredient(state.addition.id) : {},
+    template: formatIngredient(state.template, formatter),
+    base: formatIngredient(state.base, formatter),
+    addition: formatIngredient(state.addition, formatter),
     result: state.result ? formatter.objectResult(state.result.id) : {},
   } satisfies SmithingTransformRecipe;
 };
@@ -58,17 +59,17 @@ export const buildBedrock = (
 
   if (state.recipeType === RecipeType.SmithingTransform) {
     return {
-      template: state.template?.id.raw ?? "",
-      base: state.base?.id.raw ?? "",
-      addition: state.addition?.id.raw ?? "",
+      template: formatIngredientString(state.template),
+      base: formatIngredientString(state.base),
+      addition: formatIngredientString(state.addition),
       result: state.result?.id.raw ?? "",
     } satisfies BedrockSmithingTransformBody;
   }
 
   return {
     ingredients: [state.base, state.addition]
-      .filter(Boolean)
-      .map((item) => formatter.ingredient(item!.id)),
+      .filter((item): item is NonNullable<typeof item> => Boolean(item))
+      .map((item) => formatIngredient(item, formatter)),
     result: state.result ? formatter.objectResult(state.result.id, state.result.count) : {},
   } satisfies BedrockShapelessBody;
 };

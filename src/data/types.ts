@@ -12,6 +12,8 @@ export enum MinecraftVersion {
   V121 = "1.21",
   V1212 = "1.21.2",
   V1214 = "1.21.4",
+  V1215 = "1.21.5",
+  V1216 = "1.21.6",
   V1217 = "1.21.7",
   V1219 = "1.21.9",
   V12111 = "1.21.11",
@@ -57,5 +59,6 @@ type StonecutterSlots = "stonecutter.ingredient" | "stonecutter.result";
 export type RecipeSlot = CraftingSlots | CookingSlots | SmithingSlots | StonecutterSlots;
 
 export interface OutputTag {
+  replace: boolean;
   values: string[];
 }

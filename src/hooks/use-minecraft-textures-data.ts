@@ -13,6 +13,9 @@ import { useResourcesForVersion } from "./use-resources-for-version";
 const textureLoaders = import.meta.glob<{ default: MinecraftTexturesType }>(
   "/node_modules/minecraft-textures/dist/textures/json/*.json",
 );
+const tagLoaders = import.meta.glob<{ default: Record<string, Record<string, string[]>> }>(
+  "/src/data/generated/tags.json",
+);
 
 export const useMinecraftTexturesData = () => {
   const { version, resources } = useResourcesForVersion();
@@ -39,6 +42,9 @@ export const useMinecraftTexturesData = () => {
       }
 
       const module = (await loadTextureModule()).default;
+      const tagModule = tagLoaders["/src/data/generated/tags.json"]
+        ? (await tagLoaders["/src/data/generated/tags.json"]()).default
+        : {};
 
       const mcTexturesItems = module.items;
 
@@ -56,6 +62,7 @@ export const useMinecraftTexturesData = () => {
       setResourceData(version, {
         items,
         itemsById,
+        vanillaTags: tagModule[version] ?? {},
       });
     };
 

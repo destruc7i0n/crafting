@@ -24,8 +24,19 @@ export interface CustomItem extends BaseItem {
   type: "custom_item";
 }
 
+export interface TagItem extends BaseItem {
+  type: "tag_item";
+  tagSource: "custom" | "vanilla";
+  tagUid?: string;
+  values: string[];
+}
+
+export type IngredientItem = Item | CustomItem | TagItem;
+
 export interface Tag {
-  id: MinecraftIdentifier;
+  uid: string;
+  name: string;
+  namespace: string;
   values: TagValue[];
 }
 

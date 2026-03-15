@@ -28,7 +28,7 @@ export const RecipeOptions = () => {
   const [mobileOpen, setMobileOpen] = useState(true);
 
   const textInputClassName =
-    "rounded-md border border-input bg-background px-2 py-1 text-foreground outline-none transition-colors hover:bg-accent focus:ring-2 focus:ring-ring";
+    "rounded-md border border-input bg-background px-2 py-1 text-foreground outline-none transition-colors hover:bg-accent focus:ring-2 focus:ring-inset focus:ring-ring";
   const compoundInputClassName =
     "flex items-center rounded-md border border-input bg-background transition-colors hover:bg-accent focus-within:ring-2 focus-within:ring-ring";
 

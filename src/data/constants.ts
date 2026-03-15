@@ -1,3 +1,8 @@
+import {
+  latestVersion as latestMinecraftTexturesVersion,
+  versions as minecraftTextureVersions,
+} from "minecraft-textures";
+
 import { MinecraftVersion, RecipeType } from "./types";
 
 export const NoTextureTexture =
@@ -5,24 +10,10 @@ export const NoTextureTexture =
 
 export const defaultMinecraftVersions = [
   MinecraftVersion.Bedrock,
-  MinecraftVersion.V112,
-  MinecraftVersion.V113,
-  MinecraftVersion.V114,
-  MinecraftVersion.V115,
-  MinecraftVersion.V116,
-  MinecraftVersion.V117,
-  MinecraftVersion.V118,
-  MinecraftVersion.V119,
-  MinecraftVersion.V120,
-  MinecraftVersion.V121,
-  MinecraftVersion.V1212,
-  MinecraftVersion.V1214,
-  MinecraftVersion.V1217,
-  MinecraftVersion.V1219,
-  MinecraftVersion.V12111,
+  ...(minecraftTextureVersions as unknown as MinecraftVersion[]),
 ];
 
-export const latestMinecraftVersion = MinecraftVersion.V12111;
+export const latestMinecraftVersion = latestMinecraftTexturesVersion as MinecraftVersion;
 
 export const recipeTypeToJavaType: Record<RecipeType, string> = {
   [RecipeType.Crafting]: "minecraft:crafting_shaped",

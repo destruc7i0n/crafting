@@ -6,6 +6,7 @@ import { MinecraftVersion } from "@/data/types";
 export interface VersionResourceData {
   items: Item[];
   itemsById: Record<string, Item>;
+  vanillaTags: Record<string, string[]>;
 }
 
 export type ResourcesState = {

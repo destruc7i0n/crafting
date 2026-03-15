@@ -5,7 +5,7 @@ import { Preview } from "@/components/preview/preview";
 
 export const Main = () => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
       <div className="rounded-lg border bg-card p-4">
         <div className="flex flex-col items-center gap-4">
           <RecipeTypeSelector />

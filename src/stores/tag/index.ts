@@ -2,52 +2,75 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 import { Tag, TagValue } from "@/data/models/types";
+import { createEmptyTag } from "@/lib/tags";
 
 export interface TagState {
   tags: Tag[];
-  selectedTagIndex: number;
 }
 
 type TagActions = {
-  addTag: (tag: Tag) => void;
-  removeTag: (tag: Tag) => void;
-
-  addValueToTag: (value: TagValue) => void;
-  removeValueFromTag: (value: TagValue) => void;
-
-  selectTag: (index: number) => void;
+  createTag: () => string;
+  updateTag: (uid: string, updates: Partial<Pick<Tag, "name" | "namespace">>) => void;
+  removeTag: (uid: string) => void;
+  addValueToTag: (uid: string, value: TagValue) => void;
+  removeValueFromTagByIndex: (uid: string, index: number) => void;
 };
 
 export const useTagStore = create<TagState & TagActions>()(
-  immer((set) => ({
+  immer((set, get) => ({
     tags: [],
-    selectedTagIndex: -1,
 
-    addTag: (tag: Tag) =>
+    createTag: () => {
+      const tag = createEmptyTag(get().tags);
+
       set((state) => {
         state.tags.push(tag);
-        state.selectedTagIndex = state.tags.length - 1;
-      }),
-    removeTag: (tag: Tag) =>
-      set((state) => {
-        state.tags = state.tags.filter((t) => t.id.raw !== tag.id.raw);
-        state.selectedTagIndex = state.tags.length > 0 ? 0 : -1;
-      }),
+      });
 
-    addValueToTag: (value: TagValue) =>
+      return tag.uid;
+    },
+    updateTag: (uid, updates) => {
       set((state) => {
-        if (state.selectedTagIndex === -1) return;
-        state.tags[state.selectedTagIndex].values.push(value);
-      }),
+        const tag = state.tags.find((value) => value.uid === uid);
+        if (!tag) {
+          return;
+        }
 
-    removeValueFromTag: (value: TagValue) =>
+        if (updates.name !== undefined) {
+          tag.name = updates.name;
+        }
+
+        if (updates.namespace !== undefined) {
+          tag.namespace = updates.namespace;
+        }
+      });
+    },
+    removeTag: (uid) => {
       set((state) => {
-        if (state.selectedTagIndex === -1) return;
-        state.tags[state.selectedTagIndex].values = state.tags[
-          state.selectedTagIndex
-        ].values.filter((v) => v.id.raw !== value.id.raw);
-      }),
+        state.tags = state.tags.filter((tag) => tag.uid !== uid);
+      });
+    },
 
-    selectTag: (index: number) => set({ selectedTagIndex: index }),
+    addValueToTag: (uid, value) => {
+      set((state) => {
+        const tag = state.tags.find((currentTag) => currentTag.uid === uid);
+        if (!tag || tag.values.some((currentValue) => currentValue.id.raw === value.id.raw)) {
+          return;
+        }
+
+        tag.values.push(value);
+      });
+    },
+
+    removeValueFromTagByIndex: (uid, index) => {
+      set((state) => {
+        const tag = state.tags.find((currentTag) => currentTag.uid === uid);
+        if (!tag) {
+          return;
+        }
+
+        tag.values.splice(index, 1);
+      });
+    },
   })),
 );

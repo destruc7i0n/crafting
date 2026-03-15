@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { ChevronDownIcon, ClipboardCopyIcon, DownloadIcon } from "lucide-react";
+import { CheckIcon, ChevronDownIcon, ClipboardCopyIcon, DownloadIcon } from "lucide-react";
 
 import { generate } from "@/data/generate";
 import { downloadRecipeJson } from "@/lib/download/recipe";
@@ -82,7 +82,11 @@ export const ItemOutput = () => {
             className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             title="Copy JSON"
           >
-            <ClipboardCopyIcon size={14} />
+            {copied ? (
+              <CheckIcon size={14} className="text-primary" />
+            ) : (
+              <ClipboardCopyIcon size={14} />
+            )}
             <span className="sr-only">{copied ? "Copied" : "Copy"}</span>
           </button>
           <button

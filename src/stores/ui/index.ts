@@ -1,26 +1,32 @@
 import { create } from "zustand";
 
-import { Item } from "@/data/models/types";
-
-export type UIView = "main" | "tagCreation";
+import { IngredientItem } from "@/data/models/types";
 
 export interface UIState {
-  currentView: UIView;
   isRecipeSidebarOpen: boolean;
-  selectedIngredient?: Item;
+  isSidebarExpanded: boolean;
+  showAddItemForm: boolean;
+  showAddTagForm: boolean;
+  selectedIngredient?: IngredientItem;
 }
 
 export interface UIStateActions {
-  setCurrentView: (view: UIView) => void;
   setRecipeSidebarOpen: (isOpen: boolean) => void;
-  setSelectedIngredient: (item?: Item) => void;
+  toggleSidebar: () => void;
+  toggleAddItemForm: () => void;
+  toggleAddTagForm: () => void;
+  setSelectedIngredient: (item?: IngredientItem) => void;
 }
 
 export const useUIStore = create<UIState & UIStateActions>((set) => ({
-  currentView: "main",
   isRecipeSidebarOpen: false,
+  isSidebarExpanded: false,
+  showAddItemForm: false,
+  showAddTagForm: false,
   selectedIngredient: undefined,
-  setCurrentView: (view) => set({ currentView: view }),
   setRecipeSidebarOpen: (isOpen) => set({ isRecipeSidebarOpen: isOpen }),
+  toggleSidebar: () => set((state) => ({ isSidebarExpanded: !state.isSidebarExpanded })),
+  toggleAddItemForm: () => set((state) => ({ showAddItemForm: !state.showAddItemForm })),
+  toggleAddTagForm: () => set((state) => ({ showAddTagForm: !state.showAddTagForm })),
   setSelectedIngredient: (item) => set({ selectedIngredient: item }),
 }));

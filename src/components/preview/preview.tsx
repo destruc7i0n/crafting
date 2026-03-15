@@ -46,7 +46,16 @@ export const Preview = memo(() => {
   }
 
   return (
-    <div className="w-full overflow-x-auto pb-1">
+    <div
+      className="w-full overflow-x-auto pb-1"
+      style={
+        {
+          "--minecraft-slot-bg": "0 0% 54.51%",
+          "--minecraft-slot-border-tl": "#373737",
+          "--minecraft-slot-border-br": "#ffffff",
+        } as React.CSSProperties
+      }
+    >
       <div className="mx-auto w-[352px]">{preview}</div>
     </div>
   );

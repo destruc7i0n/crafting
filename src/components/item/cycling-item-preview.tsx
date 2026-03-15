@@ -1,0 +1,32 @@
+import { ComponentPropsWithoutRef, forwardRef, memo, useMemo } from "react";
+
+import { NoTextureTexture } from "@/data/constants";
+import { useTagCycleTick } from "@/hooks/use-tag-cycle-tick";
+import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
+
+import { ItemPreview } from "./item-preview";
+
+type CyclingItemPreviewProps = {
+  itemIds: string[];
+} & Omit<ComponentPropsWithoutRef<typeof ItemPreview>, "texture">;
+
+export const CyclingItemPreview = memo(
+  forwardRef<HTMLImageElement, CyclingItemPreviewProps>(({ itemIds, alt, ...props }, ref) => {
+    const tick = useTagCycleTick();
+    const { resources } = useResourcesForVersion();
+
+    const visibleItems = useMemo(
+      () => itemIds.map((itemId) => resources?.itemsById[itemId]).filter(Boolean),
+      [itemIds, resources],
+    );
+
+    const currentTexture =
+      visibleItems.length > 0
+        ? (visibleItems[tick % visibleItems.length]?.texture ?? NoTextureTexture)
+        : NoTextureTexture;
+
+    return <ItemPreview {...props} ref={ref} alt={alt} texture={currentTexture} />;
+  }),
+);
+
+CyclingItemPreview.displayName = "CyclingItemPreview";

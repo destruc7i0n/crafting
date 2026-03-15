@@ -2,6 +2,7 @@ import { SingleRecipeState } from "@/stores/recipe";
 
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
+import { formatIngredient } from "./ingredient";
 import { MinecraftVersion, RecipeType } from "../types";
 import { BedrockFurnaceBody, CookingInput, CookingRecipe } from "./recipes/types";
 
@@ -37,7 +38,7 @@ export const buildJava = (state: CookingInput, formatter: FormatStrategy): Cooki
   return {
     type: formatter.recipeType(baseType) as CookingRecipe["type"],
     ...constantFields,
-    ingredient: input ? formatter.ingredient(input.id) : {},
+    ingredient: formatIngredient(input, formatter),
     result: output ? formatter.cookingResult(output.id, output.count) : {},
   } satisfies CookingRecipe;
 };
@@ -50,7 +51,7 @@ export const buildBedrock = (
   const output = state.result;
 
   return {
-    input: input ? formatter.ingredient(input.id) : {},
+    input: formatIngredient(input, formatter),
     output: output ? formatter.objectResult(output.id, output.count) : {},
   } satisfies BedrockFurnaceBody;
 };

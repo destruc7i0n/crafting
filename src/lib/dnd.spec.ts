@@ -1,11 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  isDropTargetData,
-  isItemDraggableData,
-  isItemPreviewDropTargetData,
-  isTagDropTargetData,
-} from "./dnd";
+import { isDropTargetData, isItemDraggableData, isItemPreviewDropTargetData } from "./dnd";
 
 describe("dnd data guards", () => {
   it("recognizes item draggable data", () => {
@@ -35,14 +30,8 @@ describe("dnd data guards", () => {
     expect(isDropTargetData({ type: "preview", slot: "crafting.1" })).toBe(true);
   });
 
-  it("recognizes tag creation drop target data", () => {
-    expect(isTagDropTargetData({ type: "tag-creation" })).toBe(true);
-    expect(isDropTargetData({ type: "tag-creation" })).toBe(true);
-  });
-
   it("rejects unrelated drop target data", () => {
     expect(isItemPreviewDropTargetData({ type: "preview" })).toBe(false);
-    expect(isTagDropTargetData({ type: "preview", slot: "crafting.1" })).toBe(false);
     expect(isDropTargetData({ type: "unknown" })).toBe(false);
   });
 });

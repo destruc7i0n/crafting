@@ -18,10 +18,19 @@ describe("createItemFormatter", () => {
     expect(formatter.recipeType("crafting_shaped")).toBe("crafting_shaped");
   });
 
+  it("throws for 1.12 ingredientTag (tags not supported)", () => {
+    const formatter = createItemFormatter(MinecraftVersion.V112);
+
+    expect(() => formatter.ingredientTag("minecraft:logs")).toThrow(
+      "Item tags are not supported in Java 1.12",
+    );
+  });
+
   it("formats 1.14 ingredients/results", () => {
     const formatter = createItemFormatter(MinecraftVersion.V114);
 
     expect(formatter.ingredient(id)).toEqual({ item: "minecraft:stone" });
+    expect(formatter.ingredientTag("minecraft:logs")).toEqual({ tag: "minecraft:logs" });
     expect(formatter.objectResult(id, 2)).toEqual({
       item: "minecraft:stone",
       count: 2,

@@ -2,6 +2,8 @@ import JSZip from "jszip";
 
 import { Tag } from "./models/types";
 import { MinecraftVersion } from "./types";
+import { generateTag } from "./generate/tag";
+import { isVersionAtLeast } from "./generate/version-utils";
 
 export interface DatapackRecipeFile {
   name: string;
@@ -21,6 +23,8 @@ const recipePackFormatByVersion: Partial<Record<MinecraftVersion, number>> = {
   [MinecraftVersion.V121]: 48,
   [MinecraftVersion.V1212]: 57,
   [MinecraftVersion.V1214]: 61,
+  [MinecraftVersion.V1215]: 61,
+  [MinecraftVersion.V1216]: 61,
   [MinecraftVersion.V1217]: 61,
   [MinecraftVersion.V1219]: 61,
   [MinecraftVersion.V12111]: 61,
@@ -31,18 +35,11 @@ export const getPackFormat = (version: MinecraftVersion): number => {
 };
 
 const generateTagFiles = (tags: Tag[]) => {
-  return tags
-    .filter((tag) => tag.id.namespace !== "minecraft")
-    .map((tag) => ({
-      namespace: tag.id.namespace,
-      id: tag.id.id,
-      data: {
-        replace: false,
-        values: tag.values.map((value) =>
-          value.type === "tag" ? `#${value.id.raw}` : value.id.raw,
-        ),
-      },
-    }));
+  return tags.map((tag) => ({
+    namespace: tag.namespace,
+    id: tag.name,
+    data: generateTag(tag),
+  }));
 };
 
 export const createDatapackBlob = async (
@@ -73,8 +70,10 @@ export const createDatapackBlob = async (
     );
   }
 
+  const tagDir = isVersionAtLeast(version, MinecraftVersion.V121) ? "tags/item" : "tags/items";
+
   for (const tag of generateTagFiles(tags)) {
-    zip.file(`data/${tag.namespace}/tags/items/${tag.id}.json`, JSON.stringify(tag.data, null, 2));
+    zip.file(`data/${tag.namespace}/${tagDir}/${tag.id}.json`, JSON.stringify(tag.data, null, 2));
   }
 
   return zip.generateAsync({ type: "blob" });

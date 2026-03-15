@@ -9,10 +9,12 @@ type TooltipProps = {
 
 export const TooltipDisplay = memo(
   forwardRef<HTMLDivElement, TooltipProps>(({ title, description, ...props }, ref) => {
+    const showDescription = description && !title.includes(description);
+
     return (
       <div ref={ref} className={classes.tooltip} {...props}>
         <div className={classes.tooltipTitle}>{title}</div>
-        <div className={classes.tooltipDescription}>{description}</div>
+        {showDescription && <div className={classes.tooltipDescription}>{description}</div>}
       </div>
     );
   }),

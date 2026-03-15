@@ -1,7 +1,7 @@
 const currentYear = new Date().getFullYear();
 
 export const Footer = () => (
-  <footer className="mx-auto flex w-full max-w-screen-lg flex-col items-center justify-center gap-1 bg-background px-4 py-10 text-center text-sm text-muted-foreground">
+  <footer className="mx-auto hidden w-full max-w-screen-lg flex-col items-center justify-center gap-1 bg-background px-4 py-10 text-center text-sm text-muted-foreground lg:flex">
     <p>
       Website by{" "}
       <a
