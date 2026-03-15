@@ -100,7 +100,7 @@ export const ItemPreviewDropTarget = ({
             setCountDraft(String(slotValue.count ?? 1));
           }}
         >
-          <ItemCount count={slotValue.count ?? 1} className="pointer-events-auto" />
+          <ItemCount count={slotValue.count ?? 1} className="pointer-events-auto cursor-pointer" />
           <span className="sr-only">Edit result count</span>
         </button>
       )}
