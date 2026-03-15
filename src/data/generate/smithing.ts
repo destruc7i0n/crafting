@@ -3,6 +3,7 @@ import { SingleRecipeState } from "@/stores/recipe";
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { formatIngredient, formatIngredientString } from "./ingredient";
+import { isVersionAtLeast } from "./version-utils";
 import { MinecraftVersion, RecipeType } from "../types";
 import {
   BedrockShapelessBody,
@@ -17,6 +18,7 @@ import {
 export const buildJava = (
   state: SmithingInput,
   formatter: FormatStrategy,
+  version: MinecraftVersion,
 ): SmithingRecipe | SmithingTrimRecipe | SmithingTransformRecipe => {
   if (state.recipeType === RecipeType.Smithing) {
     return {
@@ -33,6 +35,9 @@ export const buildJava = (
       template: formatIngredient(state.template, formatter),
       base: formatIngredient(state.base, formatter),
       addition: formatIngredient(state.addition, formatter),
+      ...(isVersionAtLeast(version, MinecraftVersion.V1215) && state.trimPattern
+        ? { pattern: state.trimPattern }
+        : {}),
     } satisfies SmithingTrimRecipe;
   }
 
@@ -80,9 +85,13 @@ const extractInput = (state: SingleRecipeState): SmithingInput => ({
   base: state.slots["smithing.base"],
   addition: state.slots["smithing.addition"],
   result: state.slots["smithing.result"],
+  trimPattern: state.smithingTrimPattern,
 });
 
-export const validateSmithing = (state: SingleRecipeState): string[] => {
+export const validateSmithing = (
+  state: SingleRecipeState,
+  version?: MinecraftVersion,
+): string[] => {
   const input = extractInput(state);
   const errors: string[] = [];
 
@@ -107,6 +116,15 @@ export const validateSmithing = (state: SingleRecipeState): string[] => {
     errors.push("Add a result item");
   }
 
+  if (
+    version &&
+    isVersionAtLeast(version, MinecraftVersion.V1215) &&
+    input.recipeType === RecipeType.SmithingTrim &&
+    !input.trimPattern
+  ) {
+    errors.push("Add a trim pattern");
+  }
+
   return errors;
 };
 
@@ -127,5 +145,5 @@ export const generate = (
     return buildBedrock(input, formatter);
   }
 
-  return buildJava(input, formatter);
+  return buildJava(input, formatter, version);
 };

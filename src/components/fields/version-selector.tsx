@@ -1,3 +1,5 @@
+import { Select } from "@/components/ui/select";
+import { defaultMinecraftVersions } from "@/data/constants";
 import { MinecraftVersion } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
 import { useSettingsStore } from "@/stores/settings";
@@ -37,16 +39,18 @@ export const VersionSelector = () => {
   };
 
   return (
-    <select
-      className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm leading-tight text-[hsl(var(--header-fg))] outline-none transition-colors hover:bg-white/10 focus:ring-2 focus:ring-white/20"
+    <Select
+      wrapperClassName="min-w-[8.5rem]"
+      className="border-white/10 bg-white/5 text-[hsl(var(--header-fg))] hover:bg-white/10"
+      iconClassName="text-[hsl(var(--header-fg))]/70"
       onChange={(e) => handleVersionChange(e.target.value as MinecraftVersion)}
       value={minecraftVersion}
     >
-      {Object.values(MinecraftVersion).map((version) => (
+      {defaultMinecraftVersions.map((version) => (
         <option key={version} value={version}>
           {getVersionLabel(version)}
         </option>
       ))}
-    </select>
+    </Select>
   );
 };

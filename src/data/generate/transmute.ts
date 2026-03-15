@@ -2,6 +2,8 @@ import { SingleRecipeState } from "@/stores/recipe";
 
 import { formatIngredient } from "./ingredient";
 import { FormatStrategy } from "./format/types";
+import { isVersionAtLeast } from "./version-utils";
+import { MinecraftVersion } from "../types";
 import { CraftingTransmuteRecipe, TransmuteInput } from "./recipes/types";
 
 export const validateTransmute = (state: SingleRecipeState): string[] => {
@@ -25,6 +27,7 @@ export const validateTransmute = (state: SingleRecipeState): string[] => {
 export const buildJava = (
   state: TransmuteInput,
   formatter: FormatStrategy,
+  version: MinecraftVersion,
 ): CraftingTransmuteRecipe => {
   const group = state.group.length > 0 ? state.group : undefined;
   const input = state.input;
@@ -33,7 +36,10 @@ export const buildJava = (
 
   return {
     type: "minecraft:crafting_transmute",
-    group,
+    ...(isVersionAtLeast(version, MinecraftVersion.V119)
+      ? { category: state.category ?? "misc" }
+      : {}),
+    ...(group ? { group } : {}),
     input: formatIngredient(input, formatter),
     material: formatIngredient(material, formatter),
     result: result ? formatter.objectResult(result.id, result.count) : {},

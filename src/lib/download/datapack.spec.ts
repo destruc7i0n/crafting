@@ -58,6 +58,22 @@ describe("downloadDatapack", () => {
     vi.stubGlobal("alert", vi.fn());
   });
 
+  it("blocks datapack download on Java 1.12", async () => {
+    const recipe = createCraftingRecipe({
+      "crafting.1": createItem("minecraft:stone"),
+      "crafting.result": createItem("minecraft:stone_button"),
+    });
+
+    await downloadDatapack([recipe], MinecraftVersion.V112, []);
+
+    expect(globalThis.alert).toHaveBeenCalledWith(
+      "Datapack export is only available for Java 1.13 and newer.",
+    );
+    expect(generate).not.toHaveBeenCalled();
+    expect(createDatapackBlob).not.toHaveBeenCalled();
+    expect(downloadBlob).not.toHaveBeenCalled();
+  });
+
   it("blocks datapack download when any recipe is incomplete", async () => {
     const recipe = createCraftingRecipe({
       "crafting.1": createItem("minecraft:stone"),

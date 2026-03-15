@@ -35,6 +35,7 @@ describe("generate orchestrator", () => {
 
     expect(generate(state, MinecraftVersion.V121)).toEqual({
       type: "minecraft:crafting_shapeless",
+      category: "misc",
       ingredients: [{ item: "minecraft:stone" }],
       result: { id: "minecraft:stone_button", count: 1 },
     });

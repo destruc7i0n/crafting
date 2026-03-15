@@ -16,6 +16,11 @@ export const downloadDatapack = async (
     return;
   }
 
+  if (version === MinecraftVersion.V112) {
+    alert("Datapack export is only available for Java 1.13 and newer.");
+    return;
+  }
+
   const invalidRecipes = recipes.flatMap((recipe) => {
     const validation = validateRecipe(recipe, version);
 

@@ -695,6 +695,7 @@ describe("generate crafting", () => {
 
       expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
         type: "minecraft:crafting_shapeless",
+        category: "misc",
         ingredients: [{ item: "minecraft:stone" }],
         result: { id: "minecraft:stone_button", count: 1 },
       });
@@ -738,6 +739,48 @@ describe("generate crafting", () => {
         pattern: ["##"],
         key: { "#": { item: "minecraft:planks" } },
         result: { item: "minecraft:stick", count: 4 },
+      });
+    });
+
+    it("should emit category and show_notification for supported shaped recipes", () => {
+      const recipeSlice: SingleRecipeState = {
+        recipeType: RecipeType.Crafting,
+        group: "",
+        category: "building",
+        showNotification: false,
+        slots: {
+          "crafting.1": {
+            type: "default_item",
+            id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
+            displayName: "stone",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.V120,
+          },
+          "crafting.result": {
+            type: "default_item",
+            id: {
+              raw: "minecraft:stone_button",
+              id: "stone_button",
+              namespace: "minecraft",
+            },
+            displayName: "stone_button",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.V120,
+          },
+        },
+        crafting: { shapeless: false, keepWhitespace: false },
+        cooking: { time: 0, experience: 0 },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.V120)).toEqual({
+        type: "minecraft:crafting_shaped",
+        category: "building",
+        show_notification: false,
+        pattern: ["#"],
+        key: { "#": { item: "minecraft:stone" } },
+        result: { item: "minecraft:stone_button", count: 1 },
       });
     });
   });

@@ -10,10 +10,13 @@ import {
 } from "lucide-react";
 
 import { recipeTypeToItemId, recipeTypeToName } from "@/data/constants";
+import { MinecraftVersion } from "@/data/types";
 import { getSupportedRecipeTypesForVersion } from "@/data/versions";
 
+import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
 import { isDuplicateRecipeName, sanitizeRecipeName } from "@/lib/recipe-name";
+import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
 import { validateRecipe } from "@/lib/validate-recipe";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
@@ -29,6 +32,12 @@ interface RecipeSidebarProps {
   mobile?: boolean;
 }
 
+interface DownloadConfig {
+  label: string;
+  readyTitle: string;
+  blockedTitle: string;
+}
+
 export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: RecipeSidebarProps) => {
   const recipes = useRecipeStore((state) => state.recipes);
   const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
@@ -41,28 +50,49 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   const toggleSidebar = useUIStore((state) => state.toggleSidebar);
 
   const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
-  const invalidRecipes = recipes.flatMap((recipe) => {
-    const validation = validateRecipe(recipe, minecraftVersion);
+  const invalidRecipes =
+    minecraftVersion === MinecraftVersion.Bedrock
+      ? validateBehaviorPackExport(recipes).map((recipe) => ({
+          name: recipe.name,
+          errors: recipe.errors,
+        }))
+      : recipes.flatMap((recipe) => {
+          const validation = validateRecipe(recipe, minecraftVersion);
 
-    if (validation.valid) {
-      return [];
-    }
+          if (validation.valid) {
+            return [];
+          }
 
-    return [
-      {
-        name: recipe.recipeName || "unnamed_recipe",
-        errors: validation.errors,
-      },
-    ];
-  });
-  const canDownloadDatapack = invalidRecipes.length === 0;
+          return [
+            {
+              name: recipe.recipeName || "unnamed_recipe",
+              errors: validation.errors,
+            },
+          ];
+        });
+  const canDownloadPack = invalidRecipes.length === 0;
+  let downloadConfig: DownloadConfig | null = null;
+
+  if (minecraftVersion === MinecraftVersion.Bedrock) {
+    downloadConfig = {
+      label: "Download Behavior Pack",
+      readyTitle: "Download Behavior Pack",
+      blockedTitle: "Finish every recipe before downloading the behavior pack",
+    };
+  } else if (minecraftVersion !== MinecraftVersion.V112) {
+    downloadConfig = {
+      label: "Download Datapack",
+      readyTitle: "Download Datapack",
+      blockedTitle: "Finish every recipe before downloading the datapack",
+    };
+  }
 
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState("");
   const [issuesOpen, setIssuesOpen] = useState(false);
   const setRecipeNameAtIndex = useRecipeStore((state) => state.setRecipeNameAtIndex);
 
-  const showIssues = issuesOpen && !canDownloadDatapack;
+  const showIssues = Boolean(issuesOpen && !canDownloadPack && downloadConfig);
 
   const handleSelectRecipe = (index: number) => {
     selectRecipe(index);
@@ -98,7 +128,12 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   };
 
   const handleDownloadAll = async () => {
-    if (!canDownloadDatapack) {
+    if (!canDownloadPack || !downloadConfig) {
+      return;
+    }
+
+    if (minecraftVersion === MinecraftVersion.Bedrock) {
+      await downloadBehaviorPack(recipes, minecraftVersion);
       return;
     }
 
@@ -157,31 +192,31 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
           })}
         </div>
 
-        <div className="mt-auto flex flex-col items-center gap-1 border-t border-border pt-2">
-          {!canDownloadDatapack && (
-            <div
-              className="flex h-8 w-8 items-center justify-center"
-              title={`${invalidRecipes.length} invalid ${invalidRecipes.length === 1 ? "recipe" : "recipes"}`}
-            >
-              <AlertTriangleIcon size={14} className="text-amber-500" />
-            </div>
-          )}
-
-          <button
-            type="button"
-            disabled={!canDownloadDatapack}
-            onClick={handleDownloadAll}
-            className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-md border border-border transition-colors hover:bg-accent active:bg-accent/80",
-              !canDownloadDatapack && "cursor-not-allowed opacity-50",
+        {downloadConfig && (
+          <div className="mt-auto flex flex-col items-center gap-1 border-t border-border pt-2">
+            {!canDownloadPack && (
+              <div
+                className="flex h-8 w-8 items-center justify-center"
+                title={`${invalidRecipes.length} invalid ${invalidRecipes.length === 1 ? "recipe" : "recipes"}`}
+              >
+                <AlertTriangleIcon size={14} className="text-amber-500" />
+              </div>
             )}
-            title={
-              canDownloadDatapack ? "Download Datapack" : "Finish every recipe before downloading"
-            }
-          >
-            <DownloadIcon size={16} />
-          </button>
-        </div>
+
+            <button
+              type="button"
+              disabled={!canDownloadPack}
+              onClick={handleDownloadAll}
+              className={cn(
+                "flex h-8 w-8 items-center justify-center rounded-md border border-border transition-colors hover:bg-accent active:bg-accent/80",
+                !canDownloadPack && "cursor-not-allowed opacity-50",
+              )}
+              title={canDownloadPack ? downloadConfig.readyTitle : downloadConfig.blockedTitle}
+            >
+              <DownloadIcon size={16} />
+            </button>
+          </div>
+        )}
       </div>
     );
   }
@@ -283,8 +318,9 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         })}
       </div>
 
-      <div className="relative mt-auto flex flex-col gap-2 border-t border-border pt-3">
-        {showIssues && (
+      {downloadConfig && (
+        <div className="relative mt-auto flex flex-col gap-2 border-t border-border pt-3">
+          {showIssues && (
           <div className="absolute bottom-full left-0 right-0 z-10 mb-2 max-h-64 overflow-y-auto rounded-md border border-border bg-card p-3 shadow-lg">
             <div className="mb-2 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-sm font-medium text-foreground">
@@ -314,45 +350,42 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
               ))}
             </ul>
           </div>
-        )}
-
-        <button
-          type="button"
-          disabled={!canDownloadDatapack}
-          className={cn(
-            "rounded-md border border-border bg-secondary px-3 py-2 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80 active:bg-secondary/70",
-            !canDownloadDatapack &&
-              "cursor-not-allowed opacity-50 hover:bg-secondary active:bg-secondary",
           )}
-          onClick={handleDownloadAll}
-          title={
-            canDownloadDatapack
-              ? "Download Datapack"
-              : "Finish every recipe before downloading the datapack"
-          }
-        >
-          Download Datapack
-        </button>
 
-        {!canDownloadDatapack && (
-          <div className="flex items-center justify-between gap-2 rounded-md border border-amber-500/20 bg-amber-500/10 px-2 py-2 text-xs text-muted-foreground">
-            <div className="flex min-w-0 items-center gap-2">
-              <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
-              <span className="truncate">
-                {invalidRecipes.length} invalid {invalidRecipes.length === 1 ? "recipe" : "recipes"}
-              </span>
+          <button
+            type="button"
+            disabled={!canDownloadPack}
+            className={cn(
+              "rounded-md border border-border bg-secondary px-3 py-2 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80 active:bg-secondary/70",
+              !canDownloadPack &&
+                "cursor-not-allowed opacity-50 hover:bg-secondary active:bg-secondary",
+            )}
+            onClick={handleDownloadAll}
+            title={canDownloadPack ? downloadConfig.readyTitle : downloadConfig.blockedTitle}
+          >
+            {downloadConfig.label}
+          </button>
+
+          {!canDownloadPack && (
+            <div className="flex items-center justify-between gap-2 rounded-md border border-amber-500/20 bg-amber-500/10 px-2 py-2 text-xs text-muted-foreground">
+              <div className="flex min-w-0 items-center gap-2">
+                <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
+                <span className="truncate">
+                  {invalidRecipes.length} invalid {invalidRecipes.length === 1 ? "recipe" : "recipes"}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                className="shrink-0 font-medium text-foreground transition-colors hover:text-primary"
+                onClick={() => setIssuesOpen((value) => !value)}
+              >
+                {showIssues ? "Hide issues" : "View issues"}
+              </button>
             </div>
-
-            <button
-              type="button"
-              className="shrink-0 font-medium text-foreground transition-colors hover:text-primary"
-              onClick={() => setIssuesOpen((value) => !value)}
-            >
-              {showIssues ? "Hide issues" : "View issues"}
-            </button>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 });

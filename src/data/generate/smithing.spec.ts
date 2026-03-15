@@ -225,6 +225,72 @@ describe("generate smithing", () => {
     });
   });
 
+  describe("1.21.5", () => {
+    it("should generate a smithing trim recipe with a pattern", () => {
+      const recipeSlice: SingleRecipeState = {
+        recipeType: RecipeType.SmithingTrim,
+        group: "",
+        smithingTrimPattern: "minecraft:bolt",
+        slots: {
+          "smithing.template": {
+            type: "default_item",
+            id: {
+              raw: "minecraft:bolt_armor_trim_smithing_template",
+              id: "bolt_armor_trim_smithing_template",
+              namespace: "minecraft",
+            },
+            displayName: "bolt_armor_trim_smithing_template",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.V1215,
+          },
+          "smithing.base": {
+            type: "tag_item",
+            id: {
+              raw: "minecraft:trimmable_armor",
+              id: "trimmable_armor",
+              namespace: "minecraft",
+            },
+            displayName: "#minecraft:trimmable_armor",
+            texture: "",
+            _version: MinecraftVersion.V1215,
+            tagSource: "vanilla",
+            values: [],
+          },
+          "smithing.addition": {
+            type: "tag_item",
+            id: {
+              raw: "minecraft:trim_materials",
+              id: "trim_materials",
+              namespace: "minecraft",
+            },
+            displayName: "#minecraft:trim_materials",
+            texture: "",
+            _version: MinecraftVersion.V1215,
+            tagSource: "vanilla",
+            values: [],
+          },
+        },
+        cooking: {
+          experience: 0,
+          time: 0,
+        },
+        crafting: {
+          keepWhitespace: false,
+          shapeless: false,
+        },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.V1215)).toEqual({
+        type: "minecraft:smithing_trim",
+        template: "minecraft:bolt_armor_trim_smithing_template",
+        base: "#minecraft:trimmable_armor",
+        addition: "#minecraft:trim_materials",
+        pattern: "minecraft:bolt",
+      });
+    });
+  });
+
   describe("bedrock", () => {
     it("should generate bedrock smithing trim body", () => {
       const recipeSlice: SingleRecipeState = {

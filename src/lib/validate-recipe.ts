@@ -64,7 +64,7 @@ export const validateRecipe = (
     case RecipeType.Smithing:
     case RecipeType.SmithingTrim:
     case RecipeType.SmithingTransform:
-      errors.push(...validateSmithing(recipe));
+      errors.push(...validateSmithing(recipe, version));
       break;
   }
 

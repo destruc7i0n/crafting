@@ -33,6 +33,7 @@ const extractCookingInput = (state: SingleRecipeState): CookingInput => ({
   time: state.cooking.time,
   experience: state.cooking.experience,
   group: state.group,
+  category: state.category,
 });
 
 const extractStonecutterInput = (state: SingleRecipeState): StonecutterInput => ({
@@ -47,6 +48,7 @@ const extractSmithingInput = (state: SingleRecipeState): SmithingInput => ({
   base: state.slots["smithing.base"],
   addition: state.slots["smithing.addition"],
   result: state.slots["smithing.result"],
+  trimPattern: state.smithingTrimPattern,
 });
 
 const extractTransmuteInput = (state: SingleRecipeState): TransmuteInput => ({
@@ -54,6 +56,7 @@ const extractTransmuteInput = (state: SingleRecipeState): TransmuteInput => ({
   material: state.slots["crafting.2"],
   result: state.slots["crafting.result"],
   group: state.group,
+  category: state.category,
 });
 
 const getBedrockRecipeMeta = (state: SingleRecipeState): BedrockRecipeMeta => {
@@ -125,22 +128,23 @@ const getBedrockRecipeMeta = (state: SingleRecipeState): BedrockRecipeMeta => {
 
 const generateJavaInner = (
   state: SingleRecipeState,
+  version: MinecraftVersion,
   formatter: ReturnType<typeof createFormatStrategy>,
 ): JavaRecipe => {
   switch (state.recipeType) {
     case RecipeType.Crafting:
-      return buildJavaCrafting(extractCraftingInput(state), formatter);
+      return buildJavaCrafting(extractCraftingInput(state), formatter, version);
     case RecipeType.CraftingTransmute:
-      return buildJavaTransmute(extractTransmuteInput(state), formatter);
+      return buildJavaTransmute(extractTransmuteInput(state), formatter, version);
     case RecipeType.Smelting:
     case RecipeType.Blasting:
     case RecipeType.Smoking:
     case RecipeType.CampfireCooking:
-      return buildJavaCooking(extractCookingInput(state), formatter);
+      return buildJavaCooking(extractCookingInput(state), formatter, version);
     case RecipeType.Smithing:
     case RecipeType.SmithingTransform:
     case RecipeType.SmithingTrim:
-      return buildJavaSmithing(extractSmithingInput(state), formatter);
+      return buildJavaSmithing(extractSmithingInput(state), formatter, version);
     case RecipeType.Stonecutter:
       return buildJavaStonecutter(extractStonecutterInput(state), formatter);
     default:
@@ -185,5 +189,5 @@ export function generate(state: SingleRecipeState, version: MinecraftVersion): G
     });
   }
 
-  return generateJavaInner(state, formatter);
+  return generateJavaInner(state, version, formatter);
 }

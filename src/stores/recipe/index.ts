@@ -10,6 +10,9 @@ export interface SingleRecipeState {
   recipeName?: string;
   recipeType: RecipeType;
   group: string;
+  category?: string;
+  showNotification?: boolean;
+  smithingTrimPattern?: string;
   slots: Partial<Record<RecipeSlot, IngredientItem>>;
   crafting: {
     shapeless: boolean;
@@ -41,6 +44,9 @@ type RecipeActions = {
   setRecipeNameAtIndex: (index: number, name: string) => void;
   setRecipeType: (type: RecipeType) => void;
   setRecipeGroup: (group: string) => void;
+  setRecipeCategory: (category?: string) => void;
+  setRecipeShowNotification: (showNotification: boolean) => void;
+  setRecipeSmithingTrimPattern: (pattern?: string) => void;
   setRecipeSlot: (slot: RecipeSlot, item?: IngredientItem) => void;
   setRecipeSlotCount: (slot: RecipeSlot, count: number) => void;
   setRecipeCraftingShapeless: (shapeless: boolean) => void;
@@ -133,6 +139,21 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
     setRecipeGroup: (group: string) => {
       set((state) => {
         state.recipes[state.selectedRecipeIndex].group = group;
+      });
+    },
+    setRecipeCategory: (category?: string) => {
+      set((state) => {
+        state.recipes[state.selectedRecipeIndex].category = category;
+      });
+    },
+    setRecipeShowNotification: (showNotification: boolean) => {
+      set((state) => {
+        state.recipes[state.selectedRecipeIndex].showNotification = showNotification;
+      });
+    },
+    setRecipeSmithingTrimPattern: (pattern?: string) => {
+      set((state) => {
+        state.recipes[state.selectedRecipeIndex].smithingTrimPattern = pattern;
       });
     },
     setRecipeSlot: (slot: RecipeSlot, item?: IngredientItem) => {

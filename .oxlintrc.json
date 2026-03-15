@@ -11,6 +11,9 @@
       "version": "19.2.4"
     }
   },
+  "rules": {
+    "no-nested-ternary": "error"
+  },
   "options": {
     "denyWarnings": true
   }

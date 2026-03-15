@@ -3,6 +3,7 @@ import { SingleRecipeState } from "@/stores/recipe";
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { formatIngredient } from "./ingredient";
+import { isVersionAtLeast } from "./version-utils";
 import { MinecraftVersion, RecipeType } from "../types";
 import { BedrockFurnaceBody, CookingInput, CookingRecipe } from "./recipes/types";
 
@@ -16,8 +17,18 @@ const recipeTypeToBaseCookingType: Record<
   [RecipeType.Smoking]: "smoking",
 };
 
-export const buildJava = (state: CookingInput, formatter: FormatStrategy): CookingRecipe => {
+export const buildJava = (
+  state: CookingInput,
+  formatter: FormatStrategy,
+  version: MinecraftVersion,
+): CookingRecipe => {
   const group = state.group.length > 0 ? state.group : undefined;
+  const category = isVersionAtLeast(version, MinecraftVersion.V119)
+    ? (state.category ??
+      (state.recipeType === RecipeType.CampfireCooking || state.recipeType === RecipeType.Smoking
+        ? "food"
+        : "misc"))
+    : undefined;
 
   const input = state.ingredient;
   const output = state.result;
@@ -29,15 +40,12 @@ export const buildJava = (state: CookingInput, formatter: FormatStrategy): Cooki
     throw new Error(`Unsupported cooking recipe type: ${state.recipeType}`);
   }
 
-  const constantFields: Pick<CookingRecipe, "group" | "experience" | "cookingtime"> = {
-    group,
-    experience: state.experience,
-    cookingtime: state.time,
-  };
-
   return {
     type: formatter.recipeType(baseType) as CookingRecipe["type"],
-    ...constantFields,
+    category,
+    ...(group ? { group } : {}),
+    experience: state.experience,
+    cookingtime: state.time,
     ingredient: formatIngredient(input, formatter),
     result: output ? formatter.cookingResult(output.id, output.count) : {},
   } satisfies CookingRecipe;
@@ -63,6 +71,7 @@ const extractInput = (state: SingleRecipeState): CookingInput => ({
   time: state.cooking.time,
   experience: state.cooking.experience,
   group: state.group,
+  category: state.category,
 });
 
 export const validateCooking = (state: SingleRecipeState): string[] => {
@@ -91,5 +100,5 @@ export const generate = (
     return buildBedrock(input, formatter);
   }
 
-  return buildJava(input, formatter);
+  return buildJava(input, formatter, version);
 };

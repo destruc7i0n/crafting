@@ -21,7 +21,9 @@ export type ObjectResultRef = V112Result | V113Result | V121Result | BedrockResu
 
 export interface ShapedCraftingRecipe {
   type: "crafting_shaped" | "minecraft:crafting_shaped";
+  category?: string;
   group?: string;
+  show_notification?: boolean;
   pattern: string[];
   key: Record<string, IngredientRef>;
   result: ObjectResultRef | EmptyObject;
@@ -29,6 +31,7 @@ export interface ShapedCraftingRecipe {
 
 export interface ShapelessCraftingRecipe {
   type: "crafting_shapeless" | "minecraft:crafting_shapeless";
+  category?: string;
   group?: string;
   ingredients: IngredientRef[];
   result: ObjectResultRef | EmptyObject;
@@ -41,6 +44,7 @@ export interface CookingRecipe {
     | "minecraft:blasting"
     | "minecraft:campfire_cooking"
     | "minecraft:smoking";
+  category?: string;
   group?: string;
   ingredient: IngredientRef | EmptyObject;
   result: ObjectResultRef | string | EmptyObject;
@@ -68,6 +72,7 @@ export interface SmithingTrimRecipe {
   template: IngredientRef | EmptyObject;
   base: IngredientRef | EmptyObject;
   addition: IngredientRef | EmptyObject;
+  pattern?: string;
 }
 
 export interface SmithingTransformRecipe {
@@ -80,6 +85,7 @@ export interface SmithingTransformRecipe {
 
 export interface CraftingTransmuteRecipe {
   type: "minecraft:crafting_transmute";
+  category?: string;
   group?: string;
   input: IngredientRef | EmptyObject;
   material: IngredientRef | EmptyObject;
@@ -200,6 +206,8 @@ export interface CraftingInput {
   keepWhitespace: boolean;
   twoByTwo?: boolean;
   group: string;
+  category?: string;
+  showNotification?: boolean;
 }
 
 export interface CookingInput {
@@ -213,6 +221,7 @@ export interface CookingInput {
   time: number;
   experience: number;
   group: string;
+  category?: string;
 }
 
 export interface StonecutterInput {
@@ -226,6 +235,7 @@ export interface TransmuteInput {
   material: IngredientItem | undefined;
   result: IngredientItem | undefined;
   group: string;
+  category?: string;
 }
 
 export interface SmithingInput {
@@ -234,6 +244,7 @@ export interface SmithingInput {
   base: IngredientItem | undefined;
   addition: IngredientItem | undefined;
   result: IngredientItem | undefined;
+  trimPattern?: string;
 }
 
 export interface BedrockRecipeMeta {

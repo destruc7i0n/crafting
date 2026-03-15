@@ -130,4 +130,17 @@ describe("validateRecipe", () => {
       ],
     });
   });
+
+  it("requires a trim pattern for smithing trim on 1.21.5+", () => {
+    const recipe = createRecipe(RecipeType.SmithingTrim, {
+      "smithing.template": createItem("minecraft:coast_armor_trim_smithing_template"),
+      "smithing.base": createItem("minecraft:diamond_chestplate"),
+      "smithing.addition": createItem("minecraft:redstone"),
+    });
+
+    expect(validateRecipe(recipe, MinecraftVersion.V1215)).toEqual({
+      valid: false,
+      errors: ["Add a trim pattern"],
+    });
+  });
 });

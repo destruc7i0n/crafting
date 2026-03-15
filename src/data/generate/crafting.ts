@@ -3,6 +3,7 @@ import { SingleRecipeState } from "@/stores/recipe";
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { formatIngredient } from "./ingredient";
+import { isVersionAtLeast } from "./version-utils";
 import { IngredientItem } from "../models/types";
 import { MinecraftVersion } from "../types";
 import {
@@ -156,11 +157,15 @@ function getKeyForGrid(grid: (IngredientItem | undefined)[]): {
 export const buildJava = (
   state: CraftingInput,
   formatter: FormatStrategy,
+  version: MinecraftVersion,
 ): ShapedCraftingRecipe | ShapelessCraftingRecipe => {
   const grid = state.grid;
   const populatedSlots = grid.filter((item): item is IngredientItem => Boolean(item));
 
   const group = state.group.length > 0 ? state.group : undefined;
+  const category = isVersionAtLeast(version, MinecraftVersion.V119)
+    ? (state.category ?? "misc")
+    : undefined;
 
   const { key, reverse } = getKeyForGrid(grid);
 
@@ -172,19 +177,24 @@ export const buildJava = (
   if (state.shapeless) {
     return {
       type: formatter.recipeType("crafting_shapeless") as ShapelessCraftingRecipe["type"],
+      category,
       ingredients: populatedSlots.map((item) => formatIngredient(item, formatter)),
-      group,
+      ...(group ? { group } : {}),
       result: getResult(),
     } satisfies ShapelessCraftingRecipe;
   }
 
   return {
     type: formatter.recipeType("crafting_shaped") as ShapedCraftingRecipe["type"],
+    category,
+    ...(isVersionAtLeast(version, MinecraftVersion.V120) && state.showNotification === false
+      ? { show_notification: false }
+      : {}),
     pattern: getPattern(grid, reverse, state.keepWhitespace),
     key: Object.fromEntries(
       Object.entries(key).map(([keyName, item]) => [keyName, formatIngredient(item, formatter)]),
     ),
-    group,
+    ...(group ? { group } : {}),
     result: getResult(),
   } satisfies ShapedCraftingRecipe;
 };
@@ -240,6 +250,8 @@ export const extractCraftingInput = (state: SingleRecipeState): CraftingInput =>
   keepWhitespace: state.crafting.keepWhitespace,
   twoByTwo: state.crafting.twoByTwo === true,
   group: state.group,
+  category: state.category,
+  showNotification: state.showNotification,
 });
 
 export const validateCrafting = (state: SingleRecipeState): string[] => {
@@ -268,5 +280,5 @@ export const generate = (
     return buildBedrock(input, formatter);
   }
 
-  return buildJava(input, formatter);
+  return buildJava(input, formatter, version);
 };

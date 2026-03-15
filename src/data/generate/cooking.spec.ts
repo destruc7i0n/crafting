@@ -279,6 +279,7 @@ describe("generate cooking", () => {
 
       expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
         type: "minecraft:smelting",
+        category: "misc",
         ingredient: { item: "minecraft:iron_ore" },
         result: { id: "minecraft:iron_ingot", count: 2 },
         experience: 0,
@@ -315,6 +316,43 @@ describe("generate cooking", () => {
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
         input: { item: "minecraft:sand" },
         output: { item: "minecraft:glass", count: 1 },
+      });
+    });
+
+    it("should emit category for supported cooking recipes", () => {
+      const recipeSlice: SingleRecipeState = {
+        recipeType: RecipeType.Blasting,
+        group: "",
+        category: "blocks",
+        slots: {
+          "cooking.ingredient": {
+            type: "default_item",
+            id: { raw: "minecraft:iron_ore", id: "iron_ore", namespace: "minecraft" },
+            displayName: "iron_ore",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.V119,
+          },
+          "cooking.result": {
+            type: "default_item",
+            id: { raw: "minecraft:iron_ingot", id: "iron_ingot", namespace: "minecraft" },
+            displayName: "iron_ingot",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.V119,
+          },
+        },
+        crafting: { shapeless: true, keepWhitespace: false },
+        cooking: { time: 100, experience: 0.5 },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.V119)).toEqual({
+        type: "minecraft:blasting",
+        category: "blocks",
+        ingredient: { item: "minecraft:iron_ore" },
+        result: "minecraft:iron_ingot",
+        experience: 0.5,
+        cookingtime: 100,
       });
     });
   });
