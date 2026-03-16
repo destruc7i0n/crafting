@@ -25,3 +25,4 @@ dist-ssr
 
 private/
 src/data/generated/vanilla-tags/*.json
+src/data/generated/bedrock-mappings.json

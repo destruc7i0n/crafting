@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "generate:tags": "bun scripts/fetch-tags.ts",
-    "prebuild": "pnpm generate:tags",
+    "generate:bedrock": "bun scripts/fetch-bedrock-mappings.ts",
+    "prebuild": "pnpm generate:tags && pnpm generate:bedrock",
     "build": "tsc && vite build",
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",

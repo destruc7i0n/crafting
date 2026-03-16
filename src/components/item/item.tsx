@@ -154,8 +154,11 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
       />
     );
 
+  const description =
+    item.id.data !== undefined ? `${item.id.raw}:${item.id.data}` : item.id.raw;
+
   return (
-    <ItemTooltip title={item.displayName} description={item.id.raw} visible={!dragging}>
+    <ItemTooltip title={item.displayName} description={description} visible={!dragging}>
       {preview}
       {showCount && <ItemCount count={item.count ?? 1} />}
     </ItemTooltip>

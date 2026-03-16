@@ -8,7 +8,12 @@ import { Item } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { useResourcesStore } from "@/stores/resources";
 
+import bedrockMappingsJson from "@/data/generated/bedrock-mappings.json";
+import { parseStringToMinecraftIdentifier } from "@/data/models/identifier/utilities";
 import { useResourcesForVersion } from "./use-resources-for-version";
+
+type BedrockTranslation = { id?: string; data?: number };
+const bedrockMappings = bedrockMappingsJson as Record<string, BedrockTranslation>;
 
 const textureLoaders = import.meta.glob<{ default: MinecraftTexturesType }>(
   // match 1.20.json but not 1.20.id.json
@@ -62,6 +67,16 @@ export const useMinecraftTexturesData = () => {
 
       for (const mcTexturesItem of mcTexturesItems) {
         const item = transformMinecraftTexturesItem(mcTexturesItem, version);
+
+        const translation =
+          version === MinecraftVersion.Bedrock ? bedrockMappings[mcTexturesItem.id] : undefined;
+        if (translation) {
+          item.id = {
+            ...parseStringToMinecraftIdentifier(translation.id ?? mcTexturesItem.id),
+            ...(translation.data !== undefined ? { data: translation.data } : {}),
+          };
+        }
+
         items.push(item);
         itemsById[item.id.raw] = item;
         textures[item.id.raw] = mcTexturesItem.texture;

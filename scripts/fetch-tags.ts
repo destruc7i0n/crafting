@@ -1,3 +1,6 @@
+// Tag data sourced from misode/mcmeta
+// https://github.com/misode/mcmeta
+
 import { mkdir, mkdtemp, readdir, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";

@@ -33,6 +33,11 @@ pnpm run test
 
 Contributions are welcome.
 
+## Acknowledgements
+
+- [misode/mcmeta](https://github.com/misode/mcmeta) - processed vanilla data
+- [GeyserMC/mappings](https://github.com/GeyserMC/mappings) - Java to Bedrock item mappings
+
 ## Licence
 
 MIT
