@@ -59,7 +59,7 @@ export const useTagStore = create<TagState & TagActions>()(
         const identifier = nextIdentifier;
 
         useRecipeStore.getState().syncCustomSlotItem(
-          (slotItem) => slotItem.type === "tag_item" && slotItem.tagUid === uid,
+          (slotItem) => slotItem.type === "tag_item" && slotItem.uid === uid,
           (slotItem) => {
             slotItem.id = { ...identifier };
             slotItem.displayName = getTagLabel(identifier.raw);
@@ -71,7 +71,7 @@ export const useTagStore = create<TagState & TagActions>()(
           state.tags = state.tags.filter((tag) => tag.uid !== uid);
         });
         useRecipeStore.getState().removeMatchingSlotItems(
-          (item) => item.type === "tag_item" && item.tagUid === uid,
+          (item) => item.type === "tag_item" && item.uid === uid,
         );
       },
 

@@ -50,7 +50,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
               version,
               itemsById,
               tagSource: "custom",
-              tagUid: tag.uid,
+              uid: tag.uid,
             }),
           ];
         }),

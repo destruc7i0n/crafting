@@ -39,7 +39,7 @@ export function cloneItem(item: IngredientItem): IngredientItem {
     type: "tag_item",
     ...baseItem,
     tagSource: item.tagSource,
-    tagUid: item.tagUid,
+    uid: item.uid,
     values: [...item.values],
   };
 }

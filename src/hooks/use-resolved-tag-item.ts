@@ -12,11 +12,11 @@ export const useResolvedSlotItem = (
   const tags = useTagStore((state) => state.tags);
 
   return useMemo(() => {
-    if (!item || item.type !== "tag_item" || item.tagSource !== "custom" || !item.tagUid) {
+    if (!item || item.type !== "tag_item" || item.tagSource !== "custom" || !item.uid) {
       return item;
     }
 
-    const tag = tags.find((t) => t.uid === item.tagUid);
+    const tag = tags.find((t) => t.uid === item.uid);
     if (!tag) return item;
 
     const vanillaTags = resources?.vanillaTags ?? {};
@@ -30,7 +30,7 @@ export const useResolvedSlotItem = (
       version,
       itemsById: resources?.itemsById,
       tagSource: "custom",
-      tagUid: tag.uid,
+      uid: tag.uid,
     });
   }, [item, tags, resources, version]);
 };

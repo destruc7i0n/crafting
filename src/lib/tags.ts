@@ -126,7 +126,7 @@ type CreateTagItemInput = {
   version: MinecraftVersion;
   itemsById?: Record<string, Item>;
   tagSource: TagItem["tagSource"];
-  tagUid?: string;
+  uid?: string;
 };
 
 export const createTagItem = ({
@@ -136,7 +136,7 @@ export const createTagItem = ({
   version,
   itemsById,
   tagSource,
-  tagUid,
+  uid,
 }: CreateTagItemInput): TagItem => {
   const uniqueValues = unique(values);
 
@@ -147,7 +147,7 @@ export const createTagItem = ({
     texture: getFirstAvailableTexture(uniqueValues, itemsById),
     _version: version,
     tagSource,
-    tagUid,
+    uid,
     values: uniqueValues,
   };
 };
@@ -163,7 +163,7 @@ export const isSameIngredient = (
   if (left.type === "tag_item" && right.type === "tag_item") {
     return (
       left.tagSource === right.tagSource &&
-      left.tagUid === right.tagUid &&
+      left.uid === right.uid &&
       left.id.raw === right.id.raw
     );
   }
