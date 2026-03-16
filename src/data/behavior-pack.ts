@@ -1,5 +1,3 @@
-import JSZip from "jszip";
-
 export interface BehaviorPackRecipeFile {
   identifier: string;
   json: object;
@@ -25,6 +23,7 @@ export const getBehaviorPackRecipeFileName = (identifier: string) => {
 export const createBehaviorPackBlob = async (
   recipeFiles: BehaviorPackRecipeFile[],
 ): Promise<Blob> => {
+  const { default: JSZip } = await import("jszip");
   const zip = new JSZip();
   const headerUuid = crypto.randomUUID();
   const moduleUuid = crypto.randomUUID();

@@ -1,5 +1,3 @@
-import JSZip from "jszip";
-
 import { javaMinecraftVersions } from "./constants";
 import { Tag } from "./models/types";
 import { MinecraftVersion } from "./types";
@@ -66,6 +64,7 @@ export const createDatapackBlob = async (
   recipeFiles: DatapackRecipeFile[],
   tags: Tag[],
 ): Promise<Blob> => {
+  const { default: JSZip } = await import("jszip");
   const zip = new JSZip();
 
   zip.file(
