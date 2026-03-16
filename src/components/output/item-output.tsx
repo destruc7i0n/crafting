@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-import { CheckIcon, ChevronDownIcon, ClipboardCopyIcon, DownloadIcon } from "lucide-react";
+import { AlertCircleIcon, CheckIcon, ChevronDownIcon, ClipboardCopyIcon, DownloadIcon } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { generate } from "@/data/generate";
 import { downloadRecipeJson } from "@/lib/download/recipe";
 import { useRecipeStore } from "@/stores/recipe";
@@ -45,7 +46,11 @@ export const ItemOutput = () => {
   const handleCopy = async () => {
     if (copied) return;
 
-    await navigator.clipboard.writeText(JSON.stringify(generatedResult.recipe, null, 2));
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(generatedResult.recipe, null, 2));
+    } catch {
+      return;
+    }
     setCopied(true);
     if (copyTimeoutRef.current !== null) {
       window.clearTimeout(copyTimeoutRef.current);
@@ -66,7 +71,7 @@ export const ItemOutput = () => {
         >
           <ChevronDownIcon
             size={14}
-            className={`transition-transform ${collapsed ? "-rotate-90" : ""}`}
+            className={cn("transition-transform", collapsed && "-rotate-90")}
           />
           Output
         </button>
@@ -75,7 +80,8 @@ export const ItemOutput = () => {
           <button
             type="button"
             onClick={handleCopy}
-            className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            disabled={!!generatedResult.error}
+            className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
             title="Copy JSON"
           >
             {copied ? (
@@ -88,7 +94,8 @@ export const ItemOutput = () => {
           <button
             type="button"
             onClick={() => downloadRecipeJson(recipeState, minecraftVersion)}
-            className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-accent/30 px-3 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+            disabled={!!generatedResult.error}
+            className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-accent/30 px-3 text-xs font-medium text-foreground transition-colors hover:bg-accent disabled:pointer-events-none disabled:opacity-40"
             title="Download JSON"
           >
             <DownloadIcon size={14} />
@@ -99,12 +106,13 @@ export const ItemOutput = () => {
 
       {!collapsed && (
         <div className="border-t lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
-          <JsonOutput json={generatedResult.recipe} />
-
-          {generatedResult.error && (
-            <div className="px-3 pb-3 text-sm text-destructive">
-              Generation error: {generatedResult.error}
+          {generatedResult.error ? (
+            <div className="m-3 flex items-start gap-2.5 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-3 text-sm text-destructive">
+              <AlertCircleIcon size={16} className="mt-0.5 shrink-0" />
+              <span>{generatedResult.error}</span>
             </div>
+          ) : (
+            <JsonOutput json={generatedResult.recipe} />
           )}
         </div>
       )}
