@@ -263,9 +263,11 @@ export const TagsSection = ({
         </div>
       )}
 
-      <span className="text-muted-foreground hidden text-xs font-medium lg:block">
-        Vanilla Tags
-      </span>
+      {filteredCustomTags.length > 0 && (
+        <span className="text-muted-foreground hidden text-xs font-medium lg:block">
+          Vanilla Tags
+        </span>
+      )}
 
       <InventoryGridContainer>
         <div className="grid grid-cols-[repeat(auto-fill,36px)] content-start">

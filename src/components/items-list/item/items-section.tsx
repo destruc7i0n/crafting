@@ -155,6 +155,12 @@ export const ItemsSection = ({
         </div>
       )}
 
+      {filteredCustomItems.length > 0 && (
+        <span className="text-muted-foreground hidden text-xs font-medium lg:block">
+          Vanilla Items
+        </span>
+      )}
+
       <VirtualizedItemGrid items={filteredItems} />
     </div>
   );

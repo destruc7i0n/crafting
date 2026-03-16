@@ -60,6 +60,33 @@ export const ItemsList = () => {
     );
   }, [resourceItems, deferredSearch]);
 
+  const tabSwitcher = supportsTags ? (
+    <div className="bg-muted flex shrink-0 self-stretch lg:self-auto items-center rounded-md p-0.5">
+      <button
+        type="button"
+        className={`flex h-full lg:h-auto lg:py-1 cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs lg:text-sm font-medium transition-colors ${
+          tab === "items"
+            ? "bg-primary/40 text-foreground"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+        onClick={() => handleTabChange("items")}
+      >
+        Items
+      </button>
+      <button
+        type="button"
+        className={`flex h-full lg:h-auto lg:py-1 cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs lg:text-sm font-medium transition-colors ${
+          tab === "tags"
+            ? "bg-primary/40 text-foreground"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+        onClick={() => handleTabChange("tags")}
+      >
+        Tags
+      </button>
+    </div>
+  ) : null;
+
   return (
     <div className="flex h-full min-h-0 w-full flex-1 flex-col gap-2 rounded-lg border p-2 lg:gap-3 lg:p-3">
       {/* Mobile: compact single row */}
@@ -73,32 +100,7 @@ export const ItemsList = () => {
           />
         )}
 
-        {!isCreating && supportsTags && (
-          <div className="bg-muted flex h-8 shrink-0 items-center rounded-md p-0.5">
-            <button
-              type="button"
-              className={`flex h-full items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors ${
-                tab === "items"
-                  ? "bg-primary/40 text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-              onClick={() => handleTabChange("items")}
-            >
-              Items
-            </button>
-            <button
-              type="button"
-              className={`flex h-full items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors ${
-                tab === "tags"
-                  ? "bg-primary/40 text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-              onClick={() => handleTabChange("tags")}
-            >
-              Tags
-            </button>
-          </div>
-        )}
+        {!isCreating && tabSwitcher}
 
         {!isCreating && (
           <button
@@ -114,34 +116,7 @@ export const ItemsList = () => {
 
       {/* Desktop: tabs + add button */}
       <div className="hidden items-center gap-2 lg:flex">
-        {supportsTags ? (
-          <>
-            <button
-              type="button"
-              className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-                tab === "items"
-                  ? "bg-primary/40 text-foreground"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
-              }`}
-              onClick={() => handleTabChange("items")}
-            >
-              Items
-            </button>
-            <button
-              type="button"
-              className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-                tab === "tags"
-                  ? "bg-primary/40 text-foreground"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
-              }`}
-              onClick={() => handleTabChange("tags")}
-            >
-              Tags
-            </button>
-          </>
-        ) : (
-          <span className="text-foreground text-sm font-medium">Items</span>
-        )}
+        {tabSwitcher ?? <span className="text-foreground text-sm font-medium">Items</span>}
 
         {!isCreating && (
           <button
