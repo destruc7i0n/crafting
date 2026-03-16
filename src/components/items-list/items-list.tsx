@@ -66,7 +66,7 @@ export const ItemsList = () => {
       <div className="flex items-center gap-2 lg:hidden">
         <input
           type="text"
-          className="border-input bg-background text-foreground placeholder:text-muted-foreground focus:ring-ring min-w-0 flex-1 appearance-none rounded-md border px-2 py-1.5 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset"
+          className="border-input bg-background text-foreground placeholder:text-muted-foreground focus:ring-ring h-8 min-w-0 flex-1 appearance-none rounded-md border px-2 text-sm outline-hidden transition-colors focus:ring-2 focus:ring-inset"
           placeholder="Search..."
           onChange={(event) => setSearch(event.target.value)}
         />
@@ -74,7 +74,7 @@ export const ItemsList = () => {
         {supportsTags && (
           <button
             type="button"
-            className="border-border text-foreground hover:bg-accent shrink-0 rounded-md border px-2 py-1.5 text-xs font-medium transition-colors"
+            className="border-border text-foreground hover:bg-accent flex h-8 shrink-0 items-center justify-center rounded-md border px-2 text-xs font-medium transition-colors"
             onClick={() => handleTabChange(activeTab === "items" ? "tags" : "items")}
             title={tab === "items" ? "Switch to tags" : "Switch to items"}
           >
