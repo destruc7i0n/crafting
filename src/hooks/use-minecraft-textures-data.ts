@@ -13,8 +13,8 @@ import { useResourcesForVersion } from "./use-resources-for-version";
 const textureLoaders = import.meta.glob<{ default: MinecraftTexturesType }>(
   "/node_modules/minecraft-textures/dist/textures/json/*.json",
 );
-const tagLoaders = import.meta.glob<{ default: Record<string, Record<string, string[]>> }>(
-  "/src/data/generated/tags.json",
+const tagLoaders = import.meta.glob<{ default: Record<string, string[]> }>(
+  "/src/data/generated/vanilla-tags/*.json",
 );
 
 export const useMinecraftTexturesData = () => {
@@ -42,9 +42,16 @@ export const useMinecraftTexturesData = () => {
       }
 
       const module = (await loadTextureModule()).default;
-      const tagModule = tagLoaders["/src/data/generated/tags.json"]
-        ? (await tagLoaders["/src/data/generated/tags.json"]()).default
-        : {};
+      let vanillaTags: Record<string, string[]> = {};
+
+      if (version !== MinecraftVersion.Bedrock) {
+        const tagPath = `/src/data/generated/vanilla-tags/${version}.json`;
+        const loadTagModule = tagLoaders[tagPath];
+
+        if (loadTagModule) {
+          vanillaTags = (await loadTagModule()).default;
+        }
+      }
 
       const mcTexturesItems = module.items;
 
@@ -62,7 +69,7 @@ export const useMinecraftTexturesData = () => {
       setResourceData(version, {
         items,
         itemsById,
-        vanillaTags: tagModule[version] ?? {},
+        vanillaTags,
       });
     };
 

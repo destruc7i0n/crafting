@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 private/
-src/data/generated/tags.json
+src/data/generated/vanilla-tags/*.json

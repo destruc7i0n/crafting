@@ -1,143 +1,181 @@
-import { mkdtemp, rm } from "node:fs/promises";
+import { $ } from "bun";
+import { latestVersion, versions } from "minecraft-textures";
+import { mkdir, mkdtemp, readdir, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
-const outputPath = path.join(repoRoot, "src/data/generated/tags.json");
-const minecraftTexturesPath = path.join(
-  repoRoot,
-  "node_modules/minecraft-textures/dist/textures/json",
-);
+const outputDir = path.join(repoRoot, "src/data/generated/vanilla-tags");
+const summaryRepoUrl = "https://github.com/misode/mcmeta.git";
+const summaryTagFilePath = "data/tag/item/data.min.json";
 
-const archiveUrl = "https://codeload.github.com/misode/mcmeta/zip/refs/heads/data-json";
-
-const minecraftTexturesModule = (await import("minecraft-textures")) as Record<string, unknown>;
-const defaultExport = (minecraftTexturesModule.default ?? minecraftTexturesModule) as Record<
-  string,
-  unknown
->;
-const versions = (defaultExport.versions ?? minecraftTexturesModule.versions) as string[];
-const latestVersion = (defaultExport.latestVersion ??
-  minecraftTexturesModule.latestVersion) as string;
-
-if (!Array.isArray(versions) || versions.length === 0) {
-  throw new Error("Unable to read minecraft-textures versions");
-}
+type SummaryTagValue = string | { id: string };
+type SummaryTagEntry = {
+  values?: SummaryTagValue[];
+};
+type SummaryTagFile = Record<string, SummaryTagEntry>;
+type TagGraph = Record<string, string[]>;
 
 if (latestVersion !== versions.at(-1)) {
   throw new Error("minecraft-textures latestVersion did not match the final versions entry");
 }
 
-const readItemIdsForVersion = async (version: string): Promise<Set<string>> => {
-  const json = await Bun.file(path.join(minecraftTexturesPath, `${version}.id.json`)).json();
-  return new Set(Object.keys(json.items ?? {}));
-};
+const versionsWithoutVanillaTags = new Set(["1.12", "1.13"]);
+const versionsWithVanillaTags = versions.filter(
+  (version) => !versionsWithoutVanillaTags.has(version),
+);
 
-const downloadAndExtractTags = async (): Promise<Record<string, string[]>> => {
-  const response = await fetch(archiveUrl);
-  if (!response.ok) {
-    throw new Error(`Failed to download mcmeta archive: ${response.status} ${response.statusText}`);
+// pull a string id out of one raw tag value
+const getTagValueId = (value: SummaryTagValue): string | null => {
+  if (typeof value === "string") {
+    return value;
   }
 
+  if (
+    typeof value === "object" &&
+    value !== null &&
+    "id" in value &&
+    typeof value.id === "string"
+  ) {
+    return value.id;
+  }
+
+  return null;
+};
+
+// normalize one raw tag entry into string ids
+const getTagValues = (entry: SummaryTagEntry): string[] =>
+  Array.isArray(entry.values)
+    ? entry.values.map(getTagValueId).filter((value): value is string => value !== null)
+    : [];
+
+// escape regex characters (like .)
+const escapeRegex = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// clone the summary branch into a temporary bare repo
+const cloneSummaryRepo = async (): Promise<string> => {
   const tempDir = await mkdtemp(path.join(os.tmpdir(), "crafting-tags-"));
-  const zipPath = path.join(tempDir, "mcmeta.zip");
+  const gitDir = path.join(tempDir, "mcmeta.git");
+
+  console.log(`Cloning mcmeta summary branch into ${gitDir}`);
 
   try {
-    await Bun.write(zipPath, response);
-
-    const list = Bun.spawnSync(["unzip", "-Z1", zipPath], { stdout: "pipe" });
-    const tagFilePaths = list.stdout
-      .toString()
-      .split("\n")
-      .map((line) => line.trim())
-      .filter((line) => line.startsWith("mcmeta-data-json/data/minecraft/tags/item/"))
-      .filter((line) => line.endsWith(".json"));
-
-    const entries = await Promise.all(
-      tagFilePaths.map(async (tagFilePath) => {
-        const extract = Bun.spawnSync(["unzip", "-p", zipPath, tagFilePath], { stdout: "pipe" });
-        const json = JSON.parse(extract.stdout.toString());
-        const tagId = `minecraft:${path.basename(tagFilePath, ".json")}`;
-
-        return [
-          tagId,
-          Array.isArray(json.values)
-            ? json.values.filter((value: unknown) => typeof value === "string")
-            : [],
-        ] as [string, string[]];
-      }),
-    );
-
-    return Object.fromEntries(entries);
-  } finally {
+    await $`git clone --bare --single-branch --branch summary --filter=blob:none ${summaryRepoUrl} ${gitDir}`.quiet();
+  } catch {
     await rm(tempDir, { recursive: true, force: true });
+    throw new Error("Failed to clone mcmeta summary repo");
   }
+
+  return gitDir;
 };
 
-const resolveTagMap = (rawTags: Record<string, string[]>): Record<string, string[]> => {
-  const cache = new Map<string, string[]>();
+// find the exact summary commit for one Minecraft version
+const getCommitShaForVersion = async (gitDir: string, version: string): Promise<string | null> => {
+  const escapedVersion = escapeRegex(version);
+  const sha =
+    await $`git --git-dir=${gitDir} log -1 --format=%H --grep=${`Update summary for ${escapedVersion}$`} summary`.text();
+  return sha.trim() || null;
+};
 
-  const resolve = (tagId: string, ancestry = new Set<string>()): string[] => {
-    if (cache.has(tagId)) {
-      return cache.get(tagId)!;
+// read one version's raw tag graph from mcmeta
+const readRawTagsForCommit = async (gitDir: string, sha: string): Promise<TagGraph> => {
+  const data =
+    (await $`git --git-dir=${gitDir} show ${sha}:${summaryTagFilePath}`.json()) as SummaryTagFile;
+
+  return Object.fromEntries(
+    Object.entries(data).map(([tagName, entry]) => [`minecraft:${tagName}`, getTagValues(entry)]),
+  );
+};
+
+// normalize #tag references into full tag ids
+const normalizeReferencedTagId = (value: string): string => {
+  const tagId = value.slice(1);
+  return tagId.includes(":") ? tagId : `minecraft:${tagId}`;
+};
+
+// resolve the tag graph and nested tags into a single flat list
+const resolveTagGraph = (graph: TagGraph): TagGraph => {
+  const memo = new Map<string, string[]>();
+
+  const dfs = (nodeId: string, visited = new Set<string>()): string[] => {
+    const cachedValues = memo.get(nodeId);
+    if (cachedValues) {
+      return cachedValues;
     }
 
-    if (ancestry.has(tagId)) {
+    if (visited.has(nodeId)) {
       return [];
     }
 
-    const nextAncestry = new Set(ancestry);
-    nextAncestry.add(tagId);
+    const nextStack = new Set(visited);
+    nextStack.add(nodeId);
 
-    const resolved: string[] = [];
-    for (const value of rawTags[tagId] ?? []) {
-      if (value.startsWith("#")) {
-        resolved.push(...resolve(value.slice(1), nextAncestry));
-      } else {
-        resolved.push(value);
+    const neighbors = graph[nodeId] ?? [];
+    const flattenedValues = neighbors.flatMap((neighbor) => {
+      if (!neighbor.startsWith("#")) {
+        return [neighbor];
       }
-    }
 
-    const uniqueValues = [...new Set(resolved)];
-    cache.set(tagId, uniqueValues);
+      const referencedNodeId = normalizeReferencedTagId(neighbor);
+      return dfs(referencedNodeId, nextStack);
+    });
+
+    const uniqueValues = [...new Set(flattenedValues)];
+    memo.set(nodeId, uniqueValues);
     return uniqueValues;
   };
 
-  return Object.fromEntries(
-    Object.keys(rawTags)
-      .sort((left, right) => left.localeCompare(right))
-      .map((tagId) => [tagId, resolve(tagId)]),
+  const sortedNodeIds = Object.keys(graph).sort((left, right) => left.localeCompare(right));
+
+  return Object.fromEntries(sortedNodeIds.map((nodeId) => [nodeId, dfs(nodeId)]));
+};
+
+const writeVersionTags = async (version: string, tags: TagGraph) => {
+  await Bun.write(path.join(outputDir, `${version}.json`), `${JSON.stringify(tags, null, 2)}\n`);
+};
+
+const prepareOutputDir = async () => {
+  console.log(`Preparing output directory at ${outputDir}`);
+
+  await mkdir(outputDir, { recursive: true });
+
+  const entries = await readdir(outputDir, { withFileTypes: true });
+  await Promise.all(
+    entries
+      .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
+      .map((entry) => rm(path.join(outputDir, entry.name), { force: true })),
   );
 };
 
-const buildVersionedTagMap = async (): Promise<Record<string, Record<string, string[]>>> => {
-  const rawTags = await downloadAndExtractTags();
-  const resolvedTags = resolveTagMap(rawTags);
+const generateVersionedTagFiles = async () => {
+  console.log(`Starting vanilla tag generation for ${versionsWithVanillaTags.length} versions`);
 
-  const versionEntries = await Promise.all(
-    versions.map(async (version) => {
-      if (version === "1.12") {
-        return [version, {}] as [string, Record<string, string[]>];
-      }
+  await prepareOutputDir();
 
-      const itemIds = await readItemIdsForVersion(version);
-      const filteredTags = Object.fromEntries(
-        Object.entries(resolvedTags)
-          .map(([tagId, values]) => [tagId, values.filter((value) => itemIds.has(value))])
-          .filter(([, values]) => (values as string[]).length > 0),
+  const gitDir = await cloneSummaryRepo();
+
+  try {
+    for (const [index, version] of versionsWithVanillaTags.entries()) {
+      console.log(
+        `Generating vanilla item tags for ${version} (${index + 1}/${versionsWithVanillaTags.length})`,
       );
 
-      return [version, filteredTags] as [string, Record<string, string[]>];
-    }),
-  );
+      const sha = await getCommitShaForVersion(gitDir, version);
+      if (!sha) {
+        throw new Error(`No mcmeta summary commit found for version ${version}`);
+      }
 
-  return Object.fromEntries(versionEntries);
+      const rawTags = await readRawTagsForCommit(gitDir, sha);
+      const resolvedTags = resolveTagGraph(rawTags);
+
+      await writeVersionTags(version, resolvedTags);
+    }
+  } finally {
+    console.log("Cleaning up temporary mcmeta clone");
+    await rm(path.dirname(gitDir), { recursive: true, force: true });
+  }
 };
 
-const tagMap = await buildVersionedTagMap();
+await generateVersionedTagFiles();
 
-await Bun.write(outputPath, `${JSON.stringify(tagMap, null, 2)}\n`);
-
-console.log(
-  `Generated vanilla item tags for ${versions.length} versions through ${latestVersion} at ${path.relative(repoRoot, outputPath)}`,
-);
+console.log(`Generated vanilla item tags in ${path.relative(repoRoot, outputDir)}`);
