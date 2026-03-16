@@ -5,19 +5,19 @@ import { Preview } from "@/components/preview/preview";
 
 export const Main = () => {
   return (
-    <div className="flex flex-col gap-4 lg:min-h-0 lg:h-full">
-      <div className="rounded-lg border bg-card p-4">
+    <div className="flex flex-col gap-4 lg:h-full lg:min-h-0">
+      <div className="bg-card rounded-lg border p-4">
         <div className="flex flex-col items-center gap-4">
           <RecipeTypeSelector />
           <Preview />
         </div>
       </div>
 
-      <div className="rounded-lg border bg-card">
+      <div className="bg-card rounded-lg border">
         <RecipeOptions />
       </div>
 
-      <div className="lg:min-h-0 lg:flex lg:flex-col">
+      <div className="lg:flex lg:min-h-0 lg:flex-col">
         <ItemOutput />
       </div>
     </div>

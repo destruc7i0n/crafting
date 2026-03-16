@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { SingleRecipeState } from "@/stores/recipe";
-
 import { MinecraftVersion, RecipeType } from "@/data/types";
+import { SingleRecipeState } from "@/stores/recipe";
 
 import { validateDatapackExport } from "./validate-datapack-export";
 

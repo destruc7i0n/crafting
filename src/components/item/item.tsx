@@ -1,5 +1,4 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-
 import { createRoot } from "react-dom/client";
 
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
@@ -18,10 +17,10 @@ import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { useUIStore } from "@/stores/ui";
 
+import { ItemTooltip } from "../tooltip/item-tooltip";
+import { CyclingItemPreview } from "./cycling-item-preview";
 import { ItemCount } from "./item-count";
 import { ItemPreview } from "./item-preview";
-import { CyclingItemPreview } from "./cycling-item-preview";
-import { ItemTooltip } from "../tooltip/item-tooltip";
 
 type IngredientProps = {
   item: IngredientItem;
@@ -132,7 +131,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         className={cn(
           "touch-action-manipulation",
           !isTouchDevice && "cursor-move",
-          isSelectedFromIngredients && "rounded ring-2 ring-primary",
+          isSelectedFromIngredients && "ring-primary rounded ring-2",
         )}
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
@@ -148,7 +147,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         className={cn(
           "touch-action-manipulation",
           !isTouchDevice && "cursor-move",
-          isSelectedFromIngredients && "rounded ring-2 ring-primary",
+          isSelectedFromIngredients && "ring-primary rounded ring-2",
         )}
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}

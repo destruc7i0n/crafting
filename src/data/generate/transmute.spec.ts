@@ -1,6 +1,6 @@
-import { buildJava } from "./transmute";
-import { createFormatStrategy } from "./format/item-formatter";
 import { MinecraftVersion } from "../types";
+import { createFormatStrategy } from "./format/item-formatter";
+import { buildJava } from "./transmute";
 
 describe("generate transmute", () => {
   it("should generate a crafting transmute recipe with default category", () => {

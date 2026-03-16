@@ -1,7 +1,7 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
-import { generate } from "./crafting";
 import { MinecraftVersion, RecipeType } from "../types";
+import { generate } from "./crafting";
 
 describe("generate crafting", () => {
   describe("1.12", () => {

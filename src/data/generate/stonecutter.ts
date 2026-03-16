@@ -1,9 +1,9 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
+import { MinecraftVersion, SLOTS } from "../types";
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { formatIngredient } from "./ingredient";
-import { MinecraftVersion, SLOTS } from "../types";
 import { BedrockShapelessBody, StonecutterInput, StonecuttingRecipe } from "./recipes/types";
 
 export const buildJava = (

@@ -70,9 +70,9 @@ export const useTagStore = create<TagState & TagActions>()(
         set((state) => {
           state.tags = state.tags.filter((tag) => tag.uid !== uid);
         });
-        useRecipeStore.getState().removeMatchingSlotItems(
-          (item) => item.type === "tag_item" && item.uid === uid,
-        );
+        useRecipeStore
+          .getState()
+          .removeMatchingSlotItems((item) => item.type === "tag_item" && item.uid === uid);
       },
 
       addValueToTag: (uid, value) => {

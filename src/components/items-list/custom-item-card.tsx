@@ -67,7 +67,7 @@ export const CustomItemCard = ({
     return (
       <div
         className={cn(
-          "flex min-w-0 items-start gap-1.5 rounded-md border border-border bg-muted/50 p-1 sm:gap-2 sm:p-1.5",
+          "border-border bg-muted/50 flex min-w-0 items-start gap-1.5 rounded-md border p-1 sm:gap-2 sm:p-1.5",
           className,
         )}
       >
@@ -81,14 +81,14 @@ export const CustomItemCard = ({
           onClick={onToggle}
         >
           <span className="truncate text-xs font-medium sm:text-sm">{item.displayName}</span>
-          <span className="truncate text-[10px] text-muted-foreground sm:text-xs">
+          <span className="text-muted-foreground truncate text-[10px] sm:text-xs">
             {item.id.namespace}
           </span>
         </button>
 
         <button
           type="button"
-          className="rounded p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+          className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors"
           onClick={() => deleteCustomItem(item.uid)}
         >
           <Trash2Icon size={14} />
@@ -103,7 +103,7 @@ export const CustomItemCard = ({
       <div className="flex items-center gap-3">
         <button
           type="button"
-          className="rounded p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
           onClick={onToggle}
         >
           <ArrowLeftIcon size={16} />
@@ -115,12 +115,12 @@ export const CustomItemCard = ({
 
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-medium">{item.displayName}</div>
-          <div className="truncate text-xs text-muted-foreground">{item.id.raw}</div>
+          <div className="text-muted-foreground truncate text-xs">{item.id.raw}</div>
         </div>
 
         <button
           type="button"
-          className="rounded p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+          className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors"
           onClick={() => {
             deleteCustomItem(item.uid);
             onToggle();
@@ -132,16 +132,16 @@ export const CustomItemCard = ({
       </div>
 
       <div className="grid gap-2 sm:grid-cols-2">
-        <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+        <label className="text-muted-foreground flex flex-col gap-1 text-xs">
           Name
           <input
             value={draftName}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
+            className="border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset"
             onBlur={commitChanges}
             onChange={(event) => setDraftName(event.target.value)}
           />
         </label>
-        <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+        <label className="text-muted-foreground flex flex-col gap-1 text-xs">
           Id
           <input
             value={draftId}
@@ -150,22 +150,22 @@ export const CustomItemCard = ({
             spellCheck={false}
             aria-invalid={showDraftIdError}
             className={cn(
-              "rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring",
+              "border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset",
               showDraftIdError && "border-destructive focus:ring-destructive",
             )}
             onBlur={commitChanges}
             onChange={(event) => setDraftId(event.target.value)}
           />
           {showDraftIdError && (
-            <span className="text-[10px] text-destructive">{javaNamespacedIdentifierHint}</span>
+            <span className="text-destructive text-[10px]">{javaNamespacedIdentifierHint}</span>
           )}
         </label>
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className="text-xs font-medium text-foreground">Texture</span>
+        <span className="text-foreground text-xs font-medium">Texture</span>
         <div className="flex items-center gap-2">
-          <label className="flex-1 cursor-pointer rounded-md border border-dashed border-border px-3 py-2 text-center text-xs text-muted-foreground transition-colors hover:bg-accent">
+          <label className="border-border text-muted-foreground hover:bg-accent flex-1 cursor-pointer rounded-md border border-dashed px-3 py-2 text-center text-xs transition-colors">
             {item.texture !== NoTextureTexture ? "Change texture" : "Select texture (.png)"}
             <input
               ref={editFileInputRef}

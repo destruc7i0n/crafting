@@ -1,7 +1,7 @@
 import { MinecraftVersion } from "@/data/types";
 import { sanitizeRecipeName } from "@/lib/recipe-name";
-import { getDatapackRecipeFileName } from "@/lib/validate-datapack-export";
 import { cn } from "@/lib/utils";
+import { getDatapackRecipeFileName } from "@/lib/validate-datapack-export";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeName } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
@@ -43,7 +43,7 @@ const FileNameField = () => {
       label="File name"
       error={
         showDatapackFileNameError && datapackFileName ? (
-          <span className="text-[10px] text-destructive">
+          <span className="text-destructive text-[10px]">
             Another recipe already exports as {datapackFileName}
           </span>
         ) : undefined
@@ -51,7 +51,7 @@ const FileNameField = () => {
     >
       <div
         className={cn(
-          "flex h-9 items-center rounded-md border border-input bg-background transition-colors hover:bg-accent focus-within:ring-2 focus-within:ring-ring",
+          "border-input bg-background hover:bg-accent focus-within:ring-ring flex h-9 items-center rounded-md border transition-colors focus-within:ring-2",
           showDatapackFileNameError && "border-destructive focus-within:ring-destructive",
         )}
       >
@@ -60,9 +60,9 @@ const FileNameField = () => {
           value={recipeName}
           onChange={(event) => setRecipeName(sanitizeRecipeName(event.target.value))}
           aria-invalid={showDatapackFileNameError}
-          className="h-full w-full bg-transparent px-2 py-1 text-foreground outline-hidden"
+          className="text-foreground h-full w-full bg-transparent px-2 py-1 outline-hidden"
         />
-        <span className="flex h-full shrink-0 items-center border-l border-input px-2 py-1 text-xs text-muted-foreground">
+        <span className="border-input text-muted-foreground flex h-full shrink-0 items-center border-l px-2 py-1 text-xs">
           .json
         </span>
       </div>

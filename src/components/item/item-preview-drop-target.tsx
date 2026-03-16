@@ -10,10 +10,10 @@ import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
 import { useUIStore } from "@/stores/ui";
 
-import { Item } from "./item";
-import { ItemCount } from "./item-count";
 import { SlotProps } from "../slot/slot";
 import { SlotDropTarget } from "../slot/slot-drop-target";
+import { Item } from "./item";
+import { ItemCount } from "./item-count";
 
 type ItemPreviewDropTargetProps = {
   slot: RecipeSlot;
@@ -93,7 +93,7 @@ export const ItemPreviewDropTarget = ({
       {canEditCount && slotValue && slotValue.type !== "tag_item" && !editingCount && (
         <button
           type="button"
-          className="pointer-events-none absolute bottom-0 right-0 z-10"
+          className="pointer-events-none absolute right-0 bottom-0 z-10"
           onClick={(event) => {
             event.stopPropagation();
             setEditingCount(true);
@@ -112,7 +112,7 @@ export const ItemPreviewDropTarget = ({
           min={1}
           max={64}
           value={countDraft}
-          className="absolute bottom-1 right-1 z-20 h-6 w-12 rounded border border-input bg-background px-1 text-right text-xs text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
+          className="border-input bg-background text-foreground focus:ring-ring absolute right-1 bottom-1 z-20 h-6 w-12 rounded border px-1 text-right text-xs outline-hidden focus:ring-2 focus:ring-inset"
           onBlur={commitCount}
           onChange={(event) => setCountDraft(event.target.value)}
           onClick={(event) => event.stopPropagation()}

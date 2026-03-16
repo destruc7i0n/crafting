@@ -30,7 +30,7 @@ export const RecipeTypeSelector = () => {
   }, [recipeType, scrollSelectedIntoView]);
 
   return (
-    <div ref={scrollRef} className="flex w-full gap-1.5 overflow-x-auto scrollbar-none">
+    <div ref={scrollRef} className="scrollbar-none flex w-full gap-1.5 overflow-x-auto">
       {supportedRecipeTypes.map((type) => {
         const isSelected = recipeType === type;
         return (
@@ -43,7 +43,7 @@ export const RecipeTypeSelector = () => {
               "flex shrink-0 items-center gap-1.5 rounded-md border px-2 py-1.5 transition-all",
               isSelected
                 ? "border-primary bg-primary/10 text-foreground"
-                : "border-transparent hover:bg-accent active:bg-accent/80",
+                : "hover:bg-accent active:bg-accent/80 border-transparent",
             )}
           >
             <ResourceIcon

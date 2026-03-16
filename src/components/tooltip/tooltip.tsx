@@ -1,5 +1,4 @@
 import { useLayoutEffect, useRef, useState } from "react";
-
 import { createPortal } from "react-dom";
 
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
@@ -124,7 +123,7 @@ const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) 
         createPortal(
           <div
             ref={tooltipRef}
-            className="pointer-events-none fixed z-50 max-w-72 rounded-md border border-border bg-popover px-2.5 py-1.5 text-xs leading-snug text-popover-foreground shadow-md"
+            className="border-border bg-popover text-popover-foreground pointer-events-none fixed z-50 max-w-72 rounded-md border px-2.5 py-1.5 text-xs leading-snug shadow-md"
             style={
               position ? { top: `${position.top}px`, left: `${position.left}px` } : { opacity: 0 }
             }

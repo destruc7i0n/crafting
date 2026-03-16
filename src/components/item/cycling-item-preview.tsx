@@ -1,8 +1,8 @@
 import { ComponentPropsWithoutRef, forwardRef, memo, useMemo } from "react";
 
 import { NoTextureTexture } from "@/data/constants";
-import { useTagCycleIndex } from "@/hooks/use-tag-cycle-tick";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
+import { useTagCycleIndex } from "@/hooks/use-tag-cycle-tick";
 
 import { ItemPreview } from "./item-preview";
 

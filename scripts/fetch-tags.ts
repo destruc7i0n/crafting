@@ -1,8 +1,9 @@
-import { $ } from "bun";
-import { latestVersion, versions } from "minecraft-textures";
 import { mkdir, mkdtemp, readdir, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+
+import { $ } from "bun";
+import { latestVersion, versions } from "minecraft-textures";
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const outputDir = path.join(repoRoot, "src/data/generated/vanilla-tags");

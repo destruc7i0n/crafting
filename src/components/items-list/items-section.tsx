@@ -131,13 +131,13 @@ export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
       {filteredCustomItems.length > 0 && (
-        <span className="hidden text-xs font-medium text-muted-foreground lg:block">
+        <span className="text-muted-foreground hidden text-xs font-medium lg:block">
           Custom Items
         </span>
       )}
 
       {filteredCustomItems.length > 0 && (
-        <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-y-auto lg:overflow-x-hidden lg:pb-0">
+        <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pb-0">
           {filteredCustomItems.map((item) => (
             <CustomItemCard
               key={item.uid}

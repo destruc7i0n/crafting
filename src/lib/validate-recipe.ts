@@ -1,5 +1,3 @@
-import { SingleRecipeState } from "@/stores/recipe";
-
 import { validateCooking } from "@/data/generate/cooking";
 import { validateCrafting } from "@/data/generate/crafting";
 import { validateSmithing } from "@/data/generate/smithing";
@@ -9,6 +7,7 @@ import { MinecraftVersion, RecipeType } from "@/data/types";
 import { getSupportedRecipeTypesForVersion } from "@/data/versions";
 import { isResultSlot } from "@/lib/recipe-slots";
 import { supportsItemTagsForVersion } from "@/lib/tags";
+import { SingleRecipeState } from "@/stores/recipe";
 
 export interface RecipeValidation {
   valid: boolean;

@@ -108,9 +108,9 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
         set((state) => {
           state.customItems = state.customItems.filter((item) => item.uid !== uid);
         });
-        useRecipeStore.getState().removeMatchingSlotItems(
-          (item) => item.type === "custom_item" && item.uid === uid,
-        );
+        useRecipeStore
+          .getState()
+          .removeMatchingSlotItems((item) => item.type === "custom_item" && item.uid === uid);
       },
     })),
     {

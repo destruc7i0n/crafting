@@ -1,5 +1,4 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
-
 import { createPortal } from "react-dom";
 
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";

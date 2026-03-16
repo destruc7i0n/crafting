@@ -1,20 +1,13 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
-import { createFormatStrategy } from "./format/item-formatter";
-import { wrapBedrockRecipe } from "./wrapper/bedrock";
+import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import { buildBedrock as buildBedrockCooking, buildJava as buildJavaCooking } from "./cooking";
 import {
   buildBedrock as buildBedrockCrafting,
   buildJava as buildJavaCrafting,
   extractCraftingInput,
 } from "./crafting";
-import { buildBedrock as buildBedrockSmithing, buildJava as buildJavaSmithing } from "./smithing";
-import {
-  buildBedrock as buildBedrockStonecutter,
-  buildJava as buildJavaStonecutter,
-} from "./stonecutter";
-import { buildJava as buildJavaTransmute } from "./transmute";
-import { MinecraftVersion, RecipeType, SLOTS } from "../types";
+import { createFormatStrategy } from "./format/item-formatter";
 import {
   BedrockBody,
   BedrockRecipeMeta,
@@ -25,6 +18,13 @@ import {
   StonecutterInput,
   TransmuteInput,
 } from "./recipes/types";
+import { buildBedrock as buildBedrockSmithing, buildJava as buildJavaSmithing } from "./smithing";
+import {
+  buildBedrock as buildBedrockStonecutter,
+  buildJava as buildJavaStonecutter,
+} from "./stonecutter";
+import { buildJava as buildJavaTransmute } from "./transmute";
+import { wrapBedrockRecipe } from "./wrapper/bedrock";
 
 const extractCookingInput = (state: SingleRecipeState): CookingInput => ({
   recipeType: state.recipeType as CookingInput["recipeType"],
@@ -140,7 +140,7 @@ const generateJavaInner = (
     case RecipeType.Stonecutter:
       return buildJavaStonecutter(extractStonecutterInput(state), formatter);
     default:
-      throw new Error(`Unsupported Java recipe type: ${state.recipeType}`);
+      throw new Error(`Unsupported Java recipe type: ${state.recipeType as string}`);
   }
 };
 

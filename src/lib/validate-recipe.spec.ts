@@ -1,6 +1,5 @@
-import { SingleRecipeState } from "@/stores/recipe";
-
 import { MinecraftVersion, RecipeType } from "@/data/types";
+import { SingleRecipeState } from "@/stores/recipe";
 
 import { validateRecipe } from "./validate-recipe";
 

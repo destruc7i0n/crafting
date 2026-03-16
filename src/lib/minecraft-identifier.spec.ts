@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import { MinecraftVersion } from "@/data/types";
+
 import {
   isValidBedrockIdentifierPart,
   isValidBedrockNamespacedIdentifier,
@@ -9,7 +11,6 @@ import {
   isValidNamespacedIdentifier,
   parseMinecraftIdentifierInput,
 } from "./minecraft-identifier";
-import { MinecraftVersion } from "@/data/types";
 
 describe("java identifiers", () => {
   it("validates namespace characters", () => {

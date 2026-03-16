@@ -106,10 +106,10 @@ export const Preview = memo(() => {
             {preview}
           </div>
 
-          <div className="pointer-events-none absolute right-2 bottom-2 z-10 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
+          <div className="pointer-events-none absolute right-2 bottom-2 z-10 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
             <button
               type="button"
-              className="pointer-events-auto inline-flex h-6 w-6 items-center justify-center rounded border border-border/60 bg-background/80 text-muted-foreground shadow-sm backdrop-blur-sm transition-colors hover:bg-accent hover:text-foreground disabled:cursor-wait disabled:opacity-60"
+              className="border-border/60 bg-background/80 text-muted-foreground hover:bg-accent hover:text-foreground pointer-events-auto inline-flex h-6 w-6 items-center justify-center rounded border shadow-sm backdrop-blur-sm transition-colors disabled:cursor-wait disabled:opacity-60"
               onClick={handleDownloadPreview}
               disabled={isDownloading}
               title={isDownloading ? "Saving screenshot" : "Download screenshot"}

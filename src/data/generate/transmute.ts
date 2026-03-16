@@ -1,10 +1,10 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
-import { formatIngredient } from "./ingredient";
-import { FormatStrategy } from "./format/types";
-import { isVersionAtLeast } from "./version-utils";
 import { MinecraftVersion, SLOTS } from "../types";
+import { FormatStrategy } from "./format/types";
+import { formatIngredient } from "./ingredient";
 import { CraftingTransmuteRecipe, TransmuteInput } from "./recipes/types";
+import { isVersionAtLeast } from "./version-utils";
 
 export const validateTransmute = (state: SingleRecipeState): string[] => {
   const errors: string[] = [];

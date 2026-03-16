@@ -1,1 +1,24 @@
-{}
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "sortTailwindcss": {
+    "functions": ["cn", "clsx"]
+  },
+  "sortImports": {
+    "customGroups": [
+      { "groupName": "react", "elementNamePattern": ["react", "react-dom", "react-dom/*"] }
+    ],
+    "groups": [
+      "value-builtin",
+      "react",
+      "value-external",
+      "type-external",
+      "value-internal",
+      "type-internal",
+      ["value-parent", "value-sibling", "value-index"],
+      "style",
+      "unknown"
+    ],
+    "newlinesBetween": true,
+    "internalPattern": ["@/"]
+  }
+}

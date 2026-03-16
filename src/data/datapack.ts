@@ -1,8 +1,8 @@
 import { javaMinecraftVersions } from "./constants";
-import { Tag } from "./models/types";
-import { MinecraftVersion } from "./types";
 import { generateTag } from "./generate/tag";
 import { isVersionAtLeast } from "./generate/version-utils";
+import { Tag } from "./models/types";
+import { MinecraftVersion } from "./types";
 
 export interface DatapackRecipeFile {
   name: string;

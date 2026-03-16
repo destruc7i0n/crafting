@@ -2,8 +2,8 @@ import { useMemo, useRef, useState } from "react";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
 
-import { ItemPreview } from "@/components/item/item-preview";
 import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
+import { ItemPreview } from "@/components/item/item-preview";
 import { ItemTooltip } from "@/components/tooltip/item-tooltip";
 import { Item, Tag, TagItem } from "@/data/models/types";
 import {
@@ -12,13 +12,13 @@ import {
   javaIdentifierNamespaceHint,
   javaIdentifierPathHint,
 } from "@/lib/minecraft-identifier";
-import { cn } from "@/lib/utils";
 import {
   getTagLabel,
   getTagNameOrFallback,
   getTagNamespaceOrFallback,
   resolveTagValues,
 } from "@/lib/tags";
+import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
 import { Slot } from "../slot/slot";
@@ -126,7 +126,7 @@ export const TagEditor = ({
   return (
     <div className="flex flex-col gap-3">
       <div className="grid gap-2 sm:grid-cols-2">
-        <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+        <label className="text-muted-foreground flex flex-col gap-1 text-xs">
           Namespace
           <input
             value={draftNamespace}
@@ -135,18 +135,18 @@ export const TagEditor = ({
             spellCheck={false}
             aria-invalid={showDraftNamespaceError}
             className={cn(
-              "rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring",
+              "border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset",
               showDraftNamespaceError && "border-destructive focus:ring-destructive",
             )}
             onBlur={commitTag}
             onChange={(event) => setDraftNamespace(event.target.value)}
           />
           {showDraftNamespaceError && (
-            <span className="text-[10px] text-destructive">{javaIdentifierNamespaceHint}</span>
+            <span className="text-destructive text-[10px]">{javaIdentifierNamespaceHint}</span>
           )}
         </label>
 
-        <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+        <label className="text-muted-foreground flex flex-col gap-1 text-xs">
           Name
           <input
             value={draftName}
@@ -155,22 +155,22 @@ export const TagEditor = ({
             spellCheck={false}
             aria-invalid={showDraftNameError}
             className={cn(
-              "rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring",
+              "border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset",
               showDraftNameError && "border-destructive focus:ring-destructive",
             )}
             onBlur={commitTag}
             onChange={(event) => setDraftName(event.target.value)}
           />
           {showDraftNameError && (
-            <span className="text-[10px] text-destructive">{javaIdentifierPathHint}</span>
+            <span className="text-destructive text-[10px]">{javaIdentifierPathHint}</span>
           )}
         </label>
       </div>
 
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-medium text-foreground">Members</span>
-          <span className="text-xs text-muted-foreground">{tag.values.length}</span>
+          <span className="text-foreground text-xs font-medium">Members</span>
+          <span className="text-muted-foreground text-xs">{tag.values.length}</span>
         </div>
 
         {tag.values.length > 0 ? (
@@ -210,7 +210,7 @@ export const TagEditor = ({
             })}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             No members yet. Search below to add items or tags.
           </p>
         )}
@@ -251,19 +251,19 @@ const MemberCandidateList = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-xs font-medium text-foreground">Add members</span>
+      <span className="text-foreground text-xs font-medium">Add members</span>
 
       <input
         type="text"
         value={memberSearch}
         onChange={(event) => onSearchChange(event.target.value)}
         placeholder="Search items and tags..."
-        className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
+        className="border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset"
       />
 
       <div
         ref={scrollRef}
-        className="overflow-y-auto rounded-md border border-border bg-muted/40"
+        className="border-border bg-muted/40 overflow-y-auto rounded-md border"
         style={{ maxHeight: ROW_HEIGHT * LIST_MAX_ROWS }}
       >
         <div className="relative w-full" style={{ height: virtualizer.getTotalSize() }}>
@@ -296,7 +296,7 @@ const MemberCandidateList = ({
                   </Slot>
                   <div className="min-w-0 flex-1 text-left">
                     <div className="truncate text-sm font-medium">{candidate.tagItem.id.id}</div>
-                    <div className="truncate text-xs text-muted-foreground">
+                    <div className="text-muted-foreground truncate text-xs">
                       {getTagLabel(candidate.rawId)}
                     </div>
                   </div>
@@ -326,7 +326,7 @@ const MemberCandidateList = ({
                 </Slot>
                 <div className="min-w-0 flex-1 text-left">
                   <div className="truncate text-sm font-medium">{candidate.item.displayName}</div>
-                  <div className="truncate text-xs text-muted-foreground">
+                  <div className="text-muted-foreground truncate text-xs">
                     {candidate.item.id.raw}
                   </div>
                 </div>

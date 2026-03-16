@@ -2,8 +2,9 @@ import { useMemo } from "react";
 
 import { IngredientItem } from "@/data/models/types";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
-import { useResourcesForVersion } from "./use-resources-for-version";
 import { useTagStore } from "@/stores/tag";
+
+import { useResourcesForVersion } from "./use-resources-for-version";
 
 export const useResolvedSlotItem = (
   item: IngredientItem | undefined,

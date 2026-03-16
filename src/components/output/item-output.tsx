@@ -1,10 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 
-import { AlertCircleIcon, CheckIcon, ChevronDownIcon, ClipboardCopyIcon, DownloadIcon } from "lucide-react";
+import {
+  AlertCircleIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ClipboardCopyIcon,
+  DownloadIcon,
+} from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { generate } from "@/data/generate";
 import { downloadRecipeJson } from "@/lib/download/recipe";
+import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
@@ -63,11 +69,11 @@ export const ItemOutput = () => {
   };
 
   return (
-    <div className="rounded-lg border bg-card lg:min-h-0 lg:flex lg:flex-col">
+    <div className="bg-card rounded-lg border lg:flex lg:min-h-0 lg:flex-col">
       <div className="flex items-center justify-between px-4 py-2">
         <button
           type="button"
-          className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-sm font-medium transition-colors"
           onClick={() => setCollapsed((value) => !value)}
         >
           <ChevronDownIcon
@@ -82,7 +88,7 @@ export const ItemOutput = () => {
             type="button"
             onClick={handleCopy}
             disabled={!!generatedResult.error}
-            className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+            className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-md p-1.5 transition-colors disabled:pointer-events-none disabled:opacity-40"
             title="Copy JSON"
           >
             {copied ? (
@@ -96,7 +102,7 @@ export const ItemOutput = () => {
             type="button"
             onClick={() => downloadRecipeJson(recipeState, minecraftVersion)}
             disabled={!!generatedResult.error}
-            className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-accent/30 px-3 text-xs font-medium text-foreground transition-colors hover:bg-accent disabled:pointer-events-none disabled:opacity-40"
+            className="border-border bg-accent/30 text-foreground hover:bg-accent inline-flex h-8 items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors disabled:pointer-events-none disabled:opacity-40"
             title="Download JSON"
           >
             <DownloadIcon size={14} />
@@ -108,7 +114,7 @@ export const ItemOutput = () => {
       {!collapsed && (
         <div className="border-t lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
           {generatedResult.error ? (
-            <div className="m-3 flex items-start gap-2.5 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-3 text-sm text-destructive">
+            <div className="border-destructive/40 bg-destructive/10 text-destructive m-3 flex items-start gap-2.5 rounded-md border px-3 py-3 text-sm">
               <AlertCircleIcon size={16} className="mt-0.5 shrink-0" />
               <span>{generatedResult.error}</span>
             </div>

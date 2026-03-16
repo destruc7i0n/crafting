@@ -1,6 +1,7 @@
-import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
+
+import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
 
 const slotStyles = {
   "crafting.1": { position: "absolute", top: 32, left: 58 },

@@ -1,7 +1,7 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
-import { generate } from "./stonecutter";
 import { MinecraftVersion, RecipeType } from "../types";
+import { generate } from "./stonecutter";
 
 describe("generate stonecutting", () => {
   describe("1.14", () => {

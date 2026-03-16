@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from "lucide-react";
 
+import { Select } from "@/components/ui/select";
 import { isVersionAtLeast } from "@/data/generate/version-utils";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { cn } from "@/lib/utils";
@@ -7,7 +8,6 @@ import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
-import { Select } from "@/components/ui/select";
 
 import { CheckboxField, Field, InputControl } from "./shared";
 
@@ -44,9 +44,7 @@ const getDefaultCategory = (recipeType: RecipeType) => {
 };
 
 const GroupField = () => {
-  const group = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.group ?? "",
-  );
+  const group = useRecipeStore((state) => state.recipes[state.selectedRecipeIndex]?.group ?? "");
   const setRecipeGroup = useRecipeStore((state) => state.setRecipeGroup);
 
   return (
@@ -86,7 +84,7 @@ const CategoryField = ({ categoryOptions, defaultCategory }: CategoryFieldProps)
         id="recipe-category"
         value={category}
         onChange={(event) => setRecipeCategory(event.target.value || undefined)}
-        className="h-9 rounded-md border border-input bg-background px-2 py-1 pr-8 text-foreground outline-hidden transition-colors hover:bg-accent focus:ring-2 focus:ring-inset focus:ring-ring"
+        className="border-input bg-background text-foreground hover:bg-accent focus:ring-ring h-9 rounded-md border px-2 py-1 pr-8 outline-hidden transition-colors focus:ring-2 focus:ring-inset"
       >
         <option value="">Default ({defaultCategory})</option>
         {categoryOptions.map((option) => (
@@ -170,11 +168,11 @@ export const AdvancedOptions = ({ open, onToggle }: AdvancedOptionsProps) => {
 
   return (
     <div className="flex flex-col gap-2 pt-1">
-      <div className="border-t border-border/40" />
+      <div className="border-border/40 border-t" />
 
       <button
         type="button"
-        className="flex items-center gap-1 self-start px-0.5 py-0 text-left text-xs font-medium text-muted-foreground/80 outline-hidden transition-colors hover:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-0"
+        className="text-muted-foreground/80 hover:text-muted-foreground flex items-center gap-1 self-start px-0.5 py-0 text-left text-xs font-medium outline-hidden transition-colors focus-visible:ring-0 focus-visible:outline-hidden"
         onClick={onToggle}
       >
         <ChevronDownIcon size={10} className={cn("transition-transform", !open && "-rotate-90")} />

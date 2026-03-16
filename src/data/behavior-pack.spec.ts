@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import JSZip from "jszip";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createBehaviorPackBlob } from "./behavior-pack";
 

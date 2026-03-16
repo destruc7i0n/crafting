@@ -5,8 +5,8 @@ import { recipeTypeToItemId } from "@/data/constants";
 import { RecipeType } from "@/data/types";
 import { useUIStore } from "@/stores/ui";
 
-import { ThemeToggle } from "./theme-toggle";
 import { VersionSelector } from "../fields/version-selector";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Header() {
   const setRecipeSidebarOpen = useUIStore((state) => state.setRecipeSidebarOpen);

@@ -162,9 +162,7 @@ export const isSameIngredient = (
 
   if (left.type === "tag_item" && right.type === "tag_item") {
     return (
-      left.tagSource === right.tagSource &&
-      left.uid === right.uid &&
-      left.id.raw === right.id.raw
+      left.tagSource === right.tagSource && left.uid === right.uid && left.id.raw === right.id.raw
     );
   }
 

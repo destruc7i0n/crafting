@@ -1,11 +1,11 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
+import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { formatIngredient } from "./ingredient";
-import { isVersionAtLeast } from "./version-utils";
-import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import { BedrockFurnaceBody, CookingInput, CookingRecipe } from "./recipes/types";
+import { isVersionAtLeast } from "./version-utils";
 
 const recipeTypeToBaseCookingType: Record<
   RecipeType.Smelting | RecipeType.Blasting | RecipeType.CampfireCooking | RecipeType.Smoking,

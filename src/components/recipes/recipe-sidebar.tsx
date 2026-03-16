@@ -9,24 +9,23 @@ import {
   Trash2Icon,
 } from "lucide-react";
 
+import { ResourceIcon } from "@/components/item/resource-icon";
+import { Tooltip } from "@/components/tooltip/tooltip";
 import { recipeTypeToItemId, recipeTypeToName } from "@/data/constants";
 import { MinecraftVersion } from "@/data/types";
 import { getSupportedRecipeTypesForVersion } from "@/data/versions";
-
 import { confirmAction } from "@/lib/confirm";
 import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
 import { isDuplicateRecipeName, sanitizeRecipeName } from "@/lib/recipe-name";
+import { cn } from "@/lib/utils";
 import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
 import { validateDatapackExport } from "@/lib/validate-datapack-export";
-import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useTagStore } from "@/stores/tag";
 import { useUIStore } from "@/stores/ui";
-import { ResourceIcon } from "@/components/item/resource-icon";
-import { Tooltip } from "@/components/tooltip/tooltip";
 
 interface RecipeSidebarProps {
   collapsed?: boolean;
@@ -133,11 +132,11 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
   if (collapsed) {
     return (
-      <div className="relative flex h-full w-full min-h-0 max-h-full flex-col items-center gap-1 rounded-lg border py-2">
+      <div className="relative flex h-full max-h-full min-h-0 w-full flex-col items-center gap-1 rounded-lg border py-2">
         <button
           type="button"
           onClick={toggleSidebar}
-          className="flex h-8 w-8 items-center justify-center rounded-md transition-colors hover:bg-accent active:bg-accent/80"
+          className="hover:bg-accent active:bg-accent/80 flex h-8 w-8 items-center justify-center rounded-md transition-colors"
           title="Expand sidebar"
         >
           <ChevronRightIcon size={16} />
@@ -145,7 +144,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
         <button
           onClick={createRecipe}
-          className="flex h-8 w-8 items-center justify-center rounded-md border border-dashed border-border transition-colors hover:bg-accent active:bg-accent/80"
+          className="border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 items-center justify-center rounded-md border border-dashed transition-colors"
           title="New Recipe"
         >
           <PlusIcon size={16} />
@@ -169,7 +168,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                     "flex h-9 w-9 items-center justify-center rounded-md border transition-colors",
                     isSelected
                       ? "border-primary bg-primary/10"
-                      : "border-transparent hover:bg-accent active:bg-accent/80",
+                      : "hover:bg-accent active:bg-accent/80 border-transparent",
                     !isSupported && "opacity-60",
                   )}
                 >
@@ -184,7 +183,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         </div>
 
         {downloadConfig && (
-          <div className="mt-auto flex flex-col items-center gap-1 border-t border-border pt-2">
+          <div className="border-border mt-auto flex flex-col items-center gap-1 border-t pt-2">
             {!canDownloadPack && (
               <div
                 className="flex h-8 w-8 items-center justify-center"
@@ -199,7 +198,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
               disabled={!canDownloadPack}
               onClick={handleDownloadAll}
               className={cn(
-                "flex h-8 w-8 items-center justify-center rounded-md border border-border transition-colors hover:bg-accent active:bg-accent/80",
+                "border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 items-center justify-center rounded-md border transition-colors",
                 !canDownloadPack && "cursor-not-allowed opacity-50",
               )}
               title={canDownloadPack ? downloadConfig.readyTitle : downloadConfig.blockedTitle}
@@ -213,11 +212,11 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   }
 
   return (
-    <div className="relative flex h-full w-full min-h-0 max-h-full flex-col gap-3 rounded-lg border p-3">
+    <div className="relative flex h-full max-h-full min-h-0 w-full flex-col gap-3 rounded-lg border p-3">
       <div className="flex items-center gap-2">
         <button
           onClick={createRecipe}
-          className="flex flex-1 items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent active:bg-accent/80"
+          className="border-border bg-background text-foreground hover:bg-accent active:bg-accent/80 flex flex-1 items-center justify-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm font-medium transition-colors"
         >
           <PlusIcon size={16} />
           New Recipe
@@ -226,7 +225,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         <button
           type="button"
           onClick={toggleSidebar}
-          className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors hover:bg-accent active:bg-accent/80 lg:flex"
+          className="hover:bg-accent active:bg-accent/80 hidden h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors lg:flex"
           title="Collapse sidebar"
         >
           <ChevronLeftIcon size={16} />
@@ -242,7 +241,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
               key={recipe.id ?? `${recipe.recipeName ?? "recipe"}-${index}`}
               onClick={() => handleSelectRecipe(index)}
               className={cn(
-                "group flex cursor-pointer items-center gap-2 rounded-md border border-border px-2 py-2 text-left transition-colors",
+                "group border-border flex cursor-pointer items-center gap-2 rounded-md border px-2 py-2 text-left transition-colors",
                 isSelected
                   ? "border-primary bg-primary/10 font-medium"
                   : "hover:bg-accent active:bg-accent/80",
@@ -257,7 +256,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                 <input
                   autoFocus
                   value={editingValue}
-                  className="w-full rounded border border-input bg-background px-1 py-0.5 text-sm text-foreground"
+                  className="border-input bg-background text-foreground w-full rounded border px-1 py-0.5 text-sm"
                   onChange={(e) => setEditingValue(e.target.value)}
                   onBlur={() => commitRename(index)}
                   onKeyDown={(e) => {
@@ -280,7 +279,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                   }}
                 >
                   <span className="truncate text-sm">{recipe.recipeName}</span>
-                  <span className="truncate text-xs text-muted-foreground">
+                  <span className="text-muted-foreground truncate text-xs">
                     {recipeTypeToName[recipe.recipeType]}
                   </span>
                 </div>
@@ -295,7 +294,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
               {recipes.length > 1 && (
                 <button
                   type="button"
-                  className="rounded p-1 text-muted-foreground opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
+                  className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 opacity-0 transition-all group-hover:opacity-100"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteRecipe(index, e);
@@ -310,28 +309,28 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
       </div>
 
       {downloadConfig && (
-        <div className="relative mt-auto flex flex-col gap-2 border-t border-border pt-3">
+        <div className="border-border relative mt-auto flex flex-col gap-2 border-t pt-3">
           {showIssues && (
-            <div className="absolute bottom-full left-0 right-0 z-10 mb-2 max-h-64 overflow-y-auto rounded-md border border-border bg-card p-3 shadow-lg">
+            <div className="border-border bg-card absolute right-0 bottom-full left-0 z-10 mb-2 max-h-64 overflow-y-auto rounded-md border p-3 shadow-lg">
               <div className="mb-2 flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                <div className="text-foreground flex items-center gap-2 text-sm font-medium">
                   <AlertTriangleIcon size={14} className="text-amber-500" />
                   Recipe issues
                 </div>
 
                 <button
                   type="button"
-                  className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground text-xs transition-colors"
                   onClick={() => setIssuesOpen(false)}
                 >
                   Close
                 </button>
               </div>
 
-              <ul className="space-y-2 text-xs text-muted-foreground">
+              <ul className="text-muted-foreground space-y-2 text-xs">
                 {invalidRecipes.map((recipe, index) => (
                   <li key={`${recipe.name}-${index}`}>
-                    <span className="font-medium text-foreground">{recipe.name}</span>
+                    <span className="text-foreground font-medium">{recipe.name}</span>
                     <ul className="mt-1 list-disc space-y-1 pl-4">
                       {recipe.errors.map((error) => (
                         <li key={error}>{error}</li>
@@ -347,9 +346,9 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
             type="button"
             disabled={!canDownloadPack}
             className={cn(
-              "rounded-md border border-border bg-secondary px-3 py-2 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80 active:bg-secondary/70",
+              "border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 rounded-md border px-3 py-2 text-sm font-medium transition-colors",
               !canDownloadPack &&
-                "cursor-not-allowed opacity-50 hover:bg-secondary active:bg-secondary",
+                "hover:bg-secondary active:bg-secondary cursor-not-allowed opacity-50",
             )}
             onClick={handleDownloadAll}
             title={canDownloadPack ? downloadConfig.readyTitle : downloadConfig.blockedTitle}
@@ -358,7 +357,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
           </button>
 
           {!canDownloadPack && (
-            <div className="flex items-center justify-between gap-2 rounded-md border border-amber-500/20 bg-amber-500/10 px-2 py-2 text-xs text-muted-foreground">
+            <div className="text-muted-foreground flex items-center justify-between gap-2 rounded-md border border-amber-500/20 bg-amber-500/10 px-2 py-2 text-xs">
               <div className="flex min-w-0 items-center gap-2">
                 <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
                 <span className="truncate">
@@ -369,7 +368,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
               <button
                 type="button"
-                className="shrink-0 font-medium text-foreground transition-colors hover:text-primary"
+                className="text-foreground hover:text-primary shrink-0 font-medium transition-colors"
                 onClick={() => setIssuesOpen((value) => !value)}
               >
                 {showIssues ? "Hide issues" : "View issues"}

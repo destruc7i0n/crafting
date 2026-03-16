@@ -1,10 +1,9 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
+import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { formatIngredient, formatIngredientString } from "./ingredient";
-import { isVersionAtLeast } from "./version-utils";
-import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import {
   BedrockShapelessBody,
   BedrockSmithingTransformBody,
@@ -14,6 +13,7 @@ import {
   SmithingTransformRecipe,
   SmithingTrimRecipe,
 } from "./recipes/types";
+import { isVersionAtLeast } from "./version-utils";
 
 export const buildJava = (
   state: SmithingInput,

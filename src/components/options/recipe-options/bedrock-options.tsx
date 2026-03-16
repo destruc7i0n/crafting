@@ -33,7 +33,7 @@ const IdentifierField = () => {
       htmlFor="bedrock-identifier"
       error={
         showBedrockIdentifierError ? (
-          <span className="text-[10px] text-destructive">{bedrockIdentifierHint}</span>
+          <span className="text-destructive text-[10px]">{bedrockIdentifierHint}</span>
         ) : undefined
       }
     >

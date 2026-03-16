@@ -66,7 +66,7 @@ export const ItemsList = () => {
       <div className="flex items-center gap-2 lg:hidden">
         <input
           type="text"
-          className="min-w-0 flex-1 appearance-none rounded-md border border-input bg-background px-2 py-1.5 text-sm leading-tight text-foreground outline-hidden transition-colors placeholder:text-muted-foreground focus:ring-2 focus:ring-inset focus:ring-ring"
+          className="border-input bg-background text-foreground placeholder:text-muted-foreground focus:ring-ring min-w-0 flex-1 appearance-none rounded-md border px-2 py-1.5 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset"
           placeholder="Search..."
           onChange={(event) => setSearch(event.target.value)}
         />
@@ -74,7 +74,7 @@ export const ItemsList = () => {
         {supportsTags && (
           <button
             type="button"
-            className="shrink-0 rounded-md border border-border px-2 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+            className="border-border text-foreground hover:bg-accent shrink-0 rounded-md border px-2 py-1.5 text-xs font-medium transition-colors"
             onClick={() => handleTabChange(activeTab === "items" ? "tags" : "items")}
             title={tab === "items" ? "Switch to tags" : "Switch to items"}
           >
@@ -85,7 +85,7 @@ export const ItemsList = () => {
         {!isCreating && (
           <button
             type="button"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border transition-colors hover:bg-accent"
+            className="border-border hover:bg-accent flex h-8 w-8 shrink-0 items-center justify-center rounded-md border transition-colors"
             onClick={handleCreateAction}
             title={tab === "items" ? "Add custom item" : "New tag"}
           >
@@ -122,13 +122,13 @@ export const ItemsList = () => {
             </button>
           </>
         ) : (
-          <span className="text-sm font-medium text-foreground">Items</span>
+          <span className="text-foreground text-sm font-medium">Items</span>
         )}
 
         {!isCreating && (
           <button
             type="button"
-            className="ml-auto flex shrink-0 items-center gap-1 rounded-md border border-border px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+            className="border-border text-foreground hover:bg-accent ml-auto flex shrink-0 items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium transition-colors"
             onClick={handleCreateAction}
           >
             <PlusIcon size={14} />
@@ -139,21 +139,21 @@ export const ItemsList = () => {
 
       <input
         type="text"
-        className="hidden w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-sm leading-tight text-foreground outline-hidden transition-colors placeholder:font-minecraft placeholder:text-muted-foreground hover:bg-accent focus:ring-2 focus:ring-inset focus:ring-ring lg:block"
+        className="border-input bg-background text-foreground placeholder:font-minecraft placeholder:text-muted-foreground hover:bg-accent focus:ring-ring hidden w-full appearance-none rounded-md border px-3 py-2 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset lg:block"
         placeholder={tab === "tags" ? "Search Tags..." : "Search Items..."}
         onChange={(event) => setSearch(event.target.value)}
       />
 
       {showSelectionPreview && (
-        <div className="rounded-md border border-border bg-muted/40 px-2 py-1 text-xs leading-tight">
-          <div className="truncate text-foreground">
+        <div className="border-border bg-muted/40 rounded-md border px-2 py-1 text-xs leading-tight">
+          <div className="text-foreground truncate">
             <span className="font-medium">{selectedIngredient.displayName}</span>
             <span className="text-muted-foreground">{` · ${selectedIngredient.id.raw}`}</span>
           </div>
         </div>
       )}
 
-      <div className="flex w-full min-h-0 flex-1 flex-col rounded-md">
+      <div className="flex min-h-0 w-full flex-1 flex-col rounded-md">
         {tab === "tags" ? (
           <TagsSection
             search={deferredSearch}

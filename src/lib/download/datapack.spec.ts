@@ -1,8 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { SingleRecipeState } from "@/stores/recipe";
-
 import { MinecraftVersion, RecipeType } from "@/data/types";
+import { SingleRecipeState } from "@/stores/recipe";
 
 const { createDatapackBlob, downloadBlob, generate } = vi.hoisted(() => ({
   createDatapackBlob: vi.fn(),

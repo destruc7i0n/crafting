@@ -7,9 +7,9 @@ import {
   javaNamespacedIdentifierHint,
 } from "@/lib/minecraft-identifier";
 import { cn } from "@/lib/utils";
+import { useCustomItemStore } from "@/stores/custom-item";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
-import { useCustomItemStore } from "@/stores/custom-item";
 import { useUIStore } from "@/stores/ui";
 
 import { ItemPreview } from "../item/item-preview";
@@ -60,7 +60,7 @@ export const AddItemForm = () => {
       <div className="flex items-center gap-3">
         <button
           type="button"
-          className="rounded p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
           onClick={toggleShowForm}
         >
           <ArrowLeftIcon size={16} />
@@ -69,17 +69,17 @@ export const AddItemForm = () => {
       </div>
 
       <div className="grid gap-2 sm:grid-cols-2">
-        <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+        <label className="text-muted-foreground flex flex-col gap-1 text-xs">
           Name
           <input
             type="text"
             placeholder="Display name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring"
+            className="border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset"
           />
         </label>
-        <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+        <label className="text-muted-foreground flex flex-col gap-1 text-xs">
           Id
           <input
             type="text"
@@ -91,20 +91,20 @@ export const AddItemForm = () => {
             spellCheck={false}
             aria-invalid={showItemIdError}
             className={cn(
-              "rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-hidden focus:ring-2 focus:ring-inset focus:ring-ring",
+              "border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset",
               showItemIdError && "border-destructive focus:ring-destructive",
             )}
           />
           {showItemIdError && (
-            <span className="text-[10px] text-destructive">{javaNamespacedIdentifierHint}</span>
+            <span className="text-destructive text-[10px]">{javaNamespacedIdentifierHint}</span>
           )}
         </label>
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className="text-xs font-medium text-foreground">Texture</span>
+        <span className="text-foreground text-xs font-medium">Texture</span>
         <div className="flex items-center gap-2">
-          <label className="flex-1 cursor-pointer rounded-md border border-dashed border-border px-3 py-2 text-center text-xs text-muted-foreground transition-colors hover:bg-accent">
+          <label className="border-border text-muted-foreground hover:bg-accent flex-1 cursor-pointer rounded-md border border-dashed px-3 py-2 text-center text-xs transition-colors">
             {texture ? "Change texture" : "Select texture (.png)"}
             <input
               ref={fileInputRef}
@@ -127,7 +127,7 @@ export const AddItemForm = () => {
         type="button"
         disabled={!canAdd}
         onClick={handleAdd}
-        className="rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+        className="border-border text-foreground hover:bg-accent rounded-md border px-3 py-2 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
       >
         Create Item
       </button>

@@ -2,8 +2,8 @@ import { type ComponentProps, type ReactNode } from "react";
 
 import { CircleHelpIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Tooltip } from "@/components/tooltip/tooltip";
+import { cn } from "@/lib/utils";
 
 interface HelpTooltipProps {
   content: string;
@@ -11,7 +11,7 @@ interface HelpTooltipProps {
 
 export const HelpTooltip = ({ content }: HelpTooltipProps) => (
   <Tooltip content={content} placement="top">
-    <span className="shrink-0 text-muted-foreground/70 transition-colors hover:text-foreground">
+    <span className="text-muted-foreground/70 hover:text-foreground shrink-0 transition-colors">
       <CircleHelpIcon size={14} />
     </span>
   </Tooltip>
@@ -33,7 +33,7 @@ export const CheckboxField = ({
   className,
 }: CheckboxFieldProps) => (
   <div className={cn("flex items-center gap-1.5", className)}>
-    <label className="flex select-none items-center gap-2 text-sm text-foreground">
+    <label className="text-foreground flex items-center gap-2 text-sm select-none">
       <input
         type="checkbox"
         className="accent-primary"
@@ -57,7 +57,7 @@ interface FieldProps {
 }
 
 export const Field = ({ label, children, htmlFor, tooltip, error, className }: FieldProps) => (
-  <div className={cn("flex flex-col gap-1 text-sm text-foreground", className)}>
+  <div className={cn("text-foreground flex flex-col gap-1 text-sm", className)}>
     <div className="flex items-center gap-1.5">
       {htmlFor ? <label htmlFor={htmlFor}>{label}</label> : <span>{label}</span>}
       {tooltip && <HelpTooltip content={tooltip} />}
@@ -74,7 +74,7 @@ export const InputControl = ({ className, ...props }: InputControlProps) => (
   <input
     {...props}
     className={cn(
-      "h-9 rounded-md border border-input bg-background px-2 py-1 text-foreground outline-hidden transition-colors hover:bg-accent focus:ring-2 focus:ring-inset focus:ring-ring",
+      "border-input bg-background text-foreground hover:bg-accent focus:ring-ring h-9 rounded-md border px-2 py-1 outline-hidden transition-colors focus:ring-2 focus:ring-inset",
       className,
     )}
   />

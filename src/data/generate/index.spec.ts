@@ -1,7 +1,7 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
-import { generate } from "./index";
 import { MinecraftVersion, RecipeType } from "../types";
+import { generate } from "./index";
 
 describe("generate orchestrator", () => {
   it("generates java crafting output", () => {

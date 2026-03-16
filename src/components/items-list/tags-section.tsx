@@ -130,7 +130,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
         <div className="flex items-center gap-3">
           <button
             type="button"
-            className="rounded p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
             onClick={() => setExpandedTagUid(null)}
           >
             <ArrowLeftIcon size={16} />
@@ -144,12 +144,12 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
 
           <div className="min-w-0 flex-1">
             <div className="truncate text-sm font-medium">{expandedTag.name}</div>
-            <div className="truncate text-xs text-muted-foreground">{expandedTag.namespace}</div>
+            <div className="text-muted-foreground truncate text-xs">{expandedTag.namespace}</div>
           </div>
 
           <button
             type="button"
-            className="rounded p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
             onClick={handleDownloadExpandedTag}
             title="Download tag JSON"
           >
@@ -158,7 +158,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
 
           <button
             type="button"
-            className="rounded p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+            className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors"
             onClick={() => handleDeleteTag(expandedTag.uid)}
           >
             <Trash2Icon size={14} />
@@ -180,13 +180,13 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
       {filteredCustomTags.length > 0 && (
-        <span className="hidden text-xs font-medium text-muted-foreground lg:block">
+        <span className="text-muted-foreground hidden text-xs font-medium lg:block">
           Custom Tags
         </span>
       )}
 
       {filteredCustomTags.length > 0 && (
-        <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-y-auto lg:overflow-x-hidden lg:pb-0">
+        <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pb-0">
           {filteredCustomTags.map((tag) => {
             const tagItem = customTagItems[tag.uid];
             if (!tagItem) return null;
@@ -194,7 +194,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
             return (
               <div
                 key={tag.uid}
-                className="flex min-w-[180px] items-start gap-1.5 rounded-md border border-border bg-muted/50 p-1 sm:gap-2 sm:p-1.5 lg:min-w-0"
+                className="border-border bg-muted/50 flex min-w-[180px] items-start gap-1.5 rounded-md border p-1 sm:gap-2 sm:p-1.5 lg:min-w-0"
               >
                 <Slot className="shrink-0">
                   <IngredientItem item={tagItem} container="ingredients" />
@@ -207,7 +207,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
                   onClick={(event) => setExpandedTagUid(event.currentTarget.value)}
                 >
                   <span className="truncate text-xs font-medium sm:text-sm">{tag.name}</span>
-                  <span className="truncate text-[10px] text-muted-foreground sm:text-xs">
+                  <span className="text-muted-foreground truncate text-[10px] sm:text-xs">
                     {tag.namespace}
                   </span>
                 </button>
@@ -216,7 +216,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
                   <button
                     type="button"
                     value={tag.uid}
-                    className="rounded p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
                     onClick={handleDownloadTag}
                     title="Download tag JSON"
                   >
@@ -226,7 +226,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
                   <button
                     type="button"
                     value={tag.uid}
-                    className="rounded p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                    className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors"
                     onClick={(event) => handleDeleteTag(event.currentTarget.value)}
                   >
                     <Trash2Icon size={14} />
@@ -239,7 +239,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
         </div>
       )}
 
-      <span className="hidden text-xs font-medium text-muted-foreground lg:block">
+      <span className="text-muted-foreground hidden text-xs font-medium lg:block">
         Vanilla Tags
       </span>
 

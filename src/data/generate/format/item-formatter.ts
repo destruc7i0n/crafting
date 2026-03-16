@@ -1,7 +1,7 @@
 import { MinecraftVersion } from "@/data/types";
 
-import { FormatStrategy } from "./types";
 import { compareMinecraftVersions } from "../version-utils";
+import { FormatStrategy } from "./types";
 
 const hasPositiveCount = (count?: number): count is number =>
   typeof count === "number" && count > 0;
