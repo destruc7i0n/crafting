@@ -11,7 +11,8 @@ import { useResourcesStore } from "@/stores/resources";
 import { useResourcesForVersion } from "./use-resources-for-version";
 
 const textureLoaders = import.meta.glob<{ default: MinecraftTexturesType }>(
-  "/node_modules/minecraft-textures/dist/textures/json/*.json",
+  // match 1.20.json but not 1.20.id.json
+  "/node_modules/minecraft-textures/dist/textures/json/[0-9]*[0-9].json",
 );
 const tagLoaders = import.meta.glob<{ default: Record<string, string[]> }>(
   "/src/data/generated/vanilla-tags/*.json",
