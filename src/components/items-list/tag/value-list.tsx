@@ -11,30 +11,30 @@ import { cn } from "@/lib/utils";
 
 import { Slot } from "../../slot/slot";
 
-export type MemberCandidate =
+export type ValueOption =
   | { kind: "item"; item: Item }
   | { kind: "tag"; tagItem: TagItem; rawId: string };
 
 const ROW_HEIGHT = 40;
 const LIST_MAX_ROWS = 6;
 
-export const MemberCandidateList = ({
-  candidates,
-  memberSearch,
-  existingMemberIds,
+export const ValueList = ({
+  values,
+  valueSearch,
+  existingValueIds,
   onSearchChange,
   onAdd,
 }: {
-  candidates: MemberCandidate[];
-  memberSearch: string;
-  existingMemberIds: Set<string>;
+  values: ValueOption[];
+  valueSearch: string;
+  existingValueIds: Set<string>;
   onSearchChange: (value: string) => void;
-  onAdd: (candidate: MemberCandidate) => void;
+  onAdd: (value: ValueOption) => void;
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const virtualizer = useVirtualizer({
-    count: candidates.length,
+    count: values.length,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => ROW_HEIGHT,
     overscan: 10,
@@ -42,11 +42,11 @@ export const MemberCandidateList = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-foreground text-xs font-medium">Add members</span>
+      <span className="text-foreground text-xs font-medium">Add values</span>
 
       <input
         type="text"
-        value={memberSearch}
+        value={valueSearch}
         onChange={(event) => onSearchChange(event.target.value)}
         placeholder="Search items and tags..."
         className="border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset"
@@ -59,14 +59,14 @@ export const MemberCandidateList = ({
       >
         <div className="relative w-full" style={{ height: virtualizer.getTotalSize() }}>
           {virtualizer.getVirtualItems().map((virtualRow) => {
-            const candidate = candidates[virtualRow.index];
+            const entry = values[virtualRow.index];
 
-            if (candidate.kind === "tag") {
-              const isAdded = existingMemberIds.has(candidate.rawId);
+            if (entry.kind === "tag") {
+              const isAdded = existingValueIds.has(entry.rawId);
 
               return (
                 <button
-                  key={`tag-${candidate.rawId}`}
+                  key={`tag-${entry.rawId}`}
                   type="button"
                   disabled={isAdded}
                   className={cn(
@@ -74,29 +74,29 @@ export const MemberCandidateList = ({
                     isAdded ? "cursor-default opacity-40" : "hover:bg-accent",
                   )}
                   style={{ top: virtualRow.start, height: virtualRow.size }}
-                  onClick={() => !isAdded && onAdd(candidate)}
+                  onClick={() => !isAdded && onAdd(entry)}
                 >
                   <Slot width={32} height={32} className="shrink-0">
                     <CyclingItemPreview
-                      alt={candidate.tagItem.displayName}
-                      itemIds={candidate.tagItem.values}
+                      alt={entry.tagItem.displayName}
+                      itemIds={entry.tagItem.values}
                     />
                   </Slot>
                   <div className="min-w-0 flex-1 text-left">
-                    <div className="truncate text-sm font-medium">{candidate.tagItem.id.id}</div>
+                    <div className="truncate text-sm font-medium">{entry.tagItem.id.id}</div>
                     <div className="text-muted-foreground truncate text-xs">
-                      {getTagLabel(candidate.rawId)}
+                      {getTagLabel(entry.rawId)}
                     </div>
                   </div>
                 </button>
               );
             }
 
-            const isAdded = existingMemberIds.has(identifierUniqueKey(candidate.item.id));
+            const isAdded = existingValueIds.has(identifierUniqueKey(entry.item.id));
 
             return (
               <button
-                key={identifierUniqueKey(candidate.item.id)}
+                key={identifierUniqueKey(entry.item.id)}
                 type="button"
                 disabled={isAdded}
                 className={cn(
@@ -104,15 +104,15 @@ export const MemberCandidateList = ({
                   isAdded ? "cursor-default opacity-40" : "hover:bg-accent",
                 )}
                 style={{ top: virtualRow.start, height: virtualRow.size }}
-                onClick={() => !isAdded && onAdd(candidate)}
+                onClick={() => !isAdded && onAdd(entry)}
               >
                 <Slot width={32} height={32} className="shrink-0">
-                  <ItemPreview alt={candidate.item.displayName} texture={candidate.item.texture} />
+                  <ItemPreview alt={entry.item.displayName} texture={entry.item.texture} />
                 </Slot>
                 <div className="min-w-0 flex-1 text-left">
-                  <div className="truncate text-sm font-medium">{candidate.item.displayName}</div>
+                  <div className="truncate text-sm font-medium">{entry.item.displayName}</div>
                   <div className="text-muted-foreground truncate text-xs">
-                    {getFullId(candidate.item.id)}
+                    {getFullId(entry.item.id)}
                   </div>
                 </div>
               </button>

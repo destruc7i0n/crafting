@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
 import { Slot } from "../../slot/slot";
-import { MemberCandidate, MemberCandidateList } from "./member-candidate-list";
+import { ValueList, ValueOption } from "./value-list";
 
 interface TagEditorProps {
   tag: Tag;
@@ -47,14 +47,14 @@ export const TagEditor = ({
 
   const [draftName, setDraftName] = useState(tag.name);
   const [draftNamespace, setDraftNamespace] = useState(tag.namespace);
-  const [memberSearch, setMemberSearch] = useState("");
+  const [valueSearch, setValueSearch] = useState("");
   const prevUidRef = useRef(tag.uid);
 
   if (prevUidRef.current !== tag.uid) {
     prevUidRef.current = tag.uid;
     setDraftName(tag.name);
     setDraftNamespace(tag.namespace);
-    setMemberSearch("");
+    setValueSearch("");
   }
 
   const showDraftNamespaceError =
@@ -71,17 +71,17 @@ export const TagEditor = ({
     updateTag(tag.uid, { name: nextName, namespace: nextNamespace });
   };
 
-  const handleAddMember = (candidate: MemberCandidate) => {
-    if (candidate.kind === "item") {
-      addValueToTag(tag.uid, { type: "item", id: candidate.item.id });
+  const handleAddValue = (option: ValueOption) => {
+    if (option.kind === "item") {
+      addValueToTag(tag.uid, { type: "item", id: option.item.id });
     } else {
-      addValueToTag(tag.uid, { type: "tag", id: candidate.tagItem.id });
+      addValueToTag(tag.uid, { type: "tag", id: option.tagItem.id });
     }
   };
 
-  const filteredMemberCandidates = useMemo((): MemberCandidate[] => {
-    const normalized = memberSearch.trim().toLowerCase();
-    const candidates: MemberCandidate[] = [];
+  const filteredValues = useMemo((): ValueOption[] => {
+    const normalized = valueSearch.trim().toLowerCase();
+    const options: ValueOption[] = [];
 
     for (const item of items) {
       if (
@@ -89,7 +89,7 @@ export const TagEditor = ({
         item.displayName.toLowerCase().includes(normalized) ||
         getRawId(item.id).toLowerCase().includes(normalized)
       ) {
-        candidates.push({ kind: "item", item });
+        options.push({ kind: "item", item });
       }
     }
 
@@ -107,14 +107,14 @@ export const TagEditor = ({
         getRawId(tagItem.id).toLowerCase().includes(normalized) ||
         tagItem.displayName.toLowerCase().includes(normalized)
       ) {
-        candidates.push({ kind: "tag", tagItem, rawId: getRawId(tagItem.id) });
+        options.push({ kind: "tag", tagItem, rawId: getRawId(tagItem.id) });
       }
     }
 
-    return candidates;
-  }, [memberSearch, items, vanillaTagItems, tags, customTagItems, tag.uid]);
+    return options;
+  }, [valueSearch, items, vanillaTagItems, tags, customTagItems, tag.uid]);
 
-  const existingMemberIds = useMemo(
+  const existingValueIds = useMemo(
     () => new Set(tag.values.map((v) => identifierUniqueKey(v.id))),
     [tag.values],
   );
@@ -165,7 +165,7 @@ export const TagEditor = ({
 
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-foreground text-xs font-medium">Members</span>
+          <span className="text-foreground text-xs font-medium">Values</span>
           <span className="text-muted-foreground text-xs">{tag.values.length}</span>
         </div>
 
@@ -208,17 +208,17 @@ export const TagEditor = ({
           </div>
         ) : (
           <p className="text-muted-foreground text-sm">
-            No members yet. Search below to add items or tags.
+            No values yet. Search below to add items or tags.
           </p>
         )}
       </div>
 
-      <MemberCandidateList
-        candidates={filteredMemberCandidates}
-        memberSearch={memberSearch}
-        existingMemberIds={existingMemberIds}
-        onSearchChange={setMemberSearch}
-        onAdd={handleAddMember}
+      <ValueList
+        values={filteredValues}
+        valueSearch={valueSearch}
+        existingValueIds={existingValueIds}
+        onSearchChange={setValueSearch}
+        onAdd={handleAddValue}
       />
     </div>
   );

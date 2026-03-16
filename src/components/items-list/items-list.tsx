@@ -2,12 +2,11 @@ import { useDeferredValue, useMemo, useState } from "react";
 
 import { PlusIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-
 import { getFullId } from "@/data/models/identifier/utilities";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { supportsItemTagsForVersion } from "@/lib/tags";
+import { cn } from "@/lib/utils";
 import { useUIStore } from "@/stores/ui";
 
 import { ItemsSection } from "./item/items-section";
@@ -70,8 +69,8 @@ export const ItemsList = () => {
     <div className="bg-muted relative flex shrink-0 items-center self-stretch rounded-md p-0.5 lg:self-auto">
       <div
         className={cn(
-          "absolute inset-y-0.5 rounded-sm bg-primary/40 transition-all duration-200 ease-in-out",
-          tab === "tags" ? "left-1/2 right-0.5" : "left-0.5 right-1/2",
+          "bg-primary/40 absolute inset-y-0.5 rounded-sm transition-all duration-200 ease-in-out",
+          tab === "tags" ? "right-0.5 left-1/2" : "right-1/2 left-0.5",
         )}
       />
       <button

@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
 import { Slot } from "../../slot/slot";
-import { MemberCandidate, MemberCandidateList } from "./member-candidate-list";
+import { ValueList, ValueOption } from "./value-list";
 
 interface AddTagFormProps {
   onClose: () => void;
@@ -44,17 +44,17 @@ export const AddTagForm = ({
   const createTag = useTagStore((state) => state.createTag);
 
   const [tagId, setTagId] = useState("");
-  const [memberSearch, setMemberSearch] = useState("");
+  const [valueSearch, setValueSearch] = useState("");
   const [draftValues, setDraftValues] = useState<TagValue[]>([]);
 
   const showTagIdError = tagId.trim().length > 0 && !isValidJavaNamespacedIdentifier(tagId);
   const canCreate = isValidJavaNamespacedIdentifier(tagId) && draftValues.length > 0;
 
-  const handleAddMember = (candidate: MemberCandidate) => {
+  const handleAddValue = (option: ValueOption) => {
     const value: TagValue =
-      candidate.kind === "item"
-        ? { type: "item", id: candidate.item.id }
-        : { type: "tag", id: candidate.tagItem.id };
+      option.kind === "item"
+        ? { type: "item", id: option.item.id }
+        : { type: "tag", id: option.tagItem.id };
 
     setDraftValues((prev) => {
       if (prev.some((v) => identifierUniqueKey(v.id) === identifierUniqueKey(value.id)))
@@ -63,7 +63,7 @@ export const AddTagForm = ({
     });
   };
 
-  const handleRemoveMember = (index: number) => {
+  const handleRemoveValue = (index: number) => {
     setDraftValues((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -78,14 +78,14 @@ export const AddTagForm = ({
     onClose();
   };
 
-  const existingMemberIds = useMemo(
+  const existingValueIds = useMemo(
     () => new Set(draftValues.map((v) => identifierUniqueKey(v.id))),
     [draftValues],
   );
 
-  const filteredMemberCandidates = useMemo((): MemberCandidate[] => {
-    const normalized = memberSearch.trim().toLowerCase();
-    const candidates: MemberCandidate[] = [];
+  const filteredValues = useMemo((): ValueOption[] => {
+    const normalized = valueSearch.trim().toLowerCase();
+    const options: ValueOption[] = [];
 
     for (const item of items) {
       if (
@@ -93,7 +93,7 @@ export const AddTagForm = ({
         item.displayName.toLowerCase().includes(normalized) ||
         getRawId(item.id).toLowerCase().includes(normalized)
       ) {
-        candidates.push({ kind: "item", item });
+        options.push({ kind: "item", item });
       }
     }
 
@@ -108,12 +108,12 @@ export const AddTagForm = ({
         getRawId(tagItem.id).toLowerCase().includes(normalized) ||
         tagItem.displayName.toLowerCase().includes(normalized)
       ) {
-        candidates.push({ kind: "tag", tagItem, rawId: getRawId(tagItem.id) });
+        options.push({ kind: "tag", tagItem, rawId: getRawId(tagItem.id) });
       }
     }
 
-    return candidates;
-  }, [memberSearch, items, vanillaTagItems, tags, customTagItems]);
+    return options;
+  }, [valueSearch, items, vanillaTagItems, tags, customTagItems]);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">
@@ -150,7 +150,7 @@ export const AddTagForm = ({
 
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-foreground text-xs font-medium">Members</span>
+          <span className="text-foreground text-xs font-medium">Values</span>
           <span className="text-muted-foreground text-xs">{draftValues.length}</span>
         </div>
 
@@ -177,7 +177,7 @@ export const AddTagForm = ({
                   <button
                     type="button"
                     className="relative"
-                    onClick={() => handleRemoveMember(index)}
+                    onClick={() => handleRemoveValue(index)}
                   >
                     <Slot>
                       {value.type === "item" && directItem ? (
@@ -193,17 +193,17 @@ export const AddTagForm = ({
           </div>
         ) : (
           <p className="text-muted-foreground text-sm">
-            No members yet. Search below to add items or tags.
+            No values yet. Search below to add items or tags.
           </p>
         )}
       </div>
 
-      <MemberCandidateList
-        candidates={filteredMemberCandidates}
-        memberSearch={memberSearch}
-        existingMemberIds={existingMemberIds}
-        onSearchChange={setMemberSearch}
-        onAdd={handleAddMember}
+      <ValueList
+        values={filteredValues}
+        valueSearch={valueSearch}
+        existingValueIds={existingValueIds}
+        onSearchChange={setValueSearch}
+        onAdd={handleAddValue}
       />
 
       <button
