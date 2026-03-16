@@ -100,11 +100,6 @@ const BEDROCK_RECIPE_META: Partial<Record<RecipeType, BedrockRecipeMeta>> = {
     tags: ["smithing_table"],
     formatVersion: "1.20.10",
   },
-  [RecipeType.CraftingTransmute]: {
-    wrapperKey: "minecraft:recipe_shapeless",
-    tags: ["crafting_table"],
-    formatVersion: "1.20.10",
-  },
 };
 
 const getBedrockRecipeMeta = (state: SingleRecipeState): BedrockRecipeMeta => {

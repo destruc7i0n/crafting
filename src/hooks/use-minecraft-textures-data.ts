@@ -74,6 +74,6 @@ export const useMinecraftTexturesData = () => {
       });
     };
 
-    fetchResources();
+    fetchResources().catch(console.error);
   }, [version, resources, setResourceData]);
 };

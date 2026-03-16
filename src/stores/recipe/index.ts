@@ -60,7 +60,7 @@ type RecipeActions = {
     match: (item: IngredientItem) => boolean,
     update: (item: IngredientItem) => void,
   ) => void;
-  removeCustomTagFromSlots: (tagUid: string) => void;
+  removeMatchingSlotItems: (match: (item: IngredientItem) => boolean) => void;
   clearAllSlots: () => void;
 };
 
@@ -246,14 +246,14 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
         }
       });
     },
-    removeCustomTagFromSlots: (tagUid: string) => {
+    removeMatchingSlotItems: (match) => {
       set((state) => {
         for (const recipe of state.recipes) {
           for (const [slot, slotItem] of Object.entries(recipe.slots) as [
             RecipeSlot,
             IngredientItem | undefined,
           ][]) {
-            if (slotItem?.type === "tag_item" && slotItem.tagUid === tagUid) {
+            if (slotItem && match(slotItem)) {
               recipe.slots[slot] = undefined;
             }
           }

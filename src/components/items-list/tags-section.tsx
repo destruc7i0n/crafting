@@ -7,7 +7,6 @@ import { generateTag } from "@/data/generate/tag";
 import { Item } from "@/data/models/types";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
-import { useRecipeStore } from "@/stores/recipe";
 import { useTagStore } from "@/stores/tag";
 
 import { Item as IngredientItem } from "../item/item";
@@ -28,7 +27,6 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
   const { resources, version } = useResourcesForVersion();
   const tags = useTagStore((state) => state.tags);
   const removeTag = useTagStore((state) => state.removeTag);
-  const removeCustomTagFromSlots = useRecipeStore((state) => state.removeCustomTagFromSlots);
 
   const vanillaTags = resources?.vanillaTags ?? EMPTY_TAGS;
   const items = resources?.items ?? EMPTY_ITEMS;
@@ -97,7 +95,6 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
 
   const handleDeleteTag = (tagUid: string) => {
     removeTag(tagUid);
-    removeCustomTagFromSlots(tagUid);
     if (expandedTagUid === tagUid) {
       setExpandedTagUid(null);
     }

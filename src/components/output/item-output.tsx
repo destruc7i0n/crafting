@@ -48,7 +48,8 @@ export const ItemOutput = () => {
 
     try {
       await navigator.clipboard.writeText(JSON.stringify(generatedResult.recipe, null, 2));
-    } catch {
+    } catch (error) {
+      console.error("Failed to copy to clipboard:", error);
       return;
     }
     setCopied(true);
