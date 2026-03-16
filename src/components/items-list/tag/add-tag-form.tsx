@@ -6,6 +6,7 @@ import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemPreview } from "@/components/item/item-preview";
 import { ItemTooltip } from "@/components/tooltip/item-tooltip";
 import {
+  getFullId,
   getRawId,
   identifierUniqueKey,
   parseStringToMinecraftIdentifier,
@@ -171,7 +172,7 @@ export const AddTagForm = ({
                 <ItemTooltip
                   key={`${getRawId(value.id)}-${index}`}
                   title={label}
-                  description={getRawId(value.id)}
+                  description={getFullId(value.id)}
                 >
                   <button
                     type="button"

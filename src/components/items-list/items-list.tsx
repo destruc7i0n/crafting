@@ -4,7 +4,7 @@ import { PlusIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-import { getRawId } from "@/data/models/identifier/utilities";
+import { getFullId } from "@/data/models/identifier/utilities";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { supportsItemTagsForVersion } from "@/lib/tags";
@@ -155,7 +155,7 @@ export const ItemsList = () => {
         <div className="border-border bg-muted/40 rounded-md border px-2 py-1 text-xs leading-tight">
           <div className="text-foreground truncate">
             <span className="font-medium">{selectedIngredient.displayName}</span>
-            <span className="text-muted-foreground">{` · ${getRawId(selectedIngredient.id)}`}</span>
+            <span className="text-muted-foreground">{` · ${getFullId(selectedIngredient.id)}`}</span>
           </div>
         </div>
       )}

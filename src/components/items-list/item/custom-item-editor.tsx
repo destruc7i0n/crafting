@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { ArrowLeftIcon, Trash2Icon } from "lucide-react";
 
 import { NoTextureTexture } from "@/data/constants";
-import { getRawId } from "@/data/models/identifier/utilities";
+import { getFullId, getRawId } from "@/data/models/identifier/utilities";
 import { CustomItem } from "@/data/models/types";
 import {
   isValidJavaNamespacedIdentifier,
@@ -116,7 +116,7 @@ export const CustomItemEditor = ({
 
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-medium">{item.displayName}</div>
-          <div className="text-muted-foreground truncate text-xs">{getRawId(item.id)}</div>
+          <div className="text-muted-foreground truncate text-xs">{getFullId(item.id)}</div>
         </div>
 
         <button

@@ -6,6 +6,7 @@ import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useResolvedSlotItem } from "@/hooks/use-resolved-tag-item";
 import { isItemDraggableData, ItemPreviewDropTargetData } from "@/lib/dnd";
 import { canEditRecipeSlotCount, canRecipeSlotAcceptIngredient } from "@/lib/recipe-slots";
+import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
 import { useUIStore } from "@/stores/ui";
@@ -54,7 +55,7 @@ export const ItemPreviewDropTarget = ({
     <SlotDropTarget<ItemPreviewDropTargetData>
       data={{ type: "preview", slot }}
       {...props}
-      className={`relative ${props.className ?? ""}`.trim()}
+      className={cn("relative", props.className)}
       canDrop={({ source }) => {
         if (isItemDraggableData(source.data)) {
           return canRecipeSlotAcceptIngredient(slot, source.data.item);

@@ -4,7 +4,7 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 
 import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemPreview } from "@/components/item/item-preview";
-import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
+import { getFullId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, TagItem } from "@/data/models/types";
 import { getTagLabel } from "@/lib/tags";
 import { cn } from "@/lib/utils";
@@ -112,7 +112,7 @@ export const MemberCandidateList = ({
                 <div className="min-w-0 flex-1 text-left">
                   <div className="truncate text-sm font-medium">{candidate.item.displayName}</div>
                   <div className="text-muted-foreground truncate text-xs">
-                    {getRawId(candidate.item.id)}
+                    {getFullId(candidate.item.id)}
                   </div>
                 </div>
               </button>

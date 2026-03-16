@@ -5,8 +5,6 @@ import { MinecraftIdentifier } from "../types";
 const MINECRAFT_NAMESPACE = "minecraft";
 const SEPARATOR = ":";
 
-export const getRawId = (id: MinecraftIdentifier): string => `${id.namespace}${SEPARATOR}${id.id}`;
-
 export function parseStringToMinecraftIdentifier(input: string): MinecraftIdentifier {
   const idx = input.indexOf(SEPARATOR);
   if (idx >= 0) {
@@ -36,8 +34,15 @@ export function parseStringToMinecraftIdentifier(input: string): MinecraftIdenti
   };
 }
 
+// namespace:id — excludes data value
+export const getRawId = (id: MinecraftIdentifier): string => `${id.namespace}${SEPARATOR}${id.id}`;
+
+// namespace:id:data — includes data value for use as a stable React key / equality check
 export const identifierUniqueKey = (id: MinecraftIdentifier): string =>
   id.data !== undefined ? `${getRawId(id)}:${id.data}` : getRawId(id);
+
+// same string as identifierUniqueKey, named for display contexts
+export const getFullId = (id: MinecraftIdentifier): string => identifierUniqueKey(id);
 
 export function stringifyMinecraftIdentifier(identifier: MinecraftIdentifier): string {
   if (identifier.data !== undefined) {
