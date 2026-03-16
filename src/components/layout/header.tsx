@@ -9,14 +9,14 @@ import { VersionSelector } from "../fields/version-selector";
 import { ThemeToggle } from "./theme-toggle";
 
 export function Header() {
-  const setRecipeSidebarOpen = useUIStore((state) => state.setRecipeSidebarOpen);
+  const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
 
   return (
     <header className="flex items-center justify-between bg-[hsl(var(--header-bg))] px-4 py-2 text-[hsl(var(--header-fg))]">
       <div className="flex items-center gap-2">
         <button
           type="button"
-          onClick={() => setRecipeSidebarOpen(true)}
+          onClick={() => setMobileRecipeSidebarOpen(true)}
           className="rounded-md p-2 transition-colors hover:bg-white/10 active:bg-white/20 lg:hidden"
         >
           <ListIcon size={16} />

@@ -46,8 +46,8 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   const selectRecipe = useRecipeStore((state) => state.selectRecipe);
 
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
-  const setRecipeSidebarOpen = useUIStore((state) => state.setRecipeSidebarOpen);
-  const toggleSidebar = useUIStore((state) => state.toggleSidebar);
+  const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
+  const toggleRecipeSidebar = useUIStore((state) => state.toggleRecipeSidebar);
 
   const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
   const invalidRecipes =
@@ -88,7 +88,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     selectRecipe(index);
 
     if (mobile) {
-      setRecipeSidebarOpen(false);
+      setMobileRecipeSidebarOpen(false);
     }
   };
 
@@ -135,7 +135,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
       <div className="relative flex h-full max-h-full min-h-0 w-full flex-col items-center gap-1 rounded-lg border py-2">
         <button
           type="button"
-          onClick={toggleSidebar}
+          onClick={toggleRecipeSidebar}
           className="hover:bg-accent active:bg-accent/80 flex h-8 w-8 items-center justify-center rounded-md transition-colors"
           title="Expand sidebar"
         >
@@ -224,7 +224,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
         <button
           type="button"
-          onClick={toggleSidebar}
+          onClick={toggleRecipeSidebar}
           className="hover:bg-accent active:bg-accent/80 hidden h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors lg:flex"
           title="Collapse sidebar"
         >
