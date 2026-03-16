@@ -1,3 +1,5 @@
+import { getRawId } from "@/data/models/identifier/utilities";
+import { MinecraftIdentifier } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 
 import { compareMinecraftVersions } from "../version-utils";
@@ -26,7 +28,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
   const useObjectResult =
     version === MinecraftVersion.Bedrock || isAtLeast(version, MinecraftVersion.V121);
 
-  const getObjectResultValue = (identifier: { raw: string; id: string; data?: number }) => {
+  const getObjectResultValue = (identifier: MinecraftIdentifier) => {
     if (version === MinecraftVersion.V112) {
       // no namespace; always include metadata
       return { item: identifier.id, data: identifier.data };
@@ -35,18 +37,18 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
     if (version === MinecraftVersion.Bedrock) {
       // include metadata when present
       return {
-        item: identifier.raw,
+        item: getRawId(identifier),
         ...(identifier.data !== undefined ? { data: identifier.data } : {}),
       };
     }
 
     if (isAtLeast(version, MinecraftVersion.V121)) {
       // "id" key replaces "item" in 1.21+
-      return { id: identifier.raw };
+      return { id: getRawId(identifier) };
     }
 
     // Java 1.13–1.20
-    return { item: identifier.raw };
+    return { item: getRawId(identifier) };
   };
 
   return {
@@ -60,18 +62,18 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
 
       if (version === MinecraftVersion.Bedrock) {
         return {
-          item: identifier.raw,
+          item: getRawId(identifier),
           ...(includeData && identifier.data !== undefined ? { data: identifier.data } : {}),
         };
       }
 
       if (isAtLeast(version, MinecraftVersion.V1212)) {
-        return identifier.raw;
+        return getRawId(identifier);
       }
 
       // Java 1.13–1.21.1
       return {
-        item: identifier.raw,
+        item: getRawId(identifier),
       };
     },
     ingredientTag: (tagId) => {
@@ -92,7 +94,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
     }),
     cookingResult: (identifier, count) => {
       if (!useObjectResult) {
-        return identifier.raw;
+        return getRawId(identifier);
       }
 
       return {
@@ -103,7 +105,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
     stonecutterResult: (identifier, count) => {
       if (!useObjectResult) {
         return {
-          result: identifier.raw,
+          result: getRawId(identifier),
           count: count ?? 1,
         };
       }

@@ -42,7 +42,6 @@ describe("java identifiers", () => {
     expect(
       parseMinecraftIdentifierInput("Crafting:Custom/Item-1.test", MinecraftVersion.V12111),
     ).toEqual({
-      raw: "crafting:custom/item-1.test",
       namespace: "crafting",
       id: "custom/item-1.test",
     });
@@ -73,7 +72,6 @@ describe("bedrock identifiers", () => {
     expect(
       parseMinecraftIdentifierInput("Crafting:Custom/Item-1.test", MinecraftVersion.Bedrock),
     ).toEqual({
-      raw: "crafting:customitem1test",
       namespace: "crafting",
       id: "customitem1test",
     });

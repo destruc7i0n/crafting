@@ -2,6 +2,7 @@ import { useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
 
+import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item as ItemType } from "@/data/models/types";
 import { useCustomItemStore } from "@/stores/custom-item";
 
@@ -73,7 +74,7 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
               style={{ top: virtualRow.start, height: virtualRow.size }}
             >
               {rowItems.map((item) => (
-                <Slot key={item.id.raw}>
+                <Slot key={identifierUniqueKey(item.id)}>
                   <Item item={item} container="ingredients" />
                 </Slot>
               ))}
@@ -105,7 +106,8 @@ export const ItemsSection = ({
     const lower = search.toLowerCase();
     return customItems.filter(
       (item) =>
-        item.displayName.toLowerCase().includes(lower) || item.id.raw.toLowerCase().includes(lower),
+        item.displayName.toLowerCase().includes(lower) ||
+        getRawId(item.id).toLowerCase().includes(lower),
     );
   }, [customItems, search]);
 

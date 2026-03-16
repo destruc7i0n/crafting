@@ -20,8 +20,8 @@ export const Footer = () => (
         className="text-primary underline-offset-2 hover:underline"
       >
         Twitter
-      </a>
-      {" "}·{" "}
+      </a>{" "}
+      ·{" "}
       <a
         href="https://github.com/destruc7i0n/crafting"
         target="_blank"

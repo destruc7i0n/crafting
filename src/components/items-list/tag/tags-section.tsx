@@ -4,6 +4,7 @@ import { ArrowLeftIcon, DownloadIcon, Trash2Icon } from "lucide-react";
 
 import { downloadBlob } from "@/data/datapack";
 import { generateTag } from "@/data/generate/tag";
+import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item } from "@/data/models/types";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
@@ -53,8 +54,8 @@ export const TagsSection = ({
           return [
             tag.uid,
             createTagItem({
-              rawId: identifier.raw,
-              displayName: getTagLabel(identifier.raw),
+              rawId: getRawId(identifier),
+              displayName: getTagLabel(getRawId(identifier)),
               values: resolvedValues,
               version,
               itemsById,
@@ -85,7 +86,7 @@ export const TagsSection = ({
     () =>
       tags.filter((tag) => {
         if (!normalizedSearch) return true;
-        const rawId = getCustomTagIdentifier(tag).raw;
+        const rawId = getRawId(getCustomTagIdentifier(tag));
         return [tag.name, tag.namespace, rawId].some((value) =>
           value.toLowerCase().includes(normalizedSearch),
         );
@@ -97,7 +98,7 @@ export const TagsSection = ({
     () =>
       vanillaTagItems.filter((tagItem) => {
         if (!normalizedSearch) return true;
-        return tagItem.id.raw.toLowerCase().includes(normalizedSearch);
+        return getRawId(tagItem.id).toLowerCase().includes(normalizedSearch);
       }),
     [normalizedSearch, vanillaTagItems],
   );
@@ -272,7 +273,7 @@ export const TagsSection = ({
       <InventoryGridContainer>
         <div className="grid grid-cols-[repeat(auto-fill,36px)] content-start">
           {filteredVanillaTagItems.map((tagItem) => (
-            <Slot key={tagItem.id.raw}>
+            <Slot key={identifierUniqueKey(tagItem.id)}>
               <IngredientItem item={tagItem} container="ingredients" />
             </Slot>
           ))}

@@ -1,3 +1,4 @@
+import { getRawId } from "@/data/models/identifier/utilities";
 import { IngredientItem } from "@/data/models/types";
 
 import { FormatStrategy } from "./format/types";
@@ -23,7 +24,7 @@ export function formatIngredient(
   }
 
   return item.type === "tag_item"
-    ? formatter.ingredientTag(item.id.raw)
+    ? formatter.ingredientTag(getRawId(item.id))
     : formatter.ingredient(item.id, includeData);
 }
 
@@ -32,5 +33,5 @@ export const formatIngredientString = (item: IngredientItem | undefined) => {
     return "";
   }
 
-  return item.type === "tag_item" ? `#${item.id.raw}` : item.id.raw;
+  return item.type === "tag_item" ? `#${getRawId(item.id)}` : getRawId(item.id);
 };

@@ -13,7 +13,6 @@ describe("generate smithing", () => {
           "smithing.base": {
             type: "default_item",
             id: {
-              raw: "minecraft:diamond_sword",
               id: "diamond_sword",
               namespace: "minecraft",
             },
@@ -25,7 +24,6 @@ describe("generate smithing", () => {
           "smithing.addition": {
             type: "default_item",
             id: {
-              raw: "minecraft:netherite_ingot",
               id: "netherite_ingot",
               namespace: "minecraft",
             },
@@ -37,7 +35,6 @@ describe("generate smithing", () => {
           "smithing.result": {
             type: "default_item",
             id: {
-              raw: "minecraft:netherite_sword",
               id: "netherite_sword",
               namespace: "minecraft",
             },
@@ -82,7 +79,6 @@ describe("generate smithing", () => {
             "smithing.template": {
               type: "default_item",
               id: {
-                raw: "minecraft:netherite_upgrade_smithing_template",
                 id: "netherite_upgrade_smithing_template",
                 namespace: "minecraft",
               },
@@ -94,7 +90,6 @@ describe("generate smithing", () => {
             "smithing.base": {
               type: "default_item",
               id: {
-                raw: "minecraft:diamond_sword",
                 id: "diamond_sword",
                 namespace: "minecraft",
               },
@@ -106,7 +101,6 @@ describe("generate smithing", () => {
             "smithing.addition": {
               type: "default_item",
               id: {
-                raw: "minecraft:netherite_ingot",
                 id: "netherite_ingot",
                 namespace: "minecraft",
               },
@@ -150,7 +144,6 @@ describe("generate smithing", () => {
             "smithing.template": {
               type: "default_item",
               id: {
-                raw: "minecraft:netherite_upgrade_smithing_template",
                 id: "netherite_upgrade_smithing_template",
                 namespace: "minecraft",
               },
@@ -162,7 +155,6 @@ describe("generate smithing", () => {
             "smithing.base": {
               type: "default_item",
               id: {
-                raw: "minecraft:diamond_sword",
                 id: "diamond_sword",
                 namespace: "minecraft",
               },
@@ -174,7 +166,6 @@ describe("generate smithing", () => {
             "smithing.addition": {
               type: "default_item",
               id: {
-                raw: "minecraft:netherite_ingot",
                 id: "netherite_ingot",
                 namespace: "minecraft",
               },
@@ -186,7 +177,6 @@ describe("generate smithing", () => {
             "smithing.result": {
               type: "default_item",
               id: {
-                raw: "minecraft:netherite_sword",
                 id: "netherite_sword",
                 namespace: "minecraft",
               },
@@ -235,7 +225,6 @@ describe("generate smithing", () => {
           "smithing.template": {
             type: "default_item",
             id: {
-              raw: "minecraft:bolt_armor_trim_smithing_template",
               id: "bolt_armor_trim_smithing_template",
               namespace: "minecraft",
             },
@@ -247,7 +236,6 @@ describe("generate smithing", () => {
           "smithing.base": {
             type: "tag_item",
             id: {
-              raw: "minecraft:trimmable_armor",
               id: "trimmable_armor",
               namespace: "minecraft",
             },
@@ -260,7 +248,6 @@ describe("generate smithing", () => {
           "smithing.addition": {
             type: "tag_item",
             id: {
-              raw: "minecraft:trim_materials",
               id: "trim_materials",
               namespace: "minecraft",
             },
@@ -299,7 +286,7 @@ describe("generate smithing", () => {
         slots: {
           "smithing.template": {
             type: "default_item",
-            id: { raw: "minecraft:trim_templates", id: "trim_templates", namespace: "minecraft" },
+            id: { id: "trim_templates", namespace: "minecraft" },
             displayName: "trim_templates",
             texture: "",
             count: 1,
@@ -308,7 +295,6 @@ describe("generate smithing", () => {
           "smithing.base": {
             type: "default_item",
             id: {
-              raw: "minecraft:trimmable_armors",
               id: "trimmable_armors",
               namespace: "minecraft",
             },
@@ -319,7 +305,7 @@ describe("generate smithing", () => {
           },
           "smithing.addition": {
             type: "default_item",
-            id: { raw: "minecraft:trim_materials", id: "trim_materials", namespace: "minecraft" },
+            id: { id: "trim_materials", namespace: "minecraft" },
             displayName: "trim_materials",
             texture: "",
             count: 1,
@@ -344,7 +330,7 @@ describe("generate smithing", () => {
         slots: {
           "smithing.base": {
             type: "default_item",
-            id: { raw: "minecraft:diamond_sword", id: "diamond_sword", namespace: "minecraft" },
+            id: { id: "diamond_sword", namespace: "minecraft" },
             displayName: "diamond_sword",
             texture: "",
             count: 1,
@@ -352,7 +338,7 @@ describe("generate smithing", () => {
           },
           "smithing.addition": {
             type: "default_item",
-            id: { raw: "minecraft:netherite_ingot", id: "netherite_ingot", namespace: "minecraft" },
+            id: { id: "netherite_ingot", namespace: "minecraft" },
             displayName: "netherite_ingot",
             texture: "",
             count: 1,
@@ -360,7 +346,7 @@ describe("generate smithing", () => {
           },
           "smithing.result": {
             type: "default_item",
-            id: { raw: "minecraft:netherite_sword", id: "netherite_sword", namespace: "minecraft" },
+            id: { id: "netherite_sword", namespace: "minecraft" },
             displayName: "netherite_sword",
             texture: "",
             count: 1,

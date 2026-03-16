@@ -3,6 +3,7 @@ import { useMemo, useRef, useState } from "react";
 import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemPreview } from "@/components/item/item-preview";
 import { ItemTooltip } from "@/components/tooltip/item-tooltip";
+import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, Tag, TagItem } from "@/data/models/types";
 import {
   isValidJavaIdentifierNamespace,
@@ -86,7 +87,7 @@ export const TagEditor = ({
       if (
         !normalized ||
         item.displayName.toLowerCase().includes(normalized) ||
-        item.id.raw.toLowerCase().includes(normalized)
+        getRawId(item.id).toLowerCase().includes(normalized)
       ) {
         candidates.push({ kind: "item", item });
       }
@@ -103,17 +104,20 @@ export const TagEditor = ({
     for (const tagItem of allTagItems) {
       if (
         !normalized ||
-        tagItem.id.raw.toLowerCase().includes(normalized) ||
+        getRawId(tagItem.id).toLowerCase().includes(normalized) ||
         tagItem.displayName.toLowerCase().includes(normalized)
       ) {
-        candidates.push({ kind: "tag", tagItem, rawId: tagItem.id.raw });
+        candidates.push({ kind: "tag", tagItem, rawId: getRawId(tagItem.id) });
       }
     }
 
     return candidates;
   }, [memberSearch, items, vanillaTagItems, tags, customTagItems, tag.uid]);
 
-  const existingMemberIds = useMemo(() => new Set(tag.values.map((v) => v.id.raw)), [tag.values]);
+  const existingMemberIds = useMemo(
+    () => new Set(tag.values.map((v) => identifierUniqueKey(v.id))),
+    [tag.values],
+  );
 
   return (
     <div className="flex flex-col gap-3">
@@ -170,19 +174,20 @@ export const TagEditor = ({
             {tag.values.map((value, index) => {
               const itemIds =
                 value.type === "item"
-                  ? [value.id.raw]
+                  ? [identifierUniqueKey(value.id)]
                   : resolveTagValues([value], tags, vanillaTags);
-              const directItem = value.type === "item" ? itemsById?.[value.id.raw] : undefined;
+              const directItem =
+                value.type === "item" ? itemsById?.[identifierUniqueKey(value.id)] : undefined;
               const label =
                 value.type === "item"
-                  ? (directItem?.displayName ?? value.id.raw)
-                  : getTagLabel(value.id.raw);
+                  ? (directItem?.displayName ?? getRawId(value.id))
+                  : getTagLabel(getRawId(value.id));
 
               return (
                 <ItemTooltip
-                  key={`${value.id.raw}-${index}`}
+                  key={`${getRawId(value.id)}-${index}`}
                   title={label}
-                  description={value.id.raw}
+                  description={getRawId(value.id)}
                 >
                   <button
                     type="button"

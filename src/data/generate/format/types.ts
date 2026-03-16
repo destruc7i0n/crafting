@@ -1,3 +1,5 @@
+import { MinecraftIdentifier } from "@/data/models/types";
+
 import {
   BedrockIngredient,
   EmptyObject,
@@ -19,38 +21,10 @@ export interface StonecutterResultShape {
 }
 
 export interface FormatStrategy {
-  ingredient: (
-    id: {
-      raw: string;
-      id: string;
-      data?: number;
-    },
-    includeData?: boolean,
-  ) => FormatIngredient;
+  ingredient: (id: MinecraftIdentifier, includeData?: boolean) => FormatIngredient;
   ingredientTag: (tagId: string) => FormatIngredient;
-  objectResult: (
-    id: {
-      raw: string;
-      id: string;
-      data?: number;
-    },
-    count?: number,
-  ) => ObjectResultRef;
-  cookingResult: (
-    id: {
-      raw: string;
-      id: string;
-      data?: number;
-    },
-    count?: number,
-  ) => ObjectResultRef | string;
-  stonecutterResult: (
-    id: {
-      raw: string;
-      id: string;
-      data?: number;
-    },
-    count?: number,
-  ) => StonecutterResultShape;
+  objectResult: (id: MinecraftIdentifier, count?: number) => ObjectResultRef;
+  cookingResult: (id: MinecraftIdentifier, count?: number) => ObjectResultRef | string;
+  stonecutterResult: (id: MinecraftIdentifier, count?: number) => StonecutterResultShape;
   recipeType: (baseType: string) => string;
 }

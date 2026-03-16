@@ -5,7 +5,11 @@ import { ArrowLeftIcon } from "lucide-react";
 import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemPreview } from "@/components/item/item-preview";
 import { ItemTooltip } from "@/components/tooltip/item-tooltip";
-import { parseStringToMinecraftIdentifier } from "@/data/models/identifier/utilities";
+import {
+  getRawId,
+  identifierUniqueKey,
+  parseStringToMinecraftIdentifier,
+} from "@/data/models/identifier/utilities";
 import { Item, TagItem, TagValue } from "@/data/models/types";
 import {
   isValidJavaNamespacedIdentifier,
@@ -52,7 +56,8 @@ export const AddTagForm = ({
         : { type: "tag", id: candidate.tagItem.id };
 
     setDraftValues((prev) => {
-      if (prev.some((v) => v.id.raw === value.id.raw)) return prev;
+      if (prev.some((v) => identifierUniqueKey(v.id) === identifierUniqueKey(value.id)))
+        return prev;
       return [...prev, value];
     });
   };
@@ -72,7 +77,10 @@ export const AddTagForm = ({
     onClose();
   };
 
-  const existingMemberIds = useMemo(() => new Set(draftValues.map((v) => v.id.raw)), [draftValues]);
+  const existingMemberIds = useMemo(
+    () => new Set(draftValues.map((v) => identifierUniqueKey(v.id))),
+    [draftValues],
+  );
 
   const filteredMemberCandidates = useMemo((): MemberCandidate[] => {
     const normalized = memberSearch.trim().toLowerCase();
@@ -82,7 +90,7 @@ export const AddTagForm = ({
       if (
         !normalized ||
         item.displayName.toLowerCase().includes(normalized) ||
-        item.id.raw.toLowerCase().includes(normalized)
+        getRawId(item.id).toLowerCase().includes(normalized)
       ) {
         candidates.push({ kind: "item", item });
       }
@@ -96,10 +104,10 @@ export const AddTagForm = ({
     for (const tagItem of allTagItems) {
       if (
         !normalized ||
-        tagItem.id.raw.toLowerCase().includes(normalized) ||
+        getRawId(tagItem.id).toLowerCase().includes(normalized) ||
         tagItem.displayName.toLowerCase().includes(normalized)
       ) {
-        candidates.push({ kind: "tag", tagItem, rawId: tagItem.id.raw });
+        candidates.push({ kind: "tag", tagItem, rawId: getRawId(tagItem.id) });
       }
     }
 
@@ -150,19 +158,20 @@ export const AddTagForm = ({
             {draftValues.map((value, index) => {
               const itemIds =
                 value.type === "item"
-                  ? [value.id.raw]
+                  ? [identifierUniqueKey(value.id)]
                   : resolveTagValues([value], tags, vanillaTags);
-              const directItem = value.type === "item" ? itemsById?.[value.id.raw] : undefined;
+              const directItem =
+                value.type === "item" ? itemsById?.[identifierUniqueKey(value.id)] : undefined;
               const label =
                 value.type === "item"
-                  ? (directItem?.displayName ?? value.id.raw)
-                  : getTagLabel(value.id.raw);
+                  ? (directItem?.displayName ?? getRawId(value.id))
+                  : getTagLabel(getRawId(value.id));
 
               return (
                 <ItemTooltip
-                  key={`${value.id.raw}-${index}`}
+                  key={`${getRawId(value.id)}-${index}`}
                   title={label}
-                  description={value.id.raw}
+                  description={getRawId(value.id)}
                 >
                   <button
                     type="button"

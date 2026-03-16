@@ -28,7 +28,6 @@ const getCategoryOptions = (recipeType: RecipeType) => {
   }
 };
 
-
 const GroupField = () => {
   const group = useRecipeStore((state) => state.recipes[state.selectedRecipeIndex]?.group ?? "");
   const setRecipeGroup = useRecipeStore((state) => state.setRecipeGroup);
@@ -167,9 +166,7 @@ export const AdvancedOptions = ({ open, onToggle }: AdvancedOptionsProps) => {
       {open && (
         <div className="grid gap-3 sm:grid-cols-2">
           <GroupField />
-          {supportsCategory && (
-            <CategoryField categoryOptions={categoryOptions!} />
-          )}
+          {supportsCategory && <CategoryField categoryOptions={categoryOptions!} />}
           {supportsSmithingTrimPattern && <SmithingPatternField />}
           {supportsShowNotification && <ShowNotificationField />}
         </div>

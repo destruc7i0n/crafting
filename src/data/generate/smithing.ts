@@ -1,3 +1,4 @@
+import { getRawId } from "@/data/models/identifier/utilities";
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
@@ -56,9 +57,9 @@ export const buildBedrock = (
 ): BedrockSmithingTrimBody | BedrockSmithingTransformBody | BedrockShapelessBody => {
   if (state.recipeType === RecipeType.SmithingTrim) {
     return {
-      template: state.template ? { tag: state.template.id.raw } : {},
-      base: state.base ? { tag: state.base.id.raw } : {},
-      addition: state.addition ? { tag: state.addition.id.raw } : {},
+      template: state.template ? { tag: getRawId(state.template.id) } : {},
+      base: state.base ? { tag: getRawId(state.base.id) } : {},
+      addition: state.addition ? { tag: getRawId(state.addition.id) } : {},
     } satisfies BedrockSmithingTrimBody;
   }
 
@@ -67,7 +68,7 @@ export const buildBedrock = (
       template: formatIngredientString(state.template),
       base: formatIngredientString(state.base),
       addition: formatIngredientString(state.addition),
-      result: state.result?.id.raw ?? "",
+      result: state.result ? getRawId(state.result.id) : "",
     } satisfies BedrockSmithingTransformBody;
   }
 

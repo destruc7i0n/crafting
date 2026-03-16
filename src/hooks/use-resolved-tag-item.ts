@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { getRawId } from "@/data/models/identifier/utilities";
 import { IngredientItem } from "@/data/models/types";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
 import { useTagStore } from "@/stores/tag";
@@ -25,8 +26,8 @@ export const useResolvedSlotItem = (
     const resolvedValues = resolveTagValues(tag.values, tags, vanillaTags);
 
     return createTagItem({
-      rawId: identifier.raw,
-      displayName: getTagLabel(identifier.raw),
+      rawId: getRawId(identifier),
+      displayName: getTagLabel(getRawId(identifier)),
       values: resolvedValues,
       version,
       itemsById: resources?.itemsById,

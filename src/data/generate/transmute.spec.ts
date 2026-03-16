@@ -12,7 +12,6 @@ describe("generate transmute", () => {
           input: {
             type: "tag_item",
             id: {
-              raw: "minecraft:shulker_boxes",
               id: "shulker_boxes",
               namespace: "minecraft",
             },
@@ -25,7 +24,6 @@ describe("generate transmute", () => {
           material: {
             type: "default_item",
             id: {
-              raw: "minecraft:blue_dye",
               id: "blue_dye",
               namespace: "minecraft",
             },
@@ -36,7 +34,6 @@ describe("generate transmute", () => {
           result: {
             type: "default_item",
             id: {
-              raw: "minecraft:blue_shulker_box",
               id: "blue_shulker_box",
               namespace: "minecraft",
             },

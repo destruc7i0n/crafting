@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { ArrowLeftIcon, Trash2Icon } from "lucide-react";
 
 import { NoTextureTexture } from "@/data/constants";
+import { getRawId } from "@/data/models/identifier/utilities";
 import { CustomItem } from "@/data/models/types";
 import {
   isValidJavaNamespacedIdentifier,
@@ -30,7 +31,7 @@ export const CustomItemEditor = ({
   const deleteCustomItem = useCustomItemStore((state) => state.deleteCustomItem);
 
   const [draftName, setDraftName] = useState(item.displayName);
-  const [draftId, setDraftId] = useState(item.id.raw);
+  const [draftId, setDraftId] = useState(getRawId(item.id));
   const editFileInputRef = useRef<HTMLInputElement>(null);
   const showDraftIdError = draftId.trim().length === 0 || !isValidJavaNamespacedIdentifier(draftId);
 
@@ -41,7 +42,7 @@ export const CustomItemEditor = ({
       updates.displayName = draftName;
     }
 
-    if (!showDraftIdError && draftId !== item.id.raw) {
+    if (!showDraftIdError && draftId !== getRawId(item.id)) {
       updates.rawId = draftId;
     }
 
@@ -115,7 +116,7 @@ export const CustomItemEditor = ({
 
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-medium">{item.displayName}</div>
-          <div className="text-muted-foreground truncate text-xs">{item.id.raw}</div>
+          <div className="text-muted-foreground truncate text-xs">{getRawId(item.id)}</div>
         </div>
 
         <button

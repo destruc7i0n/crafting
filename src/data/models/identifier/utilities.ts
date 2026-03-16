@@ -5,6 +5,8 @@ import { MinecraftIdentifier } from "../types";
 const MINECRAFT_NAMESPACE = "minecraft";
 const SEPARATOR = ":";
 
+export const getRawId = (id: MinecraftIdentifier): string => `${id.namespace}${SEPARATOR}${id.id}`;
+
 export function parseStringToMinecraftIdentifier(input: string): MinecraftIdentifier {
   const idx = input.indexOf(SEPARATOR);
   if (idx >= 0) {
@@ -17,7 +19,6 @@ export function parseStringToMinecraftIdentifier(input: string): MinecraftIdenti
     // legacy format, e.g. stone:1
     if (parts.length === 3 && hasData) {
       return {
-        raw: input,
         namespace: parts[0],
         id: parts[1],
         data: lastPart,
@@ -25,20 +26,21 @@ export function parseStringToMinecraftIdentifier(input: string): MinecraftIdenti
     }
 
     return {
-      raw: input,
       namespace: parts[0],
       id: parts[1],
     };
   }
   return {
-    raw: input,
     namespace: MINECRAFT_NAMESPACE,
     id: input,
   };
 }
 
+export const identifierUniqueKey = (id: MinecraftIdentifier): string =>
+  id.data !== undefined ? `${getRawId(id)}:${id.data}` : getRawId(id);
+
 export function stringifyMinecraftIdentifier(identifier: MinecraftIdentifier): string {
-  if (identifier.data) {
+  if (identifier.data !== undefined) {
     return `${identifier.id}${SEPARATOR}${identifier.data}`;
   }
   return `${identifier.namespace}${SEPARATOR}${identifier.id}`;

@@ -14,7 +14,6 @@ describe("generate crafting", () => {
             "crafting.1": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -27,7 +26,6 @@ describe("generate crafting", () => {
             "crafting.2": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -40,7 +38,6 @@ describe("generate crafting", () => {
             "crafting.result": {
               type: "default_item",
               id: {
-                raw: "cobblestone",
                 id: "cobblestone",
                 namespace: "minecraft",
               },
@@ -79,7 +76,6 @@ describe("generate crafting", () => {
             "crafting.1": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -92,7 +88,6 @@ describe("generate crafting", () => {
             "crafting.2": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -105,7 +100,6 @@ describe("generate crafting", () => {
             "crafting.4": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -118,7 +112,6 @@ describe("generate crafting", () => {
             "crafting.5": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -131,7 +124,6 @@ describe("generate crafting", () => {
             "crafting.7": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -144,7 +136,6 @@ describe("generate crafting", () => {
             "crafting.8": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -157,7 +148,6 @@ describe("generate crafting", () => {
             "crafting.result": {
               type: "default_item",
               id: {
-                raw: "cobblestone",
                 id: "cobblestone",
                 namespace: "minecraft",
               },
@@ -194,7 +184,6 @@ describe("generate crafting", () => {
             "crafting.1": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -207,7 +196,6 @@ describe("generate crafting", () => {
             "crafting.2": {
               type: "default_item",
               id: {
-                raw: "paper:1",
                 id: "paper",
                 namespace: "minecraft",
                 data: 1,
@@ -220,7 +208,6 @@ describe("generate crafting", () => {
             "crafting.4": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -233,7 +220,6 @@ describe("generate crafting", () => {
             "crafting.5": {
               type: "default_item",
               id: {
-                raw: "iron_ingot:1",
                 id: "iron_ingot",
                 namespace: "minecraft",
                 data: 1,
@@ -246,7 +232,6 @@ describe("generate crafting", () => {
             "crafting.7": {
               type: "default_item",
               id: {
-                raw: "stone:1",
                 id: "stone",
                 namespace: "minecraft",
                 data: 1,
@@ -259,7 +244,6 @@ describe("generate crafting", () => {
             "crafting.8": {
               type: "default_item",
               id: {
-                raw: "stick:1",
                 id: "stick",
                 namespace: "minecraft",
                 data: 1,
@@ -272,7 +256,6 @@ describe("generate crafting", () => {
             "crafting.result": {
               type: "default_item",
               id: {
-                raw: "cobblestone",
                 id: "cobblestone",
                 namespace: "minecraft",
               },
@@ -316,8 +299,7 @@ describe("generate crafting", () => {
             "crafting.1": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
-                id: "",
+                id: "stone",
                 namespace: "minecraft",
               },
               displayName: "stone",
@@ -328,8 +310,7 @@ describe("generate crafting", () => {
             "crafting.2": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
-                id: "",
+                id: "stone",
                 namespace: "minecraft",
               },
               displayName: "stone",
@@ -340,8 +321,7 @@ describe("generate crafting", () => {
             "crafting.result": {
               type: "default_item",
               id: {
-                raw: "minecraft:cobblestone",
-                id: "",
+                id: "cobblestone",
                 namespace: "minecraft",
               },
               displayName: "cobblestone",
@@ -376,7 +356,6 @@ describe("generate crafting", () => {
             "crafting.1": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
                 id: "stone",
                 namespace: "minecraft",
               },
@@ -388,7 +367,6 @@ describe("generate crafting", () => {
             "crafting.2": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
                 id: "stone",
                 namespace: "minecraft",
               },
@@ -400,7 +378,6 @@ describe("generate crafting", () => {
             "crafting.4": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
                 id: "stone",
                 namespace: "minecraft",
               },
@@ -412,7 +389,6 @@ describe("generate crafting", () => {
             "crafting.5": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
                 id: "stone",
                 namespace: "minecraft",
               },
@@ -424,7 +400,6 @@ describe("generate crafting", () => {
             "crafting.7": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
                 id: "stone",
                 namespace: "minecraft",
               },
@@ -436,7 +411,6 @@ describe("generate crafting", () => {
             "crafting.8": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
                 id: "stone",
                 namespace: "minecraft",
               },
@@ -448,7 +422,6 @@ describe("generate crafting", () => {
             "crafting.result": {
               type: "default_item",
               id: {
-                raw: "minecraft:cobblestone",
                 id: "cobblestone",
                 namespace: "minecraft",
               },
@@ -485,7 +458,6 @@ describe("generate crafting", () => {
             "crafting.2": {
               type: "default_item",
               id: {
-                raw: "minecraft:birch_wood",
                 id: "birch_wood",
                 namespace: "minecraft",
               },
@@ -497,7 +469,6 @@ describe("generate crafting", () => {
             "crafting.5": {
               type: "default_item",
               id: {
-                raw: "minecraft:birch_wood",
                 id: "birch_wood",
                 namespace: "minecraft",
               },
@@ -509,7 +480,6 @@ describe("generate crafting", () => {
             "crafting.9": {
               type: "default_item",
               id: {
-                raw: "minecraft:smooth_stone_slab",
                 id: "smooth_stone_slab",
                 namespace: "minecraft",
               },
@@ -521,7 +491,6 @@ describe("generate crafting", () => {
             "crafting.result": {
               type: "default_item",
               id: {
-                raw: "minecraft:cobblestone",
                 id: "cobblestone",
                 namespace: "minecraft",
               },
@@ -560,7 +529,6 @@ describe("generate crafting", () => {
             "crafting.1": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
                 id: "stone",
                 namespace: "minecraft",
               },
@@ -572,7 +540,6 @@ describe("generate crafting", () => {
             "crafting.2": {
               type: "default_item",
               id: {
-                raw: "minecraft:paper",
                 id: "paper",
                 namespace: "minecraft",
               },
@@ -584,7 +551,6 @@ describe("generate crafting", () => {
             "crafting.4": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
                 id: "stone",
                 namespace: "minecraft",
               },
@@ -596,7 +562,6 @@ describe("generate crafting", () => {
             "crafting.5": {
               type: "default_item",
               id: {
-                raw: "minecraft:iron_ingot",
                 id: "iron_ingot",
                 namespace: "minecraft",
               },
@@ -608,7 +573,6 @@ describe("generate crafting", () => {
             "crafting.7": {
               type: "default_item",
               id: {
-                raw: "minecraft:stone",
                 id: "stone",
                 namespace: "minecraft",
               },
@@ -620,7 +584,6 @@ describe("generate crafting", () => {
             "crafting.8": {
               type: "default_item",
               id: {
-                raw: "minecraft:stick",
                 id: "stick",
                 namespace: "minecraft",
               },
@@ -632,7 +595,6 @@ describe("generate crafting", () => {
             "crafting.result": {
               type: "default_item",
               id: {
-                raw: "minecraft:cobblestone",
                 id: "cobblestone",
                 namespace: "minecraft",
               },
@@ -674,7 +636,7 @@ describe("generate crafting", () => {
         slots: {
           "crafting.1": {
             type: "default_item",
-            id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
+            id: { id: "stone", namespace: "minecraft" },
             displayName: "stone",
             texture: "",
             count: 1,
@@ -682,7 +644,7 @@ describe("generate crafting", () => {
           },
           "crafting.result": {
             type: "default_item",
-            id: { raw: "minecraft:stone_button", id: "stone_button", namespace: "minecraft" },
+            id: { id: "stone_button", namespace: "minecraft" },
             displayName: "stone_button",
             texture: "",
             count: 1,
@@ -691,6 +653,7 @@ describe("generate crafting", () => {
         },
         crafting: { shapeless: true, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
+        category: "misc",
       };
 
       expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
@@ -708,7 +671,7 @@ describe("generate crafting", () => {
         slots: {
           "crafting.1": {
             type: "default_item",
-            id: { raw: "minecraft:planks", id: "planks", namespace: "minecraft" },
+            id: { id: "planks", namespace: "minecraft" },
             displayName: "planks",
             texture: "",
             count: 1,
@@ -716,7 +679,7 @@ describe("generate crafting", () => {
           },
           "crafting.2": {
             type: "default_item",
-            id: { raw: "minecraft:planks", id: "planks", namespace: "minecraft" },
+            id: { id: "planks", namespace: "minecraft" },
             displayName: "planks",
             texture: "",
             count: 1,
@@ -724,7 +687,7 @@ describe("generate crafting", () => {
           },
           "crafting.result": {
             type: "default_item",
-            id: { raw: "minecraft:stick", id: "stick", namespace: "minecraft" },
+            id: { id: "stick", namespace: "minecraft" },
             displayName: "stick",
             texture: "",
             count: 4,
@@ -751,7 +714,7 @@ describe("generate crafting", () => {
         slots: {
           "crafting.1": {
             type: "default_item",
-            id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
+            id: { id: "stone", namespace: "minecraft" },
             displayName: "stone",
             texture: "",
             count: 1,
@@ -760,7 +723,6 @@ describe("generate crafting", () => {
           "crafting.result": {
             type: "default_item",
             id: {
-              raw: "minecraft:stone_button",
               id: "stone_button",
               namespace: "minecraft",
             },

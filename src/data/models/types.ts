@@ -1,8 +1,6 @@
 import { MinecraftVersion } from "../types";
 
 export interface MinecraftIdentifier {
-  raw: string;
-
   namespace: string;
   id: string;
   data?: number;

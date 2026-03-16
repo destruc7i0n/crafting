@@ -12,7 +12,7 @@ describe("generate cooking", () => {
         slots: {
           "cooking.ingredient": {
             type: "default_item",
-            id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
+            id: { id: "stone", namespace: "minecraft" },
             displayName: "stone",
             texture: "",
             count: 1,
@@ -21,7 +21,6 @@ describe("generate cooking", () => {
           "cooking.result": {
             type: "default_item",
             id: {
-              raw: "minecraft:cobblestone",
               id: "cobblestone",
               namespace: "minecraft",
             },
@@ -61,7 +60,6 @@ describe("generate cooking", () => {
           "cooking.ingredient": {
             type: "default_item",
             id: {
-              raw: "minecraft:porkchop",
               id: "porkchop",
               namespace: "minecraft",
             },
@@ -73,7 +71,6 @@ describe("generate cooking", () => {
           "cooking.result": {
             type: "default_item",
             id: {
-              raw: "minecraft:cooked_porkchop",
               id: "cooked_porkchop",
               namespace: "minecraft",
             },
@@ -111,7 +108,6 @@ describe("generate cooking", () => {
           "cooking.ingredient": {
             type: "default_item",
             id: {
-              raw: "minecraft:potato",
               id: "potato",
               namespace: "minecraft",
             },
@@ -123,7 +119,6 @@ describe("generate cooking", () => {
           "cooking.result": {
             type: "default_item",
             id: {
-              raw: "minecraft:baked_potato",
               id: "baked_potato",
               namespace: "minecraft",
             },
@@ -160,7 +155,7 @@ describe("generate cooking", () => {
         slots: {
           "cooking.ingredient": {
             type: "default_item",
-            id: { raw: "minecraft:beef", id: "beef", namespace: "minecraft" },
+            id: { id: "beef", namespace: "minecraft" },
             displayName: "beef",
             texture: "",
             count: 1,
@@ -169,7 +164,6 @@ describe("generate cooking", () => {
           "cooking.result": {
             type: "default_item",
             id: {
-              raw: "minecraft:cooked_beef",
               id: "cooked_beef",
               namespace: "minecraft",
             },
@@ -207,7 +201,6 @@ describe("generate cooking", () => {
           "cooking.ingredient": {
             type: "default_item",
             id: {
-              raw: "minecraft:iron_ore",
               id: "iron_ore",
               namespace: "minecraft",
             },
@@ -219,7 +212,6 @@ describe("generate cooking", () => {
           "cooking.result": {
             type: "default_item",
             id: {
-              raw: "minecraft:iron_ingot",
               id: "iron_ingot",
               namespace: "minecraft",
             },
@@ -258,7 +250,7 @@ describe("generate cooking", () => {
         slots: {
           "cooking.ingredient": {
             type: "default_item",
-            id: { raw: "minecraft:iron_ore", id: "iron_ore", namespace: "minecraft" },
+            id: { id: "iron_ore", namespace: "minecraft" },
             displayName: "iron_ore",
             texture: "",
             count: 1,
@@ -266,7 +258,7 @@ describe("generate cooking", () => {
           },
           "cooking.result": {
             type: "default_item",
-            id: { raw: "minecraft:iron_ingot", id: "iron_ingot", namespace: "minecraft" },
+            id: { id: "iron_ingot", namespace: "minecraft" },
             displayName: "iron_ingot",
             texture: "",
             count: 2,
@@ -293,7 +285,7 @@ describe("generate cooking", () => {
         slots: {
           "cooking.ingredient": {
             type: "default_item",
-            id: { raw: "minecraft:sand", id: "sand", namespace: "minecraft" },
+            id: { id: "sand", namespace: "minecraft" },
             displayName: "sand",
             texture: "",
             count: 1,
@@ -301,7 +293,7 @@ describe("generate cooking", () => {
           },
           "cooking.result": {
             type: "default_item",
-            id: { raw: "minecraft:glass", id: "glass", namespace: "minecraft" },
+            id: { id: "glass", namespace: "minecraft" },
             displayName: "glass",
             texture: "",
             count: 1,
@@ -326,7 +318,7 @@ describe("generate cooking", () => {
         slots: {
           "cooking.ingredient": {
             type: "default_item",
-            id: { raw: "minecraft:iron_ore", id: "iron_ore", namespace: "minecraft" },
+            id: { id: "iron_ore", namespace: "minecraft" },
             displayName: "iron_ore",
             texture: "",
             count: 1,
@@ -334,7 +326,7 @@ describe("generate cooking", () => {
           },
           "cooking.result": {
             type: "default_item",
-            id: { raw: "minecraft:iron_ingot", id: "iron_ingot", namespace: "minecraft" },
+            id: { id: "iron_ingot", namespace: "minecraft" },
             displayName: "iron_ingot",
             texture: "",
             count: 1,

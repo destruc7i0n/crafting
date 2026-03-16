@@ -23,9 +23,7 @@ export const buildJava = (
   version: MinecraftVersion,
 ): CookingRecipe => {
   const group = state.group.length > 0 ? state.group : undefined;
-  const category = isVersionAtLeast(version, MinecraftVersion.V119)
-    ? state.category
-    : undefined;
+  const category = isVersionAtLeast(version, MinecraftVersion.V119) ? state.category : undefined;
 
   const input = state.ingredient;
   const output = state.result;

@@ -7,6 +7,7 @@ import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/el
 import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unhandled";
 import invariant from "tiny-invariant";
 
+import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { cloneItem } from "@/data/models/item/utilities";
 import { IngredientItem } from "@/data/models/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
@@ -51,7 +52,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
     dndCleanupRef.current = draggable({
       element: el,
       getInitialData: () => ({ type: "item", item, container }) satisfies ItemDraggableData,
-      getInitialDataForExternal: () => ({ "text/plain": item.id.raw }),
+      getInitialDataForExternal: () => ({ "text/plain": getRawId(item.id) }),
       onDragStart: () => {
         if (container === "preview") {
           preventUnhandled.start();
@@ -154,8 +155,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
       />
     );
 
-  const description =
-    item.id.data !== undefined ? `${item.id.raw}:${item.id.data}` : item.id.raw;
+  const description = identifierUniqueKey(item.id);
 
   return (
     <ItemTooltip title={item.displayName} description={description} visible={!dragging}>

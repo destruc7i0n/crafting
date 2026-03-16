@@ -1,3 +1,4 @@
+import { getRawId } from "@/data/models/identifier/utilities";
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { IngredientItem } from "../models/types";
@@ -28,7 +29,7 @@ function getPattern(
     const rowIndex = Math.floor(index / 3);
     pattern[rowIndex] = pattern[rowIndex] || "";
     if (item) {
-      pattern[rowIndex] += reverseMap[item.id.raw];
+      pattern[rowIndex] += reverseMap[getRawId(item.id)];
     } else {
       pattern[rowIndex] += " ";
     }
@@ -113,7 +114,7 @@ function getKeyForGrid(grid: (IngredientItem | undefined)[]): {
 
   for (const item of grid) {
     if (!item) continue;
-    if (reverse[item.id.raw]) continue;
+    if (reverse[getRawId(item.id)]) continue;
 
     const id = item.id.id;
 
@@ -148,7 +149,7 @@ function getKeyForGrid(grid: (IngredientItem | undefined)[]): {
     }
 
     key[keyName] = item;
-    reverse[item.id.raw] = keyName;
+    reverse[getRawId(item.id)] = keyName;
   }
 
   return { key, reverse };
@@ -163,9 +164,7 @@ export const buildJava = (
   const populatedSlots = grid.filter((item): item is IngredientItem => Boolean(item));
 
   const group = state.group.length > 0 ? state.group : undefined;
-  const category = isVersionAtLeast(version, MinecraftVersion.V119)
-    ? state.category
-    : undefined;
+  const category = isVersionAtLeast(version, MinecraftVersion.V119) ? state.category : undefined;
 
   const { key, reverse } = getKeyForGrid(grid);
 

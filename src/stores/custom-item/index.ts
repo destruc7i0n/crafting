@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 import { NoTextureTexture } from "@/data/constants";
+import { identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { CustomItem } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { parseMinecraftIdentifierInput } from "@/lib/minecraft-identifier";
@@ -36,7 +37,9 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
       addCustomItem: (name, rawId, texture, version) => {
         const id = parseMinecraftIdentifierInput(rawId, getCustomItemIdentifierVersion(version));
 
-        if (get().customItems.some((item) => item.id.raw === id.raw)) {
+        if (
+          get().customItems.some((item) => identifierUniqueKey(item.id) === identifierUniqueKey(id))
+        ) {
           return;
         }
 
@@ -75,7 +78,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
               getCustomItemIdentifierVersion(item._version),
             );
             const duplicate = state.customItems.some(
-              (i) => i.uid !== uid && i.id.raw === newId.raw,
+              (i) => i.uid !== uid && identifierUniqueKey(i.id) === identifierUniqueKey(newId),
             );
             if (!duplicate) {
               item.id = newId;

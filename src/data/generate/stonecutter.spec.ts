@@ -12,7 +12,7 @@ describe("generate stonecutting", () => {
         slots: {
           "stonecutter.ingredient": {
             type: "default_item",
-            id: { raw: "minecraft:stone", id: "", namespace: "minecraft" },
+            id: { id: "stone", namespace: "minecraft" },
             displayName: "stone",
             texture: "",
             count: 1,
@@ -21,8 +21,7 @@ describe("generate stonecutting", () => {
           "stonecutter.result": {
             type: "default_item",
             id: {
-              raw: "minecraft:cobblestone",
-              id: "",
+              id: "cobblestone",
               namespace: "minecraft",
             },
             displayName: "cobblestone",
@@ -60,7 +59,7 @@ describe("generate stonecutting", () => {
         slots: {
           "stonecutter.ingredient": {
             type: "default_item",
-            id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
+            id: { id: "stone", namespace: "minecraft" },
             displayName: "stone",
             texture: "",
             count: 1,
@@ -68,7 +67,7 @@ describe("generate stonecutting", () => {
           },
           "stonecutter.result": {
             type: "default_item",
-            id: { raw: "minecraft:stone_bricks", id: "stone_bricks", namespace: "minecraft" },
+            id: { id: "stone_bricks", namespace: "minecraft" },
             displayName: "stone_bricks",
             texture: "",
             count: 2,
@@ -93,7 +92,7 @@ describe("generate stonecutting", () => {
         slots: {
           "stonecutter.ingredient": {
             type: "default_item",
-            id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
+            id: { id: "stone", namespace: "minecraft" },
             displayName: "stone",
             texture: "",
             count: 1,
@@ -101,7 +100,7 @@ describe("generate stonecutting", () => {
           },
           "stonecutter.result": {
             type: "default_item",
-            id: { raw: "minecraft:stone_bricks", id: "stone_bricks", namespace: "minecraft" },
+            id: { id: "stone_bricks", namespace: "minecraft" },
             displayName: "stone_bricks",
             texture: "",
             count: 1,

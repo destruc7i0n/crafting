@@ -11,7 +11,7 @@ describe("generate orchestrator", () => {
       slots: {
         "crafting.1": {
           type: "default_item",
-          id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
+          id: { id: "stone", namespace: "minecraft" },
           displayName: "stone",
           texture: "",
           _version: MinecraftVersion.V121,
@@ -19,7 +19,6 @@ describe("generate orchestrator", () => {
         "crafting.result": {
           type: "default_item",
           id: {
-            raw: "minecraft:stone_button",
             id: "stone_button",
             namespace: "minecraft",
           },
@@ -47,14 +46,14 @@ describe("generate orchestrator", () => {
       slots: {
         "cooking.ingredient": {
           type: "default_item",
-          id: { raw: "minecraft:sand", id: "sand", namespace: "minecraft" },
+          id: { id: "sand", namespace: "minecraft" },
           displayName: "sand",
           texture: "",
           _version: MinecraftVersion.Bedrock,
         },
         "cooking.result": {
           type: "default_item",
-          id: { raw: "minecraft:glass", id: "glass", namespace: "minecraft" },
+          id: { id: "glass", namespace: "minecraft" },
           displayName: "glass",
           texture: "",
           count: 1,
@@ -85,7 +84,6 @@ describe("generate orchestrator", () => {
         "smithing.template": {
           type: "default_item",
           id: {
-            raw: "minecraft:netherite_upgrade_smithing_template",
             id: "netherite_upgrade_smithing_template",
             namespace: "minecraft",
           },
@@ -95,21 +93,21 @@ describe("generate orchestrator", () => {
         },
         "smithing.base": {
           type: "default_item",
-          id: { raw: "minecraft:diamond_sword", id: "diamond_sword", namespace: "minecraft" },
+          id: { id: "diamond_sword", namespace: "minecraft" },
           displayName: "base",
           texture: "",
           _version: MinecraftVersion.Bedrock,
         },
         "smithing.addition": {
           type: "default_item",
-          id: { raw: "minecraft:netherite_ingot", id: "netherite_ingot", namespace: "minecraft" },
+          id: { id: "netherite_ingot", namespace: "minecraft" },
           displayName: "addition",
           texture: "",
           _version: MinecraftVersion.Bedrock,
         },
         "smithing.result": {
           type: "default_item",
-          id: { raw: "minecraft:netherite_sword", id: "netherite_sword", namespace: "minecraft" },
+          id: { id: "netherite_sword", namespace: "minecraft" },
           displayName: "result",
           texture: "",
           _version: MinecraftVersion.Bedrock,

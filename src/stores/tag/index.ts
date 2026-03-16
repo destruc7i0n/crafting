@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
+import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Tag, TagValue } from "@/data/models/types";
 import { createEmptyTag, getCustomTagIdentifier, getTagLabel } from "@/lib/tags";
 import { useRecipeStore } from "@/stores/recipe";
@@ -66,7 +67,7 @@ export const useTagStore = create<TagState & TagActions>()(
           (slotItem) => slotItem.type === "tag_item" && slotItem.uid === uid,
           (slotItem) => {
             slotItem.id = { ...identifier };
-            slotItem.displayName = getTagLabel(identifier.raw);
+            slotItem.displayName = getTagLabel(getRawId(identifier));
           },
         );
       },
@@ -82,7 +83,13 @@ export const useTagStore = create<TagState & TagActions>()(
       addValueToTag: (uid, value) => {
         set((state) => {
           const tag = state.tags.find((currentTag) => currentTag.uid === uid);
-          if (!tag || tag.values.some((currentValue) => currentValue.id.raw === value.id.raw)) {
+          if (
+            !tag ||
+            tag.values.some(
+              (currentValue) =>
+                identifierUniqueKey(currentValue.id) === identifierUniqueKey(value.id),
+            )
+          ) {
             return;
           }
 

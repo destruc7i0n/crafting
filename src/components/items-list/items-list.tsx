@@ -2,6 +2,7 @@ import { useDeferredValue, useMemo, useState } from "react";
 
 import { PlusIcon } from "lucide-react";
 
+import { getRawId } from "@/data/models/identifier/utilities";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { supportsItemTagsForVersion } from "@/lib/tags";
@@ -61,10 +62,10 @@ export const ItemsList = () => {
   }, [resourceItems, deferredSearch]);
 
   const tabSwitcher = supportsTags ? (
-    <div className="bg-muted flex shrink-0 self-stretch lg:self-auto items-center rounded-md p-0.5">
+    <div className="bg-muted flex shrink-0 items-center self-stretch rounded-md p-0.5 lg:self-auto">
       <button
         type="button"
-        className={`flex h-full lg:h-auto lg:py-1 cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs lg:text-sm font-medium transition-colors ${
+        className={`flex h-full cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors lg:h-auto lg:py-1 lg:text-sm ${
           tab === "items"
             ? "bg-primary/40 text-foreground"
             : "text-muted-foreground hover:text-foreground"
@@ -75,7 +76,7 @@ export const ItemsList = () => {
       </button>
       <button
         type="button"
-        className={`flex h-full lg:h-auto lg:py-1 cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs lg:text-sm font-medium transition-colors ${
+        className={`flex h-full cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors lg:h-auto lg:py-1 lg:text-sm ${
           tab === "tags"
             ? "bg-primary/40 text-foreground"
             : "text-muted-foreground hover:text-foreground"
@@ -145,7 +146,7 @@ export const ItemsList = () => {
         <div className="border-border bg-muted/40 rounded-md border px-2 py-1 text-xs leading-tight">
           <div className="text-foreground truncate">
             <span className="font-medium">{selectedIngredient.displayName}</span>
-            <span className="text-muted-foreground">{` · ${selectedIngredient.id.raw}`}</span>
+            <span className="text-muted-foreground">{` · ${getRawId(selectedIngredient.id)}`}</span>
           </div>
         </div>
       )}

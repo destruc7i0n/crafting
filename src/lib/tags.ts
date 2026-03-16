@@ -1,6 +1,8 @@
 import { NoTextureTexture } from "@/data/constants";
 import {
   compareMinecraftVersions,
+  getRawId,
+  identifierUniqueKey,
   parseStringToMinecraftIdentifier,
 } from "@/data/models/identifier/utilities";
 import { IngredientItem, Item, Tag, TagItem, TagValue } from "@/data/models/types";
@@ -56,7 +58,7 @@ export const resolveTagValues = (
   vanillaTags: Record<string, string[]>,
 ): string[] => {
   const customTagsByRawId = new Map(
-    customTags.map((tag) => [getCustomTagIdentifier(tag).raw, tag]),
+    customTags.map((tag) => [getRawId(getCustomTagIdentifier(tag)), tag]),
   );
   const seen = new Set<string>();
 
@@ -81,11 +83,11 @@ export const resolveTagValues = (
 
     for (const value of tagValues) {
       if (value.type === "item") {
-        resolved.push(value.id.raw);
+        resolved.push(identifierUniqueKey(value.id));
         continue;
       }
 
-      resolved.push(...resolveNested(value.id.raw, ancestry));
+      resolved.push(...resolveNested(getRawId(value.id), ancestry));
     }
 
     return resolved;
@@ -162,7 +164,9 @@ export const isSameIngredient = (
 
   if (left.type === "tag_item" && right.type === "tag_item") {
     return (
-      left.tagSource === right.tagSource && left.uid === right.uid && left.id.raw === right.id.raw
+      left.tagSource === right.tagSource &&
+      left.uid === right.uid &&
+      identifierUniqueKey(left.id) === identifierUniqueKey(right.id)
     );
   }
 
@@ -170,5 +174,5 @@ export const isSameIngredient = (
     return left.uid === right.uid;
   }
 
-  return left.id.raw === right.id.raw;
+  return identifierUniqueKey(left.id) === identifierUniqueKey(right.id);
 };
