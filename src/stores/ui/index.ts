@@ -32,6 +32,7 @@ export const useUIStore = create<UIState & UIStateActions>()(
     }),
     {
       name: "crafting-ui",
+      version: 0,
       partialize: (state) => ({ isRecipeSidebarExpanded: state.isRecipeSidebarExpanded }),
     },
   ),

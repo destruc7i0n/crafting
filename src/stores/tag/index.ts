@@ -99,6 +99,7 @@ export const useTagStore = create<TagState & TagActions>()(
     })),
     {
       name: "crafting-custom-tags",
+      version: 0,
       partialize: (state) => ({ tags: state.tags }),
     },
   ),

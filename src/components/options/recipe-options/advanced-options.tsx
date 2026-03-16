@@ -57,7 +57,7 @@ const GroupField = () => {
         id="recipe-group"
         type="text"
         value={group}
-        onChange={(event) => setRecipeGroup(event.target.value)}
+        onCommit={(v) => setRecipeGroup(v)}
       />
     </Field>
   );
@@ -115,7 +115,7 @@ const SmithingPatternField = () => {
         id="recipe-pattern"
         type="text"
         value={smithingTrimPattern}
-        onChange={(event) => setRecipeSmithingTrimPattern(event.target.value || undefined)}
+        onCommit={(v) => setRecipeSmithingTrimPattern(v || undefined)}
         placeholder="minecraft:silence"
       />
     </Field>

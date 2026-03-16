@@ -27,9 +27,7 @@ const ExperienceField = () => {
         min={0}
         step={0.1}
         value={experience}
-        onChange={(event) =>
-          setRecipeCoolingExperience(Math.max(0, Number(event.target.value || 0)))
-        }
+        onCommit={(v) => setRecipeCoolingExperience(Math.max(0, Number(v || 0)))}
       />
     </Field>
   );
@@ -49,7 +47,7 @@ const CookingTimeField = () => {
         min={0}
         step={1}
         value={cookingTime}
-        onChange={(event) => setRecipeCookingTime(Math.max(0, Number(event.target.value || 0)))}
+        onCommit={(v) => setRecipeCookingTime(Math.max(0, Number(v || 0)))}
       />
     </Field>
   );

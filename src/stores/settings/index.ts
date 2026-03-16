@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 import { latestMinecraftVersion } from "@/data/constants";
 import { MinecraftVersion } from "@/data/types";
@@ -16,8 +17,17 @@ type SettingsActions = {
   setMinecraftVersion: (version: MinecraftVersion) => void;
 };
 
-export const useSettingsStore = create<SettingsState & SettingsActions>()((set) => ({
-  minecraftVersion: defaultVersion,
+export const useSettingsStore = create<SettingsState & SettingsActions>()(
+  persist(
+    (set) => ({
+      minecraftVersion: defaultVersion,
 
-  setMinecraftVersion: (version: MinecraftVersion) => set({ minecraftVersion: version }),
-}));
+      setMinecraftVersion: (version: MinecraftVersion) => set({ minecraftVersion: version }),
+    }),
+    {
+      name: "crafting-settings",
+      version: 0,
+      partialize: (state) => ({ minecraftVersion: state.minecraftVersion }),
+    },
+  ),
+);

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { MinecraftVersion } from "@/data/types";
 import { sanitizeRecipeName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
@@ -33,10 +35,13 @@ const FileNameField = () => {
   const recipeName = useRecipeStore(selectCurrentRecipeName) ?? "";
   const showDatapackFileNameError = useRecipeStore(selectDatapackFileNameConflict);
   const setRecipeName = useRecipeStore((state) => state.setRecipeName);
+  const [draft, setDraft] = useState(recipeName);
 
   const datapackFileName = recipeName.trim()
     ? getDatapackRecipeFileName(recipeName.trim())
     : undefined;
+
+  const commit = () => setRecipeName(sanitizeRecipeName(draft));
 
   return (
     <Field
@@ -57,8 +62,12 @@ const FileNameField = () => {
       >
         <input
           type="text"
-          value={recipeName}
-          onChange={(event) => setRecipeName(sanitizeRecipeName(event.target.value))}
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+          onBlur={commit}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") commit();
+          }}
           aria-invalid={showDatapackFileNameError}
           className="text-foreground h-full w-full bg-transparent px-2 py-1 outline-hidden"
         />

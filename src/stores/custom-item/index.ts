@@ -115,6 +115,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
     })),
     {
       name: "crafting-custom-items",
+      version: 0,
       partialize: (state) => ({ customItems: state.customItems }),
     },
   ),

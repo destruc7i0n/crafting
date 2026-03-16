@@ -1,5 +1,6 @@
 import rfdc from "rfdc";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 import { IngredientItem } from "@/data/models/types";
@@ -95,177 +96,196 @@ const getDefaultRecipe = (): SingleRecipeState => {
 };
 
 export const useRecipeStore = create<RecipeState & RecipeActions>()(
-  immer((set) => ({
-    recipes: [getDefaultRecipe()],
-    selectedRecipeIndex: 0,
+  persist(
+    immer((set) => ({
+      recipes: [getDefaultRecipe()],
+      selectedRecipeIndex: 0,
 
-    selectRecipe: (index: number) => {
-      set((state) => {
-        state.selectedRecipeIndex = index;
-      });
-    },
-    createRecipe: () => {
-      set((state) => {
-        const recipe: SingleRecipeState = getDefaultRecipe();
-        const existingNumbers = state.recipes
-          .map((r) => r.recipeName?.match(/^recipe_(\d+)$/))
-          .filter(Boolean)
-          .map((m) => Number(m![1]));
-        const next = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
-        recipe.recipeName = `recipe_${next}`;
+      selectRecipe: (index: number) => {
+        set((state) => {
+          state.selectedRecipeIndex = index;
+        });
+      },
+      createRecipe: () => {
+        set((state) => {
+          const recipe: SingleRecipeState = getDefaultRecipe();
+          const existingNumbers = state.recipes
+            .map((r) => r.recipeName?.match(/^recipe_(\d+)$/))
+            .filter(Boolean)
+            .map((m) => Number(m![1]));
+          const next = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+          recipe.recipeName = `recipe_${next}`;
 
-        state.recipes.push(recipe);
-        state.selectedRecipeIndex = state.recipes.length - 1;
-      });
-    },
-    deleteRecipe: (index: number) => {
-      set((state) => {
-        const nextRecipeCount = Math.max(0, state.recipes.length - 1);
+          state.recipes.push(recipe);
+          state.selectedRecipeIndex = state.recipes.length - 1;
+        });
+      },
+      deleteRecipe: (index: number) => {
+        set((state) => {
+          const nextRecipeCount = Math.max(0, state.recipes.length - 1);
 
-        if (nextRecipeCount === 0) {
+          if (nextRecipeCount === 0) {
+            state.selectedRecipeIndex = 0;
+          } else if (index < state.selectedRecipeIndex) {
+            state.selectedRecipeIndex -= 1;
+          } else {
+            state.selectedRecipeIndex = Math.min(state.selectedRecipeIndex, nextRecipeCount - 1);
+          }
+
+          state.recipes.splice(index, 1);
+        });
+      },
+      setRecipeName: (name: string) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].recipeName = name;
+        });
+      },
+      setRecipeNameAtIndex: (index: number, name: string) => {
+        set((state) => {
+          state.recipes[index].recipeName = name;
+        });
+      },
+      setRecipeType: (type: RecipeType) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].recipeType = type;
+        });
+      },
+      setRecipeGroup: (group: string) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].group = group;
+        });
+      },
+      setRecipeCategory: (category?: string) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].category = category;
+        });
+      },
+      setRecipeShowNotification: (showNotification: boolean) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].showNotification = showNotification;
+        });
+      },
+      setRecipeSmithingTrimPattern: (pattern?: string) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].smithingTrimPattern = pattern;
+        });
+      },
+      setRecipeSlot: (slot: RecipeSlot, item?: IngredientItem) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].slots[slot] = item;
+        });
+      },
+      setRecipeSlotCount: (slot: RecipeSlot, count: number) => {
+        set((state) => {
+          const item = state.recipes[state.selectedRecipeIndex].slots[slot];
+          if (!item || item.type === "tag_item") {
+            return;
+          }
+
+          item.count = count;
+        });
+      },
+      setRecipeCraftingShapeless: (shapeless: boolean) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].crafting.shapeless = shapeless;
+        });
+      },
+      setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].crafting.keepWhitespace = keepWhitespace;
+        });
+      },
+      setRecipeCraftingTwoByTwo: (twoByTwo: boolean) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].crafting.twoByTwo = twoByTwo;
+        });
+      },
+      setRecipeCookingTime: (time: number) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].cooking.time = time;
+        });
+      },
+      setRecipeCoolingExperience: (experience: number) => {
+        set((state) => {
+          state.recipes[state.selectedRecipeIndex].cooking.experience = experience;
+        });
+      },
+      setRecipeBedrockIdentifier: (identifier: string) => {
+        set((state) => {
+          const recipe = state.recipes[state.selectedRecipeIndex];
+          if (!recipe) return;
+
+          recipe.bedrock ??= {
+            identifier: "crafting:recipe",
+            priority: 0,
+          };
+          recipe.bedrock.identifier = identifier;
+        });
+      },
+      setRecipeBedrockPriority: (priority: number) => {
+        set((state) => {
+          const recipe = state.recipes[state.selectedRecipeIndex];
+          if (!recipe) return;
+
+          recipe.bedrock ??= {
+            identifier: "crafting:recipe",
+            priority: 0,
+          };
+          recipe.bedrock.priority = priority;
+        });
+      },
+      syncCustomSlotItem: (match, update) => {
+        set((state) => {
+          for (const recipe of state.recipes) {
+            for (const [, slotItem] of Object.entries(recipe.slots) as [
+              RecipeSlot,
+              IngredientItem | undefined,
+            ][]) {
+              if (slotItem && match(slotItem)) {
+                update(slotItem);
+              }
+            }
+          }
+        });
+      },
+      removeMatchingSlotItems: (match) => {
+        set((state) => {
+          for (const recipe of state.recipes) {
+            for (const [slot, slotItem] of Object.entries(recipe.slots) as [
+              RecipeSlot,
+              IngredientItem | undefined,
+            ][]) {
+              if (slotItem && match(slotItem)) {
+                recipe.slots[slot] = undefined;
+              }
+            }
+          }
+        });
+      },
+      clearAllSlots: () => {
+        set((state) => {
+          for (const recipe of state.recipes) {
+            recipe.slots = {};
+          }
+        });
+      },
+    })),
+    {
+      name: "crafting-recipes",
+      version: 0,
+      partialize: (state) => ({
+        recipes: state.recipes,
+        selectedRecipeIndex: state.selectedRecipeIndex,
+      }),
+      onRehydrateStorage: () => (state) => {
+        if (!state) return;
+        if (state.recipes.length === 0) {
+          state.recipes = [getDefaultRecipe()];
           state.selectedRecipeIndex = 0;
-        } else if (index < state.selectedRecipeIndex) {
-          state.selectedRecipeIndex -= 1;
         } else {
-          state.selectedRecipeIndex = Math.min(state.selectedRecipeIndex, nextRecipeCount - 1);
+          state.selectedRecipeIndex = Math.min(state.selectedRecipeIndex, state.recipes.length - 1);
         }
-
-        state.recipes.splice(index, 1);
-      });
+      },
     },
-    setRecipeName: (name: string) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].recipeName = name;
-      });
-    },
-    setRecipeNameAtIndex: (index: number, name: string) => {
-      set((state) => {
-        state.recipes[index].recipeName = name;
-      });
-    },
-    setRecipeType: (type: RecipeType) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].recipeType = type;
-      });
-    },
-    setRecipeGroup: (group: string) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].group = group;
-      });
-    },
-    setRecipeCategory: (category?: string) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].category = category;
-      });
-    },
-    setRecipeShowNotification: (showNotification: boolean) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].showNotification = showNotification;
-      });
-    },
-    setRecipeSmithingTrimPattern: (pattern?: string) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].smithingTrimPattern = pattern;
-      });
-    },
-    setRecipeSlot: (slot: RecipeSlot, item?: IngredientItem) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].slots[slot] = item;
-      });
-    },
-    setRecipeSlotCount: (slot: RecipeSlot, count: number) => {
-      set((state) => {
-        const item = state.recipes[state.selectedRecipeIndex].slots[slot];
-        if (!item || item.type === "tag_item") {
-          return;
-        }
-
-        item.count = count;
-      });
-    },
-    setRecipeCraftingShapeless: (shapeless: boolean) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].crafting.shapeless = shapeless;
-      });
-    },
-    setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].crafting.keepWhitespace = keepWhitespace;
-      });
-    },
-    setRecipeCraftingTwoByTwo: (twoByTwo: boolean) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].crafting.twoByTwo = twoByTwo;
-      });
-    },
-    setRecipeCookingTime: (time: number) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].cooking.time = time;
-      });
-    },
-    setRecipeCoolingExperience: (experience: number) => {
-      set((state) => {
-        state.recipes[state.selectedRecipeIndex].cooking.experience = experience;
-      });
-    },
-    setRecipeBedrockIdentifier: (identifier: string) => {
-      set((state) => {
-        const recipe = state.recipes[state.selectedRecipeIndex];
-        if (!recipe) return;
-
-        recipe.bedrock ??= {
-          identifier: "crafting:recipe",
-          priority: 0,
-        };
-        recipe.bedrock.identifier = identifier;
-      });
-    },
-    setRecipeBedrockPriority: (priority: number) => {
-      set((state) => {
-        const recipe = state.recipes[state.selectedRecipeIndex];
-        if (!recipe) return;
-
-        recipe.bedrock ??= {
-          identifier: "crafting:recipe",
-          priority: 0,
-        };
-        recipe.bedrock.priority = priority;
-      });
-    },
-    syncCustomSlotItem: (match, update) => {
-      set((state) => {
-        for (const recipe of state.recipes) {
-          for (const [, slotItem] of Object.entries(recipe.slots) as [
-            RecipeSlot,
-            IngredientItem | undefined,
-          ][]) {
-            if (slotItem && match(slotItem)) {
-              update(slotItem);
-            }
-          }
-        }
-      });
-    },
-    removeMatchingSlotItems: (match) => {
-      set((state) => {
-        for (const recipe of state.recipes) {
-          for (const [slot, slotItem] of Object.entries(recipe.slots) as [
-            RecipeSlot,
-            IngredientItem | undefined,
-          ][]) {
-            if (slotItem && match(slotItem)) {
-              recipe.slots[slot] = undefined;
-            }
-          }
-        }
-      });
-    },
-    clearAllSlots: () => {
-      set((state) => {
-        for (const recipe of state.recipes) {
-          recipe.slots = {};
-        }
-      });
-    },
-  })),
+  ),
 );

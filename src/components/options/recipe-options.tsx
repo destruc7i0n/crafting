@@ -13,6 +13,7 @@ import { DatapackOptions } from "./recipe-options/datapack-options";
 
 export const RecipeOptions = () => {
   const hasRecipe = useRecipeStore((state) => state.recipes[state.selectedRecipeIndex] != null);
+  const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
   const [optionsOpen, setOptionsOpen] = useState(true);
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
@@ -35,7 +36,10 @@ export const RecipeOptions = () => {
       </button>
 
       {optionsOpen && (
-        <div className="flex flex-col gap-3 border-t px-4 py-3">
+        <div
+          key={selectedRecipeIndex} // remounts the subtree on recipe switch
+          className="flex flex-col gap-3 border-t px-4 py-3"
+        >
           <CraftingOptions />
           <CookingOptions />
           <DatapackOptions />

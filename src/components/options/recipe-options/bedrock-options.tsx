@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import {
   bedrockIdentifierHint,
@@ -24,15 +26,14 @@ const IdentifierField = () => {
     (state) => state.recipes[state.selectedRecipeIndex]?.bedrock?.identifier ?? "",
   );
   const setRecipeBedrockIdentifier = useRecipeStore((state) => state.setRecipeBedrockIdentifier);
-  const showBedrockIdentifierError =
-    identifier.trim().length > 0 && !isValidBedrockNamespacedIdentifier(identifier);
+  const [showError, setShowError] = useState(false);
 
   return (
     <Field
       label="Identifier"
       htmlFor="bedrock-identifier"
       error={
-        showBedrockIdentifierError ? (
+        showError ? (
           <span className="text-destructive text-[10px]">{bedrockIdentifierHint}</span>
         ) : undefined
       }
@@ -41,12 +42,17 @@ const IdentifierField = () => {
         id="bedrock-identifier"
         type="text"
         value={identifier}
-        onChange={(event) => setRecipeBedrockIdentifier(event.target.value)}
+        onChange={(e) =>
+          setShowError(
+            e.target.value.trim().length > 0 && !isValidBedrockNamespacedIdentifier(e.target.value),
+          )
+        }
+        onCommit={(v) => setRecipeBedrockIdentifier(v)}
         autoCapitalize="off"
         autoCorrect="off"
         spellCheck={false}
-        aria-invalid={showBedrockIdentifierError}
-        className={cn(showBedrockIdentifierError && "border-destructive focus:ring-destructive")}
+        aria-invalid={showError}
+        className={cn(showError && "border-destructive focus:ring-destructive")}
         placeholder="namespace:name"
       />
     </Field>
@@ -71,9 +77,7 @@ const PriorityField = () => {
         min={0}
         step={1}
         value={priority}
-        onChange={(event) =>
-          setRecipeBedrockPriority(Math.max(0, Math.floor(Number(event.target.value || 0))))
-        }
+        onCommit={(v) => setRecipeBedrockPriority(Math.max(0, Math.floor(Number(v || 0))))}
       />
     </Field>
   );
