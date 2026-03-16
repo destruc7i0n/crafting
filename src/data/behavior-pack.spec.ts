@@ -24,7 +24,7 @@ describe("createBehaviorPackBlob", () => {
         json: { format_version: "1.12" },
       },
       {
-        identifier: "custom:folder/stone_button",
+        identifier: "custom_folder:stone_button",
         json: { format_version: "1.17" },
       },
     ]);
@@ -85,15 +85,26 @@ describe("createBehaviorPackBlob", () => {
     ).rejects.toThrow("Bedrock recipes must have an identifier");
   });
 
+  it("rejects invalid identifier syntax", async () => {
+    await expect(
+      createBehaviorPackBlob([
+        {
+          identifier: "Crafting:Bad-Id",
+          json: {},
+        },
+      ]),
+    ).rejects.toThrow("Invalid Bedrock recipe identifier: Crafting:Bad-Id");
+  });
+
   it("rejects filename collisions after identifier sanitization", async () => {
     await expect(
       createBehaviorPackBlob([
         {
-          identifier: "crafting:foo/bar",
+          identifier: "crafting:foo_bar",
           json: {},
         },
         {
-          identifier: "crafting:foo_bar",
+          identifier: "crafting_foo:bar",
           json: {},
         },
       ]),

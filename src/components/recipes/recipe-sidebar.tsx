@@ -18,7 +18,7 @@ import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
 import { isDuplicateRecipeName, sanitizeRecipeName } from "@/lib/recipe-name";
 import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
-import { validateRecipe } from "@/lib/validate-recipe";
+import { validateDatapackExport } from "@/lib/validate-datapack-export";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { useSettingsStore } from "@/stores/settings";
@@ -57,20 +57,10 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
           name: recipe.name,
           errors: recipe.errors,
         }))
-      : recipes.flatMap((recipe) => {
-          const validation = validateRecipe(recipe, minecraftVersion);
-
-          if (validation.valid) {
-            return [];
-          }
-
-          return [
-            {
-              name: recipe.recipeName || "unnamed_recipe",
-              errors: validation.errors,
-            },
-          ];
-        });
+      : validateDatapackExport(recipes, minecraftVersion).map((recipe) => ({
+          name: recipe.name,
+          errors: recipe.errors,
+        }));
   const canDownloadPack = invalidRecipes.length === 0;
   let downloadConfig: DownloadConfig | null = null;
 

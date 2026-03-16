@@ -176,11 +176,17 @@ export function generate(state: SingleRecipeState, version: MinecraftVersion): G
   const formatter = createFormatStrategy(version);
 
   if (version === MinecraftVersion.Bedrock) {
+    const identifier = state.bedrock?.identifier?.trim();
+
+    if (!identifier) {
+      throw new Error("Bedrock recipes must have an identifier");
+    }
+
     const inner = generateBedrockInner(state, formatter);
     const meta = getBedrockRecipeMeta(state);
 
     return wrapBedrockRecipe(inner, meta.wrapperKey, meta.tags, {
-      identifier: state.bedrock?.identifier ?? "crafting:recipe",
+      identifier,
       priority: state.bedrock?.priority ?? 0,
       formatVersion: meta.formatVersion,
     });

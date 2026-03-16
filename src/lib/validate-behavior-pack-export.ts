@@ -2,6 +2,7 @@ import { getBehaviorPackRecipeFileName } from "@/data/behavior-pack";
 import { MinecraftVersion } from "@/data/types";
 import { SingleRecipeState } from "@/stores/recipe";
 
+import { bedrockIdentifierHint, isValidBedrockNamespacedIdentifier } from "./minecraft-identifier";
 import { validateRecipe } from "./validate-recipe";
 
 export interface BehaviorPackRecipeIssue {
@@ -11,7 +12,7 @@ export interface BehaviorPackRecipeIssue {
 }
 
 const getRecipeLabel = (recipe: SingleRecipeState) => {
-  return recipe.recipeName || recipe.bedrock?.identifier || "unnamed_recipe";
+  return recipe.recipeName?.trim() || "(unnamed)";
 };
 
 export const validateBehaviorPackExport = (
@@ -31,6 +32,13 @@ export const validateBehaviorPackExport = (
 
     if (!identifier) {
       issues[index].errors.push("Add a Bedrock identifier");
+      continue;
+    }
+
+    if (!isValidBedrockNamespacedIdentifier(identifier)) {
+      issues[index].errors.push(
+        `Use a valid Bedrock identifier (namespace:name; ${bedrockIdentifierHint})`,
+      );
       continue;
     }
 

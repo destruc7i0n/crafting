@@ -89,6 +89,24 @@ describe("downloadDatapack", () => {
     expect(downloadBlob).not.toHaveBeenCalled();
   });
 
+  it("blocks datapack download when a recipe is missing a file name", async () => {
+    const recipe = createCraftingRecipe(
+      {
+        "crafting.1": createItem("minecraft:stone"),
+        "crafting.result": createItem("minecraft:stone_button"),
+      },
+      "",
+    );
+
+    await downloadDatapack([recipe], MinecraftVersion.V121, []);
+
+    expect(globalThis.alert).toHaveBeenCalledWith(
+      "Please finish all recipes before downloading the datapack:\n\n- (unnamed): Add a file name",
+    );
+    expect(createDatapackBlob).not.toHaveBeenCalled();
+    expect(downloadBlob).not.toHaveBeenCalled();
+  });
+
   it("downloads the datapack when all recipes are valid", async () => {
     const blob = new Blob(["zip"]);
     const recipe = createCraftingRecipe({

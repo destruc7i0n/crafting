@@ -25,6 +25,10 @@ export const validateRecipe = (
 ): RecipeValidation => {
   const errors: string[] = [];
 
+  if (version !== MinecraftVersion.Bedrock && !recipe.recipeName?.trim()) {
+    errors.push("Add a file name");
+  }
+
   if (!getSupportedRecipeTypesForVersion(version).includes(recipe.recipeType)) {
     errors.push(`Recipe type is not available in ${getVersionLabel(version)}`);
   }

@@ -4,7 +4,7 @@ import { Tag } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { SingleRecipeState } from "@/stores/recipe";
 
-import { validateRecipe } from "../validate-recipe";
+import { validateDatapackExport } from "../validate-datapack-export";
 
 export const downloadDatapack = async (
   recipes: SingleRecipeState[],
@@ -21,15 +21,9 @@ export const downloadDatapack = async (
     return;
   }
 
-  const invalidRecipes = recipes.flatMap((recipe) => {
-    const validation = validateRecipe(recipe, version);
-
-    if (validation.valid) {
-      return [];
-    }
-
-    return [`${recipe.recipeName || "unnamed_recipe"}: ${validation.errors.join(", ")}`];
-  });
+  const invalidRecipes = validateDatapackExport(recipes, version).map(
+    (recipe) => `${recipe.name}: ${recipe.errors.join(", ")}`,
+  );
 
   if (invalidRecipes.length > 0) {
     alert(
@@ -42,13 +36,20 @@ export const downloadDatapack = async (
 
   for (const recipe of recipes) {
     try {
+      const recipeName = recipe.recipeName?.trim();
+
+      if (!recipeName) {
+        invalidRecipes.push("(unnamed): Add a file name");
+        continue;
+      }
+
       recipeFiles.push({
-        name: recipe.recipeName || "crafting_recipe",
+        name: recipeName,
         json: generate(recipe, version),
       });
     } catch (error) {
       invalidRecipes.push(
-        `${recipe.recipeName || "unnamed_recipe"}: ${error instanceof Error ? error.message : "Failed to generate recipe"}`,
+        `${recipe.recipeName?.trim() || "(unnamed)"}: ${error instanceof Error ? error.message : "Failed to generate recipe"}`,
       );
     }
   }

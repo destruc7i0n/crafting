@@ -35,7 +35,7 @@ export const downloadBehaviorPack = async (
         json: generate(recipe, version),
       });
     } catch (error) {
-      const label = recipe.recipeName || recipe.bedrock?.identifier || "unnamed_recipe";
+      const label = recipe.recipeName?.trim() || "(unnamed)";
       invalidRecipes.push(
         `${label}: ${error instanceof Error ? error.message : "Failed to generate recipe"}`,
       );

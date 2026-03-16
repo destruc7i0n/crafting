@@ -22,6 +22,7 @@ const createRecipe = (
   overrides: Partial<SingleRecipeState> = {},
 ): SingleRecipeState => ({
   recipeType,
+  recipeName: "recipe_1",
   group: "",
   slots,
   crafting: {
@@ -37,6 +38,24 @@ const createRecipe = (
 });
 
 describe("validateRecipe", () => {
+  it("requires a file name for Java exports", () => {
+    const recipe = createRecipe(
+      RecipeType.Crafting,
+      {
+        "crafting.1": createItem("minecraft:stone"),
+        "crafting.result": createItem("minecraft:stone_button"),
+      },
+      {
+        recipeName: "",
+      },
+    );
+
+    expect(validateRecipe(recipe, MinecraftVersion.V121)).toEqual({
+      valid: false,
+      errors: ["Add a file name"],
+    });
+  });
+
   it("requires a crafting ingredient and result", () => {
     const recipe = createRecipe(RecipeType.Crafting);
 

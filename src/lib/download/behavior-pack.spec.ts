@@ -120,13 +120,31 @@ describe("downloadBehaviorPack", () => {
     expect(downloadBlob).not.toHaveBeenCalled();
   });
 
+  it("blocks behavior pack download when an identifier has invalid syntax", async () => {
+    const recipe = createCraftingRecipe(
+      {
+        "crafting.1": createItem("minecraft:stone"),
+        "crafting.result": createItem("minecraft:stone_button"),
+      },
+      "Crafting:Bad-Id",
+    );
+
+    await downloadBehaviorPack([recipe], MinecraftVersion.Bedrock);
+
+    expect(globalThis.alert).toHaveBeenCalledWith(
+      "Please finish all recipes before downloading the behavior pack:\n\n- recipe_1: Use a valid Bedrock identifier (namespace:name; a-z, 0-9, _)",
+    );
+    expect(createBehaviorPackBlob).not.toHaveBeenCalled();
+    expect(downloadBlob).not.toHaveBeenCalled();
+  });
+
   it("blocks behavior pack download when identifiers collide after filename sanitization", async () => {
     const firstRecipe = createCraftingRecipe(
       {
         "crafting.1": createItem("minecraft:stone"),
         "crafting.result": createItem("minecraft:stone_button"),
       },
-      "crafting:foo/bar",
+      "crafting:foo_bar",
       "recipe_1",
     );
     const secondRecipe = createCraftingRecipe(
@@ -134,7 +152,7 @@ describe("downloadBehaviorPack", () => {
         "crafting.1": createItem("minecraft:oak_planks"),
         "crafting.result": createItem("minecraft:stick"),
       },
-      "crafting:foo_bar",
+      "crafting_foo:bar",
       "recipe_2",
     );
 

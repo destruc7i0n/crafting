@@ -10,6 +10,7 @@ import {
   isValidBedrockNamespacedIdentifier,
 } from "@/lib/minecraft-identifier";
 import { sanitizeRecipeName } from "@/lib/recipe-name";
+import { getDatapackRecipeFileName } from "@/lib/validate-datapack-export";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
@@ -93,6 +94,8 @@ export const RecipeOptions = () => {
     "flex h-9 items-center rounded-md border border-input bg-background transition-colors hover:bg-accent focus-within:ring-2 focus-within:ring-ring";
 
   const recipe = useRecipeStore(selectCurrentRecipe);
+  const recipes = useRecipeStore((state) => state.recipes);
+  const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
 
   const setRecipeName = useRecipeStore((state) => state.setRecipeName);
@@ -140,6 +143,18 @@ export const RecipeOptions = () => {
     recipe.bedrock !== undefined &&
     recipe.bedrock.identifier.trim().length > 0 &&
     !isValidBedrockNamespacedIdentifier(recipe.bedrock.identifier);
+  const recipeFileName = recipe.recipeName?.trim();
+  const datapackFileName = recipeFileName ? getDatapackRecipeFileName(recipeFileName) : undefined;
+  const showDatapackFileNameError =
+    Boolean(datapackFileName) &&
+    !isBedrock &&
+    recipes.some(
+      (otherRecipe, index) =>
+        index !== selectedRecipeIndex &&
+        otherRecipe.recipeName?.trim() !== undefined &&
+        otherRecipe.recipeName.trim().length > 0 &&
+        getDatapackRecipeFileName(otherRecipe.recipeName.trim()) === datapackFileName,
+    );
 
   return (
     <div className="flex flex-col">
@@ -245,17 +260,28 @@ export const RecipeOptions = () => {
             <div className="grid gap-2 sm:grid-cols-2">
               <label className="flex flex-col gap-1 text-sm text-foreground">
                 <span>File name</span>
-                <div className={compoundInputClassName}>
+                <div
+                  className={cn(
+                    compoundInputClassName,
+                    showDatapackFileNameError && "border-destructive focus-within:ring-destructive",
+                  )}
+                >
                   <input
                     type="text"
                     value={recipe.recipeName ?? ""}
                     onChange={(e) => setRecipeName(sanitizeRecipeName(e.target.value))}
+                    aria-invalid={showDatapackFileNameError}
                     className="h-full w-full bg-transparent px-2 py-1 text-foreground outline-hidden"
                   />
                   <span className="flex h-full shrink-0 items-center border-l border-input px-2 py-1 text-xs text-muted-foreground">
                     .json
                   </span>
                 </div>
+                {showDatapackFileNameError && (
+                  <span className="text-[10px] text-destructive">
+                    Another recipe already exports as {datapackFileName}
+                  </span>
+                )}
               </label>
             </div>
           )}

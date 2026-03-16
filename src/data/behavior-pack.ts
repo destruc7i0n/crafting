@@ -1,3 +1,5 @@
+import { isValidBedrockNamespacedIdentifier } from "@/lib/minecraft-identifier";
+
 export interface BehaviorPackRecipeFile {
   identifier: string;
   json: object;
@@ -69,6 +71,10 @@ export const createBehaviorPackBlob = async (
 
     if (!identifier) {
       throw new Error("Bedrock recipes must have an identifier");
+    }
+
+    if (!isValidBedrockNamespacedIdentifier(identifier)) {
+      throw new Error(`Invalid Bedrock recipe identifier: ${identifier}`);
     }
 
     if (seenIdentifiers.has(identifier)) {

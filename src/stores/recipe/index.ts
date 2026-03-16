@@ -77,7 +77,7 @@ const getDefaultRecipe = (): SingleRecipeState => {
     slots: {},
     crafting: {
       shapeless: false,
-      keepWhitespace: true,
+      keepWhitespace: false,
       twoByTwo: false,
     },
     cooking: {
@@ -120,8 +120,16 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
     },
     deleteRecipe: (index: number) => {
       set((state) => {
-        // set the selected recipe to the next one
-        state.selectedRecipeIndex = Math.max(0, index - 1);
+        const nextRecipeCount = Math.max(0, state.recipes.length - 1);
+
+        if (nextRecipeCount === 0) {
+          state.selectedRecipeIndex = 0;
+        } else if (index < state.selectedRecipeIndex) {
+          state.selectedRecipeIndex -= 1;
+        } else {
+          state.selectedRecipeIndex = Math.min(state.selectedRecipeIndex, nextRecipeCount - 1);
+        }
+
         state.recipes.splice(index, 1);
       });
     },

@@ -97,6 +97,26 @@ describe("validateBehaviorPackExport", () => {
     ]);
   });
 
+  it("flags invalid Bedrock identifier syntax", () => {
+    const issues = validateBehaviorPackExport([
+      createCraftingRecipe(
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:stone_button"),
+        },
+        "Crafting:Bad-Id",
+      ),
+    ]);
+
+    expect(issues).toEqual([
+      {
+        recipe: expect.any(Object),
+        name: "recipe_1",
+        errors: ["Use a valid Bedrock identifier (namespace:name; a-z, 0-9, _)"],
+      },
+    ]);
+  });
+
   it("flags filename collisions from different identifiers", () => {
     const issues = validateBehaviorPackExport([
       createCraftingRecipe(
@@ -104,7 +124,7 @@ describe("validateBehaviorPackExport", () => {
           "crafting.1": createItem("minecraft:stone"),
           "crafting.result": createItem("minecraft:stone_button"),
         },
-        "crafting:foo/bar",
+        "crafting:foo_bar",
         "recipe_1",
       ),
       createCraftingRecipe(
@@ -112,7 +132,7 @@ describe("validateBehaviorPackExport", () => {
           "crafting.1": createItem("minecraft:oak_planks"),
           "crafting.result": createItem("minecraft:stick"),
         },
-        "crafting:foo_bar",
+        "crafting_foo:bar",
         "recipe_2",
       ),
     ]);
