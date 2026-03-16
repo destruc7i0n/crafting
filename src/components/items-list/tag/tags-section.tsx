@@ -26,7 +26,13 @@ interface TagsSectionProps {
 const EMPTY_TAGS: Record<string, string[]> = {};
 const EMPTY_ITEMS: Item[] = [];
 
-export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid, showAddTagForm, onCloseAddTagForm }: TagsSectionProps) => {
+export const TagsSection = ({
+  search,
+  expandedTagUid,
+  setExpandedTagUid,
+  showAddTagForm,
+  onCloseAddTagForm,
+}: TagsSectionProps) => {
   const { resources, version } = useResourcesForVersion();
   const tags = useTagStore((state) => state.tags);
   const removeTag = useTagStore((state) => state.removeTag);
@@ -116,7 +122,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid, showAdd
 
   if (showAddTagForm && !expandedTagUid) {
     return (
-      <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
+      <div className="flex min-h-0 flex-1 flex-col gap-2">
         <AddTagForm
           onClose={onCloseAddTagForm}
           items={items}
@@ -196,7 +202,7 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid, showAdd
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
+    <div className="flex min-h-0 flex-1 flex-col gap-2">
       {filteredCustomTags.length > 0 && (
         <span className="text-muted-foreground hidden text-xs font-medium lg:block">
           Custom Tags

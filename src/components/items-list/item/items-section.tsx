@@ -85,7 +85,12 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
   );
 };
 
-export const ItemsSection = ({ items, search, showAddItemForm, onCloseAddItemForm }: ItemsSectionProps) => {
+export const ItemsSection = ({
+  items,
+  search,
+  showAddItemForm,
+  onCloseAddItemForm,
+}: ItemsSectionProps) => {
   const customItems = useCustomItemStore((state) => state.customItems);
   const [expandedItemUid, setExpandedItemUid] = useState<string | null>(null);
 
@@ -106,7 +111,7 @@ export const ItemsSection = ({ items, search, showAddItemForm, onCloseAddItemFor
 
   if (showAddItemForm) {
     return (
-      <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
+      <div className="flex min-h-0 flex-1 flex-col gap-2">
         <AddItemForm onClose={onCloseAddItemForm} />
       </div>
     );
@@ -116,7 +121,7 @@ export const ItemsSection = ({ items, search, showAddItemForm, onCloseAddItemFor
     const expandedItem = customItems.find((item) => item.uid === expandedItemUid);
     if (expandedItem) {
       return (
-        <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
+        <div className="flex min-h-0 flex-1 flex-col gap-2">
           <CustomItemEditor
             key={expandedItem.uid}
             item={expandedItem}
@@ -129,7 +134,7 @@ export const ItemsSection = ({ items, search, showAddItemForm, onCloseAddItemFor
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
+    <div className="flex min-h-0 flex-1 flex-col gap-2">
       {filteredCustomItems.length > 0 && (
         <span className="text-muted-foreground hidden text-xs font-medium lg:block">
           Custom Items

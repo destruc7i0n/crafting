@@ -64,22 +64,40 @@ export const ItemsList = () => {
     <div className="flex h-full min-h-0 w-full flex-1 flex-col gap-2 rounded-lg border p-2 lg:gap-3 lg:p-3">
       {/* Mobile: compact single row */}
       <div className="flex items-center gap-2 lg:hidden">
-        <input
-          type="text"
-          className="border-input bg-background text-foreground placeholder:text-muted-foreground focus:ring-ring h-8 min-w-0 flex-1 appearance-none rounded-md border px-2 text-sm outline-hidden transition-colors focus:ring-2 focus:ring-inset"
-          placeholder="Search..."
-          onChange={(event) => setSearch(event.target.value)}
-        />
+        {!isCreating && (
+          <input
+            type="text"
+            className="border-input bg-background text-foreground placeholder:text-muted-foreground focus:ring-ring h-8 min-w-0 flex-1 appearance-none rounded-md border px-2 text-sm outline-hidden transition-colors focus:ring-2 focus:ring-inset"
+            placeholder="Search..."
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        )}
 
-        {supportsTags && (
-          <button
-            type="button"
-            className="border-border text-foreground hover:bg-accent flex h-8 shrink-0 items-center justify-center rounded-md border px-2 text-xs font-medium transition-colors"
-            onClick={() => handleTabChange(activeTab === "items" ? "tags" : "items")}
-            title={tab === "items" ? "Switch to tags" : "Switch to items"}
-          >
-            {tab === "items" ? "Tags" : "Items"}
-          </button>
+        {!isCreating && supportsTags && (
+          <div className="bg-muted flex h-8 shrink-0 items-center rounded-md p-0.5">
+            <button
+              type="button"
+              className={`flex h-full items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors ${
+                tab === "items"
+                  ? "bg-primary/40 text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              onClick={() => handleTabChange("items")}
+            >
+              Items
+            </button>
+            <button
+              type="button"
+              className={`flex h-full items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors ${
+                tab === "tags"
+                  ? "bg-primary/40 text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              onClick={() => handleTabChange("tags")}
+            >
+              Tags
+            </button>
+          </div>
         )}
 
         {!isCreating && (
@@ -102,7 +120,7 @@ export const ItemsList = () => {
               type="button"
               className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
                 tab === "items"
-                  ? "bg-primary/10 text-foreground"
+                  ? "bg-primary/40 text-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
               onClick={() => handleTabChange("items")}
@@ -113,7 +131,7 @@ export const ItemsList = () => {
               type="button"
               className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
                 tab === "tags"
-                  ? "bg-primary/10 text-foreground"
+                  ? "bg-primary/40 text-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
               onClick={() => handleTabChange("tags")}
@@ -137,12 +155,14 @@ export const ItemsList = () => {
         )}
       </div>
 
-      <input
-        type="text"
-        className="border-input bg-background text-foreground placeholder:font-minecraft placeholder:text-muted-foreground hover:bg-accent focus:ring-ring hidden w-full appearance-none rounded-md border px-3 py-2 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset lg:block"
-        placeholder={tab === "tags" ? "Search Tags..." : "Search Items..."}
-        onChange={(event) => setSearch(event.target.value)}
-      />
+      {!isCreating && (
+        <input
+          type="text"
+          className="border-input bg-background text-foreground placeholder:font-minecraft placeholder:text-muted-foreground hover:bg-accent focus:ring-ring hidden w-full appearance-none rounded-md border px-3 py-2 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset lg:block"
+          placeholder={tab === "tags" ? "Search Tags..." : "Search Items..."}
+          onChange={(event) => setSearch(event.target.value)}
+        />
+      )}
 
       {showSelectionPreview && (
         <div className="border-border bg-muted/40 rounded-md border px-2 py-1 text-xs leading-tight">
