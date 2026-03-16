@@ -2,6 +2,8 @@ import { useDeferredValue, useMemo, useState } from "react";
 
 import { PlusIcon } from "lucide-react";
 
+import { cn } from "@/lib/utils";
+
 import { getRawId } from "@/data/models/identifier/utilities";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
@@ -51,6 +53,9 @@ export const ItemsList = () => {
   const handleTabChange = (nextTab: "items" | "tags") => {
     setSelectedIngredient(undefined);
     setActiveTab(nextTab);
+    setShowAddItemForm(false);
+    setShowAddTagForm(false);
+    setExpandedTagUid(null);
   };
 
   const items = useMemo(() => {
@@ -62,25 +67,29 @@ export const ItemsList = () => {
   }, [resourceItems, deferredSearch]);
 
   const tabSwitcher = supportsTags ? (
-    <div className="bg-muted flex shrink-0 items-center self-stretch rounded-md p-0.5 lg:self-auto">
+    <div className="bg-muted relative flex shrink-0 items-center self-stretch rounded-md p-0.5 lg:self-auto">
+      <div
+        className={cn(
+          "absolute inset-y-0.5 rounded-sm bg-primary/40 transition-all duration-200 ease-in-out",
+          tab === "tags" ? "left-1/2 right-0.5" : "left-0.5 right-1/2",
+        )}
+      />
       <button
         type="button"
-        className={`flex h-full cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors lg:h-auto lg:py-1 lg:text-sm ${
-          tab === "items"
-            ? "bg-primary/40 text-foreground"
-            : "text-muted-foreground hover:text-foreground"
-        }`}
+        className={cn(
+          "relative z-10 flex h-full w-1/2 cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors lg:h-auto lg:py-1 lg:text-sm",
+          tab === "items" ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+        )}
         onClick={() => handleTabChange("items")}
       >
         Items
       </button>
       <button
         type="button"
-        className={`flex h-full cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors lg:h-auto lg:py-1 lg:text-sm ${
-          tab === "tags"
-            ? "bg-primary/40 text-foreground"
-            : "text-muted-foreground hover:text-foreground"
-        }`}
+        className={cn(
+          "relative z-10 flex h-full w-1/2 cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors lg:h-auto lg:py-1 lg:text-sm",
+          tab === "tags" ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+        )}
         onClick={() => handleTabChange("tags")}
       >
         Tags
@@ -89,7 +98,7 @@ export const ItemsList = () => {
   ) : null;
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-1 flex-col gap-2 rounded-lg border p-2 lg:gap-3 lg:p-3">
+    <div className="bg-background mx-2 flex h-full min-h-0 w-full flex-1 flex-col gap-2 rounded-lg border p-2 lg:mx-0 lg:gap-3 lg:p-3">
       {/* Mobile: compact single row */}
       <div className="flex items-center gap-2 lg:hidden">
         {!isCreating && (

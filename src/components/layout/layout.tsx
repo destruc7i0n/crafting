@@ -34,11 +34,11 @@ const Layout = memo(({ children }: LayoutProps) => {
             <RecipeSidebar collapsed={!isRecipeSidebarExpanded} />
           </div>
 
-          <div className="min-h-0 overflow-y-auto px-2 pt-2 pb-2 [grid-area:content] lg:p-0">
+          <div className="min-h-0 overflow-y-auto px-2 pt-2 pb-6 [grid-area:content] lg:p-0 lg:pb-2">
             {children}
           </div>
 
-          <div className="mt-1 flex min-h-0 px-2 pt-1 pb-1 [grid-area:items] lg:m-0 lg:p-0">
+          <div className="z-10 -mt-4 flex min-h-0 rounded-t-xl [grid-area:items] lg:mt-0 lg:rounded-none">
             <ItemsList />
           </div>
         </div>
