@@ -4,13 +4,12 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 
 import { Item as ItemType } from "@/data/models/types";
 import { useCustomItemStore } from "@/stores/custom-item";
-import { useUIStore } from "@/stores/ui";
 
-import { Item } from "../item/item";
-import { Slot } from "../slot/slot";
+import { Item } from "../../item/item";
+import { Slot } from "../../slot/slot";
+import { InventoryGridContainer } from "../inventory-grid-container";
 import { AddItemForm } from "./add-item-form";
-import { CustomItemCard } from "./custom-item-card";
-import { InventoryGridContainer } from "./inventory-grid-container";
+import { CustomItemEditor } from "./custom-item-editor";
 
 const SLOT_SIZE = 36;
 
@@ -25,6 +24,8 @@ const getGridContentWidth = (element: HTMLDivElement) => {
 interface ItemsSectionProps {
   items: ItemType[];
   search: string;
+  showAddItemForm: boolean;
+  onCloseAddItemForm: () => void;
 }
 
 const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
@@ -84,9 +85,8 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
   );
 };
 
-export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
+export const ItemsSection = ({ items, search, showAddItemForm, onCloseAddItemForm }: ItemsSectionProps) => {
   const customItems = useCustomItemStore((state) => state.customItems);
-  const showForm = useUIStore((state) => state.showAddItemForm);
   const [expandedItemUid, setExpandedItemUid] = useState<string | null>(null);
 
   const filteredItems = useMemo(() => {
@@ -104,10 +104,10 @@ export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
     );
   }, [customItems, search]);
 
-  if (showForm) {
+  if (showAddItemForm) {
     return (
       <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
-        <AddItemForm />
+        <AddItemForm onClose={onCloseAddItemForm} />
       </div>
     );
   }
@@ -117,7 +117,7 @@ export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
     if (expandedItem) {
       return (
         <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
-          <CustomItemCard
+          <CustomItemEditor
             key={expandedItem.uid}
             item={expandedItem}
             isExpanded
@@ -139,7 +139,7 @@ export const ItemsSection = ({ items, search }: ItemsSectionProps) => {
       {filteredCustomItems.length > 0 && (
         <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pb-0">
           {filteredCustomItems.map((item) => (
-            <CustomItemCard
+            <CustomItemEditor
               key={item.uid}
               item={item}
               isExpanded={false}

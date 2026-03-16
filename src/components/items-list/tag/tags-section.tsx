@@ -9,21 +9,24 @@ import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
 import { useTagStore } from "@/stores/tag";
 
-import { Item as IngredientItem } from "../item/item";
-import { Slot } from "../slot/slot";
-import { InventoryGridContainer } from "./inventory-grid-container";
+import { Item as IngredientItem } from "../../item/item";
+import { Slot } from "../../slot/slot";
+import { InventoryGridContainer } from "../inventory-grid-container";
+import { AddTagForm } from "./add-tag-form";
 import { TagEditor } from "./tag-editor";
 
 interface TagsSectionProps {
   search: string;
   expandedTagUid: string | null;
   setExpandedTagUid: (uid: string | null) => void;
+  showAddTagForm: boolean;
+  onCloseAddTagForm: () => void;
 }
 
 const EMPTY_TAGS: Record<string, string[]> = {};
 const EMPTY_ITEMS: Item[] = [];
 
-export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsSectionProps) => {
+export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid, showAddTagForm, onCloseAddTagForm }: TagsSectionProps) => {
   const { resources, version } = useResourcesForVersion();
   const tags = useTagStore((state) => state.tags);
   const removeTag = useTagStore((state) => state.removeTag);
@@ -110,6 +113,21 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
     });
     downloadBlob(blob, `${tag.name}.json`);
   };
+
+  if (showAddTagForm && !expandedTagUid) {
+    return (
+      <div className="flex min-h-0 flex-1 flex-col gap-2 p-1 lg:p-0">
+        <AddTagForm
+          onClose={onCloseAddTagForm}
+          items={items}
+          itemsById={itemsById}
+          vanillaTagItems={vanillaTagItems}
+          customTagItems={customTagItems}
+          vanillaTags={vanillaTags}
+        />
+      </div>
+    );
+  }
 
   const expandedTag = tags.find((tag) => tag.uid === expandedTagUid);
   const handleDownloadExpandedTag = () => {

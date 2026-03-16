@@ -5,11 +5,10 @@ import { PlusIcon } from "lucide-react";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { supportsItemTagsForVersion } from "@/lib/tags";
-import { useTagStore } from "@/stores/tag";
 import { useUIStore } from "@/stores/ui";
 
-import { ItemsSection } from "./items-section";
-import { TagsSection } from "./tags-section";
+import { ItemsSection } from "./item/items-section";
+import { TagsSection } from "./tag/tags-section";
 
 export const ItemsList = () => {
   const { resources, version } = useResourcesForVersion();
@@ -23,28 +22,29 @@ export const ItemsList = () => {
   const [expandedTagUid, setExpandedTagUid] = useState<string | null>(null);
 
   const isTouchDevice = useIsTouchDevice();
-  const showAddItemForm = useUIStore((state) => state.showAddItemForm);
+  const [showAddItemForm, setShowAddItemForm] = useState(false);
+  const [showAddTagForm, setShowAddTagForm] = useState(false);
   const selectedIngredient = useUIStore((state) => state.selectedIngredient);
   const setSelectedIngredient = useUIStore((state) => state.setSelectedIngredient);
-  const toggleAddItemForm = useUIStore((state) => state.toggleAddItemForm);
-  const createTag = useTagStore((state) => state.createTag);
 
   const tab: "items" | "tags" = !supportsTags && activeTab === "tags" ? "items" : activeTab;
-  const isCreating = tab === "items" && showAddItemForm;
+  const isCreating = (tab === "items" && showAddItemForm) || (tab === "tags" && showAddTagForm);
   const showSelectionPreview =
     isTouchDevice &&
     !!selectedIngredient &&
-    !showAddItemForm &&
+    !isCreating &&
     !(tab === "tags" && expandedTagUid !== null);
 
   const handleCreateAction = () => {
-    if (tab === "items") {
-      toggleAddItemForm();
-      return;
+    switch (tab) {
+      case "items":
+        setShowAddItemForm(true);
+        break;
+      case "tags":
+        setShowAddTagForm(true);
+        setExpandedTagUid(null);
+        break;
     }
-
-    const uid = createTag();
-    setExpandedTagUid(uid);
   };
 
   const handleTabChange = (nextTab: "items" | "tags") => {
@@ -159,9 +159,16 @@ export const ItemsList = () => {
             search={deferredSearch}
             expandedTagUid={expandedTagUid}
             setExpandedTagUid={setExpandedTagUid}
+            showAddTagForm={showAddTagForm}
+            onCloseAddTagForm={() => setShowAddTagForm(false)}
           />
         ) : (
-          <ItemsSection search={deferredSearch} items={items} />
+          <ItemsSection
+            search={deferredSearch}
+            items={items}
+            showAddItemForm={showAddItemForm}
+            onCloseAddItemForm={() => setShowAddItemForm(false)}
+          />
         )}
       </div>
     </div>

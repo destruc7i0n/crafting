@@ -10,15 +10,17 @@ import { cn } from "@/lib/utils";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
-import { useUIStore } from "@/stores/ui";
 
-import { ItemPreview } from "../item/item-preview";
-import { Slot } from "../slot/slot";
+import { ItemPreview } from "../../item/item-preview";
+import { Slot } from "../../slot/slot";
 
-export const AddItemForm = () => {
+interface AddItemFormProps {
+  onClose: () => void;
+}
+
+export const AddItemForm = ({ onClose }: AddItemFormProps) => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const addCustomItem = useCustomItemStore((state) => state.addCustomItem);
-  const toggleShowForm = useUIStore((state) => state.toggleAddItemForm);
 
   const [name, setName] = useState("");
   const [itemId, setItemId] = useState("");
@@ -45,7 +47,7 @@ export const AddItemForm = () => {
     setName("");
     setItemId("");
     setTexture("");
-    toggleShowForm();
+    onClose();
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -61,7 +63,7 @@ export const AddItemForm = () => {
         <button
           type="button"
           className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
-          onClick={toggleShowForm}
+          onClick={onClose}
         >
           <ArrowLeftIcon size={16} />
         </button>

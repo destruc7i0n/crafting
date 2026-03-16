@@ -11,7 +11,7 @@ export interface TagState {
 }
 
 type TagActions = {
-  createTag: () => string;
+  createTag: (initial?: Partial<Pick<Tag, "name" | "namespace" | "values">>) => string;
   updateTag: (uid: string, updates: Partial<Pick<Tag, "name" | "namespace">>) => void;
   removeTag: (uid: string) => void;
   addValueToTag: (uid: string, value: TagValue) => void;
@@ -23,8 +23,12 @@ export const useTagStore = create<TagState & TagActions>()(
     immer((set, get) => ({
       tags: [],
 
-      createTag: () => {
+      createTag: (initial) => {
         const tag = createEmptyTag(get().tags);
+
+        if (initial?.name !== undefined) tag.name = initial.name;
+        if (initial?.namespace !== undefined) tag.namespace = initial.namespace;
+        if (initial?.values !== undefined) tag.values = initial.values;
 
         set((state) => {
           state.tags.push(tag);

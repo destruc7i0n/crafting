@@ -11,11 +11,11 @@ import {
 import { cn } from "@/lib/utils";
 import { useCustomItemStore } from "@/stores/custom-item";
 
-import { Item } from "../item/item";
-import { ItemPreview } from "../item/item-preview";
-import { Slot } from "../slot/slot";
+import { Item } from "../../item/item";
+import { ItemPreview } from "../../item/item-preview";
+import { Slot } from "../../slot/slot";
 
-export const CustomItemCard = ({
+export const CustomItemEditor = ({
   item,
   isExpanded,
   onToggle,
