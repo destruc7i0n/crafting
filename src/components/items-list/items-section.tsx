@@ -10,8 +10,17 @@ import { Item } from "../item/item";
 import { Slot } from "../slot/slot";
 import { AddItemForm } from "./add-item-form";
 import { CustomItemCard } from "./custom-item-card";
+import { InventoryGridContainer } from "./inventory-grid-container";
 
 const SLOT_SIZE = 36;
+
+const getGridContentWidth = (element: HTMLDivElement) => {
+  const styles = getComputedStyle(element);
+  const horizontalPadding =
+    (Number.parseFloat(styles.paddingLeft) || 0) + (Number.parseFloat(styles.paddingRight) || 0);
+
+  return element.clientWidth - horizontalPadding;
+};
 
 interface ItemsSectionProps {
   items: ItemType[];
@@ -26,7 +35,7 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
     const el = scrollRef.current;
     if (!el) return;
 
-    setContainerWidth(el.clientWidth);
+    setContainerWidth(getGridContentWidth(el));
 
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
@@ -50,10 +59,7 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
   });
 
   return (
-    <div
-      ref={scrollRef}
-      className="min-h-0 flex-1 overflow-y-auto rounded-md bg-minecraft-inventory-bg"
-    >
+    <InventoryGridContainer ref={scrollRef}>
       <div className="relative w-full" style={{ height: virtualizer.getTotalSize() }}>
         {virtualizer.getVirtualItems().map((virtualRow) => {
           const startIndex = virtualRow.index * itemsPerRow;
@@ -74,7 +80,7 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
           );
         })}
       </div>
-    </div>
+    </InventoryGridContainer>
   );
 };
 

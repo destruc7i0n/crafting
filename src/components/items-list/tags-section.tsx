@@ -12,6 +12,7 @@ import { useTagStore } from "@/stores/tag";
 
 import { Item as IngredientItem } from "../item/item";
 import { Slot } from "../slot/slot";
+import { InventoryGridContainer } from "./inventory-grid-container";
 import { TagEditor } from "./tag-editor";
 
 interface TagsSectionProps {
@@ -245,15 +246,15 @@ export const TagsSection = ({ search, expandedTagUid, setExpandedTagUid }: TagsS
         Vanilla Tags
       </span>
 
-      <div className="min-h-0 flex-1 overflow-y-auto rounded-md bg-minecraft-inventory-bg">
-        <div className="flex flex-wrap content-start gap-0">
+      <InventoryGridContainer>
+        <div className="grid grid-cols-[repeat(auto-fill,36px)] content-start">
           {filteredVanillaTagItems.map((tagItem) => (
             <Slot key={tagItem.id.raw}>
               <IngredientItem item={tagItem} container="ingredients" />
             </Slot>
           ))}
         </div>
-      </div>
+      </InventoryGridContainer>
     </div>
   );
 };
