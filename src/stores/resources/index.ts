@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-import { Item } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
+import { Item } from "@/data/models/types";
 
 export interface VersionResourceData {
   items: Item[];

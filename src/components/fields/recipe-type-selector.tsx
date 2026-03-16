@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 import { ResourceIcon } from "@/components/item/resource-icon";
 import { recipeTypeToItemId, recipeTypeToName } from "@/data/constants";
@@ -17,17 +17,12 @@ export const RecipeTypeSelector = () => {
 
   const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
 
-  const scrollSelectedIntoView = useCallback(() => {
+  useLayoutEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
     const selected = container.querySelector("[data-selected]") as HTMLElement | null;
-    if (!selected) return;
-    selected.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
-  }, []);
-
-  useEffect(() => {
-    scrollSelectedIntoView();
-  }, [recipeType, scrollSelectedIntoView]);
+    selected?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+  }, [recipeType]);
 
   return (
     <div ref={scrollRef} className="scrollbar-none flex w-full gap-1.5 overflow-x-auto">
