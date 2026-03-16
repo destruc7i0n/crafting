@@ -36,8 +36,8 @@ export const buildJava = (
 
   return {
     type: "minecraft:crafting_transmute",
-    ...(isVersionAtLeast(version, MinecraftVersion.V119)
-      ? { category: state.category ?? "misc" }
+    ...(isVersionAtLeast(version, MinecraftVersion.V119) && state.category
+      ? { category: state.category }
       : {}),
     ...(group ? { group } : {}),
     input: formatIngredient(input, formatter),

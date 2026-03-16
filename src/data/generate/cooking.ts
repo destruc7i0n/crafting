@@ -24,10 +24,7 @@ export const buildJava = (
 ): CookingRecipe => {
   const group = state.group.length > 0 ? state.group : undefined;
   const category = isVersionAtLeast(version, MinecraftVersion.V119)
-    ? (state.category ??
-      (state.recipeType === RecipeType.CampfireCooking || state.recipeType === RecipeType.Smoking
-        ? "food"
-        : "misc"))
+    ? state.category
     : undefined;
 
   const input = state.ingredient;

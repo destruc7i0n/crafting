@@ -11,37 +11,23 @@ import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
 import { CheckboxField, Field, InputControl } from "./shared";
 
-const craftingCategoryOptions = ["equipment", "building", "misc", "redstone"] as const;
-const smeltingCategoryOptions = ["food", "blocks", "misc"] as const;
-const blastingCategoryOptions = ["blocks", "misc"] as const;
-const foodOnlyCategoryOptions = ["food"] as const;
-
 const getCategoryOptions = (recipeType: RecipeType) => {
   switch (recipeType) {
     case RecipeType.Crafting:
     case RecipeType.CraftingTransmute:
-      return craftingCategoryOptions;
+      return ["equipment", "building", "misc", "redstone"];
     case RecipeType.Smelting:
-      return smeltingCategoryOptions;
+      return ["food", "blocks", "misc"];
     case RecipeType.Blasting:
-      return blastingCategoryOptions;
+      return ["blocks", "misc"];
     case RecipeType.CampfireCooking:
     case RecipeType.Smoking:
-      return foodOnlyCategoryOptions;
+      return ["food"];
     default:
       return undefined;
   }
 };
 
-const getDefaultCategory = (recipeType: RecipeType) => {
-  switch (recipeType) {
-    case RecipeType.CampfireCooking:
-    case RecipeType.Smoking:
-      return "food";
-    default:
-      return "misc";
-  }
-};
 
 const GroupField = () => {
   const group = useRecipeStore((state) => state.recipes[state.selectedRecipeIndex]?.group ?? "");
@@ -64,11 +50,10 @@ const GroupField = () => {
 };
 
 interface CategoryFieldProps {
-  categoryOptions: readonly string[];
-  defaultCategory: string;
+  categoryOptions: string[];
 }
 
-const CategoryField = ({ categoryOptions, defaultCategory }: CategoryFieldProps) => {
+const CategoryField = ({ categoryOptions }: CategoryFieldProps) => {
   const category = useRecipeStore(
     (state) => state.recipes[state.selectedRecipeIndex]?.category ?? "",
   );
@@ -86,7 +71,7 @@ const CategoryField = ({ categoryOptions, defaultCategory }: CategoryFieldProps)
         onChange={(event) => setRecipeCategory(event.target.value || undefined)}
         className="border-input bg-background text-foreground hover:bg-accent focus:ring-ring h-9 rounded-md border px-2 py-1 pr-8 outline-hidden transition-colors focus:ring-2 focus:ring-inset"
       >
-        <option value="">Default ({defaultCategory})</option>
+        <option value="">Unset</option>
         {categoryOptions.map((option) => (
           <option key={option} value={option}>
             {option}
@@ -183,10 +168,7 @@ export const AdvancedOptions = ({ open, onToggle }: AdvancedOptionsProps) => {
         <div className="grid gap-3 sm:grid-cols-2">
           <GroupField />
           {supportsCategory && (
-            <CategoryField
-              categoryOptions={categoryOptions!}
-              defaultCategory={getDefaultCategory(recipeType)}
-            />
+            <CategoryField categoryOptions={categoryOptions!} />
           )}
           {supportsSmithingTrimPattern && <SmithingPatternField />}
           {supportsShowNotification && <ShowNotificationField />}

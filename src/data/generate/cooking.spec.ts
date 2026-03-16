@@ -279,7 +279,6 @@ describe("generate cooking", () => {
 
       expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
         type: "minecraft:smelting",
-        category: "misc",
         ingredient: { item: "minecraft:iron_ore" },
         result: { id: "minecraft:iron_ingot", count: 2 },
         experience: 0,

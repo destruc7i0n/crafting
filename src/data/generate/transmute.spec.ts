@@ -3,7 +3,7 @@ import { createFormatStrategy } from "./format/item-formatter";
 import { buildJava } from "./transmute";
 
 describe("generate transmute", () => {
-  it("should generate a crafting transmute recipe with default category", () => {
+  it("should generate a crafting transmute recipe without category when unset", () => {
     const formatter = createFormatStrategy(MinecraftVersion.V1212);
 
     expect(
@@ -51,7 +51,6 @@ describe("generate transmute", () => {
       ),
     ).toEqual({
       type: "minecraft:crafting_transmute",
-      category: "misc",
       group: "shulker_box_dye",
       input: "#minecraft:shulker_boxes",
       material: "minecraft:blue_dye",

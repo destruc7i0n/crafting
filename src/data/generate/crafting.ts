@@ -164,7 +164,7 @@ export const buildJava = (
 
   const group = state.group.length > 0 ? state.group : undefined;
   const category = isVersionAtLeast(version, MinecraftVersion.V119)
-    ? (state.category ?? "misc")
+    ? state.category
     : undefined;
 
   const { key, reverse } = getKeyForGrid(grid);
