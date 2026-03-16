@@ -21,6 +21,15 @@ export const Footer = () => (
       >
         Twitter
       </a>
+      {" "}·{" "}
+      <a
+        href="https://github.com/destruc7i0n/crafting"
+        target="_blank"
+        rel="noopener"
+        className="text-primary underline-offset-2 hover:underline"
+      >
+        GitHub
+      </a>
     </p>
     <p>
       Support me on{" "}
