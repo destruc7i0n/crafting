@@ -5,6 +5,7 @@ import { immer } from "zustand/middleware/immer";
 
 import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
+import { generateUid } from "@/lib/utils";
 
 export interface SingleRecipeState {
   id?: string;
@@ -65,14 +66,12 @@ type RecipeActions = {
 };
 
 const clone = rfdc();
-const createRecipeId = () =>
-  globalThis.crypto?.randomUUID?.() ?? `recipe-${Math.random().toString(36).slice(2)}`;
 
 const DEFAULT_BEDROCK_OPTIONS = { identifier: "crafting:recipe", priority: 0 } as const;
 
 const getDefaultRecipe = (): SingleRecipeState => {
   const recipe: SingleRecipeState = {
-    id: createRecipeId(),
+    id: generateUid("recipe"),
     recipeName: "recipe_1",
     recipeType: RecipeType.Crafting,
     group: "",

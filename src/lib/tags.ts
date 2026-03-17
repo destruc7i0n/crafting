@@ -1,5 +1,6 @@
 import { NoTextureTexture } from "@/data/constants";
 import { isVersionAtLeast } from "@/data/generate/version-utils";
+import { generateUid } from "@/lib/utils";
 import {
   getRawId,
   identifierUniqueKey,
@@ -29,7 +30,7 @@ export const createEmptyTag = (existingTags: Tag[]): Tag => {
   const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 
   return {
-    uid: globalThis.crypto?.randomUUID?.() ?? `tag-${Math.random().toString(36).slice(2)}`,
+    uid: generateUid("tag"),
     id: `${DEFAULT_TAG_NAMESPACE}:${DEFAULT_TAG_NAME}_${nextNumber}`,
     values: [],
   };

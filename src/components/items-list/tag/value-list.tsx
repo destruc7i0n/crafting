@@ -4,8 +4,8 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 
 import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemPreview } from "@/components/item/item-preview";
-import { getFullId, identifierUniqueKey } from "@/data/models/identifier/utilities";
-import { Item, TagItem } from "@/data/models/types";
+import { getFullId, getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
+import { Item, Tag, TagItem } from "@/data/models/types";
 import { getTagLabel } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +14,48 @@ import { Slot } from "../../slot/slot";
 export type ValueOption =
   | { kind: "item"; item: Item }
   | { kind: "tag"; tagItem: TagItem; rawId: string };
+
+export function filterValueOptions(
+  search: string,
+  items: Item[],
+  vanillaTagItems: TagItem[],
+  tags: Tag[],
+  customTagItems: Record<string, TagItem>,
+  excludeTagUid?: string,
+): ValueOption[] {
+  const normalized = search.trim().toLowerCase();
+  const options: ValueOption[] = [];
+
+  for (const item of items) {
+    if (
+      !normalized ||
+      item.displayName.toLowerCase().includes(normalized) ||
+      getRawId(item.id).toLowerCase().includes(normalized)
+    ) {
+      options.push({ kind: "item", item });
+    }
+  }
+
+  const allTagItems = [
+    ...vanillaTagItems,
+    ...tags
+      .filter((t) => t.uid !== excludeTagUid)
+      .map((t) => customTagItems[t.uid])
+      .filter(Boolean),
+  ];
+
+  for (const tagItem of allTagItems) {
+    if (
+      !normalized ||
+      getRawId(tagItem.id).toLowerCase().includes(normalized) ||
+      tagItem.displayName.toLowerCase().includes(normalized)
+    ) {
+      options.push({ kind: "tag", tagItem, rawId: getRawId(tagItem.id) });
+    }
+  }
+
+  return options;
+}
 
 const ROW_HEIGHT = 40;
 const LIST_MAX_ROWS = 6;
