@@ -60,7 +60,7 @@ export const IngredientCard = ({
         </div>
       )}
 
-      {actions && <div className="flex shrink-0 self-center items-center gap-0.5">{actions}</div>}
+      {actions && <div className="flex shrink-0 items-center gap-0.5 self-center">{actions}</div>}
     </div>
   );
 };
