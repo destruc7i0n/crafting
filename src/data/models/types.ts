@@ -34,8 +34,7 @@ export type IngredientItem = Item | CustomItem | TagItem;
 
 export interface Tag {
   uid: string;
-  name: string;
-  namespace: string;
+  id: string;
   values: TagValue[];
 }
 

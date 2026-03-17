@@ -5,12 +5,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemPreview } from "@/components/item/item-preview";
 import { ItemTooltip } from "@/components/tooltip/item-tooltip";
-import {
-  getFullId,
-  getRawId,
-  identifierUniqueKey,
-  parseStringToMinecraftIdentifier,
-} from "@/data/models/identifier/utilities";
+import { getFullId, getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, TagItem, TagValue } from "@/data/models/types";
 import {
   isValidJavaNamespacedIdentifier,
@@ -69,10 +64,8 @@ export const AddTagForm = ({
 
   const handleCreate = () => {
     if (!canCreate) return;
-    const identifier = parseStringToMinecraftIdentifier(tagId);
     createTag({
-      name: identifier.id,
-      namespace: identifier.namespace,
+      id: tagId,
       values: draftValues,
     });
     onClose();

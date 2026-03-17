@@ -31,8 +31,7 @@ describe("createDatapackBlob", () => {
       [
         {
           uid: "tag-1",
-          name: "items",
-          namespace: "crafting",
+          id: "crafting:items",
           values: [],
         },
       ],

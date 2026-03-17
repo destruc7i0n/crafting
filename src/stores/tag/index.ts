@@ -12,8 +12,8 @@ export interface TagState {
 }
 
 type TagActions = {
-  createTag: (initial?: Partial<Pick<Tag, "name" | "namespace" | "values">>) => string;
-  updateTag: (uid: string, updates: Partial<Pick<Tag, "name" | "namespace">>) => void;
+  createTag: (initial?: Partial<Pick<Tag, "id" | "values">>) => string;
+  updateTag: (uid: string, updates: Partial<Pick<Tag, "id">>) => void;
   removeTag: (uid: string) => void;
   addValueToTag: (uid: string, value: TagValue) => void;
   removeValueFromTagByIndex: (uid: string, index: number) => void;
@@ -27,8 +27,7 @@ export const useTagStore = create<TagState & TagActions>()(
       createTag: (initial) => {
         const tag = createEmptyTag(get().tags);
 
-        if (initial?.name !== undefined) tag.name = initial.name;
-        if (initial?.namespace !== undefined) tag.namespace = initial.namespace;
+        if (initial?.id !== undefined) tag.id = initial.id;
         if (initial?.values !== undefined) tag.values = initial.values;
 
         set((state) => {
@@ -46,12 +45,8 @@ export const useTagStore = create<TagState & TagActions>()(
             return;
           }
 
-          if (updates.name !== undefined) {
-            tag.name = updates.name;
-          }
-
-          if (updates.namespace !== undefined) {
-            tag.namespace = updates.namespace;
+          if (updates.id !== undefined) {
+            tag.id = updates.id;
           }
 
           nextIdentifier = getCustomTagIdentifier(tag);

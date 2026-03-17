@@ -6,17 +6,10 @@ import { ItemTooltip } from "@/components/tooltip/item-tooltip";
 import { getFullId, getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, Tag, TagItem } from "@/data/models/types";
 import {
-  isValidJavaIdentifierNamespace,
-  isValidJavaIdentifierPath,
-  javaIdentifierNamespaceHint,
-  javaIdentifierPathHint,
+  isValidJavaNamespacedIdentifier,
+  javaNamespacedIdentifierHint,
 } from "@/lib/minecraft-identifier";
-import {
-  getTagLabel,
-  getTagNameOrFallback,
-  getTagNamespaceOrFallback,
-  resolveTagValues,
-} from "@/lib/tags";
+import { getTagLabel, resolveTagValues } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
@@ -45,30 +38,24 @@ export const TagEditor = ({
   const addValueToTag = useTagStore((state) => state.addValueToTag);
   const removeValueFromTagByIndex = useTagStore((state) => state.removeValueFromTagByIndex);
 
-  const [draftName, setDraftName] = useState(tag.name);
-  const [draftNamespace, setDraftNamespace] = useState(tag.namespace);
+  const [draftId, setDraftId] = useState(tag.id);
   const [valueSearch, setValueSearch] = useState("");
   const prevUidRef = useRef(tag.uid);
 
   if (prevUidRef.current !== tag.uid) {
     prevUidRef.current = tag.uid;
-    setDraftName(tag.name);
-    setDraftNamespace(tag.namespace);
+    setDraftId(tag.id);
     setValueSearch("");
   }
 
-  const showDraftNamespaceError =
-    draftNamespace.trim().length > 0 && !isValidJavaIdentifierNamespace(draftNamespace);
-  const showDraftNameError = draftName.trim().length > 0 && !isValidJavaIdentifierPath(draftName);
+  const showDraftIdError = draftId.trim().length > 0 && !isValidJavaNamespacedIdentifier(draftId);
 
   const commitTag = () => {
-    if (showDraftNamespaceError || showDraftNameError) {
+    if (!isValidJavaNamespacedIdentifier(draftId)) {
       return;
     }
 
-    const nextName = getTagNameOrFallback(draftName || tag.name);
-    const nextNamespace = getTagNamespaceOrFallback(draftNamespace || tag.namespace);
-    updateTag(tag.uid, { name: nextName, namespace: nextNamespace });
+    updateTag(tag.uid, { id: draftId });
   };
 
   const handleAddValue = (option: ValueOption) => {
@@ -121,44 +108,25 @@ export const TagEditor = ({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div>
         <label className="text-muted-foreground flex flex-col gap-1 text-xs">
-          Namespace
+          Id
           <input
-            value={draftNamespace}
+            value={draftId}
             autoCapitalize="off"
             autoCorrect="off"
             spellCheck={false}
-            aria-invalid={showDraftNamespaceError}
+            placeholder="namespace:tag_name"
+            aria-invalid={showDraftIdError}
             className={cn(
               "border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset",
-              showDraftNamespaceError && "border-destructive focus:ring-destructive",
+              showDraftIdError && "border-destructive focus:ring-destructive",
             )}
             onBlur={commitTag}
-            onChange={(event) => setDraftNamespace(event.target.value)}
+            onChange={(event) => setDraftId(event.target.value)}
           />
-          {showDraftNamespaceError && (
-            <span className="text-destructive text-[10px]">{javaIdentifierNamespaceHint}</span>
-          )}
-        </label>
-
-        <label className="text-muted-foreground flex flex-col gap-1 text-xs">
-          Name
-          <input
-            value={draftName}
-            autoCapitalize="off"
-            autoCorrect="off"
-            spellCheck={false}
-            aria-invalid={showDraftNameError}
-            className={cn(
-              "border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset",
-              showDraftNameError && "border-destructive focus:ring-destructive",
-            )}
-            onBlur={commitTag}
-            onChange={(event) => setDraftName(event.target.value)}
-          />
-          {showDraftNameError && (
-            <span className="text-destructive text-[10px]">{javaIdentifierPathHint}</span>
+          {showDraftIdError && (
+            <span className="text-destructive text-[10px]">{javaNamespacedIdentifierHint}</span>
           )}
         </label>
       </div>

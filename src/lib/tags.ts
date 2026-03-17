@@ -8,24 +8,13 @@ import {
 import { IngredientItem, Item, Tag, TagItem, TagValue } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 
-import {
-  sanitizeJavaIdentifierNamespace,
-  sanitizeJavaIdentifierPath,
-} from "./minecraft-identifier";
-
 const DEFAULT_TAG_NAME = "custom_tag";
 const DEFAULT_TAG_NAMESPACE = "crafting";
 
 const unique = (values: string[]) => [...new Set(values)];
 
-export const getTagNameOrFallback = (value: string) =>
-  sanitizeJavaIdentifierPath(value) || DEFAULT_TAG_NAME;
-
-export const getTagNamespaceOrFallback = (value: string) =>
-  sanitizeJavaIdentifierNamespace(value) || DEFAULT_TAG_NAMESPACE;
-
-export const getCustomTagIdentifier = (tag: Pick<Tag, "name" | "namespace">) =>
-  parseStringToMinecraftIdentifier(`${tag.namespace}:${tag.name}`);
+export const getCustomTagIdentifier = (tag: Pick<Tag, "id">) =>
+  parseStringToMinecraftIdentifier(tag.id);
 
 export const getTagLabel = (raw: string) => `#${raw}`;
 
@@ -39,15 +28,14 @@ export const supportsItemTagsForVersion = (version: MinecraftVersion) => {
 
 export const createEmptyTag = (existingTags: Tag[]): Tag => {
   const existingNumbers = existingTags
-    .map((tag) => tag.name.match(/^custom_tag_(\d+)$/))
+    .map((tag) => parseStringToMinecraftIdentifier(tag.id).id.match(/^custom_tag_(\d+)$/))
     .filter(Boolean)
     .map((match) => Number(match![1]));
   const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 
   return {
     uid: globalThis.crypto?.randomUUID?.() ?? `tag-${Math.random().toString(36).slice(2)}`,
-    name: `custom_tag_${nextNumber}`,
-    namespace: DEFAULT_TAG_NAMESPACE,
+    id: `${DEFAULT_TAG_NAMESPACE}:${DEFAULT_TAG_NAME}_${nextNumber}`,
     values: [],
   };
 };

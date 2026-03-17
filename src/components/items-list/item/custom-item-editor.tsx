@@ -15,6 +15,7 @@ import { useCustomItemStore } from "@/stores/custom-item";
 import { Item } from "../../item/item";
 import { ItemPreview } from "../../item/item-preview";
 import { Slot } from "../../slot/slot";
+import { IngredientCard } from "../ingredient-card";
 
 export const CustomItemEditor = ({
   item,
@@ -65,37 +66,26 @@ export const CustomItemEditor = ({
   };
 
   if (!isExpanded) {
+    const id = getFullId(item.id);
     return (
-      <div
-        className={cn(
-          "border-border bg-muted/50 flex min-w-0 items-start gap-1.5 rounded-md border p-1 sm:gap-2 sm:p-1.5",
-          className,
-        )}
+      <IngredientCard
+        label={item.displayName}
+        sublabel={id}
+        onClick={onToggle}
+        className={className}
+        actions={
+          <button
+            type="button"
+            className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors"
+            onClick={() => deleteCustomItem(item.uid)}
+          >
+            <Trash2Icon size={14} />
+            <span className="sr-only">Delete item</span>
+          </button>
+        }
       >
-        <Slot className="shrink-0">
-          <Item item={item} container="ingredients" />
-        </Slot>
-
-        <button
-          type="button"
-          className="flex min-w-0 flex-1 flex-col overflow-hidden pt-0.5 text-left"
-          onClick={onToggle}
-        >
-          <span className="truncate text-xs font-medium sm:text-sm">{item.displayName}</span>
-          <span className="text-muted-foreground truncate text-[10px] sm:text-xs">
-            {item.id.namespace}
-          </span>
-        </button>
-
-        <button
-          type="button"
-          className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors"
-          onClick={() => deleteCustomItem(item.uid)}
-        >
-          <Trash2Icon size={14} />
-          <span className="sr-only">Delete item</span>
-        </button>
-      </div>
+        <Item item={item} container="ingredients" />
+      </IngredientCard>
     );
   }
 
@@ -134,7 +124,7 @@ export const CustomItemEditor = ({
 
       <div className="grid gap-2 sm:grid-cols-2">
         <label className="text-muted-foreground flex flex-col gap-1 text-xs">
-          Name
+          Display Name
           <input
             value={draftName}
             className="border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset"
@@ -182,6 +172,11 @@ export const CustomItemEditor = ({
           </Slot>
         </div>
       </div>
+
+      <p className="text-foreground/70 text-xs leading-relaxed">
+        Custom items are placeholders used in generated recipes and tags. They are not added to
+        Minecraft.
+      </p>
     </div>
   );
 };

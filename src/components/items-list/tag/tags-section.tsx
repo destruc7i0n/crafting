@@ -4,7 +4,11 @@ import { ArrowLeftIcon, DownloadIcon, Trash2Icon } from "lucide-react";
 
 import { downloadBlob } from "@/data/datapack";
 import { generateTag } from "@/data/generate/tag";
-import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
+import {
+  getRawId,
+  identifierUniqueKey,
+  parseStringToMinecraftIdentifier,
+} from "@/data/models/identifier/utilities";
 import { Item } from "@/data/models/types";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
@@ -12,6 +16,7 @@ import { useTagStore } from "@/stores/tag";
 
 import { Item as IngredientItem } from "../../item/item";
 import { Slot } from "../../slot/slot";
+import { IngredientCard } from "../ingredient-card";
 import { InventoryGridContainer } from "../inventory-grid-container";
 import { AddTagForm } from "./add-tag-form";
 import { TagEditor } from "./tag-editor";
@@ -26,6 +31,8 @@ interface TagsSectionProps {
 
 const EMPTY_TAGS: Record<string, string[]> = {};
 const EMPTY_ITEMS: Item[] = [];
+
+const getTagFileName = (tagId: string) => parseStringToMinecraftIdentifier(tagId).id;
 
 export const TagsSection = ({
   search,
@@ -86,10 +93,7 @@ export const TagsSection = ({
     () =>
       tags.filter((tag) => {
         if (!normalizedSearch) return true;
-        const rawId = getRawId(getCustomTagIdentifier(tag));
-        return [tag.name, tag.namespace, rawId].some((value) =>
-          value.toLowerCase().includes(normalizedSearch),
-        );
+        return tag.id.toLowerCase().includes(normalizedSearch);
       }),
     [normalizedSearch, tags],
   );
@@ -118,7 +122,7 @@ export const TagsSection = ({
     const blob = new Blob([JSON.stringify(json, null, 2)], {
       type: "application/json",
     });
-    downloadBlob(blob, `${tag.name}.json`);
+    downloadBlob(blob, `${getTagFileName(tag.id)}.json`);
   };
 
   if (showAddTagForm && !expandedTagUid) {
@@ -144,7 +148,7 @@ export const TagsSection = ({
     const blob = new Blob([JSON.stringify(json, null, 2)], {
       type: "application/json",
     });
-    downloadBlob(blob, `${expandedTag.name}.json`);
+    downloadBlob(blob, `${getTagFileName(expandedTag.id)}.json`);
   };
 
   if (expandedTag) {
@@ -168,8 +172,9 @@ export const TagsSection = ({
           )}
 
           <div className="min-w-0 flex-1">
-            <div className="truncate text-sm font-medium">{expandedTag.name}</div>
-            <div className="text-muted-foreground truncate text-xs">{expandedTag.namespace}</div>
+            <span className="block truncate text-xs font-medium sm:text-sm" title={expandedTag.id}>
+              {expandedTag.id}
+            </span>
           </div>
 
           <button
@@ -217,48 +222,37 @@ export const TagsSection = ({
             if (!tagItem) return null;
 
             return (
-              <div
+              <IngredientCard
                 key={tag.uid}
-                className="border-border bg-muted/50 flex min-w-[180px] items-start gap-1.5 rounded-md border p-1 sm:gap-2 sm:p-1.5 lg:min-w-0"
+                label={tag.id}
+                onClick={() => setExpandedTagUid(tag.uid)}
+                className="min-w-[180px] items-center lg:min-w-0"
+                actions={
+                  <>
+                    <button
+                      type="button"
+                      value={tag.uid}
+                      className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
+                      onClick={handleDownloadTag}
+                      title="Download tag JSON"
+                    >
+                      <DownloadIcon size={14} />
+                    </button>
+
+                    <button
+                      type="button"
+                      value={tag.uid}
+                      className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors"
+                      onClick={(event) => handleDeleteTag(event.currentTarget.value)}
+                    >
+                      <Trash2Icon size={14} />
+                      <span className="sr-only">Delete tag</span>
+                    </button>
+                  </>
+                }
               >
-                <Slot className="shrink-0">
-                  <IngredientItem item={tagItem} container="ingredients" />
-                </Slot>
-
-                <button
-                  type="button"
-                  value={tag.uid}
-                  className="flex min-w-0 flex-1 flex-col overflow-hidden pt-0.5 text-left"
-                  onClick={(event) => setExpandedTagUid(event.currentTarget.value)}
-                >
-                  <span className="truncate text-xs font-medium sm:text-sm">{tag.name}</span>
-                  <span className="text-muted-foreground truncate text-[10px] sm:text-xs">
-                    {tag.namespace}
-                  </span>
-                </button>
-
-                <div className="flex shrink-0 items-center gap-0.5">
-                  <button
-                    type="button"
-                    value={tag.uid}
-                    className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
-                    onClick={handleDownloadTag}
-                    title="Download tag JSON"
-                  >
-                    <DownloadIcon size={14} />
-                  </button>
-
-                  <button
-                    type="button"
-                    value={tag.uid}
-                    className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors"
-                    onClick={(event) => handleDeleteTag(event.currentTarget.value)}
-                  >
-                    <Trash2Icon size={14} />
-                    <span className="sr-only">Delete tag</span>
-                  </button>
-                </div>
-              </div>
+                <IngredientItem item={tagItem} container="ingredients" />
+              </IngredientCard>
             );
           })}
         </div>

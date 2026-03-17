@@ -133,6 +133,11 @@ export const AddItemForm = ({ onClose }: AddItemFormProps) => {
       >
         Create Item
       </button>
+
+      <p className="text-foreground/70 text-xs leading-relaxed">
+        Custom items are placeholders used in generated recipes and tags. They are not added to
+        Minecraft.
+      </p>
     </div>
   );
 };

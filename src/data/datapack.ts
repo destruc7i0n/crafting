@@ -1,6 +1,7 @@
 import { javaMinecraftVersions } from "./constants";
 import { generateTag } from "./generate/tag";
 import { isVersionAtLeast } from "./generate/version-utils";
+import { parseStringToMinecraftIdentifier } from "./models/identifier/utilities";
 import { Tag } from "./models/types";
 import { MinecraftVersion } from "./types";
 
@@ -52,11 +53,15 @@ const getPackMetadata = (version: MinecraftVersion): PackMetadata => {
 };
 
 const generateTagFiles = (tags: Tag[]) => {
-  return tags.map((tag) => ({
-    namespace: tag.namespace,
-    id: tag.name,
-    data: generateTag(tag),
-  }));
+  return tags.map((tag) => {
+    const identifier = parseStringToMinecraftIdentifier(tag.id);
+
+    return {
+      namespace: identifier.namespace,
+      id: identifier.id,
+      data: generateTag(tag),
+    };
+  });
 };
 
 export const createDatapackBlob = async (
