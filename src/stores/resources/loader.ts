@@ -84,3 +84,6 @@ export function loadResources(version: MinecraftVersion): void {
   loadingVersions.add(version);
   fetchResourcesForVersion(version).catch(console.error);
 }
+
+// eagerly load latest version textures on load
+loadResources(latestMinecraftVersion);
