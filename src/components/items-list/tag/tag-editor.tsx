@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 
-import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
+import { identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, Tag, TagItem } from "@/data/models/types";
 import {
   isValidJavaNamespacedIdentifier,
@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
 import { TagValueGrid } from "./tag-value-grid";
-import { ValueList, ValueOption } from "./value-list";
+import { filterValueOptions, ValueList, ValueOption } from "./value-list";
 
 interface TagEditorProps {
   tag: Tag;
@@ -62,40 +62,10 @@ export const TagEditor = ({
     }
   };
 
-  const filteredValues = useMemo((): ValueOption[] => {
-    const normalized = valueSearch.trim().toLowerCase();
-    const options: ValueOption[] = [];
-
-    for (const item of items) {
-      if (
-        !normalized ||
-        item.displayName.toLowerCase().includes(normalized) ||
-        getRawId(item.id).toLowerCase().includes(normalized)
-      ) {
-        options.push({ kind: "item", item });
-      }
-    }
-
-    const allTagItems = [
-      ...vanillaTagItems,
-      ...tags
-        .filter((t) => t.uid !== tag.uid)
-        .map((t) => customTagItems[t.uid])
-        .filter(Boolean),
-    ];
-
-    for (const tagItem of allTagItems) {
-      if (
-        !normalized ||
-        getRawId(tagItem.id).toLowerCase().includes(normalized) ||
-        tagItem.displayName.toLowerCase().includes(normalized)
-      ) {
-        options.push({ kind: "tag", tagItem, rawId: getRawId(tagItem.id) });
-      }
-    }
-
-    return options;
-  }, [valueSearch, items, vanillaTagItems, tags, customTagItems, tag.uid]);
+  const filteredValues = useMemo(
+    () => filterValueOptions(valueSearch, items, vanillaTagItems, tags, customTagItems, tag.uid),
+    [valueSearch, items, vanillaTagItems, tags, customTagItems, tag.uid],
+  );
 
   const existingValueIds = useMemo(
     () => new Set(tag.values.map((v) => identifierUniqueKey(v.id))),

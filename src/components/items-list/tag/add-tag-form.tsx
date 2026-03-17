@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import { ArrowLeftIcon } from "lucide-react";
 
-import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
+import { identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, TagItem, TagValue } from "@/data/models/types";
 import {
   isValidJavaNamespacedIdentifier,
@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
 import { TagValueGrid } from "./tag-value-grid";
-import { ValueList, ValueOption } from "./value-list";
+import { filterValueOptions, ValueList, ValueOption } from "./value-list";
 
 interface AddTagFormProps {
   onClose: () => void;
@@ -72,37 +72,10 @@ export const AddTagForm = ({
     [draftValues],
   );
 
-  const filteredValues = useMemo((): ValueOption[] => {
-    const normalized = valueSearch.trim().toLowerCase();
-    const options: ValueOption[] = [];
-
-    for (const item of items) {
-      if (
-        !normalized ||
-        item.displayName.toLowerCase().includes(normalized) ||
-        getRawId(item.id).toLowerCase().includes(normalized)
-      ) {
-        options.push({ kind: "item", item });
-      }
-    }
-
-    const allTagItems = [
-      ...vanillaTagItems,
-      ...tags.map((t) => customTagItems[t.uid]).filter(Boolean),
-    ];
-
-    for (const tagItem of allTagItems) {
-      if (
-        !normalized ||
-        getRawId(tagItem.id).toLowerCase().includes(normalized) ||
-        tagItem.displayName.toLowerCase().includes(normalized)
-      ) {
-        options.push({ kind: "tag", tagItem, rawId: getRawId(tagItem.id) });
-      }
-    }
-
-    return options;
-  }, [valueSearch, items, vanillaTagItems, tags, customTagItems]);
+  const filteredValues = useMemo(
+    () => filterValueOptions(valueSearch, items, vanillaTagItems, tags, customTagItems),
+    [valueSearch, items, vanillaTagItems, tags, customTagItems],
+  );
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">

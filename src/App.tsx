@@ -1,13 +1,13 @@
 import { Layout } from "./components/layout/layout";
 import { useDndMonitor } from "./hooks/use-dnd-monitor";
-import { Index } from "./views/index";
+import { Main } from "./views/main";
 
 function App() {
   useDndMonitor();
 
   return (
     <Layout>
-      <Index />
+      <Main />
     </Layout>
   );
 }

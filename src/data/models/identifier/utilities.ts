@@ -1,5 +1,3 @@
-import { MinecraftVersion } from "@/data/types";
-
 import { MinecraftIdentifier } from "../types";
 
 const MINECRAFT_NAMESPACE = "minecraft";
@@ -49,25 +47,4 @@ export function stringifyMinecraftIdentifier(identifier: MinecraftIdentifier): s
     return `${identifier.id}${SEPARATOR}${identifier.data}`;
   }
   return `${identifier.namespace}${SEPARATOR}${identifier.id}`;
-}
-
-export function compareMinecraftVersions(a: MinecraftVersion, b: MinecraftVersion): number {
-  if (!a.includes(".")) {
-    // make this one rank higher
-    return -1;
-  }
-
-  const parts1 = a.split(".");
-  const parts2 = b.split(".");
-  for (let i = 0; i < Math.min(parts1.length, parts2.length); i++) {
-    const part1 = Number(parts1[i]);
-    const part2 = Number(parts2[i]);
-    if (part1 !== part2) {
-      if (part1 < part2) {
-        return -1;
-      }
-      return 1;
-    }
-  }
-  return 0;
 }

@@ -8,8 +8,10 @@ import {
   extractCraftingInput,
 } from "./crafting";
 import { createFormatStrategy } from "./format/item-formatter";
+import { FormatStrategy } from "./format/types";
 import {
   BedrockBody,
+  BedrockFormatVersion,
   BedrockRecipeMeta,
   CookingInput,
   GeneratedRecipe,
@@ -59,46 +61,48 @@ const extractTransmuteInput = (state: SingleRecipeState): TransmuteInput => ({
   category: state.category,
 });
 
+const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";
+
 const BEDROCK_RECIPE_META: Partial<Record<RecipeType, BedrockRecipeMeta>> = {
   [RecipeType.Smelting]: {
     wrapperKey: "minecraft:recipe_furnace",
     tags: ["furnace"],
-    formatVersion: "1.20.10",
+    formatVersion: BEDROCK_FORMAT_VERSION,
   },
   [RecipeType.Blasting]: {
     wrapperKey: "minecraft:recipe_furnace",
     tags: ["blast_furnace"],
-    formatVersion: "1.20.10",
+    formatVersion: BEDROCK_FORMAT_VERSION,
   },
   [RecipeType.CampfireCooking]: {
     wrapperKey: "minecraft:recipe_furnace",
     tags: ["campfire", "soul_campfire"],
-    formatVersion: "1.20.10",
+    formatVersion: BEDROCK_FORMAT_VERSION,
   },
   [RecipeType.Smoking]: {
     wrapperKey: "minecraft:recipe_furnace",
     tags: ["smoker"],
-    formatVersion: "1.20.10",
+    formatVersion: BEDROCK_FORMAT_VERSION,
   },
   [RecipeType.Stonecutter]: {
     wrapperKey: "minecraft:recipe_shapeless",
     tags: ["stonecutter"],
-    formatVersion: "1.20.10",
+    formatVersion: BEDROCK_FORMAT_VERSION,
   },
   [RecipeType.SmithingTrim]: {
     wrapperKey: "minecraft:recipe_smithing_trim",
     tags: ["smithing_table"],
-    formatVersion: "1.20.10",
+    formatVersion: BEDROCK_FORMAT_VERSION,
   },
   [RecipeType.SmithingTransform]: {
     wrapperKey: "minecraft:recipe_smithing_transform",
     tags: ["smithing_table"],
-    formatVersion: "1.20.10",
+    formatVersion: BEDROCK_FORMAT_VERSION,
   },
   [RecipeType.Smithing]: {
     wrapperKey: "minecraft:recipe_shapeless",
     tags: ["smithing_table"],
-    formatVersion: "1.20.10",
+    formatVersion: BEDROCK_FORMAT_VERSION,
   },
 };
 
@@ -109,7 +113,7 @@ const getBedrockRecipeMeta = (state: SingleRecipeState): BedrockRecipeMeta => {
         ? "minecraft:recipe_shapeless"
         : "minecraft:recipe_shaped",
       tags: ["crafting_table"],
-      formatVersion: "1.20.10",
+      formatVersion: BEDROCK_FORMAT_VERSION,
     };
   }
 
@@ -121,7 +125,7 @@ const getBedrockRecipeMeta = (state: SingleRecipeState): BedrockRecipeMeta => {
 const generateJavaInner = (
   state: SingleRecipeState,
   version: MinecraftVersion,
-  formatter: ReturnType<typeof createFormatStrategy>,
+  formatter: FormatStrategy,
 ): JavaRecipe => {
   switch (state.recipeType) {
     case RecipeType.Crafting:
@@ -144,10 +148,7 @@ const generateJavaInner = (
   }
 };
 
-const generateBedrockInner = (
-  state: SingleRecipeState,
-  formatter: ReturnType<typeof createFormatStrategy>,
-): BedrockBody => {
+const generateBedrockInner = (state: SingleRecipeState, formatter: FormatStrategy): BedrockBody => {
   switch (state.recipeType) {
     case RecipeType.Crafting:
       return buildBedrockCrafting(extractCraftingInput(state), formatter);

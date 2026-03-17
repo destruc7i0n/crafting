@@ -27,6 +27,8 @@ export const wrapBedrockRecipe = (
     ...inner,
   };
 
+  // TypeScript cannot narrow a computed property key into the correct
+  // discriminated union member, so the assertion is required here.
   return {
     format_version: options.formatVersion,
     [wrapperKey]: payload,

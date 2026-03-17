@@ -15,6 +15,10 @@ import {
 } from "./recipes/types";
 import { isVersionAtLeast } from "./version-utils";
 
+// Indices into the 3x3 crafting grid that are disabled in 2x2 mode:
+// slots 2 (col 3), 5 (col 3, row 2), 6–8 (entire row 3)
+const TWO_BY_TWO_DISABLED_INDICES = new Set([2, 5, 6, 7, 8]);
+
 // oxlint-disable-next-line typescript/no-misused-spread
 const PATTERN_CHARACTERS = ["#", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ", ..."abcdefghijklmnopqrstuvwxyz"];
 
@@ -236,13 +240,11 @@ export const extractCraftingInput = (state: SingleRecipeState): CraftingInput =>
     state.slots[SLOTS.crafting.slot8],
     state.slots[SLOTS.crafting.slot9],
   ].map((item, index) => {
-    const disabledSlots = [2, 5, 6, 7, 8];
-
     if (!state.crafting.twoByTwo) {
       return item;
     }
 
-    return disabledSlots.includes(index) ? undefined : item;
+    return TWO_BY_TWO_DISABLED_INDICES.has(index) ? undefined : item;
   }),
   result: state.slots[SLOTS.crafting.result],
   shapeless: state.crafting.shapeless,

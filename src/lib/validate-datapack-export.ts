@@ -1,6 +1,7 @@
 import { MinecraftVersion } from "@/data/types";
 import { SingleRecipeState } from "@/stores/recipe";
 
+import { getRecipeLabel } from "./recipe-name";
 import { validateRecipe } from "./validate-recipe";
 
 export interface DatapackRecipeIssue {
@@ -10,10 +11,6 @@ export interface DatapackRecipeIssue {
 }
 
 export const getDatapackRecipeFileName = (recipeName: string) => `${recipeName}.json`;
-
-const getRecipeLabel = (recipe: SingleRecipeState) => {
-  return recipe.recipeName?.trim() || "(unnamed)";
-};
 
 export const validateDatapackExport = (
   recipes: SingleRecipeState[],

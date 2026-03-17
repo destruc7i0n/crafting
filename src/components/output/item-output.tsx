@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import {
   AlertCircleIcon,
@@ -28,7 +28,7 @@ export const ItemOutput = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const recipeState = useRecipeStore(selectCurrentRecipe);
 
-  const generatedResult = (() => {
+  const generatedResult = useMemo(() => {
     try {
       return {
         recipe: generate(recipeState, minecraftVersion),
@@ -39,7 +39,7 @@ export const ItemOutput = () => {
         error: error instanceof Error ? error.message : "Failed to generate recipe",
       };
     }
-  })();
+  }, [recipeState, minecraftVersion]);
 
   const handleCopy = async () => {
     if (copied) return;

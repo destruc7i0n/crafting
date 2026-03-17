@@ -1,20 +1,14 @@
-import { createSelector } from "reselect";
-
 import { RecipeSlot } from "@/data/types";
 
 import { RecipeState } from "./index";
 
 export const selectCurrentRecipe = (state: RecipeState) => state.recipes[state.selectedRecipeIndex];
 
-export const selectCurrentRecipeSlot = (slot: RecipeSlot) =>
-  createSelector(selectCurrentRecipe, (recipe) => recipe?.slots[slot]);
+export const selectCurrentRecipeSlot = (slot: RecipeSlot) => (state: RecipeState) =>
+  selectCurrentRecipe(state)?.slots[slot];
 
-export const selectCurrentRecipeType = createSelector(
-  selectCurrentRecipe,
-  (recipe) => recipe?.recipeType,
-);
+export const selectCurrentRecipeType = (state: RecipeState) =>
+  selectCurrentRecipe(state)?.recipeType;
 
-export const selectCurrentRecipeName = createSelector(
-  selectCurrentRecipe,
-  (recipe) => recipe?.recipeName,
-);
+export const selectCurrentRecipeName = (state: RecipeState) =>
+  selectCurrentRecipe(state)?.recipeName;

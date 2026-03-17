@@ -3,6 +3,7 @@ import { MinecraftVersion } from "@/data/types";
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { bedrockIdentifierHint, isValidBedrockNamespacedIdentifier } from "./minecraft-identifier";
+import { getRecipeLabel } from "./recipe-name";
 import { validateRecipe } from "./validate-recipe";
 
 export interface BehaviorPackRecipeIssue {
@@ -10,10 +11,6 @@ export interface BehaviorPackRecipeIssue {
   name: string;
   errors: string[];
 }
-
-const getRecipeLabel = (recipe: SingleRecipeState) => {
-  return recipe.recipeName?.trim() || "(unnamed)";
-};
 
 export const validateBehaviorPackExport = (
   recipes: SingleRecipeState[],

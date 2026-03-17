@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { MinecraftVersion } from "@/data/types";
 import { VersionResourceData, useResourcesStore } from "@/stores/resources";
 import { loadResources } from "@/stores/resources/loader";
@@ -12,9 +14,9 @@ export const useResourcesForVersion = (): {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const resources = useResourcesStore(selectResourcesForVersion(minecraftVersion));
 
-  if (!resources) {
+  useEffect(() => {
     loadResources(minecraftVersion);
-  }
+  }, [minecraftVersion]);
 
   return { version: minecraftVersion, resources };
 };

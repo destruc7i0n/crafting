@@ -7,6 +7,7 @@ import { identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { CustomItem } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { parseMinecraftIdentifierInput } from "@/lib/minecraft-identifier";
+import { generateUid } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 
 export interface CustomItemState {
@@ -26,9 +27,6 @@ type CustomItemActions = {
 const getCustomItemIdentifierVersion = (version: MinecraftVersion) =>
   version === MinecraftVersion.Bedrock ? MinecraftVersion.V12111 : version;
 
-const createCustomItemUid = () =>
-  globalThis.crypto?.randomUUID?.() ?? `custom-item-${Math.random().toString(36).slice(2)}`;
-
 export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
   persist(
     immer((set, get) => ({
@@ -45,7 +43,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
 
         const item: CustomItem = {
           type: "custom_item",
-          uid: createCustomItemUid(),
+          uid: generateUid("custom-item"),
           id,
           displayName: name,
           texture: texture || NoTextureTexture,

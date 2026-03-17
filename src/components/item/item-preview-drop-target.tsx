@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { cloneItem } from "@/data/models/item/utilities";
 import { RecipeSlot } from "@/data/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
@@ -27,9 +29,14 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
     (state) => state.selectedItem?.source === "preview" && state.selectedItem.slot === slot,
   );
 
+  const dropTargetData = useMemo(
+    (): ItemPreviewDropTargetData => ({ type: "preview", slot }),
+    [slot],
+  );
+
   return (
     <SlotDropTarget<ItemPreviewDropTargetData>
-      data={{ type: "preview", slot }}
+      data={dropTargetData}
       {...props}
       className={cn(isSlotSelected && "ring-primary z-10 rounded ring-2", props.className)}
       canDrop={({ source }) => {

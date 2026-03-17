@@ -1,12 +1,13 @@
 import { NoTextureTexture } from "@/data/constants";
+import { isVersionAtLeast } from "@/data/generate/version-utils";
 import {
-  compareMinecraftVersions,
   getRawId,
   identifierUniqueKey,
   parseStringToMinecraftIdentifier,
 } from "@/data/models/identifier/utilities";
 import { IngredientItem, Item, Tag, TagItem, TagValue } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
+import { generateUid } from "@/lib/utils";
 
 const DEFAULT_TAG_NAME = "custom_tag";
 const DEFAULT_TAG_NAMESPACE = "crafting";
@@ -18,13 +19,8 @@ export const getCustomTagIdentifier = (tag: Pick<Tag, "id">) =>
 
 export const getTagLabel = (raw: string) => `#${raw}`;
 
-export const supportsItemTagsForVersion = (version: MinecraftVersion) => {
-  if (version === MinecraftVersion.Bedrock) {
-    return false;
-  }
-
-  return compareMinecraftVersions(version, MinecraftVersion.V113) >= 0;
-};
+export const supportsItemTagsForVersion = (version: MinecraftVersion) =>
+  isVersionAtLeast(version, MinecraftVersion.V113);
 
 export const createEmptyTag = (existingTags: Tag[]): Tag => {
   const existingNumbers = existingTags
@@ -34,7 +30,7 @@ export const createEmptyTag = (existingTags: Tag[]): Tag => {
   const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 
   return {
-    uid: globalThis.crypto?.randomUUID?.() ?? `tag-${Math.random().toString(36).slice(2)}`,
+    uid: generateUid("tag"),
     id: `${DEFAULT_TAG_NAMESPACE}:${DEFAULT_TAG_NAME}_${nextNumber}`,
     values: [],
   };

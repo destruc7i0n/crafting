@@ -22,19 +22,27 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
   const ref = useRef<HTMLDivElement | null>(null);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
 
+  // refs keep canDrop and data current without triggering listener recreation.
+  const canDropRef = useRef(canDrop);
+  canDropRef.current = canDrop;
+
+  const dataRef = useRef(data);
+  dataRef.current = data;
+
   useEffect(() => {
     const el = ref.current;
     invariant(el);
 
     return dropTargetForElements({
       element: el,
-      canDrop: ({ source }) => isItemDraggableData(source.data) && (canDrop?.({ source }) ?? true),
-      getData: () => data,
+      canDrop: ({ source }) =>
+        isItemDraggableData(source.data) && (canDropRef.current?.({ source }) ?? true),
+      getData: () => dataRef.current,
       onDragEnter: () => setIsDraggedOver(true),
       onDragLeave: () => setIsDraggedOver(false),
       onDrop: () => setIsDraggedOver(false),
     });
-  }, [canDrop, data]);
+  }, []); // ensure listeners are created only once
 
   return (
     <Slot ref={ref} hover={isDraggedOver} {...props}>

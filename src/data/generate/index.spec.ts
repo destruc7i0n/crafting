@@ -131,4 +131,48 @@ describe("generate orchestrator", () => {
       },
     });
   });
+
+  it("throws when bedrock recipe has no identifier", () => {
+    const state: SingleRecipeState = {
+      recipeType: RecipeType.Crafting,
+      group: "",
+      slots: {},
+      crafting: { shapeless: false, keepWhitespace: false },
+      cooking: { time: 0, experience: 0 },
+      bedrock: { identifier: "", priority: 0 },
+    };
+
+    expect(() => generate(state, MinecraftVersion.Bedrock)).toThrow(
+      "Bedrock recipes must have an identifier",
+    );
+  });
+
+  it("throws when bedrock recipe has whitespace-only identifier", () => {
+    const state: SingleRecipeState = {
+      recipeType: RecipeType.Crafting,
+      group: "",
+      slots: {},
+      crafting: { shapeless: false, keepWhitespace: false },
+      cooking: { time: 0, experience: 0 },
+      bedrock: { identifier: "   ", priority: 0 },
+    };
+
+    expect(() => generate(state, MinecraftVersion.Bedrock)).toThrow(
+      "Bedrock recipes must have an identifier",
+    );
+  });
+
+  it("throws when bedrock recipe has no bedrock options", () => {
+    const state: SingleRecipeState = {
+      recipeType: RecipeType.Crafting,
+      group: "",
+      slots: {},
+      crafting: { shapeless: false, keepWhitespace: false },
+      cooking: { time: 0, experience: 0 },
+    };
+
+    expect(() => generate(state, MinecraftVersion.Bedrock)).toThrow(
+      "Bedrock recipes must have an identifier",
+    );
+  });
 });
