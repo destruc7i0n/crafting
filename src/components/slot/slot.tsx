@@ -6,18 +6,19 @@ export type SlotProps = {
   width?: number;
   height?: number;
   hover?: boolean;
+  disabled?: boolean;
   children?: React.ReactNode;
 } & ComponentPropsWithoutRef<"div">;
 
 import classes from "./slot.module.css";
 
 export const Slot = forwardRef<HTMLDivElement, SlotProps>(
-  ({ width = 36, height = 36, hover, children, ...props }, ref) => {
+  ({ width = 36, height = 36, hover, disabled, children, ...props }, ref) => {
     return (
       <div
         {...props}
         ref={ref}
-        className={cn(classes.slot, hover && classes.active, props.className)}
+        className={cn(classes.slot, hover && classes.active, disabled && classes.disabled, props.className)}
         style={{
           width: `${width}px`,
           height: `${height}px`,
