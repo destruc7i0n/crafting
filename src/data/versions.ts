@@ -1,76 +1,41 @@
+import { isVersionAtLeast } from "./generate/version-utils";
 import { MinecraftVersion, RecipeType } from "./types";
 
+interface RecipeTypeAvailability {
+  type: RecipeType;
+  minVersion: MinecraftVersion;
+  maxVersion?: MinecraftVersion;
+  bedrock: boolean;
+}
+
+const RECIPE_TYPE_AVAILABILITY: RecipeTypeAvailability[] = [
+  { type: RecipeType.Crafting, minVersion: MinecraftVersion.V112, bedrock: true },
+  { type: RecipeType.Smelting, minVersion: MinecraftVersion.V113, bedrock: true },
+  { type: RecipeType.Blasting, minVersion: MinecraftVersion.V114, bedrock: true },
+  { type: RecipeType.CampfireCooking, minVersion: MinecraftVersion.V114, bedrock: true },
+  { type: RecipeType.Smoking, minVersion: MinecraftVersion.V114, bedrock: true },
+  { type: RecipeType.Stonecutter, minVersion: MinecraftVersion.V114, bedrock: true },
+  {
+    type: RecipeType.Smithing,
+    minVersion: MinecraftVersion.V116,
+    maxVersion: MinecraftVersion.V118,
+    bedrock: false,
+  },
+  { type: RecipeType.SmithingTransform, minVersion: MinecraftVersion.V119, bedrock: true },
+  { type: RecipeType.SmithingTrim, minVersion: MinecraftVersion.V119, bedrock: true },
+  // { type: RecipeType.CraftingTransmute, minVersion: MinecraftVersion.V1212, bedrock: false },
+];
+
 export const getSupportedRecipeTypesForVersion = (version: MinecraftVersion): RecipeType[] => {
-  switch (version) {
-    case MinecraftVersion.V112:
-      return [RecipeType.Crafting];
-    case MinecraftVersion.V113:
-      return [RecipeType.Crafting, RecipeType.Smelting];
-    case MinecraftVersion.V114:
-    case MinecraftVersion.V115:
-      return [
-        RecipeType.Crafting,
-        RecipeType.Smelting,
-        RecipeType.Blasting,
-        RecipeType.CampfireCooking,
-        RecipeType.Smoking,
-        RecipeType.Stonecutter,
-      ];
-    case MinecraftVersion.V116:
-    case MinecraftVersion.V117:
-    case MinecraftVersion.V118:
-      return [
-        RecipeType.Crafting,
-        RecipeType.Smelting,
-        RecipeType.Blasting,
-        RecipeType.CampfireCooking,
-        RecipeType.Smoking,
-        RecipeType.Stonecutter,
-        RecipeType.Smithing,
-      ];
-    case MinecraftVersion.V119:
-    case MinecraftVersion.V120:
-    case MinecraftVersion.V121:
-      return [
-        RecipeType.Crafting,
-        RecipeType.Smelting,
-        RecipeType.Blasting,
-        RecipeType.CampfireCooking,
-        RecipeType.Smoking,
-        RecipeType.Stonecutter,
-        RecipeType.SmithingTransform,
-        RecipeType.SmithingTrim,
-      ];
-    case MinecraftVersion.V1212:
-    case MinecraftVersion.V1214:
-    case MinecraftVersion.V1215:
-    case MinecraftVersion.V1216:
-    case MinecraftVersion.V1217:
-    case MinecraftVersion.V1219:
-    case MinecraftVersion.V12111:
-      return [
-        RecipeType.Crafting,
-        RecipeType.Smelting,
-        RecipeType.Blasting,
-        RecipeType.CampfireCooking,
-        RecipeType.Smoking,
-        RecipeType.Stonecutter,
-        // RecipeType.CraftingTransmute,
-        RecipeType.SmithingTransform,
-        RecipeType.SmithingTrim,
-      ];
-    case MinecraftVersion.Bedrock:
-      return [
-        RecipeType.Crafting,
-        RecipeType.Smelting,
-        RecipeType.Blasting,
-        RecipeType.CampfireCooking,
-        RecipeType.Smoking,
-        RecipeType.Stonecutter,
-        RecipeType.SmithingTransform,
-        RecipeType.SmithingTrim,
-      ];
+  if (version === MinecraftVersion.Bedrock) {
+    return RECIPE_TYPE_AVAILABILITY.filter((entry) => entry.bedrock).map((entry) => entry.type);
   }
+
+  return RECIPE_TYPE_AVAILABILITY.filter((entry) => {
+    if (!isVersionAtLeast(version, entry.minVersion)) return false;
+    if (entry.maxVersion && !isVersionAtLeast(entry.maxVersion, version)) return false;
+    return true;
+  }).map((entry) => entry.type);
 };
 
 export const coerceRecipeTypeForVersion = (
