@@ -14,7 +14,7 @@ export const JsonOutput = ({ json }: JsonOutputProps) => {
     <Refractor
       language="json"
       value={preview}
-      className="json-refractor !m-0 overflow-x-auto !rounded-t-none p-3 text-sm"
+      className="json-refractor !m-0 overflow-x-auto !rounded-lg !rounded-t-none p-3 text-sm"
     />
   );
 };
