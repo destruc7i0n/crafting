@@ -17,7 +17,7 @@ const ExperienceField = () => {
   const experience = useRecipeStore(
     (state) => state.recipes[state.selectedRecipeIndex]?.cooking.experience ?? 0,
   );
-  const setRecipeCoolingExperience = useRecipeStore((state) => state.setRecipeCoolingExperience);
+  const setRecipeCookingExperience = useRecipeStore((state) => state.setRecipeCookingExperience);
 
   return (
     <Field label="Experience" htmlFor="recipe-experience">
@@ -27,7 +27,7 @@ const ExperienceField = () => {
         min={0}
         step={0.1}
         value={experience}
-        onCommit={(v) => setRecipeCoolingExperience(Math.max(0, Number(v || 0)))}
+        onCommit={(v) => setRecipeCookingExperience(Math.max(0, Number(v || 0)))}
       />
     </Field>
   );

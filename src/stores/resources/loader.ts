@@ -82,7 +82,10 @@ async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void
 export function loadResources(version: MinecraftVersion): void {
   if (useResourcesStore.getState()[version] || loadingVersions.has(version)) return;
   loadingVersions.add(version);
-  fetchResourcesForVersion(version).catch(console.error);
+  fetchResourcesForVersion(version).catch((error) => {
+    loadingVersions.delete(version);
+    console.error(error);
+  });
 }
 
 // eagerly load latest version textures on load

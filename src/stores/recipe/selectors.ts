@@ -6,8 +6,16 @@ import { RecipeState } from "./index";
 
 export const selectCurrentRecipe = (state: RecipeState) => state.recipes[state.selectedRecipeIndex];
 
-export const selectCurrentRecipeSlot = (slot: RecipeSlot) =>
-  createSelector(selectCurrentRecipe, (recipe) => recipe?.slots[slot]);
+const slotSelectorCache = new Map<RecipeSlot, (state: RecipeState) => ReturnType<typeof selectCurrentRecipe>["slots"][RecipeSlot]>();
+
+export const selectCurrentRecipeSlot = (slot: RecipeSlot) => {
+  let selector = slotSelectorCache.get(slot);
+  if (!selector) {
+    selector = createSelector(selectCurrentRecipe, (recipe) => recipe?.slots[slot]);
+    slotSelectorCache.set(slot, selector);
+  }
+  return selector;
+};
 
 export const selectCurrentRecipeType = createSelector(
   selectCurrentRecipe,

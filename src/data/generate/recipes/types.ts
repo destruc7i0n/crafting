@@ -1,5 +1,5 @@
 import { IngredientItem } from "@/data/models/types";
-import { MinecraftVersion, RecipeType } from "@/data/types";
+import { RecipeType } from "@/data/types";
 
 export type EmptyObject = Record<string, never>;
 
@@ -253,5 +253,3 @@ export interface BedrockRecipeMeta {
   formatVersion: BedrockFormatVersion;
 }
 
-export const isBedrockVersion = (version: MinecraftVersion): version is MinecraftVersion.Bedrock =>
-  version === MinecraftVersion.Bedrock;

@@ -2,19 +2,11 @@ import { getRawId } from "@/data/models/identifier/utilities";
 import { MinecraftIdentifier } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 
-import { compareMinecraftVersions } from "../version-utils";
+import { isVersionAtLeast } from "../version-utils";
 import { FormatStrategy } from "./types";
 
 const hasPositiveCount = (count?: number): count is number =>
   typeof count === "number" && count > 0;
-
-const isAtLeast = (version: MinecraftVersion, minimum: MinecraftVersion) => {
-  if (version === MinecraftVersion.Bedrock) {
-    return false;
-  }
-
-  return compareMinecraftVersions(version, minimum) >= 0;
-};
 
 const addMinecraftPrefix = (baseType: string): string => {
   if (baseType.startsWith("minecraft:")) {
@@ -26,7 +18,7 @@ const addMinecraftPrefix = (baseType: string): string => {
 
 export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy => {
   const useObjectResult =
-    version === MinecraftVersion.Bedrock || isAtLeast(version, MinecraftVersion.V121);
+    version === MinecraftVersion.Bedrock || isVersionAtLeast(version, MinecraftVersion.V121);
 
   const getObjectResultValue = (identifier: MinecraftIdentifier) => {
     if (version === MinecraftVersion.V112) {
@@ -42,7 +34,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
       };
     }
 
-    if (isAtLeast(version, MinecraftVersion.V121)) {
+    if (isVersionAtLeast(version, MinecraftVersion.V121)) {
       // "id" key replaces "item" in 1.21+
       return { id: getRawId(identifier) };
     }
@@ -67,7 +59,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
         };
       }
 
-      if (isAtLeast(version, MinecraftVersion.V1212)) {
+      if (isVersionAtLeast(version, MinecraftVersion.V1212)) {
         return getRawId(identifier);
       }
 
@@ -81,7 +73,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
         throw new Error("Item tags are not supported in Java 1.12");
       }
 
-      if (isAtLeast(version, MinecraftVersion.V1212)) {
+      if (isVersionAtLeast(version, MinecraftVersion.V1212)) {
         return `#${tagId}`;
       }
 
@@ -128,5 +120,3 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
     },
   };
 };
-
-export const createItemFormatter = createFormatStrategy;

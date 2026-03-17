@@ -1,6 +1,6 @@
 import { NoTextureTexture } from "@/data/constants";
+import { isVersionAtLeast } from "@/data/generate/version-utils";
 import {
-  compareMinecraftVersions,
   getRawId,
   identifierUniqueKey,
   parseStringToMinecraftIdentifier,
@@ -18,13 +18,8 @@ export const getCustomTagIdentifier = (tag: Pick<Tag, "id">) =>
 
 export const getTagLabel = (raw: string) => `#${raw}`;
 
-export const supportsItemTagsForVersion = (version: MinecraftVersion) => {
-  if (version === MinecraftVersion.Bedrock) {
-    return false;
-  }
-
-  return compareMinecraftVersions(version, MinecraftVersion.V113) >= 0;
-};
+export const supportsItemTagsForVersion = (version: MinecraftVersion) =>
+  isVersionAtLeast(version, MinecraftVersion.V113);
 
 export const createEmptyTag = (existingTags: Tag[]): Tag => {
   const existingNumbers = existingTags
