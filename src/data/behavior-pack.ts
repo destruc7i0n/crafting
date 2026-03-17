@@ -32,10 +32,6 @@ export const createBehaviorPackBlob = async (
   const seenIdentifiers = new Set<string>();
   const seenFileNames = new Set<string>();
 
-  if (headerUuid === moduleUuid) {
-    throw new Error("Failed to generate unique pack UUIDs");
-  }
-
   zip.file(
     "manifest.json",
     JSON.stringify(
