@@ -297,7 +297,10 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
               {recipes.length > 1 && (
                 <button
                   type="button"
-                  className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 opacity-0 transition-all group-hover:opacity-100"
+                  className={cn(
+                    "text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors",
+                    mobile ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+                  )}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteRecipe(index, e);

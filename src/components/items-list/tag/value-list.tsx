@@ -45,7 +45,7 @@ export const ValueList = ({
       <span className="text-foreground text-xs font-medium">Add values</span>
 
       <input
-        type="text"
+        type="search"
         value={valueSearch}
         autoCapitalize="off"
         autoCorrect="off"

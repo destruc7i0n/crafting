@@ -38,6 +38,8 @@ export const ItemPreviewDropTarget = ({
   const canEditCount = currentRecipe
     ? canEditRecipeSlotCount(currentRecipe.recipeType, slot)
     : false;
+  // counts only appear for recipe types that support editing it
+  const shouldShowEditableCount = showCount && canEditCount;
 
   const commitCount = () => {
     if (!slotValue || slotValue.type === "tag_item") {
@@ -83,15 +85,9 @@ export const ItemPreviewDropTarget = ({
         }
       }}
     >
-      {slotValue && (
-        <Item
-          item={slotValue}
-          container="preview"
-          showCount={showCount && (!canEditCount || slotValue.type === "tag_item")}
-        />
-      )}
+      {slotValue && <Item item={slotValue} container="preview" />}
 
-      {canEditCount && slotValue && slotValue.type !== "tag_item" && !editingCount && (
+      {shouldShowEditableCount && slotValue && slotValue.type !== "tag_item" && !editingCount && (
         <button
           type="button"
           className="pointer-events-none absolute right-0 bottom-0 z-10"
@@ -106,7 +102,7 @@ export const ItemPreviewDropTarget = ({
         </button>
       )}
 
-      {canEditCount && slotValue && slotValue.type !== "tag_item" && editingCount && (
+      {shouldShowEditableCount && slotValue && slotValue.type !== "tag_item" && editingCount && (
         <input
           autoFocus
           type="number"
