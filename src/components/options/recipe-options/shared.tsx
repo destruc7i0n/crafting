@@ -21,10 +21,18 @@ export const HelpTooltip = ({ content }: HelpTooltipProps) => {
   );
 
   if (isTouchDevice) {
-    return <Popover content={content} placement="top">{trigger}</Popover>;
+    return (
+      <Popover content={content} placement="top">
+        {trigger}
+      </Popover>
+    );
   }
 
-  return <Tooltip content={content} placement="top">{trigger}</Tooltip>;
+  return (
+    <Tooltip content={content} placement="top">
+      {trigger}
+    </Tooltip>
+  );
 };
 
 interface CheckboxFieldProps {

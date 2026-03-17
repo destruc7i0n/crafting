@@ -1,5 +1,15 @@
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
+
+import {
+  flip,
+  offset,
+  shift,
+  useClientPoint,
+  useFloating,
+  useHover,
+  useInteractions,
+} from "@floating-ui/react";
 
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 
@@ -12,56 +22,40 @@ type TooltipProps = {
   children: React.ReactNode;
 };
 
-const TOOLTIP_OFFSET = 20;
-
-const positionTooltip = (tooltipEl: HTMLDivElement, mouseX: number, mouseY: number) => {
-  const { width, height } = tooltipEl.getBoundingClientRect();
-
-  let left = mouseX + TOOLTIP_OFFSET;
-  const top = mouseY - height / 2;
-
-  if (mouseX + width + TOOLTIP_OFFSET + 8 > document.body.clientWidth) {
-    left = mouseX - width - TOOLTIP_OFFSET;
-  }
-
-  tooltipEl.style.top = `${top}px`;
-  tooltipEl.style.left = `${left}px`;
-};
-
 const TooltipDesktop = ({ title, description, children, visible = true }: TooltipProps) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const tooltipRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
   const shouldShowTooltip = isHovering && visible;
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const el = tooltipRef.current;
-    if (el) positionTooltip(el, e.clientX, e.clientY);
-  }, []);
+  const { refs, floatingStyles, isPositioned, context } = useFloating({
+    open: shouldShowTooltip,
+    onOpenChange: setIsHovering,
+    placement: "right",
+    strategy: "fixed",
+    middleware: [
+      offset(16),
+      flip({ padding: 8, fallbackPlacements: ["left", "top"] }),
+      shift({ padding: 8 }),
+    ],
+  });
 
-  useLayoutEffect(() => {
-    if (!shouldShowTooltip) return;
-    const el = tooltipRef.current;
-    const wrapper = wrapperRef.current;
-    if (!el || !wrapper) return;
-
-    const rect = wrapper.getBoundingClientRect();
-    positionTooltip(el, rect.left + rect.width / 2, rect.top + rect.height / 2);
-  }, [shouldShowTooltip]);
+  const hover = useHover(context);
+  const clientPoint = useClientPoint(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([hover, clientPoint]);
 
   return (
-    <div
-      ref={wrapperRef}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-      onMouseMove={handleMouseMove}
-    >
+    <div ref={refs.setReference} {...getReferenceProps()}>
       {children}
 
       {shouldShowTooltip &&
         createPortal(
-          <TooltipDisplay ref={tooltipRef} title={title} description={description} />,
+          <TooltipDisplay
+            ref={refs.setFloating}
+            title={title}
+            description={description}
+            style={{ ...floatingStyles, ...(!isPositioned ? { visibility: "hidden" } : {}) }}
+            {...getFloatingProps()}
+          />,
           document.body,
         )}
     </div>

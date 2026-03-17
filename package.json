@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.9",
+    "@floating-ui/react": "^0.27.19",
     "@jongwooo/prism-theme-github": "^1.15.1",
     "@tanstack/react-virtual": "^3.13.23",
     "clsx": "^2.1.1",
