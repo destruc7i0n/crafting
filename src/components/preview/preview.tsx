@@ -6,7 +6,9 @@ import { downloadBlob } from "@/data/datapack";
 import { RecipeType } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
+import { useUIStore } from "@/stores/ui";
 
+import { ItemInfoBox } from "../item/item-info-box";
 import { CraftingGridPreview } from "./crafting-grid";
 import { FurnacePreview } from "./furnace";
 import { SmithingPreview } from "./smithing";
@@ -16,6 +18,9 @@ export const Preview = memo(() => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
   const previewRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const selectedPreviewItem = useUIStore((state) =>
+    state.selectedItem?.source === "preview" ? state.selectedItem : undefined,
+  );
 
   let preview: ReactNode = null;
 
@@ -120,6 +125,12 @@ export const Preview = memo(() => {
           </div>
         </div>
       </div>
+
+      {selectedPreviewItem && (
+        <div className="px-2 pt-2 lg:hidden">
+          <ItemInfoBox selection={selectedPreviewItem} />
+        </div>
+      )}
     </div>
   );
 });

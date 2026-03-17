@@ -2,17 +2,22 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { IngredientItem } from "@/data/models/types";
+import { RecipeSlot } from "@/data/types";
+
+export type ItemSelection =
+  | { source: "ingredients"; item: IngredientItem }
+  | { source: "preview"; item: IngredientItem; slot: RecipeSlot };
 
 export interface UIState {
   isMobileRecipeSidebarOpen: boolean;
   isRecipeSidebarExpanded: boolean;
-  selectedIngredient?: IngredientItem;
+  selectedItem?: ItemSelection;
 }
 
 export interface UIStateActions {
   setMobileRecipeSidebarOpen: (isOpen: boolean) => void;
   toggleRecipeSidebar: () => void;
-  setSelectedIngredient: (item?: IngredientItem) => void;
+  setSelectedItem: (item?: ItemSelection) => void;
 }
 
 export const useUIStore = create<UIState & UIStateActions>()(
@@ -20,11 +25,11 @@ export const useUIStore = create<UIState & UIStateActions>()(
     (set) => ({
       isMobileRecipeSidebarOpen: false,
       isRecipeSidebarExpanded: true,
-      selectedIngredient: undefined,
+      selectedItem: undefined,
       setMobileRecipeSidebarOpen: (isOpen) => set({ isMobileRecipeSidebarOpen: isOpen }),
       toggleRecipeSidebar: () =>
         set((state) => ({ isRecipeSidebarExpanded: !state.isRecipeSidebarExpanded })),
-      setSelectedIngredient: (item) => set({ selectedIngredient: item }),
+      setSelectedItem: (item) => set({ selectedItem: item }),
     }),
     {
       name: "crafting-ui",

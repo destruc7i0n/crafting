@@ -41,7 +41,7 @@ export const getRawId = (id: MinecraftIdentifier): string => `${id.namespace}${S
 export const identifierUniqueKey = (id: MinecraftIdentifier): string =>
   id.data !== undefined ? `${getRawId(id)}:${id.data}` : getRawId(id);
 
-// same string as identifierUniqueKey, named for display contexts
+// same string as identifierUniqueKey, used for display purposes
 export const getFullId = (id: MinecraftIdentifier): string => identifierUniqueKey(id);
 
 export function stringifyMinecraftIdentifier(identifier: MinecraftIdentifier): string {
