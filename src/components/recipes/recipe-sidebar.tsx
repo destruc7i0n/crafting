@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 
 import {
   AlertTriangleIcon,
@@ -50,16 +50,19 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   const toggleRecipeSidebar = useUIStore((state) => state.toggleRecipeSidebar);
 
   const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
-  const invalidRecipes =
-    minecraftVersion === MinecraftVersion.Bedrock
-      ? validateBehaviorPackExport(recipes).map((recipe) => ({
-          name: recipe.name,
-          errors: recipe.errors,
-        }))
-      : validateDatapackExport(recipes, minecraftVersion).map((recipe) => ({
-          name: recipe.name,
-          errors: recipe.errors,
-        }));
+  const invalidRecipes = useMemo(
+    () =>
+      minecraftVersion === MinecraftVersion.Bedrock
+        ? validateBehaviorPackExport(recipes).map((recipe) => ({
+            name: recipe.name,
+            errors: recipe.errors,
+          }))
+        : validateDatapackExport(recipes, minecraftVersion).map((recipe) => ({
+            name: recipe.name,
+            errors: recipe.errors,
+          })),
+    [recipes, minecraftVersion],
+  );
   const canDownloadPack = invalidRecipes.length === 0;
   let downloadConfig: DownloadConfig | null = null;
 

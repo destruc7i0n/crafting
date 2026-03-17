@@ -1,19 +1,15 @@
 import { useMemo, useRef, useState } from "react";
 
-import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
-import { ItemPreview } from "@/components/item/item-preview";
-import { ItemTooltip } from "@/components/tooltip/item-tooltip";
-import { getFullId, getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
+import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, Tag, TagItem } from "@/data/models/types";
 import {
   isValidJavaNamespacedIdentifier,
   javaNamespacedIdentifierHint,
 } from "@/lib/minecraft-identifier";
-import { getTagLabel, resolveTagValues } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
-import { Slot } from "../../slot/slot";
+import { TagValueGrid } from "./tag-value-grid";
 import { ValueList, ValueOption } from "./value-list";
 
 interface TagEditorProps {
@@ -137,48 +133,13 @@ export const TagEditor = ({
           <span className="text-muted-foreground text-xs">{tag.values.length}</span>
         </div>
 
-        {tag.values.length > 0 ? (
-          <div className="flex flex-wrap">
-            {tag.values.map((value, index) => {
-              const itemIds =
-                value.type === "item"
-                  ? [identifierUniqueKey(value.id)]
-                  : resolveTagValues([value], tags, vanillaTags);
-              const directItem =
-                value.type === "item" ? itemsById?.[identifierUniqueKey(value.id)] : undefined;
-              const label =
-                value.type === "item"
-                  ? (directItem?.displayName ?? getRawId(value.id))
-                  : getTagLabel(getRawId(value.id));
-
-              return (
-                <ItemTooltip
-                  key={`${getRawId(value.id)}-${index}`}
-                  title={label}
-                  description={getFullId(value.id)}
-                >
-                  <button
-                    type="button"
-                    className="relative"
-                    onClick={() => removeValueFromTagByIndex(tag.uid, index)}
-                  >
-                    <Slot>
-                      {value.type === "item" && directItem ? (
-                        <ItemPreview alt={directItem.displayName} texture={directItem.texture} />
-                      ) : (
-                        <CyclingItemPreview alt={label} itemIds={itemIds} />
-                      )}
-                    </Slot>
-                  </button>
-                </ItemTooltip>
-              );
-            })}
-          </div>
-        ) : (
-          <p className="text-muted-foreground text-sm">
-            No values yet. Search below to add items or tags.
-          </p>
-        )}
+        <TagValueGrid
+          values={tag.values}
+          tags={tags}
+          vanillaTags={vanillaTags}
+          itemsById={itemsById}
+          onClick={(index) => removeValueFromTagByIndex(tag.uid, index)}
+        />
       </div>
 
       <ValueList

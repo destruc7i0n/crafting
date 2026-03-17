@@ -95,12 +95,6 @@ export const ItemsSection = ({
   const customItems = useCustomItemStore((state) => state.customItems);
   const [expandedItemUid, setExpandedItemUid] = useState<string | null>(null);
 
-  const filteredItems = useMemo(() => {
-    if (!items) return [];
-    if (!search) return items;
-    return items.filter((item) => item.displayName.toLowerCase().includes(search.toLowerCase()));
-  }, [items, search]);
-
   const filteredCustomItems = useMemo(() => {
     if (!search) return customItems;
     const lower = search.toLowerCase();
@@ -163,7 +157,7 @@ export const ItemsSection = ({
         </span>
       )}
 
-      <VirtualizedItemGrid items={filteredItems} />
+      <VirtualizedItemGrid items={items} />
     </div>
   );
 };

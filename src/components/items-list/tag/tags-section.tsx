@@ -1,4 +1,4 @@
-import { useMemo, type MouseEvent } from "react";
+import { useMemo } from "react";
 
 import { ArrowLeftIcon, DownloadIcon, Trash2Icon } from "lucide-react";
 
@@ -114,8 +114,8 @@ export const TagsSection = ({
     }
   };
 
-  const handleDownloadTag = (event: MouseEvent<HTMLButtonElement>) => {
-    const tag = tagsByUid[event.currentTarget.value];
+  const handleDownloadTag = (tagUid: string) => {
+    const tag = tagsByUid[tagUid];
     if (!tag) return;
 
     const json = generateTag(tag);
@@ -141,15 +141,6 @@ export const TagsSection = ({
   }
 
   const expandedTag = tags.find((tag) => tag.uid === expandedTagUid);
-  const handleDownloadExpandedTag = () => {
-    if (!expandedTag) return;
-
-    const json = generateTag(expandedTag);
-    const blob = new Blob([JSON.stringify(json, null, 2)], {
-      type: "application/json",
-    });
-    downloadBlob(blob, `${getTagFileName(expandedTag.id)}.json`);
-  };
 
   if (expandedTag) {
     const tagItem = customTagItems[expandedTag.uid];
@@ -180,7 +171,7 @@ export const TagsSection = ({
           <button
             type="button"
             className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
-            onClick={handleDownloadExpandedTag}
+            onClick={() => handleDownloadTag(expandedTag.uid)}
             title="Download tag JSON"
           >
             <DownloadIcon size={14} />
@@ -231,9 +222,8 @@ export const TagsSection = ({
                   <>
                     <button
                       type="button"
-                      value={tag.uid}
                       className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
-                      onClick={handleDownloadTag}
+                      onClick={() => handleDownloadTag(tag.uid)}
                       title="Download tag JSON"
                     >
                       <DownloadIcon size={14} />
