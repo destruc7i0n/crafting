@@ -29,11 +29,17 @@ export const ItemOutput = () => {
   const recipeState = useRecipeStore(selectCurrentRecipe);
 
   const generatedResult = (() => {
+    // #region agent log
+    console.log('[DEBUG][ItemOutput] generating', { recipeType: recipeState?.recipeType, version: minecraftVersion, slotsKeys: recipeState?.slots ? Object.keys(recipeState.slots) : 'none' });
+    // #endregion
     try {
       return {
         recipe: generate(recipeState, minecraftVersion),
       };
     } catch (error) {
+      // #region agent log
+      console.log('[DEBUG][ItemOutput] generate error:', (error as Error)?.message);
+      // #endregion
       return {
         recipe: {},
         error: error instanceof Error ? error.message : "Failed to generate recipe",
