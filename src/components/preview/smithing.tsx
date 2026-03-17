@@ -1,4 +1,5 @@
 import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
+import { ItemPreviewResultSlot } from "../item/item-preview-result-slot";
 
 export const SmithingPreview = () => {
   return (
@@ -19,9 +20,8 @@ export const SmithingPreview = () => {
         style={{ position: "absolute", bottom: 42, left: 14 + 36 * 2 }}
       />
 
-      <ItemPreviewDropTarget
+      <ItemPreviewResultSlot
         slot="smithing.result"
-        showCount
         style={{ position: "absolute", bottom: 42, left: 194 }}
       />
     </div>

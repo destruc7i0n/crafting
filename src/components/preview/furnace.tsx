@@ -1,4 +1,5 @@
 import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
+import { ItemPreviewResultSlot } from "../item/item-preview-result-slot";
 
 export const FurnacePreview = () => {
   return (
@@ -11,9 +12,8 @@ export const FurnacePreview = () => {
         style={{ position: "absolute", top: 32, left: 110 }}
       />
 
-      <ItemPreviewDropTarget
+      <ItemPreviewResultSlot
         slot="cooking.result"
-        showCount
         height={52}
         width={52}
         style={{ position: "absolute", top: 60, right: 78 }}

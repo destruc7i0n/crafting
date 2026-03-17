@@ -1,4 +1,5 @@
 import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
+import { ItemPreviewResultSlot } from "../item/item-preview-result-slot";
 
 export const StonecutterPreview = () => {
   return (
@@ -11,9 +12,8 @@ export const StonecutterPreview = () => {
         style={{ position: "absolute", top: 64, left: 38 }}
       />
 
-      <ItemPreviewDropTarget
+      <ItemPreviewResultSlot
         slot="stonecutter.result"
-        showCount
         width={52}
         height={52}
         style={{ position: "absolute", top: 56, right: 24 }}

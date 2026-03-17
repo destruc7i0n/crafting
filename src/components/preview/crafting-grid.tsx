@@ -2,6 +2,7 @@ import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 
 import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
+import { ItemPreviewResultSlot } from "../item/item-preview-result-slot";
 
 const slotStyles = {
   "crafting.1": { position: "absolute", top: 32, left: 58 },
@@ -49,9 +50,8 @@ export const CraftingGridPreview = () => {
           <CraftingArrow />
         </div>
 
-        <ItemPreviewDropTarget
+        <ItemPreviewResultSlot
           slot="crafting.result"
-          showCount
           height={52}
           width={52}
           style={{
@@ -74,9 +74,8 @@ export const CraftingGridPreview = () => {
         <ItemPreviewDropTarget key={slot} slot={slot} style={slotStyles[slot]} />
       ))}
 
-      <ItemPreviewDropTarget
+      <ItemPreviewResultSlot
         slot="crafting.result"
-        showCount
         height={52}
         width={52}
         style={{ position: "absolute", top: 60, right: 62 }}
