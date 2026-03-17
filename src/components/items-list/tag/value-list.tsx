@@ -47,6 +47,9 @@ export const ValueList = ({
       <input
         type="text"
         value={valueSearch}
+        autoCapitalize="off"
+        autoCorrect="off"
+        spellCheck={false}
         onChange={(event) => onSearchChange(event.target.value)}
         placeholder="Search items and tags..."
         className="border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset"

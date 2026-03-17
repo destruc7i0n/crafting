@@ -106,6 +106,9 @@ export const ItemsList = () => {
             className="border-input bg-background text-foreground placeholder:text-muted-foreground focus:ring-ring h-8 min-w-0 flex-1 appearance-none rounded-md border px-2 text-sm outline-hidden transition-colors focus:ring-2 focus:ring-inset"
             placeholder="Search..."
             value={search}
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
             onChange={(event) => setSearch(event.target.value)}
           />
         )}
@@ -146,6 +149,9 @@ export const ItemsList = () => {
           className="border-input bg-background text-foreground placeholder:font-minecraft placeholder:text-muted-foreground hover:bg-accent focus:ring-ring hidden w-full appearance-none rounded-md border px-3 py-2 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset lg:block"
           placeholder={tab === "tags" ? "Search Tags..." : "Search Items..."}
           value={search}
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
           onChange={(event) => setSearch(event.target.value)}
         />
       )}

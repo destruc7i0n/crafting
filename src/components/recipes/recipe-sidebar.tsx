@@ -256,6 +256,9 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                 <input
                   autoFocus
                   value={editingValue}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck={false}
                   className="border-input bg-background text-foreground w-full rounded border px-1 py-0.5 text-sm"
                   onChange={(e) => setEditingValue(e.target.value)}
                   onBlur={() => commitRename(index)}

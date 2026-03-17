@@ -63,6 +63,9 @@ const FileNameField = () => {
         <input
           type="text"
           value={draft}
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
           onChange={(event) => setDraft(event.target.value)}
           onBlur={commit}
           onKeyDown={(e) => {

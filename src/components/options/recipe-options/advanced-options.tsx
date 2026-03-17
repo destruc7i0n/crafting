@@ -42,6 +42,9 @@ const GroupField = () => {
         id="recipe-group"
         type="text"
         value={group}
+        autoCapitalize="off"
+        autoCorrect="off"
+        spellCheck={false}
         onCommit={(v) => setRecipeGroup(v)}
       />
     </Field>
@@ -100,6 +103,9 @@ const SmithingPatternField = () => {
         type="text"
         value={smithingTrimPattern}
         onCommit={(v) => setRecipeSmithingTrimPattern(v || undefined)}
+        autoCapitalize="off"
+        autoCorrect="off"
+        spellCheck={false}
         placeholder="minecraft:silence"
       />
     </Field>
