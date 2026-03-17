@@ -4,8 +4,7 @@ type RecipeNameLike = {
 
 export const sanitizeRecipeName = (value: string) => value.replace(/[^a-zA-Z0-9_]/g, "");
 
-export const getRecipeLabel = (recipe: RecipeNameLike) =>
-  recipe.recipeName?.trim() || "(unnamed)";
+export const getRecipeLabel = (recipe: RecipeNameLike) => recipe.recipeName?.trim() || "(unnamed)";
 
 export const isDuplicateRecipeName = (
   name: string,

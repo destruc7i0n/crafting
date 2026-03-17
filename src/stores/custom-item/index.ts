@@ -27,7 +27,6 @@ type CustomItemActions = {
 const getCustomItemIdentifierVersion = (version: MinecraftVersion) =>
   version === MinecraftVersion.Bedrock ? MinecraftVersion.V12111 : version;
 
-
 export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
   persist(
     immer((set, get) => ({

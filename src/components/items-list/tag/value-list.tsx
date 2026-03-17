@@ -39,7 +39,7 @@ export function filterValueOptions(
   const allTagItems = [
     ...vanillaTagItems,
     ...tags
-      .filter((t) => t.uid !== excludeTagUid)
+      .filter((t) => !excludeTagUid || t.uid !== excludeTagUid)
       .map((t) => customTagItems[t.uid])
       .filter(Boolean),
   ];

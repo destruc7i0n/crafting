@@ -252,4 +252,3 @@ export interface BedrockRecipeMeta {
   tags: BedrockTag[];
   formatVersion: BedrockFormatVersion;
 }
-

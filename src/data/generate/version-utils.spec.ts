@@ -12,6 +12,11 @@ describe("compareMinecraftVersions", () => {
     expect(compareMinecraftVersions("1.21.2", "1.21.2")).toBe(0);
   });
 
+  it("treats missing trailing segments as zero", () => {
+    expect(compareMinecraftVersions("1.21", "1.21.0")).toBe(0);
+    expect(compareMinecraftVersions("1.21.0", "1.21")).toBe(0);
+  });
+
   it("compares higher and lower versions", () => {
     expect(compareMinecraftVersions("1.21.4", "1.21.2")).toBe(1);
     expect(compareMinecraftVersions("1.20", "1.21")).toBe(-1);
@@ -21,6 +26,10 @@ describe("compareMinecraftVersions", () => {
 describe("isVersionAtLeast", () => {
   it("returns true for same version", () => {
     expect(isVersionAtLeast(MinecraftVersion.V1212, MinecraftVersion.V1212)).toBe(true);
+  });
+
+  it("returns false when minimum is Bedrock", () => {
+    expect(isVersionAtLeast(MinecraftVersion.V121, MinecraftVersion.Bedrock)).toBe(false);
   });
 
   it("returns false for bedrock comparisons", () => {

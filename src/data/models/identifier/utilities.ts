@@ -48,4 +48,3 @@ export function stringifyMinecraftIdentifier(identifier: MinecraftIdentifier): s
   }
   return `${identifier.namespace}${SEPARATOR}${identifier.id}`;
 }
-

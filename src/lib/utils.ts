@@ -8,4 +8,5 @@ export function cn(...inputs: ClassValue[]) {
 let uidCounter = 0;
 
 export const generateUid = (prefix = "id"): string =>
-  globalThis.crypto?.randomUUID?.() ?? `${prefix}-${(++uidCounter).toString(36)}-${Math.random().toString(36).slice(2)}`;
+  globalThis.crypto?.randomUUID?.() ??
+  `${prefix}-${(++uidCounter).toString(36)}-${Math.random().toString(36).slice(2)}`;

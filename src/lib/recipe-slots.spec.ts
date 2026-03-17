@@ -114,9 +114,18 @@ describe("findFirstEmptyRecipeSlot", () => {
   it("returns undefined when all slots are full", () => {
     const recipe = makeRecipe({
       slots: Object.fromEntries(
-        ["crafting.1", "crafting.2", "crafting.3", "crafting.4", "crafting.5", "crafting.6", "crafting.7", "crafting.8", "crafting.9", "crafting.result"].map(
-          (s) => [s, makeItem()],
-        ),
+        [
+          "crafting.1",
+          "crafting.2",
+          "crafting.3",
+          "crafting.4",
+          "crafting.5",
+          "crafting.6",
+          "crafting.7",
+          "crafting.8",
+          "crafting.9",
+          "crafting.result",
+        ].map((s) => [s, makeItem()]),
       ),
     });
     expect(findFirstEmptyRecipeSlot(recipe, makeItem())).toBeUndefined();

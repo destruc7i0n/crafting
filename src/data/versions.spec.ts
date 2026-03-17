@@ -24,6 +24,16 @@ describe("getSupportedRecipeTypesForVersion", () => {
     expect(types).not.toContain(RecipeType.Smithing);
   });
 
+  it("1.15 does not yet have legacy smithing", () => {
+    expect(getSupportedRecipeTypesForVersion(MinecraftVersion.V115)).not.toContain(
+      RecipeType.Smithing,
+    );
+  });
+
+  it("1.17 has legacy smithing", () => {
+    expect(getSupportedRecipeTypesForVersion(MinecraftVersion.V117)).toContain(RecipeType.Smithing);
+  });
+
   it("1.16 adds legacy smithing", () => {
     const types = getSupportedRecipeTypesForVersion(MinecraftVersion.V116);
     expect(types).toContain(RecipeType.Smithing);

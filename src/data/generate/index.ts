@@ -148,10 +148,7 @@ const generateJavaInner = (
   }
 };
 
-const generateBedrockInner = (
-  state: SingleRecipeState,
-  formatter: FormatStrategy,
-): BedrockBody => {
+const generateBedrockInner = (state: SingleRecipeState, formatter: FormatStrategy): BedrockBody => {
   switch (state.recipeType) {
     case RecipeType.Crafting:
       return buildBedrockCrafting(extractCraftingInput(state), formatter);
