@@ -2,17 +2,13 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
+import { computePosition, type Placement } from "@/lib/popup-position";
 
 type TooltipProps = {
   content: string;
   children: React.ReactNode;
-  placement?: "top" | "right" | "bottom" | "left";
+  placement?: Placement;
 };
-
-const GAP = 8;
-const VIEWPORT_PADDING = 8;
-
-const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
 const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) => {
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -30,82 +26,7 @@ const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) 
     const rect = trigger.getBoundingClientRect();
     const { width: tooltipWidth, height: tooltipHeight } = tooltip.getBoundingClientRect();
 
-    const getPosition = (side: NonNullable<TooltipProps["placement"]>) => {
-      switch (side) {
-        case "top":
-          return {
-            top: rect.top - tooltipHeight - GAP,
-            left: rect.left + rect.width / 2 - tooltipWidth / 2,
-          };
-        case "bottom":
-          return {
-            top: rect.bottom + GAP,
-            left: rect.left + rect.width / 2 - tooltipWidth / 2,
-          };
-        case "left":
-          return {
-            top: rect.top + rect.height / 2 - tooltipHeight / 2,
-            left: rect.left - tooltipWidth - GAP,
-          };
-        case "right":
-        default:
-          return {
-            top: rect.top + rect.height / 2 - tooltipHeight / 2,
-            left: rect.right + GAP,
-          };
-      }
-    };
-
-    const getFallbackPlacement = (side: NonNullable<TooltipProps["placement"]>) => {
-      switch (side) {
-        case "top":
-          return "bottom";
-        case "bottom":
-          return "top";
-        case "left":
-          return "right";
-        case "right":
-        default:
-          return "left";
-      }
-    };
-
-    let nextPosition = getPosition(placement);
-
-    if (placement === "top" && nextPosition.top < VIEWPORT_PADDING) {
-      nextPosition = getPosition(getFallbackPlacement(placement));
-    }
-
-    if (
-      placement === "bottom" &&
-      nextPosition.top + tooltipHeight > window.innerHeight - VIEWPORT_PADDING
-    ) {
-      nextPosition = getPosition(getFallbackPlacement(placement));
-    }
-
-    if (placement === "left" && nextPosition.left < VIEWPORT_PADDING) {
-      nextPosition = getPosition(getFallbackPlacement(placement));
-    }
-
-    if (
-      placement === "right" &&
-      nextPosition.left + tooltipWidth > window.innerWidth - VIEWPORT_PADDING
-    ) {
-      nextPosition = getPosition(getFallbackPlacement(placement));
-    }
-
-    const left = clamp(
-      nextPosition.left,
-      VIEWPORT_PADDING,
-      Math.max(VIEWPORT_PADDING, window.innerWidth - tooltipWidth - VIEWPORT_PADDING),
-    );
-    const top = clamp(
-      nextPosition.top,
-      VIEWPORT_PADDING,
-      Math.max(VIEWPORT_PADDING, window.innerHeight - tooltipHeight - VIEWPORT_PADDING),
-    );
-
-    setPosition({ top, left });
+    setPosition(computePosition(placement, rect, tooltipWidth, tooltipHeight));
   }, [isHovering, placement]);
 
   return (
