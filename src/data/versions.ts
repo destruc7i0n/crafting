@@ -69,6 +69,8 @@ export const getSupportedRecipeTypesForVersion = (version: MinecraftVersion): Re
         RecipeType.Stonecutter,
         RecipeType.SmithingTransform,
         RecipeType.SmithingTrim,
+        RecipeType.BrewingContainer,
+        RecipeType.BrewingMix,
       ];
   }
 };

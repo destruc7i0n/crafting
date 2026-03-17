@@ -1,6 +1,7 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
+import { buildBedrock as buildBedrockBrewing, extractBrewingInput } from "./brewing";
 import { buildBedrock as buildBedrockCooking, buildJava as buildJavaCooking } from "./cooking";
 import {
   buildBedrock as buildBedrockCrafting,
@@ -100,6 +101,16 @@ const BEDROCK_RECIPE_META: Partial<Record<RecipeType, BedrockRecipeMeta>> = {
     tags: ["smithing_table"],
     formatVersion: "1.20.10",
   },
+  [RecipeType.BrewingContainer]: {
+    wrapperKey: "minecraft:recipe_brewing_container",
+    tags: ["brewing_stand"],
+    formatVersion: "1.20.10",
+  },
+  [RecipeType.BrewingMix]: {
+    wrapperKey: "minecraft:recipe_brewing_mix",
+    tags: ["brewing_stand"],
+    formatVersion: "1.20.10",
+  },
 };
 
 const getBedrockRecipeMeta = (state: SingleRecipeState): BedrockRecipeMeta => {
@@ -162,6 +173,9 @@ const generateBedrockInner = (
       return buildBedrockSmithing(extractSmithingInput(state), formatter);
     case RecipeType.Stonecutter:
       return buildBedrockStonecutter(extractStonecutterInput(state), formatter);
+    case RecipeType.BrewingContainer:
+    case RecipeType.BrewingMix:
+      return buildBedrockBrewing(extractBrewingInput(state));
     default:
       throw new Error(`Unsupported Bedrock recipe type: ${state.recipeType}`);
   }

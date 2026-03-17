@@ -9,6 +9,7 @@ import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useUIStore } from "@/stores/ui";
 
 import { ItemInfoBox } from "../item/item-info-box";
+import { BrewingStandPreview } from "./brewing-stand";
 import { CraftingGridPreview } from "./crafting-grid";
 import { FurnacePreview } from "./furnace";
 import { SmithingPreview } from "./smithing";
@@ -44,6 +45,11 @@ export const Preview = memo(() => {
     }
     case RecipeType.Stonecutter: {
       preview = <StonecutterPreview />;
+      break;
+    }
+    case RecipeType.BrewingContainer:
+    case RecipeType.BrewingMix: {
+      preview = <BrewingStandPreview />;
       break;
     }
     default: {

@@ -1,3 +1,4 @@
+import { validateBrewing } from "@/data/generate/brewing";
 import { validateCooking } from "@/data/generate/cooking";
 import { validateCrafting } from "@/data/generate/crafting";
 import { validateSmithing } from "@/data/generate/smithing";
@@ -68,6 +69,10 @@ export const validateRecipe = (
     case RecipeType.SmithingTrim:
     case RecipeType.SmithingTransform:
       errors.push(...validateSmithing(recipe, version));
+      break;
+    case RecipeType.BrewingContainer:
+    case RecipeType.BrewingMix:
+      errors.push(...validateBrewing(recipe));
       break;
   }
 

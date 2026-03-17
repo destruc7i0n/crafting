@@ -34,6 +34,8 @@ const autoPlaceSlotsByRecipeType: Record<RecipeType, RecipeSlot[]> = {
     "smithing.addition",
     "smithing.result",
   ],
+  [RecipeType.BrewingContainer]: ["brewing.input", "brewing.reagent", "brewing.result"],
+  [RecipeType.BrewingMix]: ["brewing.input", "brewing.reagent", "brewing.result"],
 };
 
 const resultSlots = new Set<RecipeSlot>([
@@ -41,6 +43,7 @@ const resultSlots = new Set<RecipeSlot>([
   "cooking.result",
   "stonecutter.result",
   "smithing.result",
+  "brewing.result",
 ]);
 
 const disabledTwoByTwoSlots = new Set<RecipeSlot>([
