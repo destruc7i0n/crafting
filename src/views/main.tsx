@@ -7,7 +7,7 @@ export const Main = () => {
   return (
     <div className="flex flex-col gap-4 lg:h-full lg:min-h-0">
       <div className="bg-card rounded-lg border p-4">
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-2">
           <RecipeTypeSelector />
           <Preview />
         </div>
