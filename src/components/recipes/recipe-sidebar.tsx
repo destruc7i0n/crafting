@@ -7,8 +7,10 @@ import {
   DownloadIcon,
   PlusIcon,
   Trash2Icon,
+  XIcon,
 } from "lucide-react";
 
+import { Disclosure } from "@/components/disclosure/disclosure";
 import { ResourceIcon } from "@/components/item/resource-icon";
 import { Tooltip } from "@/components/tooltip/tooltip";
 import { recipeTypeToItemId, recipeTypeToName } from "@/data/constants";
@@ -17,6 +19,7 @@ import { getSupportedRecipeTypesForVersion } from "@/data/versions";
 import { confirmAction } from "@/lib/confirm";
 import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
+import { downloadRecipeJson } from "@/lib/download/recipe";
 import { isDuplicateRecipeName, sanitizeRecipeName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
 import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
@@ -50,42 +53,33 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   const toggleRecipeSidebar = useUIStore((state) => state.toggleRecipeSidebar);
 
   const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
-  const invalidRecipes = useMemo(
-    () =>
+  const invalidRecipesMap = useMemo(() => {
+    const issues =
       minecraftVersion === MinecraftVersion.Bedrock
-        ? validateBehaviorPackExport(recipes).map((recipe) => ({
-            name: recipe.name,
-            errors: recipe.errors,
-          }))
-        : validateDatapackExport(recipes, minecraftVersion).map((recipe) => ({
-            name: recipe.name,
-            errors: recipe.errors,
-          })),
-    [recipes, minecraftVersion],
-  );
-  const canDownloadPack = invalidRecipes.length === 0;
+        ? validateBehaviorPackExport(recipes)
+        : validateDatapackExport(recipes, minecraftVersion);
+    return new Map(issues.map((issue) => [issue.recipe.id, issue.errors]));
+  }, [recipes, minecraftVersion]);
+  const canDownloadPack = invalidRecipesMap.size === 0;
   let downloadConfig: DownloadConfig | null = null;
 
   if (minecraftVersion === MinecraftVersion.Bedrock) {
     downloadConfig = {
       label: "Download Behavior Pack",
       readyTitle: "Download Behavior Pack",
-      blockedTitle: "Finish every recipe before downloading the behavior pack",
+      blockedTitle: "Fix all recipes before downloading",
     };
   } else if (minecraftVersion !== MinecraftVersion.V112) {
     downloadConfig = {
       label: "Download Datapack",
       readyTitle: "Download Datapack",
-      blockedTitle: "Finish every recipe before downloading the datapack",
+      blockedTitle: "Fix all recipes before downloading",
     };
   }
 
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState("");
-  const [issuesOpen, setIssuesOpen] = useState(false);
   const setRecipeNameAtIndex = useRecipeStore((state) => state.setRecipeNameAtIndex);
-
-  const showIssues = Boolean(issuesOpen && !canDownloadPack && downloadConfig);
 
   const handleSelectRecipe = (index: number) => {
     selectRecipe(index);
@@ -157,6 +151,8 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
           {recipes.map((recipe, index) => {
             const isSelected = selectedRecipeIndex === index;
             const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
+            const recipeErrors = invalidRecipesMap.get(recipe.id);
+            const hasWarning = !isSupported || !!recipeErrors;
             const label = `${recipe.recipeName} (${recipeTypeToName[recipe.recipeType]})`;
 
             return (
@@ -173,6 +169,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                       ? "border-primary bg-primary/10"
                       : "hover:bg-accent active:bg-accent/80 border-transparent",
                     !isSupported && "opacity-60",
+                    hasWarning && !isSelected && "border-amber-500/40",
                   )}
                 >
                   <ResourceIcon
@@ -190,9 +187,9 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
             {!canDownloadPack && (
               <div
                 className="flex h-8 w-8 items-center justify-center"
-                title={`${invalidRecipes.length} invalid ${invalidRecipes.length === 1 ? "recipe" : "recipes"}`}
+                title={`${invalidRecipesMap.size} invalid ${invalidRecipesMap.size === 1 ? "recipe" : "recipes"}`}
               >
-                <AlertTriangleIcon size={14} className="text-amber-500" />
+                <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
               </div>
             )}
 
@@ -227,11 +224,11 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
         <button
           type="button"
-          onClick={toggleRecipeSidebar}
-          className="hover:bg-accent active:bg-accent/80 hidden h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors lg:flex"
-          title="Collapse sidebar"
+          onClick={mobile ? () => setMobileRecipeSidebarOpen(false) : toggleRecipeSidebar}
+          className="hover:bg-accent active:bg-accent/80 flex h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors lg:flex"
+          title={mobile ? "Close sidebar" : "Collapse sidebar"}
         >
-          <ChevronLeftIcon size={16} />
+          {mobile ? <XIcon size={16} /> : <ChevronLeftIcon size={16} />}
         </button>
       </div>
 
@@ -239,6 +236,50 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         {recipes.map((recipe, index) => {
           const isSelected = selectedRecipeIndex === index;
           const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
+          const recipeErrors = invalidRecipesMap.get(recipe.id);
+
+          let firstSlot: React.ReactNode;
+          if (!isSupported) {
+            firstSlot = (
+              <Disclosure content="Recipe type is not available in this version" placement="right">
+                <span className="flex cursor-default items-center">
+                  <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
+                </span>
+              </Disclosure>
+            );
+          } else if (recipeErrors) {
+            firstSlot = (
+              <Disclosure
+                placement="right"
+                content={
+                  <ul className="space-y-1">
+                    {recipeErrors.map((e) => (
+                      <li key={e}>{e}</li>
+                    ))}
+                  </ul>
+                }
+              >
+                <span className="flex cursor-pointer items-center">
+                  <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
+                </span>
+              </Disclosure>
+            );
+          } else {
+            firstSlot = (
+              <button
+                type="button"
+                className="text-muted-foreground hover:text-foreground rounded transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  downloadRecipeJson(recipe, minecraftVersion);
+                }}
+                title={`Download ${recipe.recipeName}`}
+              >
+                <DownloadIcon size={14} />
+              </button>
+            );
+          }
+
           return (
             <div
               key={recipe.id ?? `${recipe.recipeName ?? "recipe"}-${index}`}
@@ -248,6 +289,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                 isSelected
                   ? "border-primary bg-primary/10 font-medium"
                   : "hover:bg-accent active:bg-accent/80",
+                recipeErrors && !isSelected && "border-amber-500/40",
               )}
             >
               <ResourceIcon
@@ -291,99 +333,45 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                 </div>
               )}
 
-              {!isSupported && (
-                <span title="Recipe type is not available in this version">
-                  <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
-                </span>
-              )}
+              <span className="flex shrink-0 items-center gap-2">
+                {firstSlot}
 
-              {recipes.length > 1 && (
-                <button
-                  type="button"
-                  className={cn(
-                    "text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors",
-                    mobile ? "opacity-100" : "opacity-0 group-hover:opacity-100",
-                  )}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteRecipe(index, e);
-                  }}
-                >
-                  <Trash2Icon size={14} />
-                </button>
-              )}
+                {recipes.length > 1 && (
+                  <button
+                    type="button"
+                    className="text-muted-foreground hover:text-destructive rounded transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteRecipe(index, e);
+                    }}
+                  >
+                    <Trash2Icon size={14} />
+                  </button>
+                )}
+              </span>
             </div>
           );
         })}
       </div>
 
       {downloadConfig && (
-        <div className="border-border relative mt-auto flex flex-col gap-2 border-t pt-3">
-          {showIssues && (
-            <div className="border-border bg-card absolute right-0 bottom-full left-0 z-10 mb-2 max-h-64 overflow-y-auto rounded-md border p-3 shadow-lg">
-              <div className="mb-2 flex items-center justify-between gap-2">
-                <div className="text-foreground flex items-center gap-2 text-sm font-medium">
-                  <AlertTriangleIcon size={14} className="text-amber-500" />
-                  Recipe issues
-                </div>
-
-                <button
-                  type="button"
-                  className="text-muted-foreground hover:text-foreground text-xs transition-colors"
-                  onClick={() => setIssuesOpen(false)}
-                >
-                  Close
-                </button>
-              </div>
-
-              <ul className="text-muted-foreground space-y-2 text-xs">
-                {invalidRecipes.map((recipe, index) => (
-                  <li key={`${recipe.name}-${index}`}>
-                    <span className="text-foreground font-medium">{recipe.name}</span>
-                    <ul className="mt-1 list-disc space-y-1 pl-4">
-                      {recipe.errors.map((error) => (
-                        <li key={error}>{error}</li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <button
-            type="button"
-            disabled={!canDownloadPack}
-            className={cn(
-              "border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 rounded-md border px-3 py-2 text-sm font-medium transition-colors",
-              !canDownloadPack &&
-                "hover:bg-secondary active:bg-secondary cursor-not-allowed opacity-50",
-            )}
-            onClick={handleDownloadAll}
-            title={canDownloadPack ? downloadConfig.readyTitle : downloadConfig.blockedTitle}
-          >
-            {downloadConfig.label}
-          </button>
-
-          {!canDownloadPack && (
-            <div className="text-muted-foreground flex items-center justify-between gap-2 rounded-md border border-amber-500/20 bg-amber-500/10 px-2 py-2 text-xs">
-              <div className="flex min-w-0 items-center gap-2">
-                <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
-                <span className="truncate">
-                  {invalidRecipes.length} invalid{" "}
-                  {invalidRecipes.length === 1 ? "recipe" : "recipes"}
-                </span>
-              </div>
-
+        <div className="border-border mt-auto flex flex-col gap-2 border-t pt-3">
+          <Tooltip content={downloadConfig.blockedTitle} placement="top">
+            <span className={cn(!canDownloadPack && "inline-block w-full cursor-not-allowed")}>
               <button
                 type="button"
-                className="text-foreground hover:text-primary shrink-0 font-medium transition-colors"
-                onClick={() => setIssuesOpen((value) => !value)}
+                disabled={!canDownloadPack}
+                className={cn(
+                  "border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 w-full rounded-md border px-3 py-2 text-sm font-medium transition-colors",
+                  !canDownloadPack &&
+                    "hover:bg-secondary active:bg-secondary cursor-not-allowed opacity-50",
+                )}
+                onClick={handleDownloadAll}
               >
-                {showIssues ? "Hide issues" : "View issues"}
+                {downloadConfig.label}
               </button>
-            </div>
-          )}
+            </span>
+          </Tooltip>
         </div>
       )}
     </div>

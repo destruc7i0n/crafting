@@ -2,38 +2,20 @@ import { type ComponentProps, type ReactNode, useState } from "react";
 
 import { CircleHelpIcon } from "lucide-react";
 
-import { Popover } from "@/components/popover/popover";
-import { Tooltip } from "@/components/tooltip/tooltip";
-import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
+import { Disclosure } from "@/components/disclosure/disclosure";
 import { cn } from "@/lib/utils";
 
 interface HelpTooltipProps {
   content: string;
 }
 
-export const HelpTooltip = ({ content }: HelpTooltipProps) => {
-  const isTouchDevice = useIsTouchDevice();
-
-  const trigger = (
+export const HelpTooltip = ({ content }: HelpTooltipProps) => (
+  <Disclosure content={content} placement="top">
     <span className="text-muted-foreground/70 hover:text-foreground shrink-0 transition-colors">
       <CircleHelpIcon size={14} />
     </span>
-  );
-
-  if (isTouchDevice) {
-    return (
-      <Popover content={content} placement="top">
-        {trigger}
-      </Popover>
-    );
-  }
-
-  return (
-    <Tooltip content={content} placement="top">
-      {trigger}
-    </Tooltip>
-  );
-};
+  </Disclosure>
+);
 
 interface CheckboxFieldProps {
   label: string;

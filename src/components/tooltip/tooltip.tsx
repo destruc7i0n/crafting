@@ -14,7 +14,7 @@ import {
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 
 type TooltipProps = {
-  content: string;
+  content: React.ReactNode;
   children: React.ReactNode;
   placement?: Placement;
 };
@@ -34,7 +34,7 @@ const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
 
   return (
-    <div ref={refs.setReference} {...getReferenceProps()}>
+    <span ref={refs.setReference} {...getReferenceProps()}>
       {children}
 
       {isHovering &&
@@ -49,7 +49,7 @@ const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) 
           </div>,
           document.body,
         )}
-    </div>
+    </span>
   );
 };
 

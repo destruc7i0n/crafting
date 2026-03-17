@@ -13,7 +13,7 @@ import {
 } from "@floating-ui/react";
 
 type PopoverProps = {
-  content: string;
+  content: React.ReactNode;
   children: React.ReactNode;
   placement?: Placement;
 };
@@ -34,7 +34,7 @@ export const Popover = ({ content, children, placement = "right" }: PopoverProps
   const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss]);
 
   return (
-    <div ref={refs.setReference} {...getReferenceProps()}>
+    <span ref={refs.setReference} {...getReferenceProps()}>
       {children}
 
       {isOpen &&
@@ -49,6 +49,6 @@ export const Popover = ({ content, children, placement = "right" }: PopoverProps
           </div>,
           document.body,
         )}
-    </div>
+    </span>
   );
 };
