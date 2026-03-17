@@ -19,13 +19,7 @@ export const useDndMonitor = () => {
         return isItemDraggableData(source.data);
       },
       onDrop: ({ source, location }) => {
-        // #region agent log
-        console.log('[DEBUG][onDrop] fired', { sourceData: source.data, dropTargets: location.current.dropTargets.map(d => d.data) });
-        // #endregion
         if (!isItemDraggableData(source.data)) {
-          // #region agent log
-          console.log('[DEBUG][onDrop] source not ItemDraggableData, returning');
-          // #endregion
           return;
         }
 
@@ -36,16 +30,10 @@ export const useDndMonitor = () => {
 
         const destination = location.current.dropTargets[0];
         if (!destination) {
-          // #region agent log
-          console.log('[DEBUG][onDrop] no destination drop target');
-          // #endregion
           return;
         }
 
         if (!isDropTargetData(destination.data)) {
-          // #region agent log
-          console.log('[DEBUG][onDrop] destination not DropTargetData', { destData: destination.data });
-          // #endregion
           return;
         }
 
@@ -54,15 +42,9 @@ export const useDndMonitor = () => {
 
         if (dropTargetData.type === "preview") {
           if (!canRecipeSlotAcceptIngredient(dropTargetData.slot, item)) {
-            // #region agent log
-            console.log('[DEBUG][onDrop] canRecipeSlotAcceptIngredient rejected', { slot: dropTargetData.slot, itemType: item.type });
-            // #endregion
             return;
           }
 
-          // #region agent log
-          console.log('[DEBUG][onDrop] calling setRecipeSlot', { slot: dropTargetData.slot, itemId: item.id, itemType: item.type });
-          // #endregion
           useRecipeStore.getState().setRecipeSlot(dropTargetData.slot, cloneItem(item));
         }
       },

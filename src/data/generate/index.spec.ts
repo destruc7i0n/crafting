@@ -76,6 +76,95 @@ describe("generate orchestrator", () => {
     });
   });
 
+  it("generates bedrock brewing container output", () => {
+    const state: SingleRecipeState = {
+      recipeType: RecipeType.BrewingContainer,
+      group: "",
+      slots: {
+        "brewing.input": {
+          type: "default_item",
+          id: { id: "glass_bottle", namespace: "minecraft" },
+          displayName: "glass_bottle",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+        "brewing.reagent": {
+          type: "default_item",
+          id: { id: "nether_wart", namespace: "minecraft" },
+          displayName: "nether_wart",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+        "brewing.result": {
+          type: "default_item",
+          id: { id: "awkward_potion", namespace: "minecraft" },
+          displayName: "awkward_potion",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+      },
+      crafting: { shapeless: false, keepWhitespace: false },
+      cooking: { time: 0, experience: 0 },
+      bedrock: { identifier: "brewing:test", priority: 0 },
+    };
+
+    const result = generate(state, MinecraftVersion.Bedrock);
+    expect(result).toEqual({
+      format_version: "1.20.10",
+      "minecraft:recipe_brewing_container": {
+        description: { identifier: "brewing:test" },
+        tags: ["brewing_stand"],
+        input: "minecraft:glass_bottle",
+        reagent: "minecraft:nether_wart",
+        output: "minecraft:awkward_potion",
+      },
+    });
+  });
+
+  it("generates bedrock brewing mix output", () => {
+    const state: SingleRecipeState = {
+      recipeType: RecipeType.BrewingMix,
+      group: "",
+      slots: {
+        "brewing.input": {
+          type: "default_item",
+          id: { id: "potion", namespace: "minecraft" },
+          displayName: "potion",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+        "brewing.reagent": {
+          type: "default_item",
+          id: { id: "blaze_powder", namespace: "minecraft" },
+          displayName: "blaze_powder",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+        "brewing.result": {
+          type: "default_item",
+          id: { id: "strength_potion", namespace: "minecraft" },
+          displayName: "strength_potion",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+      },
+      crafting: { shapeless: false, keepWhitespace: false },
+      cooking: { time: 0, experience: 0 },
+      bedrock: { identifier: "brewing:strength", priority: 0 },
+    };
+
+    expect(generate(state, MinecraftVersion.Bedrock)).toEqual({
+      format_version: "1.20.10",
+      "minecraft:recipe_brewing_mix": {
+        description: { identifier: "brewing:strength" },
+        tags: ["brewing_stand"],
+        input: "minecraft:potion",
+        reagent: "minecraft:blaze_powder",
+        output: "minecraft:strength_potion",
+      },
+    });
+  });
+
   it("uses smithing transform wrapper metadata for bedrock", () => {
     const state: SingleRecipeState = {
       recipeType: RecipeType.SmithingTransform,

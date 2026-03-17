@@ -11,9 +11,6 @@ import {
 export const buildBedrock = (
   state: BrewingInput,
 ): BedrockBrewingContainerBody | BedrockBrewingMixBody => {
-  // #region agent log
-  console.log('[DEBUG][buildBedrock] brewing state:', { input: state.input?.id, reagent: state.reagent?.id, output: state.output?.id });
-  // #endregion
   return {
     input: state.input ? getRawId(state.input.id) : "",
     reagent: state.reagent ? getRawId(state.reagent.id) : "",
@@ -21,19 +18,12 @@ export const buildBedrock = (
   };
 };
 
-const extractInput = (state: SingleRecipeState): BrewingInput => {
-  // #region agent log
-  console.log('[DEBUG][extractBrewingInput] slots:', JSON.stringify(state.slots));
-  console.log('[DEBUG][extractBrewingInput] SLOTS.brewing:', JSON.stringify(SLOTS.brewing));
-  console.log('[DEBUG][extractBrewingInput] input:', state.slots[SLOTS.brewing.input], 'reagent:', state.slots[SLOTS.brewing.reagent], 'result:', state.slots[SLOTS.brewing.result]);
-  // #endregion
-  return {
-    recipeType: state.recipeType as BrewingInput["recipeType"],
-    input: state.slots[SLOTS.brewing.input],
-    reagent: state.slots[SLOTS.brewing.reagent],
-    output: state.slots[SLOTS.brewing.result],
-  };
-};
+const extractInput = (state: SingleRecipeState): BrewingInput => ({
+  recipeType: state.recipeType as BrewingInput["recipeType"],
+  input: state.slots[SLOTS.brewing.input],
+  reagent: state.slots[SLOTS.brewing.reagent],
+  output: state.slots[SLOTS.brewing.result],
+});
 
 export const validateBrewing = (state: SingleRecipeState): string[] => {
   const input = extractInput(state);

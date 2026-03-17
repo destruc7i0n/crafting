@@ -171,14 +171,8 @@ export const useRecipeStore = create<RecipeState & RecipeActions>()(
         });
       },
       setRecipeSlot: (slot: RecipeSlot, item?: IngredientItem) => {
-        // #region agent log
-        console.log('[DEBUG][setRecipeSlot] called', { slot, hasItem: !!item, itemId: item?.id, itemType: item?.type });
-        // #endregion
         set((state) => {
           state.recipes[state.selectedRecipeIndex].slots[slot] = item;
-          // #region agent log
-          console.log('[DEBUG][setRecipeSlot] after set, slots keys:', Object.keys(state.recipes[state.selectedRecipeIndex].slots));
-          // #endregion
         });
       },
       setRecipeSlotCount: (slot: RecipeSlot, count: number) => {
