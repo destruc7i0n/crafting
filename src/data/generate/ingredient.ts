@@ -1,5 +1,6 @@
 import { getRawId } from "@/data/models/identifier/utilities";
 import { IngredientItem } from "@/data/models/types";
+import { toTagRef } from "@/lib/tags";
 
 import { FormatStrategy } from "./format/types";
 import { EmptyObject, IngredientRef } from "./recipes/types";
@@ -33,5 +34,5 @@ export const formatIngredientString = (item: IngredientItem | undefined) => {
     return "";
   }
 
-  return item.type === "tag_item" ? `#${getRawId(item.id)}` : getRawId(item.id);
+  return item.type === "tag_item" ? toTagRef(getRawId(item.id)) : getRawId(item.id);
 };

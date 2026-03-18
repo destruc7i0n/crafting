@@ -3,6 +3,7 @@ import { Trash2Icon } from "lucide-react";
 import { getFullId } from "@/data/models/identifier/utilities";
 import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot } from "@/data/types";
+import { getTagLabel } from "@/lib/tags";
 import { useRecipeStore } from "@/stores/recipe";
 import { useUIStore } from "@/stores/ui";
 
@@ -15,7 +16,7 @@ export const ItemInfoBox = ({ item, slot }: ItemInfoBoxProps) => {
     <div className="border-border bg-background/90 flex items-center gap-1 rounded-md border px-2 py-1 text-xs leading-tight shadow-sm backdrop-blur-sm">
       <div className="text-foreground min-w-0 flex-1 truncate">
         {item.type === "tag_item" ? (
-          <span className="font-medium">{`#${getFullId(item.id)}`}</span>
+          <span className="font-medium">{getTagLabel(getFullId(item.id))}</span>
         ) : (
           <>
             <span className="font-medium">{item.displayName}</span>

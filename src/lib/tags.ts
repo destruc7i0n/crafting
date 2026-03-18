@@ -17,7 +17,47 @@ const unique = (values: string[]) => [...new Set(values)];
 export const getCustomTagIdentifier = (tag: Pick<Tag, "id">) =>
   parseStringToMinecraftIdentifier(tag.id);
 
-export const getTagLabel = (raw: string) => `#${raw}`;
+export const getTagLabel = (raw: string) => toTagRef(raw);
+
+export const toTagRef = (rawId: string): string => `#${rawId}`;
+const fromTagRef = (ref: string): string => ref.slice(1);
+
+export type TagGraph = Record<string, string[]>;
+
+export const resolveTagGraph = (graph: TagGraph): TagGraph => {
+  const memo = new Map<string, string[]>();
+
+  const dfs = (nodeId: string, visited = new Set<string>()): string[] => {
+    const cachedValues = memo.get(nodeId);
+    if (cachedValues) {
+      return cachedValues;
+    }
+
+    if (visited.has(nodeId)) {
+      return [];
+    }
+
+    const nextStack = new Set(visited);
+    nextStack.add(nodeId);
+
+    const neighbors = graph[nodeId] ?? [];
+    const flattenedValues = neighbors.flatMap((neighbor) => {
+      if (!neighbor.startsWith("#")) {
+        return [neighbor];
+      }
+
+      return dfs(fromTagRef(neighbor), nextStack);
+    });
+
+    const uniqueValues = [...new Set(flattenedValues)];
+    memo.set(nodeId, uniqueValues);
+    return uniqueValues;
+  };
+
+  const sortedNodeIds = Object.keys(graph).sort((left, right) => left.localeCompare(right));
+
+  return Object.fromEntries(sortedNodeIds.map((nodeId) => [nodeId, dfs(nodeId)]));
+};
 
 export const supportsItemTagsForVersion = (version: MinecraftVersion) =>
   isVersionAtLeast(version, MinecraftVersion.V113);
@@ -41,50 +81,31 @@ export const resolveTagValues = (
   customTags: Tag[],
   vanillaTags: Record<string, string[]>,
 ): string[] => {
-  const customTagsByRawId = new Map(
-    customTags.map((tag) => [getRawId(getCustomTagIdentifier(tag)), tag]),
-  );
+  const graph: TagGraph = { ...vanillaTags };
+  for (const tag of customTags) {
+    const rawId = getRawId(getCustomTagIdentifier(tag));
+    graph[rawId] = tag.values.map((v) =>
+      v.type === "tag" ? toTagRef(getRawId(v.id)) : identifierUniqueKey(v.id),
+    );
+  }
+
+  const resolved = resolveTagGraph(graph);
+
+  const results: string[] = [];
   const seen = new Set<string>();
-
-  const resolveNested = (rawId: string, ancestry: Set<string>): string[] => {
-    if (ancestry.has(rawId)) {
-      return [];
-    }
-
-    const nextAncestry = new Set(ancestry);
-    nextAncestry.add(rawId);
-
-    const customTag = customTagsByRawId.get(rawId);
-    if (customTag) {
-      return resolveValues(customTag.values, nextAncestry);
-    }
-
-    return vanillaTags[rawId] ?? [];
-  };
-
-  const resolveValues = (tagValues: TagValue[], ancestry = new Set<string>()) => {
-    const resolved: string[] = [];
-
-    for (const value of tagValues) {
-      if (value.type === "item") {
-        resolved.push(identifierUniqueKey(value.id));
-        continue;
+  for (const value of values) {
+    const items =
+      value.type === "item"
+        ? [identifierUniqueKey(value.id)]
+        : (resolved[getRawId(value.id)] ?? []);
+    for (const item of items) {
+      if (!seen.has(item)) {
+        seen.add(item);
+        results.push(item);
       }
-
-      resolved.push(...resolveNested(getRawId(value.id), ancestry));
     }
-
-    return resolved;
-  };
-
-  return resolveValues(values).filter((value) => {
-    if (seen.has(value)) {
-      return false;
-    }
-
-    seen.add(value);
-    return true;
-  });
+  }
+  return results;
 };
 
 const getFirstAvailableTexture = (

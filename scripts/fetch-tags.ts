@@ -8,6 +8,8 @@ import path from "node:path";
 import { $ } from "bun";
 import { latestVersion, versions } from "minecraft-textures";
 
+import { type TagGraph, resolveTagGraph, toTagRef } from "@/lib/tags";
+
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const outputDir = path.join(repoRoot, "src/data/generated/vanilla-tags");
 const summaryRepoUrl = "https://github.com/misode/mcmeta.git";
@@ -18,7 +20,6 @@ type SummaryTagEntry = {
   values?: SummaryTagValue[];
 };
 type SummaryTagFile = Record<string, SummaryTagEntry>;
-type TagGraph = Record<string, string[]>;
 
 if (latestVersion !== versions.at(-1)) {
   throw new Error("minecraft-textures latestVersion did not match the final versions entry");
@@ -81,57 +82,24 @@ const getCommitShaForVersion = async (gitDir: string, version: string): Promise<
   return sha.trim() || null;
 };
 
+// normalize bare #tag references to #minecraft:tag at construction time
+const normalizeValue = (v: string) =>
+  v.startsWith("#") && !v.includes(":") ? toTagRef(`minecraft:${v.slice(1)}`) : v;
+
 // read one version's raw tag graph from mcmeta
-const readRawTagsForCommit = async (gitDir: string, sha: string): Promise<TagGraph> => {
+const readRawTagsForCommit = async (
+  gitDir: string,
+  sha: string,
+): Promise<Record<string, string[]>> => {
   const data =
     (await $`git --git-dir=${gitDir} show ${sha}:${summaryTagFilePath}`.json()) as SummaryTagFile;
 
   return Object.fromEntries(
-    Object.entries(data).map(([tagName, entry]) => [`minecraft:${tagName}`, getTagValues(entry)]),
+    Object.entries(data).map(([tagName, entry]) => [
+      `minecraft:${tagName}`,
+      getTagValues(entry).map(normalizeValue),
+    ]),
   );
-};
-
-// normalize #tag references into full tag ids
-const normalizeReferencedTagId = (value: string): string => {
-  const tagId = value.slice(1);
-  return tagId.includes(":") ? tagId : `minecraft:${tagId}`;
-};
-
-// resolve the tag graph and nested tags into a single flat list
-const resolveTagGraph = (graph: TagGraph): TagGraph => {
-  const memo = new Map<string, string[]>();
-
-  const dfs = (nodeId: string, visited = new Set<string>()): string[] => {
-    const cachedValues = memo.get(nodeId);
-    if (cachedValues) {
-      return cachedValues;
-    }
-
-    if (visited.has(nodeId)) {
-      return [];
-    }
-
-    const nextStack = new Set(visited);
-    nextStack.add(nodeId);
-
-    const neighbors = graph[nodeId] ?? [];
-    const flattenedValues = neighbors.flatMap((neighbor) => {
-      if (!neighbor.startsWith("#")) {
-        return [neighbor];
-      }
-
-      const referencedNodeId = normalizeReferencedTagId(neighbor);
-      return dfs(referencedNodeId, nextStack);
-    });
-
-    const uniqueValues = [...new Set(flattenedValues)];
-    memo.set(nodeId, uniqueValues);
-    return uniqueValues;
-  };
-
-  const sortedNodeIds = Object.keys(graph).sort((left, right) => left.localeCompare(right));
-
-  return Object.fromEntries(sortedNodeIds.map((nodeId) => [nodeId, dfs(nodeId)]));
 };
 
 const writeVersionTags = async (version: string, tags: TagGraph) => {

@@ -1,6 +1,7 @@
 import { getRawId } from "@/data/models/identifier/utilities";
 import { MinecraftIdentifier } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
+import { toTagRef } from "@/lib/tags";
 
 import { isVersionAtLeast } from "../version-utils";
 import { FormatStrategy } from "./types";
@@ -74,7 +75,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
       }
 
       if (isVersionAtLeast(version, MinecraftVersion.V1212)) {
-        return `#${tagId}`;
+        return toTagRef(tagId);
       }
 
       // version is Bedrock, or Java 1.13–1.21.1 — both use { tag }
