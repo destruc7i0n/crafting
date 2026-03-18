@@ -63,7 +63,6 @@ const fetchBedrockMappings = async () => {
 
   for (const [javaId, entry] of Object.entries(raw)) {
     const idDiffers = entry.bedrock_identifier !== javaId;
-    const hasData = entry.bedrock_data !== 0;
 
     // geyser sends the data as item "damage" for older client compatibility
     // we should only consider it if the id has changed (ex. white_banner -> banner:15)
@@ -97,7 +96,7 @@ const fetchBedrockMappings = async () => {
     const translation: BedrockTranslation = {};
 
     translation.id = entry.bedrock_identifier;
-    if (hasData) translation.data = entry.bedrock_data;
+    translation.data = entry.bedrock_data;
 
     translations[javaId] = translation;
   }
