@@ -2,6 +2,7 @@ import { RecipeTypeSelector } from "@/components/fields/recipe-type-selector";
 import { RecipeOptions } from "@/components/options/recipe-options";
 import { ItemOutput } from "@/components/output/item-output";
 import { Preview } from "@/components/preview/preview";
+import { SelectedItemInfoBox } from "@/components/selected-item-info-box/selected-item-info-box";
 
 export const Main = () => {
   return (
@@ -11,6 +12,7 @@ export const Main = () => {
           <RecipeTypeSelector />
           <Preview />
         </div>
+        <SelectedItemInfoBox />
       </div>
 
       <div className="bg-card rounded-lg border">

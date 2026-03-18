@@ -2,13 +2,11 @@ import { useDeferredValue, useMemo, useState } from "react";
 
 import { PlusIcon } from "lucide-react";
 
-import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { supportsItemTagsForVersion } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/stores/ui";
 
-import { ItemInfoBox } from "../item/item-info-box";
 import { ItemsSection } from "./item/items-section";
 import { TagsSection } from "./tag/tags-section";
 
@@ -23,15 +21,12 @@ export const ItemsList = () => {
   const [activeTab, setActiveTab] = useState<"items" | "tags">("items");
   const [expandedTagUid, setExpandedTagUid] = useState<string | null>(null);
 
-  const isTouchDevice = useIsTouchDevice();
   const [showAddItemForm, setShowAddItemForm] = useState(false);
   const [showAddTagForm, setShowAddTagForm] = useState(false);
-  const selectedIngredient = useUIStore((state) => state.selectedIngredient);
   const setSelectedIngredient = useUIStore((state) => state.setSelectedIngredient);
 
   const tab: "items" | "tags" = !supportsTags && activeTab === "tags" ? "items" : activeTab;
   const isCreating = (tab === "items" && showAddItemForm) || (tab === "tags" && showAddTagForm);
-  const showSelectionPreview = isTouchDevice && selectedIngredient !== undefined && !isCreating;
 
   const handleCreateAction = () => {
     switch (tab) {
@@ -151,8 +146,6 @@ export const ItemsList = () => {
           onChange={(event) => setSearch(event.target.value)}
         />
       )}
-
-      {showSelectionPreview && <ItemInfoBox item={selectedIngredient.item} />}
 
       <div className="flex min-h-0 w-full flex-1 flex-col rounded-md">
         {tab === "tags" ? (

@@ -52,7 +52,7 @@ export const usePreviewSlotSelectionHandler = (
           if (!canRecipeSlotAcceptIngredient(slot, selectedPreview.item)) return;
           setRecipeSlot(slot, cloneItem(selectedPreview.item));
           setRecipeSlot(selectedPreview.slot, undefined);
-          setSelectedIngredient(undefined); // clears all
+          setSelectedPreview({ item: selectedPreview.item, slot });
         } else {
           // 1st tap on occupied slot: mark pending (also clears any previous replaceTarget)
           setSelectedPreview({
@@ -66,7 +66,7 @@ export const usePreviewSlotSelectionHandler = (
         if (!canRecipeSlotAcceptIngredient(slot, selectedPreview.item)) return;
         setRecipeSlot(slot, cloneItem(selectedPreview.item));
         setRecipeSlot(selectedPreview.slot, undefined);
-        setSelectedIngredient(undefined); // clears all
+        setSelectedPreview({ item: selectedPreview.item, slot });
       }
       return;
     }
