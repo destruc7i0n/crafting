@@ -1,7 +1,6 @@
 import { TexturesType as MinecraftTexturesType } from "minecraft-textures";
 
 import { latestMinecraftVersion } from "@/data/constants";
-import bedrockMappingsJson from "@/data/generated/bedrock-mappings.json";
 import {
   identifierUniqueKey,
   parseStringToMinecraftIdentifier,
@@ -9,9 +8,8 @@ import {
 import { transformMinecraftTexturesItem } from "@/data/models/item/utilities";
 import { Item } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
+import { resolveItemId } from "@/lib/resolve-item-id";
 import { useResourcesStore } from "@/stores/resources";
-
-type BedrockTranslation = { id?: string; data?: number } | null;
 
 const textureLoaders = import.meta.glob<{ default: MinecraftTexturesType }>(
   // match 1.20.json but not 1.20.id.json
@@ -50,23 +48,18 @@ async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void
   }
 
   const mcTexturesItems = module.items;
-  const bedrockMappings: Record<string, BedrockTranslation | undefined> =
-    version === MinecraftVersion.Bedrock ? bedrockMappingsJson : {};
-
   const items: Item[] = [];
   const itemsById: Record<string, Item> = {};
 
   for (const mcTexturesItem of mcTexturesItems) {
     const item = transformMinecraftTexturesItem(mcTexturesItem, version);
 
-    const translation = bedrockMappings[mcTexturesItem.id];
-    if (translation === null) continue;
-    if (translation) {
-      item.id = {
-        ...parseStringToMinecraftIdentifier(translation.id ?? mcTexturesItem.id),
-        ...(translation.data !== undefined ? { data: translation.data } : {}),
-      };
-    }
+    const resolved = resolveItemId(mcTexturesItem.id, version);
+    if (resolved === null) continue;
+    item.id = {
+      ...parseStringToMinecraftIdentifier(resolved.id),
+      ...(resolved.data !== undefined ? { data: resolved.data } : {}),
+    };
 
     const key = identifierUniqueKey(item.id);
     if (!itemsById[key]) {
