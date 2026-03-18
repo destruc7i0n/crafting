@@ -4,20 +4,29 @@ import { persist } from "zustand/middleware";
 import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot } from "@/data/types";
 
-export type ItemSelection =
-  | { source: "ingredients"; item: IngredientItem }
-  | { source: "preview"; item: IngredientItem; slot: RecipeSlot };
+export interface IngredientSelection {
+  item: IngredientItem;
+  replaceTarget?: RecipeSlot;
+}
+
+export interface PreviewSelection {
+  item: IngredientItem;
+  slot: RecipeSlot;
+  replaceTarget?: RecipeSlot;
+}
 
 export interface UIState {
   isMobileRecipeSidebarOpen: boolean;
   isRecipeSidebarExpanded: boolean;
-  selectedItem?: ItemSelection;
+  selectedIngredient?: IngredientSelection;
+  selectedPreview?: PreviewSelection;
 }
 
 export interface UIStateActions {
   setMobileRecipeSidebarOpen: (isOpen: boolean) => void;
   toggleRecipeSidebar: () => void;
-  setSelectedItem: (item?: ItemSelection) => void;
+  setSelectedIngredient: (ingredient?: IngredientSelection) => void;
+  setSelectedPreview: (preview?: PreviewSelection) => void;
 }
 
 export const useUIStore = create<UIState & UIStateActions>()(
@@ -25,11 +34,15 @@ export const useUIStore = create<UIState & UIStateActions>()(
     (set) => ({
       isMobileRecipeSidebarOpen: false,
       isRecipeSidebarExpanded: true,
-      selectedItem: undefined,
+      selectedIngredient: undefined,
+      selectedPreview: undefined,
       setMobileRecipeSidebarOpen: (isOpen) => set({ isMobileRecipeSidebarOpen: isOpen }),
       toggleRecipeSidebar: () =>
         set((state) => ({ isRecipeSidebarExpanded: !state.isRecipeSidebarExpanded })),
-      setSelectedItem: (item) => set({ selectedItem: item }),
+      setSelectedIngredient: (ingredient) =>
+        set({ selectedIngredient: ingredient, selectedPreview: undefined }),
+      setSelectedPreview: (preview) =>
+        set({ selectedPreview: preview, selectedIngredient: undefined }),
     }),
     {
       name: "crafting-ui",

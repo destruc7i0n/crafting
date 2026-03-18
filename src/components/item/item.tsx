@@ -40,8 +40,8 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
     useCallback(
       (state) =>
         container === "ingredients" &&
-        state.selectedItem?.source === "ingredients" &&
-        isSameIngredient(state.selectedItem.item, item),
+        state.selectedIngredient !== undefined &&
+        isSameIngredient(state.selectedIngredient.item, item),
       [container, item],
     ),
   );
@@ -60,7 +60,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         if (container === "preview") {
           preventUnhandled.start();
         }
-        useUIStore.getState().setSelectedItem(undefined);
+        useUIStore.getState().setSelectedIngredient(undefined);
         setDragging(true);
       },
       onDrop: () => setDragging(false),
@@ -111,18 +111,16 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
     if (!slot) return;
 
     useRecipeStore.getState().setRecipeSlot(slot, cloneItem(item));
-    useUIStore.getState().setSelectedItem(undefined);
+    useUIStore.getState().setSelectedIngredient(undefined);
   };
 
   const handleClick = () => {
     if (!isTouchDevice || container !== "ingredients") return;
-    const current = useUIStore.getState().selectedItem;
-    if (current?.source === "ingredients" && isSameIngredient(current.item, item)) {
-      // tap same ingredient -> deselect
-      useUIStore.getState().setSelectedItem(undefined);
+    const { selectedIngredient, setSelectedIngredient } = useUIStore.getState();
+    if (selectedIngredient && isSameIngredient(selectedIngredient.item, item)) {
+      setSelectedIngredient(undefined);
     } else {
-      // tap different ingredient -> select it
-      useUIStore.getState().setSelectedItem({ source: "ingredients", item });
+      setSelectedIngredient({ item });
     }
   };
 

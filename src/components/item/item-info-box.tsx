@@ -1,16 +1,16 @@
 import { Trash2Icon } from "lucide-react";
 
 import { getFullId } from "@/data/models/identifier/utilities";
+import { IngredientItem } from "@/data/models/types";
+import { RecipeSlot } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
-import { ItemSelection, useUIStore } from "@/stores/ui";
+import { useUIStore } from "@/stores/ui";
 
-type ItemInfoBoxProps = {
-  selection: ItemSelection;
-};
+type ItemInfoBoxProps =
+  | { item: IngredientItem; slot?: undefined }
+  | { item: IngredientItem; slot: RecipeSlot };
 
-export const ItemInfoBox = ({ selection }: ItemInfoBoxProps) => {
-  const { item } = selection;
-
+export const ItemInfoBox = ({ item, slot }: ItemInfoBoxProps) => {
   return (
     <div className="border-border bg-background/90 flex items-center gap-1 rounded-md border px-2 py-1 text-xs leading-tight shadow-sm backdrop-blur-sm">
       <div className="text-foreground min-w-0 flex-1 truncate">
@@ -23,13 +23,13 @@ export const ItemInfoBox = ({ selection }: ItemInfoBoxProps) => {
           </>
         )}
       </div>
-      {selection.source === "preview" && (
+      {slot !== undefined && (
         <button
           type="button"
           className="text-muted-foreground hover:text-foreground shrink-0 cursor-pointer transition-colors"
           onClick={() => {
-            useRecipeStore.getState().setRecipeSlot(selection.slot, undefined);
-            useUIStore.getState().setSelectedItem(undefined);
+            useRecipeStore.getState().setRecipeSlot(slot, undefined);
+            useUIStore.getState().setSelectedIngredient(undefined);
           }}
           aria-label="Remove item"
         >

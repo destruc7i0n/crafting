@@ -16,12 +16,9 @@ import { StonecutterPreview } from "./stonecutter";
 
 export const Preview = memo(() => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
+  const selectedPreview = useUIStore((state) => state.selectedPreview);
   const previewRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const selectedPreviewItem = useUIStore((state) =>
-    state.selectedItem?.source === "preview" ? state.selectedItem : undefined,
-  );
-
   let preview: ReactNode = null;
 
   switch (recipeType) {
@@ -126,9 +123,9 @@ export const Preview = memo(() => {
         </div>
       </div>
 
-      {selectedPreviewItem && (
+      {selectedPreview && (
         <div className="px-2 pt-2 lg:hidden">
-          <ItemInfoBox selection={selectedPreviewItem} />
+          <ItemInfoBox item={selectedPreview.item} slot={selectedPreview.slot} />
         </div>
       )}
     </div>

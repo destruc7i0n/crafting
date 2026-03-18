@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 
-import { cloneItem } from "@/data/models/item/utilities";
 import { RecipeSlot } from "@/data/types";
-import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
+import { usePreviewSlotSelectionHandler } from "@/hooks/use-preview-slot-selection-handler";
 import { useResolvedSlotItem } from "@/hooks/use-resolved-tag-item";
 import { isItemDraggableData, ItemPreviewDropTargetData } from "@/lib/dnd";
 import { canRecipeSlotAcceptIngredient } from "@/lib/recipe-slots";
@@ -20,13 +19,14 @@ type ItemPreviewDropTargetProps = {
 } & SlotProps;
 
 export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetProps) => {
-  const isTouchDevice = useIsTouchDevice();
   const rawSlotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
   const slotValue = useResolvedSlotItem(rawSlotValue);
-  const setRecipeSlot = useRecipeStore((state) => state.setRecipeSlot);
 
-  const isSlotSelected = useUIStore(
-    (state) => state.selectedItem?.source === "preview" && state.selectedItem.slot === slot,
+  const isSlotSelected = useUIStore((state) => state.selectedPreview?.slot === slot);
+  const isPendingReplace = useUIStore(
+    (state) =>
+      state.selectedIngredient?.replaceTarget === slot ||
+      state.selectedPreview?.replaceTarget === slot,
   );
 
   const dropTargetData = useMemo(
@@ -34,11 +34,17 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
     [slot],
   );
 
+  const handleClick = usePreviewSlotSelectionHandler(slot, rawSlotValue);
+
   return (
     <SlotDropTarget<ItemPreviewDropTargetData>
       data={dropTargetData}
       {...props}
-      className={cn(isSlotSelected && "ring-primary z-10 rounded ring-2", props.className)}
+      className={cn(
+        isSlotSelected && "ring-primary z-10 rounded ring-2",
+        isPendingReplace && "ring-amber-400 z-10 rounded ring-2",
+        props.className,
+      )}
       canDrop={({ source }) => {
         if (isItemDraggableData(source.data)) {
           return canRecipeSlotAcceptIngredient(slot, source.data.item);
@@ -48,40 +54,7 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
       }}
       onClick={(event) => {
         props.onClick?.(event);
-
-        if (!isTouchDevice) {
-          return;
-        }
-
-        const { selectedItem, setSelectedItem } = useUIStore.getState();
-
-        if (selectedItem?.source === "preview" && selectedItem.slot === slot) {
-          // tap same selected slot -> deselect
-          setSelectedItem(undefined);
-          return;
-        }
-
-        if (selectedItem?.source === "ingredients") {
-          // ingredient selected -> place it
-          if (!canRecipeSlotAcceptIngredient(slot, selectedItem.item)) return;
-          setRecipeSlot(slot, cloneItem(selectedItem.item));
-          setSelectedItem(undefined);
-          return;
-        }
-
-        if (selectedItem?.source === "preview") {
-          // different preview slot selected -> move
-          setRecipeSlot(slot, cloneItem(selectedItem.item));
-          setRecipeSlot(selectedItem.slot, undefined);
-          setSelectedItem(undefined);
-          return;
-        }
-
-        // nothing selected
-        if (rawSlotValue) {
-          // tap occupied slot -> select it
-          setSelectedItem({ source: "preview", item: rawSlotValue, slot });
-        }
+        handleClick(event);
       }}
     >
       {slotValue && <Item item={slotValue} container="preview" />}

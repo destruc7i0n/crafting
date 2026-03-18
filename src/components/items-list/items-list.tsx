@@ -26,16 +26,12 @@ export const ItemsList = () => {
   const isTouchDevice = useIsTouchDevice();
   const [showAddItemForm, setShowAddItemForm] = useState(false);
   const [showAddTagForm, setShowAddTagForm] = useState(false);
-  const selectedItem = useUIStore((state) => state.selectedItem);
-  const setSelectedItem = useUIStore((state) => state.setSelectedItem);
+  const selectedIngredient = useUIStore((state) => state.selectedIngredient);
+  const setSelectedIngredient = useUIStore((state) => state.setSelectedIngredient);
 
   const tab: "items" | "tags" = !supportsTags && activeTab === "tags" ? "items" : activeTab;
   const isCreating = (tab === "items" && showAddItemForm) || (tab === "tags" && showAddTagForm);
-  const showSelectionPreview =
-    isTouchDevice &&
-    selectedItem?.source === "ingredients" &&
-    !isCreating &&
-    !(tab === "tags" && expandedTagUid !== null);
+  const showSelectionPreview = isTouchDevice && selectedIngredient !== undefined && !isCreating;
 
   const handleCreateAction = () => {
     switch (tab) {
@@ -50,7 +46,7 @@ export const ItemsList = () => {
   };
 
   const handleTabChange = (nextTab: "items" | "tags") => {
-    setSelectedItem(undefined);
+    setSelectedIngredient(undefined);
     setActiveTab(nextTab);
     setShowAddItemForm(false);
     setShowAddTagForm(false);
@@ -156,7 +152,7 @@ export const ItemsList = () => {
         />
       )}
 
-      {showSelectionPreview && <ItemInfoBox selection={selectedItem} />}
+      {showSelectionPreview && <ItemInfoBox item={selectedIngredient.item} />}
 
       <div className="flex min-h-0 w-full flex-1 flex-col rounded-md">
         {tab === "tags" ? (
