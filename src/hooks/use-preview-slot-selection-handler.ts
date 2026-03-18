@@ -13,7 +13,7 @@ export const usePreviewSlotSelectionHandler = (
   const isTouchDevice = useIsTouchDevice();
   const setRecipeSlot = useRecipeStore((state) => state.setRecipeSlot);
 
-  return (event: React.MouseEvent) => {
+  return (_: React.MouseEvent) => {
     if (!isTouchDevice) return;
 
     const { selectedIngredient, selectedPreview, setSelectedIngredient, setSelectedPreview } =
@@ -55,7 +55,11 @@ export const usePreviewSlotSelectionHandler = (
           setSelectedIngredient(undefined); // clears all
         } else {
           // 1st tap on occupied slot: mark pending (also clears any previous replaceTarget)
-          setSelectedPreview({ item: selectedPreview.item, slot: selectedPreview.slot, replaceTarget: slot });
+          setSelectedPreview({
+            item: selectedPreview.item,
+            slot: selectedPreview.slot,
+            replaceTarget: slot,
+          });
         }
       } else {
         // empty slot: move immediately, no confirmation needed

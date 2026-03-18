@@ -42,7 +42,7 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
       {...props}
       className={cn(
         isSlotSelected && "ring-primary z-10 rounded ring-2",
-        isPendingReplace && "ring-amber-400 z-10 rounded ring-2",
+        isPendingReplace && "z-10 rounded ring-2 ring-amber-400",
         props.className,
       )}
       canDrop={({ source }) => {
