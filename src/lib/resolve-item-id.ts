@@ -7,15 +7,14 @@ export type ResolvedItemId = { id: string; data?: number };
  * Resolves a Java item ID to its Bedrock equivalent.
  * Returns null if the item does not exist in Bedrock.
  */
-export function resolveItemId(
-  javaId: string,
-  version: MinecraftVersion,
-): ResolvedItemId | null {
+export function resolveItemId(javaId: string, version: MinecraftVersion): ResolvedItemId | null {
   if (version !== MinecraftVersion.Bedrock) return { id: javaId };
 
   if (!(javaId in bedrockMappings)) return { id: javaId };
 
-  const translation = bedrockMappings[javaId as keyof typeof bedrockMappings] as ResolvedItemId | null;
+  const translation = bedrockMappings[
+    javaId as keyof typeof bedrockMappings
+  ] as ResolvedItemId | null;
   if (translation === null) return null;
 
   return {
