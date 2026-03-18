@@ -20,17 +20,25 @@ const getTitle = (slot: RecipeSlot | undefined, pendingReplace: boolean | undefi
 
 export const ItemInfoBox = ({ item, slot, pendingReplace }: ItemInfoBoxProps) => {
   return (
-    <div className={`border-border bg-background/90 flex flex-col rounded-md border px-3 py-2 text-xs leading-tight shadow-sm backdrop-blur-sm ${pendingReplace ? "bg-amber-500/5" : ""}`}>
-      <div className="text-foreground min-w-0 flex flex-col overflow-hidden">
-        <span className={`text-xs leading-tight pb-0.5 ${pendingReplace ? "font-medium text-amber-600 dark:text-amber-400" : "font-medium text-muted-foreground"}`}>
+    <div
+      className={`border-border bg-background/90 flex flex-col rounded-md border px-3 py-2 text-xs leading-tight shadow-sm backdrop-blur-sm ${pendingReplace ? "bg-amber-500/5" : ""}`}
+    >
+      <div className="text-foreground flex min-w-0 flex-col overflow-hidden">
+        <span
+          className={`pb-0.5 text-xs leading-tight ${pendingReplace ? "font-medium text-amber-600 dark:text-amber-400" : "text-muted-foreground font-medium"}`}
+        >
           {getTitle(slot, pendingReplace)}
         </span>
         {item.type === "tag_item" ? (
-          <span className="font-medium leading-tight truncate">{getTagLabel(getFullId(item.id))}</span>
+          <span className="truncate leading-tight font-medium">
+            {getTagLabel(getFullId(item.id))}
+          </span>
         ) : (
           <>
-            <span className="font-medium leading-tight truncate">{item.displayName}</span>
-            <span className="text-muted-foreground text-xs leading-tight truncate">{getFullId(item.id)}</span>
+            <span className="truncate leading-tight font-medium">{item.displayName}</span>
+            <span className="text-muted-foreground truncate text-xs leading-tight">
+              {getFullId(item.id)}
+            </span>
           </>
         )}
       </div>
@@ -38,7 +46,7 @@ export const ItemInfoBox = ({ item, slot, pendingReplace }: ItemInfoBoxProps) =>
         {slot !== undefined && !pendingReplace && (
           <button
             type="button"
-            className="text-muted-foreground hover:text-destructive cursor-pointer transition-colors flex items-center gap-1 px-2 py-1"
+            className="text-muted-foreground hover:text-destructive flex cursor-pointer items-center gap-1 px-2 py-1 transition-colors"
             onClick={() => {
               useRecipeStore.getState().setRecipeSlot(slot, undefined);
               useUIStore.getState().setSelectedIngredient(undefined);
@@ -51,7 +59,7 @@ export const ItemInfoBox = ({ item, slot, pendingReplace }: ItemInfoBoxProps) =>
         )}
         <button
           type="button"
-          className={`cursor-pointer transition-colors flex items-center gap-1 px-2 py-1 ${pendingReplace ? "text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300" : "text-muted-foreground hover:text-foreground"}`}
+          className={`flex cursor-pointer items-center gap-1 px-2 py-1 transition-colors ${pendingReplace ? "text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300" : "text-muted-foreground hover:text-foreground"}`}
           onClick={() => useUIStore.getState().setSelectedIngredient(undefined)}
           aria-label="Deselect"
         >
