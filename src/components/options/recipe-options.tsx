@@ -25,7 +25,7 @@ export const RecipeOptions = () => {
     <div className="flex flex-col">
       <button
         type="button"
-        className="text-muted-foreground hover:text-foreground flex items-center gap-1 px-4 py-3 text-sm font-medium transition-colors"
+        className="text-muted-foreground hover:text-foreground flex cursor-pointer items-center gap-1 px-4 py-3 text-sm font-medium transition-colors"
         onClick={() => setOptionsOpen((value) => !value)}
       >
         <ChevronDownIcon

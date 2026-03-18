@@ -25,7 +25,7 @@ export const ThemeToggle = () => {
     <button
       type="button"
       onClick={() => setTheme(nextTheme)}
-      className="rounded-md p-2 text-[hsl(var(--header-fg))] transition-colors hover:bg-white/10 active:bg-white/20"
+      className="cursor-pointer rounded-md p-2 text-[hsl(var(--header-fg))] transition-colors hover:bg-white/10 active:bg-white/20"
     >
       {icon}
     </button>

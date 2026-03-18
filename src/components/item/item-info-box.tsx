@@ -26,7 +26,7 @@ export const ItemInfoBox = ({ selection }: ItemInfoBoxProps) => {
       {selection.source === "preview" && (
         <button
           type="button"
-          className="text-muted-foreground hover:text-foreground shrink-0 transition-colors"
+          className="text-muted-foreground hover:text-foreground shrink-0 cursor-pointer transition-colors"
           onClick={() => {
             useRecipeStore.getState().setRecipeSlot(selection.slot, undefined);
             useUIStore.getState().setSelectedItem(undefined);

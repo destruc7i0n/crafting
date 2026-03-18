@@ -17,6 +17,7 @@ type TooltipProps = {
   content: React.ReactNode;
   children: React.ReactNode;
   placement?: Placement;
+  disabled?: boolean;
 };
 
 const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) => {
@@ -56,7 +57,7 @@ const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) 
 export const Tooltip = (props: TooltipProps) => {
   const isTouchDevice = useIsTouchDevice();
 
-  if (isTouchDevice) {
+  if (isTouchDevice || props.disabled) {
     return <>{props.children}</>;
   }
 

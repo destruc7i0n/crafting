@@ -47,7 +47,7 @@ export const IngredientCard = ({
         <button
           type="button"
           className={cn(
-            "flex min-w-0 flex-1 flex-col overflow-hidden text-left",
+            "flex min-w-0 flex-1 cursor-pointer flex-col overflow-hidden text-left",
             sublabel && "pt-0.5",
           )}
           onClick={onClick}

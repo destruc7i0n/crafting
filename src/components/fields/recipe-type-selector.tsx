@@ -35,7 +35,7 @@ export const RecipeTypeSelector = () => {
             onClick={() => setRecipeType(type)}
             {...(isSelected ? { "data-selected": true } : {})}
             className={cn(
-              "flex shrink-0 items-center gap-1.5 rounded-md border px-2 py-1.5 transition-all",
+              "flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1.5 transition-all",
               isSelected
                 ? "border-primary bg-primary/10 text-foreground"
                 : "hover:bg-accent active:bg-accent/80 border-transparent",

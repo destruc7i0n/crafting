@@ -111,7 +111,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         <button
           type="button"
           onClick={toggleRecipeSidebar}
-          className="hover:bg-accent active:bg-accent/80 flex h-8 w-8 items-center justify-center rounded-md transition-colors"
+          className="hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors"
           title="Expand sidebar"
         >
           <ChevronRightIcon size={16} />
@@ -119,7 +119,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
         <button
           onClick={createRecipe}
-          className="border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 items-center justify-center rounded-md border border-dashed transition-colors"
+          className="border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-dashed transition-colors"
           title="New Recipe"
         >
           <PlusIcon size={16} />
@@ -142,7 +142,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                   type="button"
                   onClick={() => handleSelectRecipe(index)}
                   className={cn(
-                    "flex h-9 w-9 items-center justify-center rounded-md border transition-colors",
+                    "flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border transition-colors",
                     isSelected
                       ? "border-primary bg-primary/10"
                       : "hover:bg-accent active:bg-accent/80 border-transparent",
@@ -176,7 +176,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
               disabled={!canDownloadPack}
               onClick={handleDownloadAll}
               className={cn(
-                "border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 items-center justify-center rounded-md border transition-colors",
+                "border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border transition-colors",
                 !canDownloadPack && "cursor-not-allowed opacity-50",
               )}
               title={canDownloadPack ? downloadConfig.readyTitle : downloadConfig.blockedTitle}
@@ -193,8 +193,9 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     <div className="relative flex h-full max-h-full min-h-0 w-full flex-col gap-3 rounded-lg border p-3">
       <div className="flex items-center gap-2">
         <button
+          type="button"
           onClick={createRecipe}
-          className="border-border bg-background text-foreground hover:bg-accent active:bg-accent/80 flex flex-1 items-center justify-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm font-medium transition-colors"
+          className="border-border bg-background text-foreground hover:bg-accent active:bg-accent/80 flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm font-medium transition-colors"
         >
           <PlusIcon size={16} />
           New Recipe
@@ -203,14 +204,14 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         <button
           type="button"
           onClick={mobile ? () => setMobileRecipeSidebarOpen(false) : toggleRecipeSidebar}
-          className="hover:bg-accent active:bg-accent/80 flex h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors lg:flex"
+          className="hover:bg-accent active:bg-accent/80 flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors lg:flex"
           title={mobile ? "Close sidebar" : "Collapse sidebar"}
         >
           {mobile ? <XIcon size={16} /> : <ChevronLeftIcon size={16} />}
         </button>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto pr-1">
+      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto">
         {recipes.map((recipe, index) => {
           const isSelected = selectedRecipeIndex === index;
           const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
@@ -246,7 +247,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
             firstSlot = (
               <button
                 type="button"
-                className="text-muted-foreground hover:text-foreground rounded transition-colors"
+                className="text-muted-foreground hover:text-foreground cursor-pointer rounded transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
                   downloadRecipeJson(recipe, minecraftVersion);
@@ -292,7 +293,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                 {recipes.length > 1 && (
                   <button
                     type="button"
-                    className="text-muted-foreground hover:text-destructive rounded transition-colors"
+                    className="text-muted-foreground hover:text-destructive cursor-pointer rounded transition-colors"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDeleteRecipe(index, e);
@@ -309,16 +310,12 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
       {downloadConfig && (
         <div className="border-border mt-auto flex flex-col gap-2 border-t pt-3">
-          <Tooltip content={downloadConfig.blockedTitle} placement="top">
-            <span className={cn(!canDownloadPack && "inline-block w-full cursor-not-allowed")}>
+          <Tooltip content={downloadConfig.blockedTitle} placement="top" disabled={canDownloadPack}>
+            <span className={cn(!canDownloadPack && "inline-block w-full")}>
               <button
                 type="button"
                 disabled={!canDownloadPack}
-                className={cn(
-                  "border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 w-full rounded-md border px-3 py-2 text-sm font-medium transition-colors",
-                  !canDownloadPack &&
-                    "hover:bg-secondary active:bg-secondary cursor-not-allowed opacity-50",
-                )}
+                className="border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 w-full cursor-pointer rounded-md border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
                 onClick={handleDownloadAll}
               >
                 {downloadConfig.label}

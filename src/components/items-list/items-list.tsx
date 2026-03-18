@@ -118,7 +118,7 @@ export const ItemsList = () => {
         {!isCreating && (
           <button
             type="button"
-            className="border-border hover:bg-accent flex h-8 w-8 shrink-0 items-center justify-center rounded-md border transition-colors"
+            className="border-border hover:bg-accent flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border transition-colors"
             onClick={handleCreateAction}
             title={tab === "items" ? "Add custom item" : "New tag"}
           >
@@ -134,7 +134,7 @@ export const ItemsList = () => {
         {!isCreating && (
           <button
             type="button"
-            className="border-border text-foreground hover:bg-accent ml-auto flex shrink-0 items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium transition-colors"
+            className="border-border text-foreground hover:bg-accent ml-auto flex shrink-0 cursor-pointer items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium transition-colors"
             onClick={handleCreateAction}
           >
             <PlusIcon size={14} />

@@ -65,7 +65,7 @@ export const ItemOutput = () => {
       <div className="flex items-center justify-between px-4 py-2">
         <button
           type="button"
-          className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-sm font-medium transition-colors"
+          className="text-muted-foreground hover:text-foreground flex cursor-pointer items-center gap-1 text-sm font-medium transition-colors"
           onClick={() => setCollapsed((value) => !value)}
         >
           <ChevronDownIcon
@@ -80,7 +80,7 @@ export const ItemOutput = () => {
             type="button"
             onClick={handleCopy}
             disabled={!!generatedResult.error}
-            className="text-muted-foreground hover:bg-accent hover:text-foreground rounded-md p-1.5 transition-colors disabled:pointer-events-none disabled:opacity-40"
+            className="text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded-md p-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             title="Copy JSON"
           >
             {copied ? (
@@ -94,7 +94,7 @@ export const ItemOutput = () => {
             type="button"
             onClick={() => downloadRecipeJson(recipeState, minecraftVersion)}
             disabled={!!generatedResult.error}
-            className="border-border bg-accent/30 text-foreground hover:bg-accent inline-flex h-8 items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors disabled:pointer-events-none disabled:opacity-40"
+            className="border-border bg-accent/30 text-foreground hover:bg-accent inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             title="Download JSON"
           >
             <DownloadIcon size={14} />

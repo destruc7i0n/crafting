@@ -17,7 +17,7 @@ export function Header() {
         <button
           type="button"
           onClick={() => setMobileRecipeSidebarOpen(true)}
-          className="rounded-md p-2 transition-colors hover:bg-white/10 active:bg-white/20 lg:hidden"
+          className="cursor-pointer rounded-md p-2 transition-colors hover:bg-white/10 active:bg-white/20 lg:hidden"
         >
           <ListIcon size={16} />
         </button>

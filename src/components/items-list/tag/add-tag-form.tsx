@@ -82,7 +82,7 @@ export const AddTagForm = ({
       <div className="flex items-center gap-3">
         <button
           type="button"
-          className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
+          className="text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded p-1 transition-colors"
           onClick={onClose}
         >
           <ArrowLeftIcon size={16} />
@@ -137,7 +137,7 @@ export const AddTagForm = ({
         type="button"
         disabled={!canCreate}
         onClick={handleCreate}
-        className="border-border text-foreground hover:bg-accent rounded-md border px-3 py-2 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+        className="border-border text-foreground hover:bg-accent cursor-pointer rounded-md border px-3 py-2 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
       >
         Create Tag
       </button>

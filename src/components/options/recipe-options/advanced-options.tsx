@@ -162,7 +162,7 @@ export const AdvancedOptions = ({ open, onToggle }: AdvancedOptionsProps) => {
 
       <button
         type="button"
-        className="text-muted-foreground/80 hover:text-muted-foreground flex items-center gap-1 self-start px-0.5 py-0 text-left text-xs font-medium outline-hidden transition-colors focus-visible:ring-0 focus-visible:outline-hidden"
+        className="text-muted-foreground/80 hover:text-muted-foreground flex cursor-pointer items-center gap-1 self-start px-0.5 py-0 text-left text-xs font-medium outline-hidden transition-colors focus-visible:ring-0 focus-visible:outline-hidden"
         onClick={onToggle}
       >
         <ChevronDownIcon size={10} className={cn("transition-transform", !open && "-rotate-90")} />
