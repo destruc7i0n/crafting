@@ -6,10 +6,20 @@ import path from "node:path";
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const outputPath = path.join(repoRoot, "src/data/generated/bedrock-mappings.json");
 const geyserMappingsUrl = "https://raw.githubusercontent.com/GeyserMC/mappings/master/items.json";
+const mojangBedrockSamplesUrl =
+  "https://raw.githubusercontent.com/Mojang/bedrock-samples/main/metadata/vanilladata_modules/mojang-items.json";
 
 type GeyserEntry = {
   bedrock_identifier: string;
   bedrock_data: number;
+};
+
+type BedrockSamplesMojangItem = {
+  name: string;
+  raw_id: number;
+};
+type BedrockSamplesMojangItemsFile = {
+  data_items: BedrockSamplesMojangItem[];
 };
 
 type BedrockTranslation = {
@@ -17,7 +27,7 @@ type BedrockTranslation = {
   data?: number;
 };
 
-// Java items that have no real Bedrock equivalent
+// Java items that have no real Bedrock equivalent (GeyserMC maps these to existing Bedrock items as fallbacks)
 const ignoredJavaIds = new Set([
   "minecraft:debug_stick",
   "minecraft:furnace_minecart",
@@ -25,18 +35,28 @@ const ignoredJavaIds = new Set([
   "minecraft:spectral_arrow",
 ]);
 
-const ignoredBedrockIds = new Set(["minecraft:unknown"]);
-
 const fetchBedrockMappings = async () => {
-  console.log("Fetching GeyserMC item mappings...");
+  console.log("Fetching mappings...");
 
-  const response = await fetch(geyserMappingsUrl);
+  const [geyserResponse, mojangResponse] = await Promise.all([
+    fetch(geyserMappingsUrl),
+    fetch(mojangBedrockSamplesUrl),
+  ]);
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch GeyserMC mappings: ${response.status} ${response.statusText}`);
+  if (!geyserResponse.ok) {
+    throw new Error(
+      `Failed to fetch GeyserMC mappings: ${geyserResponse.status} ${geyserResponse.statusText}`,
+    );
+  }
+  if (!mojangResponse.ok) {
+    throw new Error(
+      `Failed to fetch Mojang bedrock-samples: ${mojangResponse.status} ${mojangResponse.statusText}`,
+    );
   }
 
-  const raw = (await response.json()) as Record<string, GeyserEntry>;
+  const raw = (await geyserResponse.json()) as Record<string, GeyserEntry>;
+  const mojangData = (await mojangResponse.json()) as BedrockSamplesMojangItemsFile;
+  const validBedrockIds = new Set(mojangData.data_items.map((item) => item.name));
 
   const translations: Record<string, BedrockTranslation | null> = {};
   const seenBedrockKeys = new Set<string>();
@@ -52,13 +72,12 @@ const fetchBedrockMappings = async () => {
     }
 
     if (ignoredJavaIds.has(javaId)) {
-      console.log(`Excluding ${javaId} (no Bedrock equivalent)`);
       translations[javaId] = null;
       continue;
     }
 
-    if (ignoredBedrockIds.has(entry.bedrock_identifier)) {
-      console.log(`Excluding ${javaId} (maps to ${entry.bedrock_identifier})`);
+    if (!validBedrockIds.has(entry.bedrock_identifier)) {
+      console.log(`Excluding ${javaId} → ${entry.bedrock_identifier} (not in Mojang item list)`);
       translations[javaId] = null;
       continue;
     }

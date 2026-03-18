@@ -159,21 +159,23 @@ const generateVersionedTagFiles = async () => {
   const gitDir = await cloneSummaryRepo();
 
   try {
-    for (const [index, version] of versionsWithVanillaTags.entries()) {
-      console.log(
-        `Generating vanilla item tags for ${version} (${index + 1}/${versionsWithVanillaTags.length})`,
-      );
+    await Promise.all(
+      versionsWithVanillaTags.map(async (version, index) => {
+        console.log(
+          `Generating vanilla item tags for ${version} (${index + 1}/${versionsWithVanillaTags.length})`,
+        );
 
-      const sha = await getCommitShaForVersion(gitDir, version);
-      if (!sha) {
-        throw new Error(`No mcmeta summary commit found for version ${version}`);
-      }
+        const sha = await getCommitShaForVersion(gitDir, version);
+        if (!sha) {
+          throw new Error(`No mcmeta summary commit found for version ${version}`);
+        }
 
-      const rawTags = await readRawTagsForCommit(gitDir, sha);
-      const resolvedTags = resolveTagGraph(rawTags);
+        const rawTags = await readRawTagsForCommit(gitDir, sha);
+        const resolvedTags = resolveTagGraph(rawTags);
 
-      await writeVersionTags(version, resolvedTags);
-    }
+        await writeVersionTags(version, resolvedTags);
+      }),
+    );
   } finally {
     console.log("Cleaning up temporary mcmeta clone");
     await rm(path.dirname(gitDir), { recursive: true, force: true });
