@@ -66,7 +66,7 @@ const extractInput = (state: SingleRecipeState): CookingInput => ({
   time: state.cooking.time,
   experience: state.cooking.experience,
   group: state.group,
-  category: state.category,
+  category: state.category || undefined,
 });
 
 export const validateCooking = (state: SingleRecipeState): string[] => {

@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
-import { dropTargetForElements, monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import {
+  dropTargetForElements,
+  monitorForElements,
+} from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import invariant from "tiny-invariant";
 
 import { isItemDraggableData } from "@/lib/dnd";
@@ -43,13 +46,15 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
         getData: () => dataRef.current,
         onDragEnter: () => setIsDraggedOver(true),
         onDragLeave: () => setIsDraggedOver(false),
-        onDrop: () => { setIsDraggedOver(false); setIsInvalidTarget(false); },
+        onDrop: () => {
+          setIsDraggedOver(false);
+          setIsInvalidTarget(false);
+        },
       }),
       monitorForElements({
         onDragStart: ({ source }) => {
           const canAccept =
-            isItemDraggableData(source.data) &&
-            (canDropRef.current?.({ source }) ?? true);
+            isItemDraggableData(source.data) && (canDropRef.current?.({ source }) ?? true);
           setIsInvalidTarget(!canAccept);
         },
         onDrop: () => setIsInvalidTarget(false),

@@ -31,11 +31,11 @@ export const downloadBehaviorPack = async (
   for (const recipe of recipes) {
     try {
       recipeFiles.push({
-        identifier: recipe.bedrock!.identifier.trim(),
+        identifier: recipe.bedrock.identifier.trim(),
         json: generate(recipe, version),
       });
     } catch (error) {
-      const label = recipe.recipeName?.trim() || "(unnamed)";
+      const label = recipe.recipeName.trim() || "(unnamed)";
       invalidRecipes.push(
         `${label}: ${error instanceof Error ? error.message : "Failed to generate recipe"}`,
       );

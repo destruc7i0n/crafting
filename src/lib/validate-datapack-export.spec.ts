@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState } from "@/stores/recipe";
+import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 
 import { validateDatapackExport } from "./validate-datapack-export";
 
@@ -21,19 +21,11 @@ const createCraftingRecipe = (
   slots: SingleRecipeState["slots"],
   recipeName = "recipe_1",
 ): SingleRecipeState => ({
+  ...recipeStateDefaults,
   recipeType: RecipeType.Crafting,
   recipeName,
-  group: "",
   slots,
-  crafting: {
-    shapeless: true,
-    keepWhitespace: false,
-    twoByTwo: false,
-  },
-  cooking: {
-    time: 0,
-    experience: 0,
-  },
+  crafting: { ...recipeStateDefaults.crafting, shapeless: true },
 });
 
 describe("validateDatapackExport", () => {

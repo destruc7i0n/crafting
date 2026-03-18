@@ -25,7 +25,7 @@ export const validateDatapackExport = (
   const fileNameToIndexes = new Map<string, number[]>();
 
   for (const [index, recipe] of recipes.entries()) {
-    const recipeName = recipe.recipeName?.trim();
+    const recipeName = recipe.recipeName.trim();
 
     if (!recipeName) {
       continue;

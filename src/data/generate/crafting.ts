@@ -251,7 +251,7 @@ export const extractCraftingInput = (state: SingleRecipeState): CraftingInput =>
   keepWhitespace: state.crafting.keepWhitespace,
   twoByTwo: state.crafting.twoByTwo === true,
   group: state.group,
-  category: state.category,
+  category: state.category || undefined,
   showNotification: state.showNotification,
 });
 

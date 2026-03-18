@@ -6,11 +6,11 @@ import { SingleRecipeState } from "@/stores/recipe";
 
 const getRecipeFileName = (recipe: SingleRecipeState, version: MinecraftVersion) => {
   if (version === MinecraftVersion.Bedrock) {
-    const identifier = recipe.bedrock?.identifier?.trim();
+    const identifier = recipe.bedrock.identifier.trim();
     return identifier ? getBehaviorPackRecipeFileName(identifier) : undefined;
   }
 
-  const recipeName = recipe.recipeName?.trim();
+  const recipeName = recipe.recipeName.trim();
   return recipeName ? `${recipeName}.json` : undefined;
 };
 

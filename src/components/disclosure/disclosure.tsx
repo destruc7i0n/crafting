@@ -1,7 +1,8 @@
+import type { Placement } from "@floating-ui/react";
+
 import { Popover } from "@/components/popover/popover";
 import { Tooltip } from "@/components/tooltip/tooltip";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
-import type { Placement } from "@floating-ui/react";
 
 type DisclosureProps = {
   content: React.ReactNode;

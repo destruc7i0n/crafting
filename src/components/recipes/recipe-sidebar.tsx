@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useMemo } from "react";
 
 import {
   AlertTriangleIcon,
@@ -20,7 +20,6 @@ import { confirmAction } from "@/lib/confirm";
 import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
 import { downloadRecipeJson } from "@/lib/download/recipe";
-import { isDuplicateRecipeName, sanitizeRecipeName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
 import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
 import { validateDatapackExport } from "@/lib/validate-datapack-export";
@@ -77,10 +76,6 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     };
   }
 
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [editingValue, setEditingValue] = useState("");
-  const setRecipeNameAtIndex = useRecipeStore((state) => state.setRecipeNameAtIndex);
-
   const handleSelectRecipe = (index: number) => {
     selectRecipe(index);
 
@@ -95,23 +90,6 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     }
 
     deleteRecipe(index);
-  };
-
-  const commitRename = (index: number) => {
-    const value = sanitizeRecipeName(editingValue);
-
-    if (!value) {
-      setEditingIndex(null);
-      return;
-    }
-
-    const duplicate = isDuplicateRecipeName(value, recipes, index);
-
-    if (!duplicate) {
-      setRecipeNameAtIndex(index, value);
-    }
-
-    setEditingIndex(null);
   };
 
   const handleDownloadAll = async () => {
@@ -153,13 +131,13 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
             const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
             const recipeErrors = invalidRecipesMap.get(recipe.id);
             const hasWarning = !isSupported || !!recipeErrors;
-            const label = `${recipe.recipeName} (${recipeTypeToName[recipe.recipeType]})`;
+            const label =
+              minecraftVersion === MinecraftVersion.Bedrock
+                ? `${recipe.bedrock.identifier} (${recipeTypeToName[recipe.recipeType]})`
+                : `${recipe.recipeName} (${recipeTypeToName[recipe.recipeType]})`;
 
             return (
-              <Tooltip
-                key={recipe.id ?? `${recipe.recipeName ?? "recipe"}-${index}`}
-                content={label}
-              >
+              <Tooltip key={recipe.id} content={label}>
                 <button
                   type="button"
                   onClick={() => handleSelectRecipe(index)}
@@ -273,7 +251,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                   e.stopPropagation();
                   downloadRecipeJson(recipe, minecraftVersion);
                 }}
-                title={`Download ${recipe.recipeName}`}
+                title={`Download ${minecraftVersion === MinecraftVersion.Bedrock ? recipe.bedrock.identifier : recipe.recipeName}`}
               >
                 <DownloadIcon size={14} />
               </button>
@@ -282,7 +260,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
           return (
             <div
-              key={recipe.id ?? `${recipe.recipeName ?? "recipe"}-${index}`}
+              key={recipe.id}
               onClick={() => handleSelectRecipe(index)}
               className={cn(
                 "group border-border flex cursor-pointer items-center gap-2 rounded-md border px-2 py-2 text-left transition-colors",
@@ -297,41 +275,16 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                 className="h-6 w-6 shrink-0"
               />
 
-              {editingIndex === index ? (
-                <input
-                  autoFocus
-                  value={editingValue}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck={false}
-                  className="border-input bg-background text-foreground w-full rounded border px-1 py-0.5 text-sm"
-                  onChange={(e) => setEditingValue(e.target.value)}
-                  onBlur={() => commitRename(index)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      commitRename(index);
-                    }
-                    if (e.key === "Escape") {
-                      setEditingIndex(null);
-                    }
-                  }}
-                  onClick={(e) => e.stopPropagation()}
-                />
-              ) : (
-                <div
-                  className="flex flex-1 flex-col truncate"
-                  onDoubleClick={(e) => {
-                    e.stopPropagation();
-                    setEditingIndex(index);
-                    setEditingValue(recipes[index]?.recipeName ?? "");
-                  }}
-                >
-                  <span className="truncate text-sm">{recipe.recipeName}</span>
-                  <span className="text-muted-foreground truncate text-xs">
-                    {recipeTypeToName[recipe.recipeType]}
-                  </span>
-                </div>
-              )}
+              <div className="flex flex-1 flex-col truncate">
+                <span className="truncate text-sm">
+                  {minecraftVersion === MinecraftVersion.Bedrock
+                    ? recipe.bedrock.identifier
+                    : recipe.recipeName}
+                </span>
+                <span className="text-muted-foreground truncate text-xs">
+                  {recipeTypeToName[recipe.recipeType]}
+                </span>
+              </div>
 
               <span className="flex shrink-0 items-center gap-2">
                 {firstSlot}

@@ -5,9 +5,13 @@ import { RecipeType } from "@/data/types";
 import { SingleRecipeState, useRecipeStore } from "./index";
 
 const createRecipe = (recipeName: string): SingleRecipeState => ({
-  recipeType: RecipeType.Crafting,
+  id: recipeName,
   recipeName,
+  recipeType: RecipeType.Crafting,
   group: "",
+  category: "",
+  showNotification: true,
+  smithingTrimPattern: "",
   slots: {},
   crafting: {
     shapeless: false,

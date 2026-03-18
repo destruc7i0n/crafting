@@ -12,7 +12,7 @@ import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { Field } from "./shared";
 
 const selectDatapackFileNameConflict = (state: ReturnType<typeof useRecipeStore.getState>) => {
-  const recipeName = state.recipes[state.selectedRecipeIndex]?.recipeName?.trim();
+  const recipeName = state.recipes[state.selectedRecipeIndex]?.recipeName.trim();
   if (!recipeName) {
     return false;
   }
@@ -20,11 +20,10 @@ const selectDatapackFileNameConflict = (state: ReturnType<typeof useRecipeStore.
   const datapackFileName = getDatapackRecipeFileName(recipeName);
 
   return state.recipes.some((otherRecipe, index) => {
-    const otherRecipeName = otherRecipe.recipeName?.trim();
+    const otherRecipeName = otherRecipe.recipeName.trim();
 
     return (
       index !== state.selectedRecipeIndex &&
-      otherRecipeName !== undefined &&
       otherRecipeName.length > 0 &&
       getDatapackRecipeFileName(otherRecipeName) === datapackFileName
     );

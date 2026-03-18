@@ -1,4 +1,4 @@
-import { SingleRecipeState } from "@/stores/recipe";
+import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType } from "../types";
 import { generate } from "./smithing";
@@ -7,6 +7,7 @@ describe("generate smithing", () => {
   describe("1.16", () => {
     it("should generate a smithing recipe", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Smithing,
         group: "",
         slots: {
@@ -49,6 +50,7 @@ describe("generate smithing", () => {
           time: 0,
         },
         crafting: {
+          ...recipeStateDefaults.crafting,
           keepWhitespace: false,
           shapeless: false,
         },
@@ -73,6 +75,7 @@ describe("generate smithing", () => {
     describe("smithing trim", () => {
       it("should generate a smithing trim recipe", () => {
         const recipeSlice: SingleRecipeState = {
+          ...recipeStateDefaults,
           recipeType: RecipeType.SmithingTrim,
           group: "",
           slots: {
@@ -115,6 +118,7 @@ describe("generate smithing", () => {
             time: 0,
           },
           crafting: {
+            ...recipeStateDefaults.crafting,
             keepWhitespace: false,
             shapeless: false,
           },
@@ -138,6 +142,7 @@ describe("generate smithing", () => {
     describe("smithing transform", () => {
       it("should generate a smithing transform recipe", () => {
         const recipeSlice: SingleRecipeState = {
+          ...recipeStateDefaults,
           recipeType: RecipeType.SmithingTransform,
           group: "",
           slots: {
@@ -191,6 +196,7 @@ describe("generate smithing", () => {
             time: 0,
           },
           crafting: {
+            ...recipeStateDefaults.crafting,
             keepWhitespace: false,
             shapeless: false,
           },
@@ -218,6 +224,7 @@ describe("generate smithing", () => {
   describe("1.21.5", () => {
     it("should generate a smithing trim recipe with a pattern", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.SmithingTrim,
         group: "",
         smithingTrimPattern: "minecraft:bolt",
@@ -263,6 +270,7 @@ describe("generate smithing", () => {
           time: 0,
         },
         crafting: {
+          ...recipeStateDefaults.crafting,
           keepWhitespace: false,
           shapeless: false,
         },
@@ -281,6 +289,7 @@ describe("generate smithing", () => {
   describe("bedrock", () => {
     it("should generate bedrock smithing trim body", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.SmithingTrim,
         group: "",
         slots: {
@@ -313,7 +322,7 @@ describe("generate smithing", () => {
           },
         },
         cooking: { experience: 0, time: 0 },
-        crafting: { keepWhitespace: false, shapeless: false },
+        crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
       };
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
@@ -325,6 +334,7 @@ describe("generate smithing", () => {
 
     it("should generate bedrock legacy smithing body", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Smithing,
         group: "",
         slots: {
@@ -354,7 +364,7 @@ describe("generate smithing", () => {
           },
         },
         cooking: { experience: 0, time: 0 },
-        crafting: { keepWhitespace: false, shapeless: false },
+        crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
       };
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({

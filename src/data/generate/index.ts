@@ -35,7 +35,7 @@ const extractCookingInput = (state: SingleRecipeState): CookingInput => ({
   time: state.cooking.time,
   experience: state.cooking.experience,
   group: state.group,
-  category: state.category,
+  category: state.category || undefined,
 });
 
 const extractStonecutterInput = (state: SingleRecipeState): StonecutterInput => ({
@@ -50,7 +50,7 @@ const extractSmithingInput = (state: SingleRecipeState): SmithingInput => ({
   base: state.slots[SLOTS.smithing.base],
   addition: state.slots[SLOTS.smithing.addition],
   result: state.slots[SLOTS.smithing.result],
-  trimPattern: state.smithingTrimPattern,
+  trimPattern: state.smithingTrimPattern || undefined,
 });
 
 const extractTransmuteInput = (state: SingleRecipeState): TransmuteInput => ({
@@ -58,7 +58,7 @@ const extractTransmuteInput = (state: SingleRecipeState): TransmuteInput => ({
   material: state.slots[SLOTS.crafting.slot2],
   result: state.slots[SLOTS.crafting.result],
   group: state.group,
-  category: state.category,
+  category: state.category || undefined,
 });
 
 const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";
@@ -172,7 +172,7 @@ export function generate(state: SingleRecipeState, version: MinecraftVersion): G
   const formatter = createFormatStrategy(version);
 
   if (version === MinecraftVersion.Bedrock) {
-    const identifier = state.bedrock?.identifier?.trim();
+    const identifier = state.bedrock.identifier.trim();
 
     if (!identifier) {
       throw new Error("Bedrock recipes must have an identifier");
@@ -183,7 +183,7 @@ export function generate(state: SingleRecipeState, version: MinecraftVersion): G
 
     return wrapBedrockRecipe(inner, meta.wrapperKey, meta.tags, {
       identifier,
-      priority: state.bedrock?.priority ?? 0,
+      priority: state.bedrock.priority,
       formatVersion: meta.formatVersion,
     });
   }

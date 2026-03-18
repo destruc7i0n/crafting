@@ -5,31 +5,53 @@ import { immer } from "zustand/middleware/immer";
 
 import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
+import { getNextBedrockIdentifierNumber, getNextRecipeNumber } from "@/lib/recipe-name";
 import { generateUid } from "@/lib/utils";
 
 export interface SingleRecipeState {
-  id?: string;
-  recipeName?: string;
+  id: string;
+  recipeName: string;
   recipeType: RecipeType;
   group: string;
-  category?: string;
-  showNotification?: boolean;
-  smithingTrimPattern?: string;
+  category: string;
+  showNotification: boolean;
+  smithingTrimPattern: string;
   slots: Partial<Record<RecipeSlot, IngredientItem>>;
   crafting: {
     shapeless: boolean;
     keepWhitespace: boolean;
-    twoByTwo?: boolean;
+    twoByTwo: boolean;
   };
   cooking: {
     time: number;
     experience: number;
   };
-  bedrock?: {
+  bedrock: {
     identifier: string;
     priority: number;
   };
 }
+
+export const recipeStateDefaults: SingleRecipeState = {
+  id: "",
+  recipeName: "",
+  recipeType: RecipeType.Crafting,
+  group: "",
+  category: "",
+  showNotification: true,
+  smithingTrimPattern: "",
+  slots: {},
+  crafting: {
+    shapeless: false,
+    keepWhitespace: false,
+    twoByTwo: false,
+  },
+  cooking: {
+    time: 0,
+    experience: 0,
+  },
+  bedrock: { identifier: "crafting:recipe_1", priority: 0 },
+};
 
 export type RecipeState = {
   recipes: SingleRecipeState[];
@@ -45,9 +67,9 @@ type RecipeActions = {
   setRecipeNameAtIndex: (index: number, name: string) => void;
   setRecipeType: (type: RecipeType) => void;
   setRecipeGroup: (group: string) => void;
-  setRecipeCategory: (category?: string) => void;
+  setRecipeCategory: (category: string) => void;
   setRecipeShowNotification: (showNotification: boolean) => void;
-  setRecipeSmithingTrimPattern: (pattern?: string) => void;
+  setRecipeSmithingTrimPattern: (pattern: string) => void;
   setRecipeSlot: (slot: RecipeSlot, item?: IngredientItem) => void;
   setRecipeSlotCount: (slot: RecipeSlot, count: number) => void;
   setRecipeCraftingShapeless: (shapeless: boolean) => void;
@@ -67,29 +89,8 @@ type RecipeActions = {
 
 const clone = rfdc();
 
-const DEFAULT_BEDROCK_OPTIONS = { identifier: "crafting:recipe", priority: 0 } as const;
-
-const getDefaultRecipe = (): SingleRecipeState => {
-  const recipe: SingleRecipeState = {
-    id: generateUid("recipe"),
-    recipeName: "recipe_1",
-    recipeType: RecipeType.Crafting,
-    group: "",
-    slots: {},
-    crafting: {
-      shapeless: false,
-      keepWhitespace: false,
-      twoByTwo: false,
-    },
-    cooking: {
-      time: 0,
-      experience: 0,
-    },
-    bedrock: { ...DEFAULT_BEDROCK_OPTIONS },
-  };
-
-  return clone(recipe);
-};
+const getDefaultRecipe = (): SingleRecipeState =>
+  clone({ ...recipeStateDefaults, id: generateUid("recipe"), recipeName: "recipe_1" });
 
 type ImmerState = RecipeState & RecipeActions;
 
@@ -109,14 +110,11 @@ export const useRecipeStore = create<ImmerState>()(
       },
       createRecipe: () => {
         set((state) => {
-          const recipe: SingleRecipeState = getDefaultRecipe();
-          const existingNumbers = state.recipes
-            .map((r) => r.recipeName?.match(/^recipe_(\d+)$/))
-            .filter(Boolean)
-            .map((m) => Number(m![1]));
-          const next = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
-          recipe.recipeName = `recipe_${next}`;
-
+          const recipe = getDefaultRecipe();
+          const nameNext = getNextRecipeNumber(state.recipes);
+          const idNext = getNextBedrockIdentifierNumber(state.recipes);
+          recipe.recipeName = `recipe_${nameNext}`;
+          recipe.bedrock = { identifier: `crafting:recipe_${idNext}`, priority: 0 };
           state.recipes.push(recipe);
           state.selectedRecipeIndex = state.recipes.length - 1;
         });
@@ -160,7 +158,7 @@ export const useRecipeStore = create<ImmerState>()(
           if (recipe) recipe.group = group;
         });
       },
-      setRecipeCategory: (category?: string) => {
+      setRecipeCategory: (category: string) => {
         set((state) => {
           const recipe = getSelectedRecipe(state);
           if (recipe) recipe.category = category;
@@ -172,7 +170,7 @@ export const useRecipeStore = create<ImmerState>()(
           if (recipe) recipe.showNotification = showNotification;
         });
       },
-      setRecipeSmithingTrimPattern: (pattern?: string) => {
+      setRecipeSmithingTrimPattern: (pattern: string) => {
         set((state) => {
           const recipe = getSelectedRecipe(state);
           if (recipe) recipe.smithingTrimPattern = pattern;
@@ -226,7 +224,6 @@ export const useRecipeStore = create<ImmerState>()(
         set((state) => {
           const recipe = getSelectedRecipe(state);
           if (!recipe) return;
-          recipe.bedrock ??= { ...DEFAULT_BEDROCK_OPTIONS };
           recipe.bedrock.identifier = identifier;
         });
       },
@@ -234,7 +231,6 @@ export const useRecipeStore = create<ImmerState>()(
         set((state) => {
           const recipe = getSelectedRecipe(state);
           if (!recipe) return;
-          recipe.bedrock ??= { ...DEFAULT_BEDROCK_OPTIONS };
           recipe.bedrock.priority = priority;
         });
       },

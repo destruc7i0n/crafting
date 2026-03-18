@@ -24,7 +24,7 @@ export const validateRecipe = (
 ): RecipeValidation => {
   const errors: string[] = [];
 
-  if (version !== MinecraftVersion.Bedrock && !recipe.recipeName?.trim()) {
+  if (version !== MinecraftVersion.Bedrock && !recipe.recipeName.trim()) {
     errors.push("Add a file name");
   }
 

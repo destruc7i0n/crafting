@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState } from "@/stores/recipe";
+import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 
 import {
   canEditRecipeSlotCount,
@@ -12,11 +12,7 @@ import {
 } from "./recipe-slots";
 
 const makeRecipe = (overrides: Partial<SingleRecipeState> = {}): SingleRecipeState => ({
-  recipeType: RecipeType.Crafting,
-  group: "",
-  slots: {},
-  crafting: { shapeless: false, keepWhitespace: false, twoByTwo: false },
-  cooking: { time: 0, experience: 0 },
+  ...recipeStateDefaults,
   ...overrides,
 });
 

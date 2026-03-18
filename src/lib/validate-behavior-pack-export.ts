@@ -25,7 +25,7 @@ export const validateBehaviorPackExport = (
   const fileNameToEntries = new Map<string, { indexes: number[]; identifiers: Set<string> }>();
 
   for (const [index, recipe] of recipes.entries()) {
-    const identifier = recipe.bedrock?.identifier?.trim();
+    const identifier = recipe.bedrock.identifier.trim();
 
     if (!identifier) {
       issues[index].errors.push("Add a Bedrock identifier");

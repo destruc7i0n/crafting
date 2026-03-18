@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState } from "@/stores/recipe";
+import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 
 const { createBehaviorPackBlob, downloadBlob, generate, getBehaviorPackRecipeFileName } =
   vi.hoisted(() => ({
@@ -52,23 +52,12 @@ const createCraftingRecipe = (
   identifier = "crafting:recipe_1",
   recipeName = "recipe_1",
 ): SingleRecipeState => ({
+  ...recipeStateDefaults,
   recipeType: RecipeType.Crafting,
   recipeName,
-  group: "",
   slots,
-  crafting: {
-    shapeless: true,
-    keepWhitespace: false,
-    twoByTwo: false,
-  },
-  cooking: {
-    time: 0,
-    experience: 0,
-  },
-  bedrock: {
-    identifier,
-    priority: 0,
-  },
+  crafting: { ...recipeStateDefaults.crafting, shapeless: true },
+  bedrock: { identifier, priority: 0 },
 });
 
 describe("downloadBehaviorPack", () => {

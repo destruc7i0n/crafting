@@ -36,7 +36,7 @@ export const downloadDatapack = async (
 
   for (const recipe of recipes) {
     try {
-      const recipeName = recipe.recipeName?.trim();
+      const recipeName = recipe.recipeName.trim();
 
       if (!recipeName) {
         invalidRecipes.push("(unnamed): Add a file name");
@@ -49,7 +49,7 @@ export const downloadDatapack = async (
       });
     } catch (error) {
       invalidRecipes.push(
-        `${recipe.recipeName?.trim() || "(unnamed)"}: ${error instanceof Error ? error.message : "Failed to generate recipe"}`,
+        `${recipe.recipeName.trim() || "(unnamed)"}: ${error instanceof Error ? error.message : "Failed to generate recipe"}`,
       );
     }
   }

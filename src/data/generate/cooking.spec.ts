@@ -1,4 +1,4 @@
-import { SingleRecipeState } from "@/stores/recipe";
+import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType } from "../types";
 import { generate } from "./cooking";
@@ -7,6 +7,7 @@ describe("generate cooking", () => {
   describe("1.13", () => {
     it("should generate a smelting recipe", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Smelting,
         group: "",
         slots: {
@@ -31,6 +32,7 @@ describe("generate cooking", () => {
           },
         },
         crafting: {
+          ...recipeStateDefaults.crafting,
           shapeless: true,
           keepWhitespace: false,
         },
@@ -54,6 +56,7 @@ describe("generate cooking", () => {
   describe("1.14 - 1.20", () => {
     it("should generate a smelting recipe", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Smelting,
         group: "",
         slots: {
@@ -81,6 +84,7 @@ describe("generate cooking", () => {
           },
         },
         crafting: {
+          ...recipeStateDefaults.crafting,
           shapeless: true,
           keepWhitespace: false,
         },
@@ -102,6 +106,7 @@ describe("generate cooking", () => {
 
     it("should generate a campfire cooking recipe", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.CampfireCooking,
         group: "",
         slots: {
@@ -129,6 +134,7 @@ describe("generate cooking", () => {
           },
         },
         crafting: {
+          ...recipeStateDefaults.crafting,
           shapeless: true,
           keepWhitespace: false,
         },
@@ -150,6 +156,7 @@ describe("generate cooking", () => {
 
     it("should generate a smoking recipe", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Smoking,
         group: "",
         slots: {
@@ -174,6 +181,7 @@ describe("generate cooking", () => {
           },
         },
         crafting: {
+          ...recipeStateDefaults.crafting,
           shapeless: true,
           keepWhitespace: false,
         },
@@ -195,6 +203,7 @@ describe("generate cooking", () => {
 
     it("should generate a blasting recipe", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Blasting,
         group: "",
         slots: {
@@ -222,6 +231,7 @@ describe("generate cooking", () => {
           },
         },
         crafting: {
+          ...recipeStateDefaults.crafting,
           shapeless: true,
           keepWhitespace: false,
         },
@@ -245,6 +255,7 @@ describe("generate cooking", () => {
   describe("1.21+ and bedrock", () => {
     it("should generate 1.21 cooking with object result", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Smelting,
         group: "",
         slots: {
@@ -265,7 +276,7 @@ describe("generate cooking", () => {
             _version: MinecraftVersion.V121,
           },
         },
-        crafting: { shapeless: true, keepWhitespace: false },
+        crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
       };
 
@@ -280,6 +291,7 @@ describe("generate cooking", () => {
 
     it("should generate bedrock furnace body", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Smelting,
         group: "",
         slots: {
@@ -300,7 +312,7 @@ describe("generate cooking", () => {
             _version: MinecraftVersion.Bedrock,
           },
         },
-        crafting: { shapeless: true, keepWhitespace: false },
+        crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
       };
 
@@ -312,6 +324,7 @@ describe("generate cooking", () => {
 
     it("should emit category for supported cooking recipes", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Blasting,
         group: "",
         category: "blocks",
@@ -333,7 +346,7 @@ describe("generate cooking", () => {
             _version: MinecraftVersion.V119,
           },
         },
-        crafting: { shapeless: true, keepWhitespace: false },
+        crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 100, experience: 0.5 },
       };
 

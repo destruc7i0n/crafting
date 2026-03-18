@@ -21,8 +21,8 @@ describe("getRecipeLabel", () => {
     expect(getRecipeLabel({ recipeName: "" })).toBe("(unnamed)");
   });
 
-  it("returns (unnamed) for undefined name", () => {
-    expect(getRecipeLabel({})).toBe("(unnamed)");
+  it("returns (unnamed) for whitespace-only name", () => {
+    expect(getRecipeLabel({ recipeName: "   " })).toBe("(unnamed)");
   });
 });
 

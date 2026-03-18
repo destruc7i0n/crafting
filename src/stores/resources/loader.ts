@@ -1,6 +1,7 @@
 import { TexturesType as MinecraftTexturesType } from "minecraft-textures";
 
 import { latestMinecraftVersion } from "@/data/constants";
+import bedrockMappingsJson from "@/data/generated/bedrock-mappings.json";
 import {
   identifierUniqueKey,
   parseStringToMinecraftIdentifier,
@@ -49,10 +50,8 @@ async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void
   }
 
   const mcTexturesItems = module.items;
-  let bedrockMappings: Record<string, BedrockTranslation | undefined> = {};
-  if (version === MinecraftVersion.Bedrock) {
-    bedrockMappings = (await import("@/data/generated/bedrock-mappings.json")).default;
-  }
+  const bedrockMappings: Record<string, BedrockTranslation | undefined> =
+    version === MinecraftVersion.Bedrock ? bedrockMappingsJson : {};
 
   const items: Item[] = [];
   const itemsById: Record<string, Item> = {};

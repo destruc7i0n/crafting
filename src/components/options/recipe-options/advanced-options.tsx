@@ -70,7 +70,7 @@ const CategoryField = ({ categoryOptions }: CategoryFieldProps) => {
       <Select
         id="recipe-category"
         value={category}
-        onChange={(event) => setRecipeCategory(event.target.value || undefined)}
+        onChange={(event) => setRecipeCategory(event.target.value)}
         className="border-input bg-background text-foreground hover:bg-accent focus:ring-ring h-9 rounded-md border px-2 py-1 pr-8 outline-hidden transition-colors focus:ring-2 focus:ring-inset"
       >
         <option value="">Unset</option>
@@ -102,7 +102,7 @@ const SmithingPatternField = () => {
         id="recipe-pattern"
         type="text"
         value={smithingTrimPattern}
-        onCommit={(v) => setRecipeSmithingTrimPattern(v || undefined)}
+        onCommit={(v) => setRecipeSmithingTrimPattern(v)}
         autoCapitalize="off"
         autoCorrect="off"
         spellCheck={false}

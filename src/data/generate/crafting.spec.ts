@@ -1,4 +1,4 @@
-import { SingleRecipeState } from "@/stores/recipe";
+import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType } from "../types";
 import { generate } from "./crafting";
@@ -8,6 +8,7 @@ describe("generate crafting", () => {
     describe("shapeless", () => {
       it("should generate a shapeless recipe", () => {
         const recipeSlice: SingleRecipeState = {
+          ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -48,6 +49,7 @@ describe("generate crafting", () => {
             },
           },
           crafting: {
+            ...recipeStateDefaults.crafting,
             shapeless: true,
             keepWhitespace: false,
           },
@@ -70,6 +72,7 @@ describe("generate crafting", () => {
     describe("shaped", () => {
       it("should generate a shaped recipe without keeping whitespace", () => {
         const recipeSlice: SingleRecipeState = {
+          ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -158,6 +161,7 @@ describe("generate crafting", () => {
             },
           },
           crafting: {
+            ...recipeStateDefaults.crafting,
             shapeless: false,
             keepWhitespace: false,
           },
@@ -178,6 +182,7 @@ describe("generate crafting", () => {
 
       it("should generate a shaped recipe keeping whitespace", () => {
         const recipeSlice: SingleRecipeState = {
+          ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -266,6 +271,7 @@ describe("generate crafting", () => {
             },
           },
           crafting: {
+            ...recipeStateDefaults.crafting,
             shapeless: false,
             keepWhitespace: true,
           },
@@ -293,6 +299,7 @@ describe("generate crafting", () => {
     describe("shapeless", () => {
       it("should generate a shapeless recipe", () => {
         const recipeSlice: SingleRecipeState = {
+          ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -331,6 +338,7 @@ describe("generate crafting", () => {
             },
           },
           crafting: {
+            ...recipeStateDefaults.crafting,
             shapeless: true,
             keepWhitespace: false,
           },
@@ -350,6 +358,7 @@ describe("generate crafting", () => {
     describe("shaped", () => {
       it("should generate a shaped recipe without keeping whitespace", () => {
         const recipeSlice: SingleRecipeState = {
+          ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -432,6 +441,7 @@ describe("generate crafting", () => {
             },
           },
           crafting: {
+            ...recipeStateDefaults.crafting,
             shapeless: false,
             keepWhitespace: false,
           },
@@ -452,6 +462,7 @@ describe("generate crafting", () => {
 
       it("should preserve internal offsets when trimming whitespace", () => {
         const recipeSlice: SingleRecipeState = {
+          ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -501,6 +512,7 @@ describe("generate crafting", () => {
             },
           },
           crafting: {
+            ...recipeStateDefaults.crafting,
             shapeless: false,
             keepWhitespace: false,
           },
@@ -523,6 +535,7 @@ describe("generate crafting", () => {
 
       it("should generate a shaped recipe keeping whitespace", () => {
         const recipeSlice: SingleRecipeState = {
+          ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
           slots: {
@@ -605,6 +618,7 @@ describe("generate crafting", () => {
             },
           },
           crafting: {
+            ...recipeStateDefaults.crafting,
             shapeless: false,
             keepWhitespace: true,
           },
@@ -631,6 +645,7 @@ describe("generate crafting", () => {
   describe("1.21+ and bedrock", () => {
     it("should generate 1.21 shapeless recipe with id result", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Crafting,
         group: "",
         slots: {
@@ -651,7 +666,7 @@ describe("generate crafting", () => {
             _version: MinecraftVersion.V121,
           },
         },
-        crafting: { shapeless: true, keepWhitespace: false },
+        crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
         category: "misc",
       };
@@ -666,6 +681,7 @@ describe("generate crafting", () => {
 
     it("should generate bedrock shaped recipe body", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Crafting,
         group: "",
         slots: {
@@ -694,7 +710,7 @@ describe("generate crafting", () => {
             _version: MinecraftVersion.Bedrock,
           },
         },
-        crafting: { shapeless: false, keepWhitespace: false },
+        crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
       };
 
@@ -707,6 +723,7 @@ describe("generate crafting", () => {
 
     it("should emit category and show_notification for supported shaped recipes", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Crafting,
         group: "",
         category: "building",
@@ -732,7 +749,7 @@ describe("generate crafting", () => {
             _version: MinecraftVersion.V120,
           },
         },
-        crafting: { shapeless: false, keepWhitespace: false },
+        crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
       };
 

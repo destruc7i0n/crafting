@@ -1,4 +1,4 @@
-import { SingleRecipeState } from "@/stores/recipe";
+import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType } from "../types";
 import { generate } from "./stonecutter";
@@ -7,6 +7,7 @@ describe("generate stonecutting", () => {
   describe("1.14", () => {
     it("should generate a stonecutting recipe", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Stonecutter,
         group: "",
         slots: {
@@ -35,6 +36,7 @@ describe("generate stonecutting", () => {
           time: 0,
         },
         crafting: {
+          ...recipeStateDefaults.crafting,
           keepWhitespace: false,
           shapeless: false,
         },
@@ -54,6 +56,7 @@ describe("generate stonecutting", () => {
   describe("1.21+ and bedrock", () => {
     it("should generate 1.21 stonecutting with object result", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Stonecutter,
         group: "",
         slots: {
@@ -75,7 +78,7 @@ describe("generate stonecutting", () => {
           },
         },
         cooking: { experience: 0, time: 0 },
-        crafting: { keepWhitespace: false, shapeless: false },
+        crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
       };
 
       expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
@@ -87,6 +90,7 @@ describe("generate stonecutting", () => {
 
     it("should generate bedrock stonecutter shapeless body", () => {
       const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
         recipeType: RecipeType.Stonecutter,
         group: "",
         slots: {
@@ -108,7 +112,7 @@ describe("generate stonecutting", () => {
           },
         },
         cooking: { experience: 0, time: 0 },
-        crafting: { keepWhitespace: false, shapeless: false },
+        crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
       };
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({

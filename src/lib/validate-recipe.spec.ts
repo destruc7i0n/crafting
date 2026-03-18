@@ -1,5 +1,5 @@
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState } from "@/stores/recipe";
+import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 
 import { validateRecipe } from "./validate-recipe";
 
@@ -20,19 +20,10 @@ const createRecipe = (
   slots: SingleRecipeState["slots"] = {},
   overrides: Partial<SingleRecipeState> = {},
 ): SingleRecipeState => ({
+  ...recipeStateDefaults,
   recipeType,
   recipeName: "recipe_1",
-  group: "",
   slots,
-  crafting: {
-    shapeless: false,
-    keepWhitespace: false,
-    twoByTwo: false,
-  },
-  cooking: {
-    time: 0,
-    experience: 0,
-  },
   ...overrides,
 });
 

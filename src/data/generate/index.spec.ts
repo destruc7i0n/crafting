@@ -1,4 +1,4 @@
-import { SingleRecipeState } from "@/stores/recipe";
+import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType } from "../types";
 import { generate } from "./index";
@@ -6,6 +6,7 @@ import { generate } from "./index";
 describe("generate orchestrator", () => {
   it("generates java crafting output", () => {
     const state: SingleRecipeState = {
+      ...recipeStateDefaults,
       recipeType: RecipeType.Crafting,
       group: "",
       slots: {
@@ -28,7 +29,7 @@ describe("generate orchestrator", () => {
           _version: MinecraftVersion.V121,
         },
       },
-      crafting: { shapeless: true, keepWhitespace: false },
+      crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
       cooking: { time: 0, experience: 0 },
     };
 
@@ -41,6 +42,7 @@ describe("generate orchestrator", () => {
 
   it("wraps bedrock furnace output", () => {
     const state: SingleRecipeState = {
+      ...recipeStateDefaults,
       recipeType: RecipeType.Smelting,
       group: "",
       slots: {
@@ -60,7 +62,7 @@ describe("generate orchestrator", () => {
           _version: MinecraftVersion.Bedrock,
         },
       },
-      crafting: { shapeless: true, keepWhitespace: false },
+      crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
       cooking: { time: 0, experience: 0 },
       bedrock: { identifier: "crafting:test", priority: 0 },
     };
@@ -78,6 +80,7 @@ describe("generate orchestrator", () => {
 
   it("uses smithing transform wrapper metadata for bedrock", () => {
     const state: SingleRecipeState = {
+      ...recipeStateDefaults,
       recipeType: RecipeType.SmithingTransform,
       group: "",
       slots: {
@@ -113,7 +116,7 @@ describe("generate orchestrator", () => {
           _version: MinecraftVersion.Bedrock,
         },
       },
-      crafting: { shapeless: false, keepWhitespace: false },
+      crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
       cooking: { time: 0, experience: 0 },
       bedrock: { identifier: "smithing:upgrade", priority: 2 },
     };
@@ -134,10 +137,11 @@ describe("generate orchestrator", () => {
 
   it("throws when bedrock recipe has no identifier", () => {
     const state: SingleRecipeState = {
+      ...recipeStateDefaults,
       recipeType: RecipeType.Crafting,
       group: "",
       slots: {},
-      crafting: { shapeless: false, keepWhitespace: false },
+      crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
       cooking: { time: 0, experience: 0 },
       bedrock: { identifier: "", priority: 0 },
     };
@@ -149,26 +153,13 @@ describe("generate orchestrator", () => {
 
   it("throws when bedrock recipe has whitespace-only identifier", () => {
     const state: SingleRecipeState = {
+      ...recipeStateDefaults,
       recipeType: RecipeType.Crafting,
       group: "",
       slots: {},
-      crafting: { shapeless: false, keepWhitespace: false },
+      crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
       cooking: { time: 0, experience: 0 },
       bedrock: { identifier: "   ", priority: 0 },
-    };
-
-    expect(() => generate(state, MinecraftVersion.Bedrock)).toThrow(
-      "Bedrock recipes must have an identifier",
-    );
-  });
-
-  it("throws when bedrock recipe has no bedrock options", () => {
-    const state: SingleRecipeState = {
-      recipeType: RecipeType.Crafting,
-      group: "",
-      slots: {},
-      crafting: { shapeless: false, keepWhitespace: false },
-      cooking: { time: 0, experience: 0 },
     };
 
     expect(() => generate(state, MinecraftVersion.Bedrock)).toThrow(

@@ -23,7 +23,7 @@ const bedrockPriorityRecipeTypes = [
 
 const IdentifierField = () => {
   const identifier = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.bedrock?.identifier ?? "",
+    (state) => state.recipes[state.selectedRecipeIndex]?.bedrock.identifier ?? "",
   );
   const setRecipeBedrockIdentifier = useRecipeStore((state) => state.setRecipeBedrockIdentifier);
   const [showError, setShowError] = useState(false);
@@ -61,7 +61,7 @@ const IdentifierField = () => {
 
 const PriorityField = () => {
   const priority = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.bedrock?.priority ?? 0,
+    (state) => state.recipes[state.selectedRecipeIndex]?.bedrock.priority ?? 0,
   );
   const setRecipeBedrockPriority = useRecipeStore((state) => state.setRecipeBedrockPriority);
 

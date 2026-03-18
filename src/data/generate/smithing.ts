@@ -86,7 +86,7 @@ const extractInput = (state: SingleRecipeState): SmithingInput => ({
   base: state.slots[SLOTS.smithing.base],
   addition: state.slots[SLOTS.smithing.addition],
   result: state.slots[SLOTS.smithing.result],
-  trimPattern: state.smithingTrimPattern,
+  trimPattern: state.smithingTrimPattern || undefined,
 });
 
 export const validateSmithing = (
