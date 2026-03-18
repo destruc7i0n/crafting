@@ -1,6 +1,7 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
+import { buildBedrock as buildBedrockBrewing, extractBrewingInput } from "./brewing";
 import { buildBedrock as buildBedrockCooking, buildJava as buildJavaCooking } from "./cooking";
 import {
   buildBedrock as buildBedrockCrafting,
@@ -104,6 +105,16 @@ const BEDROCK_RECIPE_META: Partial<Record<RecipeType, BedrockRecipeMeta>> = {
     tags: ["smithing_table"],
     formatVersion: BEDROCK_FORMAT_VERSION,
   },
+  [RecipeType.BrewingContainer]: {
+    wrapperKey: "minecraft:recipe_brewing_container",
+    tags: ["brewing_stand"],
+    formatVersion: BEDROCK_FORMAT_VERSION,
+  },
+  [RecipeType.BrewingMix]: {
+    wrapperKey: "minecraft:recipe_brewing_mix",
+    tags: ["brewing_stand"],
+    formatVersion: BEDROCK_FORMAT_VERSION,
+  },
 };
 
 const getBedrockRecipeMeta = (state: SingleRecipeState): BedrockRecipeMeta => {
@@ -143,6 +154,9 @@ const generateJavaInner = (
       return buildJavaSmithing(extractSmithingInput(state), formatter, version);
     case RecipeType.Stonecutter:
       return buildJavaStonecutter(extractStonecutterInput(state), formatter);
+    case RecipeType.BrewingContainer:
+    case RecipeType.BrewingMix:
+      throw new Error(`Brewing recipes are not supported in Java Edition`);
     default:
       throw new Error(`Unsupported Java recipe type: ${state.recipeType as string}`);
   }
@@ -163,6 +177,9 @@ const generateBedrockInner = (state: SingleRecipeState, formatter: FormatStrateg
       return buildBedrockSmithing(extractSmithingInput(state), formatter);
     case RecipeType.Stonecutter:
       return buildBedrockStonecutter(extractStonecutterInput(state), formatter);
+    case RecipeType.BrewingContainer:
+    case RecipeType.BrewingMix:
+      return buildBedrockBrewing(extractBrewingInput(state), formatter);
     default:
       throw new Error(`Unsupported Bedrock recipe type: ${state.recipeType}`);
   }

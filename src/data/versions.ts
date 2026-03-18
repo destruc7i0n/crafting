@@ -26,9 +26,17 @@ const RECIPE_TYPE_AVAILABILITY: RecipeTypeAvailability[] = [
   // { type: RecipeType.CraftingTransmute, minVersion: MinecraftVersion.V1212, bedrock: false },
 ];
 
+const BEDROCK_ONLY_RECIPE_TYPES: RecipeType[] = [
+  RecipeType.BrewingContainer,
+  RecipeType.BrewingMix,
+];
+
 export const getSupportedRecipeTypesForVersion = (version: MinecraftVersion): RecipeType[] => {
   if (version === MinecraftVersion.Bedrock) {
-    return RECIPE_TYPE_AVAILABILITY.filter((entry) => entry.bedrock).map((entry) => entry.type);
+    return [
+      ...RECIPE_TYPE_AVAILABILITY.filter((entry) => entry.bedrock).map((entry) => entry.type),
+      ...BEDROCK_ONLY_RECIPE_TYPES,
+    ];
   }
 
   return RECIPE_TYPE_AVAILABILITY.filter((entry) => {

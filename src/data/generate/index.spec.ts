@@ -135,6 +135,96 @@ describe("generate orchestrator", () => {
     });
   });
 
+  it("generates bedrock brewing container recipe", () => {
+    const state: SingleRecipeState = {
+      ...recipeStateDefaults,
+      recipeType: RecipeType.BrewingContainer,
+      group: "",
+      slots: {
+        "brewing.input": {
+          type: "default_item",
+          id: { id: "glass_bottle", namespace: "minecraft" },
+          displayName: "glass_bottle",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+        "brewing.reagent": {
+          type: "default_item",
+          id: { id: "water_bucket", namespace: "minecraft" },
+          displayName: "water_bucket",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+        "brewing.result": {
+          type: "default_item",
+          id: { id: "water_bottle", namespace: "minecraft" },
+          displayName: "water_bottle",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+      },
+      crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
+      cooking: { time: 0, experience: 0 },
+      bedrock: { identifier: "brewing:container_test", priority: 0 },
+    };
+
+    expect(generate(state, MinecraftVersion.Bedrock)).toEqual({
+      format_version: "1.20.10",
+      "minecraft:recipe_brewing_container": {
+        description: { identifier: "brewing:container_test" },
+        tags: ["brewing_stand"],
+        input: { item: "minecraft:glass_bottle" },
+        reagent: { item: "minecraft:water_bucket" },
+        output: { item: "minecraft:water_bottle" },
+      },
+    });
+  });
+
+  it("generates bedrock brewing mix recipe", () => {
+    const state: SingleRecipeState = {
+      ...recipeStateDefaults,
+      recipeType: RecipeType.BrewingMix,
+      group: "",
+      slots: {
+        "brewing.input": {
+          type: "default_item",
+          id: { id: "water_bottle", namespace: "minecraft" },
+          displayName: "water_bottle",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+        "brewing.reagent": {
+          type: "default_item",
+          id: { id: "nether_wart", namespace: "minecraft" },
+          displayName: "nether_wart",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+        "brewing.result": {
+          type: "default_item",
+          id: { id: "awkward_potion", namespace: "minecraft" },
+          displayName: "awkward_potion",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+      },
+      crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
+      cooking: { time: 0, experience: 0 },
+      bedrock: { identifier: "brewing:mix_test", priority: 0 },
+    };
+
+    expect(generate(state, MinecraftVersion.Bedrock)).toEqual({
+      format_version: "1.20.10",
+      "minecraft:recipe_brewing_mix": {
+        description: { identifier: "brewing:mix_test" },
+        tags: ["brewing_stand"],
+        input: { item: "minecraft:water_bottle" },
+        reagent: { item: "minecraft:nether_wart" },
+        output: { item: "minecraft:awkward_potion" },
+      },
+    });
+  });
+
   it("throws when bedrock recipe has no identifier", () => {
     const state: SingleRecipeState = {
       ...recipeStateDefaults,

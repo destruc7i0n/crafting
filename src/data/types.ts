@@ -33,6 +33,9 @@ export enum RecipeType {
   Smithing = "smithing",
   SmithingTrim = "smithing_trim",
   SmithingTransform = "smithing_transform",
+
+  BrewingContainer = "brewing_container",
+  BrewingMix = "brewing_mix",
 }
 
 // Store Types
@@ -55,8 +58,14 @@ type SmithingSlots =
   | "smithing.addition"
   | "smithing.result";
 type StonecutterSlots = "stonecutter.ingredient" | "stonecutter.result";
+type BrewingSlots = "brewing.reagent" | "brewing.input" | "brewing.result";
 
-export type RecipeSlot = CraftingSlots | CookingSlots | SmithingSlots | StonecutterSlots;
+export type RecipeSlot =
+  | CraftingSlots
+  | CookingSlots
+  | SmithingSlots
+  | StonecutterSlots
+  | BrewingSlots;
 
 export const SLOTS = {
   crafting: {
@@ -84,6 +93,11 @@ export const SLOTS = {
   stonecutter: {
     ingredient: "stonecutter.ingredient",
     result: "stonecutter.result",
+  },
+  brewing: {
+    reagent: "brewing.reagent",
+    input: "brewing.input",
+    result: "brewing.result",
   },
 } as const satisfies Record<string, Record<string, RecipeSlot>>;
 

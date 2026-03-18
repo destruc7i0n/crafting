@@ -53,6 +53,8 @@ export const recipeTypeToJavaType: Record<RecipeType, string> = {
   [RecipeType.Smithing]: "minecraft:smithing",
   [RecipeType.SmithingTrim]: "minecraft:smithing_trim",
   [RecipeType.SmithingTransform]: "minecraft:smithing_transform",
+  [RecipeType.BrewingContainer]: "minecraft:recipe_brewing_container",
+  [RecipeType.BrewingMix]: "minecraft:recipe_brewing_mix",
 };
 
 export const recipeTypeToName: Record<RecipeType, string> = {
@@ -66,6 +68,8 @@ export const recipeTypeToName: Record<RecipeType, string> = {
   [RecipeType.Smithing]: "Smithing",
   [RecipeType.SmithingTrim]: "Smithing Trim",
   [RecipeType.SmithingTransform]: "Smithing Transform",
+  [RecipeType.BrewingContainer]: "Brewing Container",
+  [RecipeType.BrewingMix]: "Brewing Mix",
 };
 
 export const recipeTypeToItemId: Record<RecipeType, string> = {
@@ -79,6 +83,8 @@ export const recipeTypeToItemId: Record<RecipeType, string> = {
   [RecipeType.Smithing]: "minecraft:smithing_table",
   [RecipeType.SmithingTrim]: "minecraft:smithing_table",
   [RecipeType.SmithingTransform]: "minecraft:smithing_table",
+  [RecipeType.BrewingContainer]: "minecraft:brewing_stand",
+  [RecipeType.BrewingMix]: "minecraft:brewing_stand",
 };
 
 // 1.12:
