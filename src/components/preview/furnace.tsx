@@ -1,5 +1,6 @@
 import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
 import { ItemPreviewResultSlot } from "../item/item-preview-result-slot";
+import { SlotDropTarget } from "../slot/slot-drop-target";
 
 export const FurnacePreview = () => {
   return (
@@ -10,6 +11,14 @@ export const FurnacePreview = () => {
       <ItemPreviewDropTarget
         slot="cooking.ingredient"
         style={{ position: "absolute", top: 32, left: 110 }}
+      />
+
+      {/* fuel - greys out during drag */}
+      <SlotDropTarget
+        data={{}}
+        canDrop={() => false}
+        inert
+        style={{ position: "absolute", top: 104, left: 110 }}
       />
 
       <ItemPreviewResultSlot

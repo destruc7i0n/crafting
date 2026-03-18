@@ -9,7 +9,7 @@
   background-color: hsl(var(--minecraft-slot-bg));
 }
 
-.slot:hover,
+.slot:not(.inert):hover,
 .active {
   background-color: hsl(var(--foreground) / 0.2);
 }

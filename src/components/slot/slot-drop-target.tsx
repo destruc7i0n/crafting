@@ -63,7 +63,7 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
   }, []); // ensure listeners are created only once
 
   return (
-    <Slot ref={ref} hover={isDraggedOver} disabled={isInvalidTarget} {...props}>
+    <Slot ref={ref} active={isDraggedOver} disabled={isInvalidTarget} {...props}>
       {children}
     </Slot>
   );
