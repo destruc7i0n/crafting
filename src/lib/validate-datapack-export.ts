@@ -43,7 +43,7 @@ export const validateDatapackExport = (
     }
 
     for (const index of indexes) {
-      issues[index].errors.push(`Duplicate datapack filename: ${fileName}`);
+      issues[index].errors.push(`Duplicate filename: ${fileName}`);
     }
   }
 

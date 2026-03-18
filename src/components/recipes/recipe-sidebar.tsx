@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { ReactNode, memo, useMemo } from "react";
 
 import {
   AlertTriangleIcon,
@@ -28,6 +28,16 @@ import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useTagStore } from "@/stores/tag";
 import { useUIStore } from "@/stores/ui";
+
+const RecipeWarning = ({ content }: { content: ReactNode }) => (
+  <div className="border-border flex w-10 shrink-0 items-center justify-center border-l">
+    <Disclosure placement="right" content={content}>
+      <span className="flex h-full w-full items-center justify-center p-2">
+        <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
+      </span>
+    </Disclosure>
+  </div>
+);
 
 interface RecipeSidebarProps {
   collapsed?: boolean;
@@ -216,93 +226,82 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
           const isSelected = selectedRecipeIndex === index;
           const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
           const recipeErrors = invalidRecipesMap.get(recipe.id);
-
-          let firstSlot: React.ReactNode;
-          if (!isSupported) {
-            firstSlot = (
-              <Disclosure content="Recipe type is not available in this version" placement="right">
-                <span className="flex cursor-default items-center">
-                  <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
-                </span>
-              </Disclosure>
-            );
-          } else if (recipeErrors) {
-            firstSlot = (
-              <Disclosure
-                placement="right"
-                content={
-                  <ul className="space-y-1">
-                    {recipeErrors.map((e) => (
-                      <li key={e}>{e}</li>
-                    ))}
-                  </ul>
-                }
-              >
-                <span className="flex cursor-pointer items-center">
-                  <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
-                </span>
-              </Disclosure>
-            );
-          } else {
-            firstSlot = (
-              <button
-                type="button"
-                className="text-muted-foreground hover:text-foreground cursor-pointer rounded transition-colors"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  downloadRecipeJson(recipe, minecraftVersion);
-                }}
-                title={`Download ${minecraftVersion === MinecraftVersion.Bedrock ? recipe.bedrock.identifier : recipe.recipeName}`}
-              >
-                <DownloadIcon size={14} />
-              </button>
-            );
-          }
+          const hasWarning = !isSupported || !!recipeErrors;
 
           return (
             <div
               key={recipe.id}
-              onClick={() => handleSelectRecipe(index)}
               className={cn(
-                "group border-border flex cursor-pointer items-center gap-2 rounded-md border px-2 py-2 text-left transition-colors",
+                "group border-border flex overflow-hidden rounded-md border text-left transition-colors",
                 isSelected
                   ? "border-primary bg-primary/10 font-medium"
                   : "hover:bg-accent active:bg-accent/80",
-                recipeErrors && !isSelected && "border-amber-500/40",
+                hasWarning && !isSelected && "border-amber-500/40",
               )}
             >
-              <ResourceIcon
-                itemId={recipeTypeToItemId[recipe.recipeType]}
-                className="h-6 w-6 shrink-0"
-              />
+              <div
+                onClick={() => handleSelectRecipe(index)}
+                className="flex flex-1 cursor-pointer items-center gap-2 truncate px-2 py-2"
+              >
+                <ResourceIcon
+                  itemId={recipeTypeToItemId[recipe.recipeType]}
+                  className="h-6 w-6 shrink-0"
+                />
 
-              <div className="flex flex-1 flex-col truncate">
-                <span className="truncate text-sm">
-                  {minecraftVersion === MinecraftVersion.Bedrock
-                    ? recipe.bedrock.identifier
-                    : recipe.recipeName}
-                </span>
-                <span className="text-muted-foreground truncate text-xs">
-                  {recipeTypeToName[recipe.recipeType]}
+                <div className="flex flex-1 flex-col truncate">
+                  <span className="truncate text-sm">
+                    {minecraftVersion === MinecraftVersion.Bedrock
+                      ? recipe.bedrock.identifier
+                      : recipe.recipeName}
+                  </span>
+                  <span className="text-muted-foreground truncate text-xs">
+                    {recipeTypeToName[recipe.recipeType]}
+                  </span>
+                </div>
+
+                <span className="flex shrink-0 items-center gap-2">
+                  <button
+                    type="button"
+                    className="text-muted-foreground hover:text-foreground cursor-pointer rounded transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      downloadRecipeJson(recipe, minecraftVersion);
+                    }}
+                    title={`Download ${minecraftVersion === MinecraftVersion.Bedrock ? recipe.bedrock.identifier : recipe.recipeName}`}
+                  >
+                    <DownloadIcon size={14} />
+                  </button>
+
+                  {recipes.length > 1 && (
+                    <button
+                      type="button"
+                      className="text-muted-foreground hover:text-destructive cursor-pointer rounded transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteRecipe(index, e);
+                      }}
+                    >
+                      <Trash2Icon size={14} />
+                    </button>
+                  )}
                 </span>
               </div>
 
-              <span className="flex shrink-0 items-center gap-2">
-                {firstSlot}
+              {!isSupported && (
+                <RecipeWarning content="Recipe type is not available in this version" />
+              )}
 
-                {recipes.length > 1 && (
-                  <button
-                    type="button"
-                    className="text-muted-foreground hover:text-destructive cursor-pointer rounded transition-colors"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteRecipe(index, e);
-                    }}
-                  >
-                    <Trash2Icon size={14} />
-                  </button>
-                )}
-              </span>
+              {isSupported && recipeErrors && (
+                <RecipeWarning
+                  content={
+                    <ul className="space-y-1">
+                      {recipeErrors.map((e) => (
+                        <li key={e}>{e}</li>
+                      ))}
+                    </ul>
+                  }
+                />
+              )}
             </div>
           );
         })}

@@ -70,11 +70,11 @@ export const createBehaviorPackBlob = async (
     }
 
     if (!isValidBedrockNamespacedIdentifier(identifier)) {
-      throw new Error(`Invalid Bedrock recipe identifier: ${identifier}`);
+      throw new Error(`Invalid identifier: ${identifier}`);
     }
 
     if (seenIdentifiers.has(identifier)) {
-      throw new Error(`Duplicate Bedrock recipe identifier: ${identifier}`);
+      throw new Error(`Duplicate identifier: ${identifier}`);
     }
 
     seenIdentifiers.add(identifier);

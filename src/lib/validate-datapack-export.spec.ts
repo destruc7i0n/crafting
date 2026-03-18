@@ -54,12 +54,12 @@ describe("validateDatapackExport", () => {
       {
         recipe: expect.any(Object),
         name: "sticks",
-        errors: ["Duplicate datapack filename: sticks.json"],
+        errors: ["Duplicate filename: sticks.json"],
       },
       {
         recipe: expect.any(Object),
         name: "sticks",
-        errors: ["Duplicate datapack filename: sticks.json"],
+        errors: ["Duplicate filename: sticks.json"],
       },
     ]);
   });

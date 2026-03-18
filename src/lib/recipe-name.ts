@@ -14,22 +14,20 @@ export const isDuplicateRecipeName = (
   return recipes.some((recipe, index) => index !== excludeIndex && recipe.recipeName === name);
 };
 
-export const getNextRecipeNumber = (recipes: RecipeNameLike[]): number => {
-  const existingNumbers = recipes
-    .map((r) => r.recipeName.match(/^recipe_(\d+)$/)?.[1])
-    .filter(Boolean)
-    .map(Number);
-  return existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+const firstGap = (matches: (string | undefined)[]): number => {
+  const used = new Set(matches.filter(Boolean).map(Number));
+  let i = 1;
+  while (used.has(i)) i++;
+  return i;
 };
+
+export const getNextRecipeNumber = (recipes: RecipeNameLike[]): number =>
+  firstGap(recipes.map((r) => r.recipeName.match(/^recipe_(\d+)$/)?.[1]));
 
 export const getNextBedrockIdentifierNumber = (
   recipes: Array<{ bedrock: { identifier: string } }>,
   namespace = "crafting",
 ): number => {
   const pattern = new RegExp(`^${namespace}:recipe_(\\d+)$`);
-  const existingNumbers = recipes
-    .map((r) => r.bedrock.identifier.match(pattern)?.[1])
-    .filter(Boolean)
-    .map(Number);
-  return existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+  return firstGap(recipes.map((r) => r.bedrock.identifier.match(pattern)?.[1]));
 };

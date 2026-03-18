@@ -71,7 +71,7 @@ describe("createBehaviorPackBlob", () => {
           json: {},
         },
       ]),
-    ).rejects.toThrow("Duplicate Bedrock recipe identifier: crafting:stone_button");
+    ).rejects.toThrow("Duplicate identifier: crafting:stone_button");
   });
 
   it("rejects blank identifiers", async () => {
@@ -93,7 +93,7 @@ describe("createBehaviorPackBlob", () => {
           json: {},
         },
       ]),
-    ).rejects.toThrow("Invalid Bedrock recipe identifier: Crafting:Bad-Id");
+    ).rejects.toThrow("Invalid identifier: Crafting:Bad-Id");
   });
 
   it("rejects filename collisions after identifier sanitization", async () => {
