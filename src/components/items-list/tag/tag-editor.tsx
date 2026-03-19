@@ -72,12 +72,12 @@ export const TagEditor = ({
     [tags, tag.uid, customTagItems],
   );
 
-  const filteredValues = useFilteredValueOptions(
+  const filteredValues = useFilteredValueOptions({
     items,
     vanillaTagItems,
-    eligibleCustomTagItems,
+    customTagItems: eligibleCustomTagItems,
     valueSearch,
-  );
+  });
 
   const existingValueIds = useMemo(
     () => new Set(tag.values.map((v) => identifierUniqueKey(v.id))),

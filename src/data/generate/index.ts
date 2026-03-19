@@ -181,10 +181,15 @@ export function generate(state: SingleRecipeState, version: MinecraftVersion): G
     const inner = generateBedrockInner(state, formatter);
     const meta = getBedrockRecipeMeta(state);
 
-    return wrapBedrockRecipe(inner, meta.wrapperKey, meta.tags, {
-      identifier,
-      priority: state.bedrock.priority,
-      formatVersion: meta.formatVersion,
+    return wrapBedrockRecipe({
+      inner,
+      wrapperKey: meta.wrapperKey,
+      tags: meta.tags,
+      options: {
+        identifier,
+        priority: state.bedrock.priority,
+        formatVersion: meta.formatVersion,
+      },
     });
   }
 

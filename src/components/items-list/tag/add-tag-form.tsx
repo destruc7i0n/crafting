@@ -78,12 +78,12 @@ export const AddTagForm = ({
     [tags, customTagItems],
   );
 
-  const filteredValues = useFilteredValueOptions(
+  const filteredValues = useFilteredValueOptions({
     items,
     vanillaTagItems,
-    allCustomTagItems,
+    customTagItems: allCustomTagItems,
     valueSearch,
-  );
+  });
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">

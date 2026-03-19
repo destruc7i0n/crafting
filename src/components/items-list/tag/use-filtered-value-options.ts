@@ -6,12 +6,17 @@ import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 
 import { ValueOption } from "./value-list";
 
-export function useFilteredValueOptions(
-  items: Item[],
-  vanillaTagItems: TagItem[],
-  customTagItems: TagItem[],
-  valueSearch: string,
-): ValueOption[] {
+export function useFilteredValueOptions({
+  items,
+  vanillaTagItems,
+  customTagItems,
+  valueSearch,
+}: {
+  items: Item[];
+  vanillaTagItems: TagItem[];
+  customTagItems: TagItem[];
+  valueSearch: string;
+}): ValueOption[] {
   const matchedItems = useFuzzySearch(items, valueSearch, (item) => [
     item.displayName,
     getRawId(item.id),

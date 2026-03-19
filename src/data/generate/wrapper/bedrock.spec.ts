@@ -2,19 +2,19 @@ import { wrapBedrockRecipe } from "./bedrock";
 
 describe("wrapBedrockRecipe", () => {
   it("wraps recipe body with metadata", () => {
-    const wrapped = wrapBedrockRecipe(
-      {
+    const wrapped = wrapBedrockRecipe({
+      inner: {
         ingredients: [{ item: "minecraft:stone" }],
         result: { item: "minecraft:cobblestone", count: 1 },
       },
-      "minecraft:recipe_shapeless",
-      ["crafting_table"],
-      {
+      wrapperKey: "minecraft:recipe_shapeless",
+      tags: ["crafting_table"],
+      options: {
         identifier: "crafting:test",
         priority: 0,
         formatVersion: "1.20.10",
       },
-    );
+    });
 
     expect(wrapped).toEqual({
       format_version: "1.20.10",

@@ -43,7 +43,7 @@ export const AddItemForm = ({ onClose }: AddItemFormProps) => {
   const handleAdd = () => {
     if (!name.trim() || !isValidJavaNamespacedIdentifier(itemId)) return;
 
-    addCustomItem(name, itemId, texture, minecraftVersion);
+    addCustomItem({ name, rawId: itemId, texture, version: minecraftVersion });
     setName("");
     setItemId("");
     setTexture("");

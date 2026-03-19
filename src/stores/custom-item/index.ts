@@ -19,7 +19,12 @@ type CustomItemUpdates = Partial<Pick<CustomItem, "displayName" | "texture">> & 
 };
 
 type CustomItemActions = {
-  addCustomItem: (name: string, rawId: string, texture: string, version: MinecraftVersion) => void;
+  addCustomItem: (params: {
+    name: string;
+    rawId: string;
+    texture: string;
+    version: MinecraftVersion;
+  }) => void;
   updateCustomItem: (uid: string, updates: CustomItemUpdates) => void;
   deleteCustomItem: (uid: string) => void;
 };
@@ -32,7 +37,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
     immer((set, get) => ({
       customItems: [],
 
-      addCustomItem: (name, rawId, texture, version) => {
+      addCustomItem: ({ name, rawId, texture, version }) => {
         const id = parseMinecraftIdentifierInput(rawId, getCustomItemIdentifierVersion(version));
 
         if (

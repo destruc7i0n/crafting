@@ -12,12 +12,17 @@ export interface BedrockWrapperOptions {
   formatVersion: BedrockFormatVersion;
 }
 
-export const wrapBedrockRecipe = (
-  inner: BedrockBody,
-  wrapperKey: BedrockWrapperKey,
-  tags: BedrockTag[],
-  options: BedrockWrapperOptions,
-): BedrockRecipe => {
+export const wrapBedrockRecipe = ({
+  inner,
+  wrapperKey,
+  tags,
+  options,
+}: {
+  inner: BedrockBody;
+  wrapperKey: BedrockWrapperKey;
+  tags: BedrockTag[];
+  options: BedrockWrapperOptions;
+}): BedrockRecipe => {
   const payload = {
     description: {
       identifier: options.identifier,
