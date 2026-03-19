@@ -1,3 +1,5 @@
+import { strToU8, zipSync } from "fflate";
+
 import { javaMinecraftVersions } from "./constants";
 import { generateTag } from "./generate/tag";
 import { isVersionAtLeast } from "./generate/version-utils";
@@ -64,16 +66,14 @@ const generateTagFiles = (tags: Tag[]) => {
   });
 };
 
-export const createDatapackBlob = async (
+export const createDatapackBlob = (
   version: MinecraftVersion,
   recipeFiles: DatapackRecipeFile[],
   tags: Tag[],
-): Promise<Blob> => {
-  const { default: JSZip } = await import("jszip");
-  const zip = new JSZip();
+): Blob => {
+  const files: Record<string, Uint8Array> = {};
 
-  zip.file(
-    "pack.mcmeta",
+  files["pack.mcmeta"] = strToU8(
     JSON.stringify(
       {
         pack: {
@@ -89,8 +89,7 @@ export const createDatapackBlob = async (
   const recipeDir = isVersionAtLeast(version, MinecraftVersion.V121) ? "recipe" : "recipes";
 
   for (const recipeFile of recipeFiles) {
-    zip.file(
-      `data/crafting/${recipeDir}/${recipeFile.name}.json`,
+    files[`data/crafting/${recipeDir}/${recipeFile.name}.json`] = strToU8(
       JSON.stringify(recipeFile.json, null, 2),
     );
   }
@@ -98,10 +97,12 @@ export const createDatapackBlob = async (
   const tagDir = isVersionAtLeast(version, MinecraftVersion.V121) ? "tags/item" : "tags/items";
 
   for (const tag of generateTagFiles(tags)) {
-    zip.file(`data/${tag.namespace}/${tagDir}/${tag.id}.json`, JSON.stringify(tag.data, null, 2));
+    files[`data/${tag.namespace}/${tagDir}/${tag.id}.json`] = strToU8(
+      JSON.stringify(tag.data, null, 2),
+    );
   }
 
-  return zip.generateAsync({ type: "blob" });
+  return new Blob([zipSync(files).buffer as ArrayBuffer]);
 };
 
 export const downloadBlob = (blob: Blob, fileName: string) => {

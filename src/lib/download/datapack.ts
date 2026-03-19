@@ -59,6 +59,6 @@ export const downloadDatapack = async (
     return;
   }
 
-  const blob = await createDatapackBlob(version, recipeFiles, tags);
+  const blob = createDatapackBlob(version, recipeFiles, tags);
   downloadBlob(blob, "datapack.zip");
 };

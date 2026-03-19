@@ -12,7 +12,8 @@ import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
 import { TagValueGrid } from "./tag-value-grid";
-import { filterValueOptions, ValueList, ValueOption } from "./value-list";
+import { useFilteredValueOptions } from "./use-filtered-value-options";
+import { ValueList, ValueOption } from "./value-list";
 
 interface AddTagFormProps {
   onClose: () => void;
@@ -72,9 +73,16 @@ export const AddTagForm = ({
     [draftValues],
   );
 
-  const filteredValues = useMemo(
-    () => filterValueOptions(valueSearch, items, vanillaTagItems, tags, customTagItems),
-    [valueSearch, items, vanillaTagItems, tags, customTagItems],
+  const allCustomTagItems = useMemo(
+    () => tags.map((t) => customTagItems[t.uid]).filter(Boolean),
+    [tags, customTagItems],
+  );
+
+  const filteredValues = useFilteredValueOptions(
+    items,
+    vanillaTagItems,
+    allCustomTagItems,
+    valueSearch,
   );
 
   return (

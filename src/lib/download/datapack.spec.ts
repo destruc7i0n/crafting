@@ -106,7 +106,7 @@ describe("downloadDatapack", () => {
     });
 
     generate.mockReturnValue({ test: true });
-    createDatapackBlob.mockResolvedValue(blob);
+    createDatapackBlob.mockReturnValue(blob);
 
     await downloadDatapack([recipe], MinecraftVersion.V121, []);
 

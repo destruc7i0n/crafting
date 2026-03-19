@@ -161,7 +161,7 @@ describe("downloadBehaviorPack", () => {
     });
 
     generate.mockReturnValue({ test: true });
-    createBehaviorPackBlob.mockResolvedValue(blob);
+    createBehaviorPackBlob.mockReturnValue(blob);
 
     await downloadBehaviorPack([recipe], MinecraftVersion.Bedrock);
 
@@ -199,7 +199,9 @@ describe("downloadBehaviorPack", () => {
     });
 
     generate.mockReturnValue({ test: true });
-    createBehaviorPackBlob.mockRejectedValue(new Error("Zip failed"));
+    createBehaviorPackBlob.mockImplementation(() => {
+      throw new Error("Zip failed");
+    });
 
     await downloadBehaviorPack([recipe], MinecraftVersion.Bedrock);
 

@@ -50,7 +50,7 @@ export const downloadBehaviorPack = async (
   }
 
   try {
-    const blob = await createBehaviorPackBlob(recipeFiles);
+    const blob = createBehaviorPackBlob(recipeFiles);
     downloadBlob(blob, "behavior_pack.mcpack");
   } catch (error) {
     alert(

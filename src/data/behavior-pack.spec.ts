@@ -1,4 +1,4 @@
-import JSZip from "jszip";
+import { strFromU8, unzipSync } from "fflate";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createBehaviorPackBlob } from "./behavior-pack";
@@ -18,7 +18,7 @@ describe("createBehaviorPackBlob", () => {
   });
 
   it("creates a behavior pack manifest and writes recipes to the recipes directory", async () => {
-    const blob = await createBehaviorPackBlob([
+    const blob = createBehaviorPackBlob([
       {
         identifier: "crafting:stone_button",
         json: { format_version: "1.12" },
@@ -29,8 +29,8 @@ describe("createBehaviorPackBlob", () => {
       },
     ]);
 
-    const zip = await JSZip.loadAsync(await blob.arrayBuffer());
-    const manifest = JSON.parse(await zip.file("manifest.json")!.async("string"));
+    const files = unzipSync(new Uint8Array(await blob.arrayBuffer()));
+    const manifest = JSON.parse(strFromU8(files["manifest.json"]));
 
     expect(manifest).toEqual({
       format_version: 2,
@@ -55,12 +55,12 @@ describe("createBehaviorPackBlob", () => {
       },
     });
 
-    expect(zip.file("recipes/crafting_stone_button.json")).toBeTruthy();
-    expect(zip.file("recipes/custom_folder_stone_button.json")).toBeTruthy();
+    expect("recipes/crafting_stone_button.json" in files).toBe(true);
+    expect("recipes/custom_folder_stone_button.json" in files).toBe(true);
   });
 
-  it("rejects duplicate Bedrock identifiers", async () => {
-    await expect(
+  it("rejects duplicate Bedrock identifiers", () => {
+    expect(() =>
       createBehaviorPackBlob([
         {
           identifier: "crafting:stone_button",
@@ -71,33 +71,33 @@ describe("createBehaviorPackBlob", () => {
           json: {},
         },
       ]),
-    ).rejects.toThrow("Duplicate identifier: crafting:stone_button");
+    ).toThrow("Duplicate identifier: crafting:stone_button");
   });
 
-  it("rejects blank identifiers", async () => {
-    await expect(
+  it("rejects blank identifiers", () => {
+    expect(() =>
       createBehaviorPackBlob([
         {
           identifier: "   ",
           json: {},
         },
       ]),
-    ).rejects.toThrow("Bedrock recipes must have an identifier");
+    ).toThrow("Bedrock recipes must have an identifier");
   });
 
-  it("rejects invalid identifier syntax", async () => {
-    await expect(
+  it("rejects invalid identifier syntax", () => {
+    expect(() =>
       createBehaviorPackBlob([
         {
           identifier: "Crafting:Bad-Id",
           json: {},
         },
       ]),
-    ).rejects.toThrow("Invalid identifier: Crafting:Bad-Id");
+    ).toThrow("Invalid identifier: Crafting:Bad-Id");
   });
 
-  it("rejects filename collisions after identifier sanitization", async () => {
-    await expect(
+  it("rejects filename collisions after identifier sanitization", () => {
+    expect(() =>
       createBehaviorPackBlob([
         {
           identifier: "crafting:foo_bar",
@@ -108,6 +108,6 @@ describe("createBehaviorPackBlob", () => {
           json: {},
         },
       ]),
-    ).rejects.toThrow("Duplicate behavior pack recipe filename: crafting_foo_bar.json");
+    ).toThrow("Duplicate behavior pack recipe filename: crafting_foo_bar.json");
   });
 });

@@ -1,9 +1,10 @@
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
 
 import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item as ItemType } from "@/data/models/types";
+import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 import { useCustomItemStore } from "@/stores/custom-item";
 
 import { Item } from "../../item/item";
@@ -95,15 +96,10 @@ export const ItemsSection = ({
   const customItems = useCustomItemStore((state) => state.customItems);
   const [expandedItemUid, setExpandedItemUid] = useState<string | null>(null);
 
-  const filteredCustomItems = useMemo(() => {
-    if (!search) return customItems;
-    const lower = search.toLowerCase();
-    return customItems.filter(
-      (item) =>
-        item.displayName.toLowerCase().includes(lower) ||
-        getRawId(item.id).toLowerCase().includes(lower),
-    );
-  }, [customItems, search]);
+  const filteredCustomItems = useFuzzySearch(customItems, search, (item) => [
+    item.displayName,
+    getRawId(item.id),
+  ]);
 
   if (showAddItemForm) {
     return (

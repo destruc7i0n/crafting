@@ -10,6 +10,7 @@ import {
   parseStringToMinecraftIdentifier,
 } from "@/data/models/identifier/utilities";
 import { Item } from "@/data/models/types";
+import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
 import { useTagStore } from "@/stores/tag";
@@ -48,7 +49,6 @@ export const TagsSection = ({
   const vanillaTags = resources?.vanillaTags ?? EMPTY_TAGS;
   const items = resources?.items ?? EMPTY_ITEMS;
   const itemsById = resources?.itemsById;
-  const normalizedSearch = search.trim().toLowerCase();
   const tagsByUid = useMemo(() => Object.fromEntries(tags.map((tag) => [tag.uid, tag])), [tags]);
 
   const customTagItems = useMemo(
@@ -89,23 +89,11 @@ export const TagsSection = ({
     [itemsById, vanillaTags, version],
   );
 
-  const filteredCustomTags = useMemo(
-    () =>
-      tags.filter((tag) => {
-        if (!normalizedSearch) return true;
-        return tag.id.toLowerCase().includes(normalizedSearch);
-      }),
-    [normalizedSearch, tags],
-  );
-
-  const filteredVanillaTagItems = useMemo(
-    () =>
-      vanillaTagItems.filter((tagItem) => {
-        if (!normalizedSearch) return true;
-        return getRawId(tagItem.id).toLowerCase().includes(normalizedSearch);
-      }),
-    [normalizedSearch, vanillaTagItems],
-  );
+  const filteredCustomTags = useFuzzySearch(tags, search, (tag) => [tag.id]);
+  const filteredVanillaTagItems = useFuzzySearch(vanillaTagItems, search, (tagItem) => [
+    getRawId(tagItem.id),
+    tagItem.displayName,
+  ]);
 
   const handleDeleteTag = (tagUid: string) => {
     removeTag(tagUid);

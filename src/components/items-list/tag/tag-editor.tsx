@@ -10,7 +10,8 @@ import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
 import { TagValueGrid } from "./tag-value-grid";
-import { filterValueOptions, ValueList, ValueOption } from "./value-list";
+import { useFilteredValueOptions } from "./use-filtered-value-options";
+import { ValueList, ValueOption } from "./value-list";
 
 interface TagEditorProps {
   tag: Tag;
@@ -62,9 +63,20 @@ export const TagEditor = ({
     }
   };
 
-  const filteredValues = useMemo(
-    () => filterValueOptions(valueSearch, items, vanillaTagItems, tags, customTagItems, tag.uid),
-    [valueSearch, items, vanillaTagItems, tags, customTagItems, tag.uid],
+  const eligibleCustomTagItems = useMemo(
+    () =>
+      tags
+        .filter((t) => t.uid !== tag.uid)
+        .map((t) => customTagItems[t.uid])
+        .filter(Boolean),
+    [tags, tag.uid, customTagItems],
+  );
+
+  const filteredValues = useFilteredValueOptions(
+    items,
+    vanillaTagItems,
+    eligibleCustomTagItems,
+    valueSearch,
   );
 
   const existingValueIds = useMemo(

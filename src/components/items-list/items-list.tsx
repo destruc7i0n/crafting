@@ -1,7 +1,8 @@
-import { useDeferredValue, useMemo, useState } from "react";
+import { useDeferredValue, useState } from "react";
 
 import { PlusIcon } from "lucide-react";
 
+import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { supportsItemTagsForVersion } from "@/lib/tags";
 import { cn } from "@/lib/utils";
@@ -48,13 +49,7 @@ export const ItemsList = () => {
     setExpandedTagUid(null);
   };
 
-  const items = useMemo(() => {
-    if (!resourceItems) return [];
-    if (!deferredSearch) return resourceItems;
-    return resourceItems.filter((item) =>
-      item.displayName.toLowerCase().includes(deferredSearch.toLowerCase()),
-    );
-  }, [resourceItems, deferredSearch]);
+  const items = useFuzzySearch(resourceItems ?? [], deferredSearch, (item) => [item.displayName]);
 
   const tabSwitcher = supportsTags ? (
     <div className="bg-muted relative flex shrink-0 items-center self-stretch rounded-md p-0.5 lg:self-auto">

@@ -1,3 +1,5 @@
+import { strToU8, zipSync } from "fflate";
+
 import { isValidBedrockNamespacedIdentifier } from "@/lib/minecraft-identifier";
 
 export interface BehaviorPackRecipeFile {
@@ -22,18 +24,14 @@ export const getBehaviorPackRecipeFileName = (identifier: string) => {
   return `${sanitizeRecipeFileName(identifier)}.json`;
 };
 
-export const createBehaviorPackBlob = async (
-  recipeFiles: BehaviorPackRecipeFile[],
-): Promise<Blob> => {
-  const { default: JSZip } = await import("jszip");
-  const zip = new JSZip();
+export const createBehaviorPackBlob = (recipeFiles: BehaviorPackRecipeFile[]): Blob => {
+  const files: Record<string, Uint8Array> = {};
   const headerUuid = crypto.randomUUID();
   const moduleUuid = crypto.randomUUID();
   const seenIdentifiers = new Set<string>();
   const seenFileNames = new Set<string>();
 
-  zip.file(
-    "manifest.json",
+  files["manifest.json"] = strToU8(
     JSON.stringify(
       {
         format_version: 2,
@@ -86,8 +84,8 @@ export const createBehaviorPackBlob = async (
     }
 
     seenFileNames.add(fileName);
-    zip.file(`recipes/${fileName}`, JSON.stringify(recipeFile.json, null, 2));
+    files[`recipes/${fileName}`] = strToU8(JSON.stringify(recipeFile.json, null, 2));
   }
 
-  return zip.generateAsync({ type: "blob" });
+  return new Blob([zipSync(files).buffer as ArrayBuffer]);
 };
