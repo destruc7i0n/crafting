@@ -7,11 +7,13 @@ export function useFuzzySearch<T>(
   query: string,
   getText: (item: T) => (string | null)[],
 ): T[] {
+  // ref so the search index isn't rebuilt when getText changes
   const getTextRef = useRef(getText);
   getTextRef.current = getText;
 
   const search = useMemo(
-    () => createFuzzySearch(items, { getText: (item) => getTextRef.current(item) }),
+    () =>
+      createFuzzySearch(items, { getText: (item) => getTextRef.current(item), strategy: "off" }),
     [items],
   );
 
