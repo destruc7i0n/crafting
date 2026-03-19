@@ -11,11 +11,17 @@ type ItemInfoBoxProps =
   | { item: IngredientItem; slot?: undefined; pendingReplace?: boolean }
   | { item: IngredientItem; slot: RecipeSlot; pendingReplace?: boolean };
 
-const getTitle = (slot: RecipeSlot | undefined, pendingReplace: boolean | undefined) => {
-  if (pendingReplace && slot !== undefined) return "Tap the item in the preview to move it";
-  if (pendingReplace) return "Tap the item in the preview to overwrite it";
-  if (slot !== undefined) return "Selected item (in preview)";
-  return "Selected item (from items)";
+const getTitle = (
+  item: IngredientItem,
+  slot: RecipeSlot | undefined,
+  pendingReplace: boolean | undefined,
+) => {
+  if (pendingReplace && slot !== undefined) return "Tap again to move";
+  if (pendingReplace) return "Tap again to overwrite";
+
+  const itemType = item.type === "tag_item" ? "tag" : "item";
+  if (slot !== undefined) return `Selected ${itemType} (in preview)`;
+  return `Selected ${itemType} (from ${itemType === "tag" ? "tags" : "items"})`;
 };
 
 export const ItemInfoBox = ({ item, slot, pendingReplace }: ItemInfoBoxProps) => {
@@ -27,7 +33,7 @@ export const ItemInfoBox = ({ item, slot, pendingReplace }: ItemInfoBoxProps) =>
         <span
           className={`pb-0.5 text-xs leading-tight ${pendingReplace ? "font-medium text-amber-600 dark:text-amber-400" : "text-muted-foreground font-medium"}`}
         >
-          {getTitle(slot, pendingReplace)}
+          {getTitle(item, slot, pendingReplace)}
         </span>
         {item.type === "tag_item" ? (
           <span className="truncate leading-tight font-medium">
