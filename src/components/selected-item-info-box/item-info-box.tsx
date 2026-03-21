@@ -21,7 +21,7 @@ export const ItemInfoBox = ({ item, slot }: ItemInfoBoxProps) => {
   return (
     <div className="border-border bg-background/90 flex flex-col rounded-md border px-3 py-2 text-xs leading-tight shadow-sm backdrop-blur-sm">
       <div className="text-foreground flex min-w-0 flex-col overflow-hidden">
-        <span className="text-muted-foreground pb-0.5 text-xs font-medium leading-tight">
+        <span className="text-muted-foreground pb-0.5 text-xs leading-tight font-medium">
           {getTitle(item, slot)}
         </span>
         {item.type === "tag_item" ? (
