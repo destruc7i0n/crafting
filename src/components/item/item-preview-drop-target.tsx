@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import { useShallow } from "zustand/react/shallow";
+
 import { RecipeSlot } from "@/data/types";
 import { usePreviewSlotSelectionHandler } from "@/hooks/use-preview-slot-selection-handler";
 import { useResolvedSlotItem } from "@/hooks/use-resolved-tag-item";
@@ -22,11 +24,13 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
   const rawSlotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
   const slotValue = useResolvedSlotItem(rawSlotValue);
 
-  const isSlotSelected = useUIStore((state) => state.selectedPreview?.slot === slot);
-  const isPendingReplace = useUIStore(
-    (state) =>
-      state.selectedIngredient?.replaceTarget === slot ||
-      state.selectedPreview?.replaceTarget === slot,
+  const { isSlotSelected, isPendingReplace } = useUIStore(
+    useShallow((state) => ({
+      isSlotSelected: state.selectedPreview?.slot === slot,
+      isPendingReplace:
+        state.selectedIngredient?.replaceTarget === slot ||
+        state.selectedPreview?.replaceTarget === slot,
+    })),
   );
 
   const dropTargetData = useMemo(

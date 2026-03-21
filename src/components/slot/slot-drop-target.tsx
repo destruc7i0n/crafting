@@ -8,6 +8,7 @@ import {
 import invariant from "tiny-invariant";
 
 import { isItemDraggableData } from "@/lib/dnd";
+import { useUIStore } from "@/stores/ui";
 
 import { Slot, SlotProps } from "./slot";
 
@@ -21,6 +22,7 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
   data,
   children,
   canDrop,
+  disabled: disabledProp,
   ...props
 }: SlotDropTargetProps<T>) => {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -33,6 +35,19 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
 
   const dataRef = useRef(data);
   dataRef.current = data;
+
+  const selectedItem = useUIStore(
+    (state) => state.selectedIngredient?.item ?? state.selectedPreview?.item,
+  );
+  const isDisabledForSelection =
+    selectedItem !== undefined &&
+    !(
+      canDropRef.current?.({
+        source: {
+          data: { type: "item" as const, item: selectedItem, container: "ingredients" as const },
+        },
+      }) ?? true
+    );
 
   useEffect(() => {
     const el = ref.current;
@@ -63,7 +78,12 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
   }, []); // ensure listeners are created only once
 
   return (
-    <Slot ref={ref} active={isDraggedOver} disabled={isInvalidTarget} {...props}>
+    <Slot
+      ref={ref}
+      active={isDraggedOver}
+      disabled={isInvalidTarget || isDisabledForSelection || disabledProp}
+      {...props}
+    >
       {children}
     </Slot>
   );
