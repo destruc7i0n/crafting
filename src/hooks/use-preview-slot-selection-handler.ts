@@ -26,48 +26,24 @@ export const usePreviewSlotSelectionHandler = (
     }
 
     if (selectedIngredient) {
-      if (rawSlotValue) {
-        if (selectedIngredient.replaceTarget === slot) {
-          // 2nd tap: confirm replace
-          if (!canRecipeSlotAcceptIngredient(slot, selectedIngredient.item)) return;
-          setRecipeSlot(slot, cloneItem(selectedIngredient.item));
-          setSelectedIngredient({ item: selectedIngredient.item }); // clear replaceTarget
-        } else {
-          // 1st tap: mark pending
-          setSelectedIngredient({ item: selectedIngredient.item, replaceTarget: slot });
-        }
-      } else {
-        // empty slot: place ingredient
-        if (!canRecipeSlotAcceptIngredient(slot, selectedIngredient.item)) return;
-        setRecipeSlot(slot, cloneItem(selectedIngredient.item));
-        setSelectedIngredient({ item: selectedIngredient.item }); // clear replaceTarget
-      }
+      if (!canRecipeSlotAcceptIngredient(slot, selectedIngredient.item)) return;
+      setRecipeSlot(slot, cloneItem(selectedIngredient.item));
+      setSelectedIngredient({ item: selectedIngredient.item });
       return;
     }
 
     if (selectedPreview) {
+      if (!canRecipeSlotAcceptIngredient(slot, selectedPreview.item)) return;
       if (rawSlotValue) {
-        if (selectedPreview.replaceTarget === slot) {
-          // 2nd tap: confirm move
-          if (!canRecipeSlotAcceptIngredient(slot, selectedPreview.item)) return;
-          setRecipeSlot(slot, cloneItem(selectedPreview.item));
-          setRecipeSlot(selectedPreview.slot, undefined);
-          setSelectedPreview({ item: selectedPreview.item, slot });
-        } else {
-          // 1st tap on occupied slot: mark pending (also clears any previous replaceTarget)
-          setSelectedPreview({
-            item: selectedPreview.item,
-            slot: selectedPreview.slot,
-            replaceTarget: slot,
-          });
-        }
+        // swap: destination gets selected item, source gets displaced item
+        setRecipeSlot(slot, cloneItem(selectedPreview.item));
+        setRecipeSlot(selectedPreview.slot, cloneItem(rawSlotValue));
       } else {
-        // empty slot: move immediately, no confirmation needed
-        if (!canRecipeSlotAcceptIngredient(slot, selectedPreview.item)) return;
+        // empty slot: move
         setRecipeSlot(slot, cloneItem(selectedPreview.item));
         setRecipeSlot(selectedPreview.slot, undefined);
-        setSelectedPreview({ item: selectedPreview.item, slot });
       }
+      setSelectedPreview({ item: selectedPreview.item, slot });
       return;
     }
 

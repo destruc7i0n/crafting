@@ -1,7 +1,5 @@
 import { useMemo } from "react";
 
-import { useShallow } from "zustand/react/shallow";
-
 import { RecipeSlot } from "@/data/types";
 import { usePreviewSlotSelectionHandler } from "@/hooks/use-preview-slot-selection-handler";
 import { useResolvedSlotItem } from "@/hooks/use-resolved-tag-item";
@@ -24,14 +22,7 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
   const rawSlotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
   const slotValue = useResolvedSlotItem(rawSlotValue);
 
-  const { isSlotSelected, isPendingReplace } = useUIStore(
-    useShallow((state) => ({
-      isSlotSelected: state.selectedPreview?.slot === slot,
-      isPendingReplace:
-        state.selectedIngredient?.replaceTarget === slot ||
-        state.selectedPreview?.replaceTarget === slot,
-    })),
-  );
+  const isSlotSelected = useUIStore((state) => state.selectedPreview?.slot === slot);
 
   const dropTargetData = useMemo(
     (): ItemPreviewDropTargetData => ({ type: "preview", slot }),
@@ -44,11 +35,7 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
     <SlotDropTarget<ItemPreviewDropTargetData>
       data={dropTargetData}
       {...props}
-      className={cn(
-        isSlotSelected && "ring-primary z-10 rounded ring-2",
-        isPendingReplace && "z-10 rounded ring-2 ring-amber-400",
-        props.className,
-      )}
+      className={cn(isSlotSelected && "ring-primary z-10 rounded ring-2", props.className)}
       canDrop={({ source }) => {
         if (isItemDraggableData(source.data)) {
           return canRecipeSlotAcceptIngredient(slot, source.data.item);

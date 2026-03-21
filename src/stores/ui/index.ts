@@ -6,13 +6,11 @@ import { RecipeSlot } from "@/data/types";
 
 export interface IngredientSelection {
   item: IngredientItem;
-  replaceTarget?: RecipeSlot;
 }
 
 export interface PreviewSelection {
   item: IngredientItem;
   slot: RecipeSlot;
-  replaceTarget?: RecipeSlot;
 }
 
 export interface UIState {

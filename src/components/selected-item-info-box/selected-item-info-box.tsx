@@ -13,16 +13,9 @@ export const SelectedItemInfoBox = () => {
   return (
     <div className="pt-4 lg:hidden">
       {selectedPreview ? (
-        <ItemInfoBox
-          item={selectedPreview.item}
-          slot={selectedPreview.slot}
-          pendingReplace={selectedPreview.replaceTarget !== undefined}
-        />
+        <ItemInfoBox item={selectedPreview.item} slot={selectedPreview.slot} />
       ) : (
-        <ItemInfoBox
-          item={selectedIngredient!.item}
-          pendingReplace={selectedIngredient!.replaceTarget !== undefined}
-        />
+        <ItemInfoBox item={selectedIngredient!.item} />
       )}
     </div>
   );
