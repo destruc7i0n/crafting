@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, Tag, TagItem } from "@/data/models/types";
@@ -37,13 +37,6 @@ export const TagEditor = ({
 
   const [draftId, setDraftId] = useState(tag.id);
   const [valueSearch, setValueSearch] = useState("");
-  const prevUidRef = useRef(tag.uid);
-
-  if (prevUidRef.current !== tag.uid) {
-    prevUidRef.current = tag.uid;
-    setDraftId(tag.id);
-    setValueSearch("");
-  }
 
   const showDraftIdError = draftId.trim().length > 0 && !isValidJavaNamespacedIdentifier(draftId);
 

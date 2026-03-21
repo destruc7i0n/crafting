@@ -37,13 +37,10 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
   const isTouchDevice = useIsTouchDevice();
 
   const isSelectedFromIngredients = useUIStore(
-    useCallback(
-      (state) =>
-        container === "ingredients" &&
-        state.selectedIngredient !== undefined &&
-        isSameIngredient(state.selectedIngredient.item, item),
-      [container, item],
-    ),
+    (state) =>
+      container === "ingredients" &&
+      state.selectedIngredient !== undefined &&
+      isSameIngredient(state.selectedIngredient.item, item),
   );
 
   const setupDraggable = useCallback(() => {

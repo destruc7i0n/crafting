@@ -175,6 +175,7 @@ export const TagsSection = ({
         </div>
 
         <TagEditor
+          key={expandedTag.uid} // resets TagEditor state when the selected tag changes
           tag={expandedTag}
           items={items}
           itemsById={itemsById}
