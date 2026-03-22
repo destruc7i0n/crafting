@@ -18,7 +18,7 @@ import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
 import { JsonOutput } from "./json-output";
 
-import "@jongwooo/prism-theme-github/themes/prism-github-default-auto.min.css";
+import "./prism-github.css";
 
 export const ItemOutput = () => {
   const [copied, setCopied] = useState(false);

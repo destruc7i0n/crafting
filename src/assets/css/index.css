@@ -94,19 +94,6 @@
   }
 }
 
-.dark {
-  --color-fg-default: #c9d1d9;
-  --color-bg-code-block: #161b22;
-  --color-bg-inline-code-block: rgb(110 118 129 / 40%);
-  --color-gray: #8b949e;
-  --color-red: #ff7b72;
-  --color-green: #7ee787;
-  --color-blue: #79c0ff;
-  --color-indigo: #a5d6ff;
-  --color-purple: #d2a8ff;
-  --color-brown: #ffa657;
-}
-
 @layer base {
   * {
     @apply border-border;
