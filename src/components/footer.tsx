@@ -1,3 +1,5 @@
+import { ThemeToggle } from "@/components/layout/theme-toggle";
+
 const currentYear = new Date().getFullYear();
 
 export const Footer = () => (
@@ -42,7 +44,9 @@ export const Footer = () => (
         Ko-Fi
       </a>
     </p>
-    <div className="h-2" />
+    <div className="py-3">
+      <ThemeToggle />
+    </div>
     <p>The Minecraft item icons are copyright © 2009-{currentYear} Mojang Studios</p>
     <p>This site is not affiliated with Mojang Studios</p>
   </footer>
