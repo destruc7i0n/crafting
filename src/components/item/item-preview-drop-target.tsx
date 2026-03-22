@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { RecipeSlot } from "@/data/types";
+import { useItemSelection } from "@/hooks/use-item-selection";
 import { usePreviewSlotSelectionHandler } from "@/hooks/use-preview-slot-selection-handler";
 import { useResolvedSlotItem } from "@/hooks/use-resolved-tag-item";
 import { isItemDraggableData, ItemPreviewDropTargetData } from "@/lib/dnd";
@@ -8,7 +9,6 @@ import { canRecipeSlotAcceptIngredient } from "@/lib/recipe-slots";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
-import { useUIStore } from "@/stores/ui";
 
 import { SlotProps } from "../slot/slot";
 import { SlotDropTarget } from "../slot/slot-drop-target";
@@ -22,7 +22,8 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
   const rawSlotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
   const slotValue = useResolvedSlotItem(rawSlotValue);
 
-  const isSlotSelected = useUIStore((state) => state.selectedPreview?.slot === slot);
+  const selection = useItemSelection();
+  const isSlotSelected = selection?.type === "preview" && selection.slot === slot;
 
   const dropTargetData = useMemo(
     (): ItemPreviewDropTargetData => ({ type: "preview", slot }),

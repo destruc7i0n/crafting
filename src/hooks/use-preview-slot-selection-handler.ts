@@ -16,39 +16,38 @@ export const usePreviewSlotSelectionHandler = (
   return (_: React.MouseEvent) => {
     if (!isTouchDevice) return;
 
-    const { selectedIngredient, selectedPreview, setSelectedIngredient, setSelectedPreview } =
-      useUIStore.getState();
+    const { selection, setSelection } = useUIStore.getState();
 
     // tap same selected preview slot → deselect
-    if (selectedPreview?.slot === slot) {
-      setSelectedIngredient(undefined); // clears all
+    if (selection?.type === "preview" && selection.slot === slot) {
+      setSelection(undefined);
       return;
     }
 
-    if (selectedIngredient) {
-      if (!canRecipeSlotAcceptIngredient(slot, selectedIngredient.item)) return;
-      setRecipeSlot(slot, cloneItem(selectedIngredient.item));
-      setSelectedIngredient({ item: selectedIngredient.item });
+    if (selection?.type === "ingredient") {
+      if (!canRecipeSlotAcceptIngredient(slot, selection.item)) return;
+      setRecipeSlot(slot, cloneItem(selection.item));
+      setSelection({ type: "ingredient", item: selection.item });
       return;
     }
 
-    if (selectedPreview) {
-      if (!canRecipeSlotAcceptIngredient(slot, selectedPreview.item)) return;
+    if (selection?.type === "preview") {
+      if (!canRecipeSlotAcceptIngredient(slot, selection.item)) return;
       if (rawSlotValue) {
         // swap: destination gets selected item, source gets displaced item
-        setRecipeSlot(slot, cloneItem(selectedPreview.item));
-        setRecipeSlot(selectedPreview.slot, cloneItem(rawSlotValue));
+        setRecipeSlot(slot, cloneItem(selection.item));
+        setRecipeSlot(selection.slot, cloneItem(rawSlotValue));
       } else {
         // empty slot: move
-        setRecipeSlot(slot, cloneItem(selectedPreview.item));
-        setRecipeSlot(selectedPreview.slot, undefined);
+        setRecipeSlot(slot, cloneItem(selection.item));
+        setRecipeSlot(selection.slot, undefined);
       }
-      setSelectedPreview({ item: selectedPreview.item, slot });
+      setSelection({ type: "preview", item: selection.item, slot });
       return;
     }
 
     if (rawSlotValue) {
-      setSelectedPreview({ item: rawSlotValue, slot });
+      setSelection({ type: "preview", item: rawSlotValue, slot });
     }
   };
 };

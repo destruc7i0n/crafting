@@ -1,21 +1,18 @@
-import { useUIStore } from "@/stores/ui";
+import { useItemSelection } from "@/hooks/use-item-selection";
 
 import { ItemInfoBox } from "./item-info-box";
 
 export const SelectedItemInfoBox = () => {
-  const selectedPreview = useUIStore((state) => state.selectedPreview);
-  const selectedIngredient = useUIStore((state) => state.selectedIngredient);
+  const selection = useItemSelection();
 
-  if (!selectedPreview && !selectedIngredient) {
-    return null;
-  }
+  if (!selection) return null;
 
   return (
-    <div className="pt-4 lg:hidden">
-      {selectedPreview ? (
-        <ItemInfoBox item={selectedPreview.item} slot={selectedPreview.slot} />
+    <div className="pt-4">
+      {selection.type === "preview" ? (
+        <ItemInfoBox item={selection.item} slot={selection.slot} />
       ) : (
-        <ItemInfoBox item={selectedIngredient!.item} />
+        <ItemInfoBox item={selection.item} />
       )}
     </div>
   );

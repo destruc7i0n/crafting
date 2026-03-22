@@ -11,6 +11,7 @@ import { getFullId, getRawId } from "@/data/models/identifier/utilities";
 import { cloneItem } from "@/data/models/item/utilities";
 import { IngredientItem } from "@/data/models/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
+import { useItemSelection } from "@/hooks/use-item-selection";
 import { ItemDraggableContainer, ItemDraggableData } from "@/lib/dnd";
 import { findFirstEmptyRecipeSlot } from "@/lib/recipe-slots";
 import { isSameIngredient } from "@/lib/tags";
@@ -35,13 +36,11 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
   const [dragging, setDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const isTouchDevice = useIsTouchDevice();
-
-  const isSelectedFromIngredients = useUIStore(
-    (state) =>
-      container === "ingredients" &&
-      state.selectedIngredient !== undefined &&
-      isSameIngredient(state.selectedIngredient.item, item),
-  );
+  const selection = useItemSelection();
+  const isSelectedFromIngredients =
+    container === "ingredients" &&
+    selection?.type === "ingredient" &&
+    isSameIngredient(selection.item, item);
 
   const setupDraggable = useCallback(() => {
     if (dndCleanupRef.current) return;
@@ -57,7 +56,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         if (container === "preview") {
           preventUnhandled.start();
         }
-        useUIStore.getState().setSelectedIngredient(undefined);
+        useUIStore.getState().setSelection(undefined);
         setDragging(true);
       },
       onDrop: () => setDragging(false),
@@ -87,11 +86,11 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
     const el = ref.current;
     if (!el) return;
 
-    const handlePointerDown = () => setupDraggable();
-    el.addEventListener("pointerdown", handlePointerDown, { once: true });
+    const handlePointerEnter = () => setupDraggable();
+    el.addEventListener("pointerenter", handlePointerEnter, { once: true });
 
     return () => {
-      el.removeEventListener("pointerdown", handlePointerDown);
+      el.removeEventListener("pointerenter", handlePointerEnter);
       dndCleanupRef.current?.();
       dndCleanupRef.current = null;
     };
@@ -108,16 +107,16 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
     if (!slot) return;
 
     useRecipeStore.getState().setRecipeSlot(slot, cloneItem(item));
-    useUIStore.getState().setSelectedIngredient(undefined);
+    useUIStore.getState().setSelection(undefined);
   };
 
   const handleClick = () => {
     if (!isTouchDevice || container !== "ingredients") return;
-    const { selectedIngredient, setSelectedIngredient } = useUIStore.getState();
-    if (selectedIngredient && isSameIngredient(selectedIngredient.item, item)) {
-      setSelectedIngredient(undefined);
+    const { setSelection } = useUIStore.getState();
+    if (selection?.type === "ingredient" && isSameIngredient(selection.item, item)) {
+      setSelection(undefined);
     } else {
-      setSelectedIngredient({ item });
+      setSelection({ type: "ingredient", item });
     }
   };
 
@@ -133,6 +132,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         active={isTagPreviewActive}
         itemIds={item.values}
         ref={ref}
+        draggable={isTouchDevice ? false : undefined}
         style={{ opacity: dragging ? 0.5 : 1 }}
         className={cn(
           "touch-action-manipulation",
@@ -149,6 +149,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         alt={item.displayName}
         texture={item.texture}
         ref={ref}
+        draggable={isTouchDevice ? false : undefined}
         style={{ opacity: dragging ? 0.5 : 1 }}
         className={cn(
           "touch-action-manipulation",

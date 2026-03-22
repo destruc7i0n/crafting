@@ -17,7 +17,7 @@ export const ItemPreview = memo(
         src={texture ?? NoTextureTexture}
         alt={alt}
         className={cn(
-          "h-[32px] w-[32px] [-webkit-touch-callout:none] [image-rendering:crisp-edges] [image-rendering:pixelated]",
+          "h-[32px] w-[32px] select-none [-webkit-touch-callout:none] [image-rendering:crisp-edges] [image-rendering:pixelated]",
           className,
         )}
       />

@@ -44,7 +44,7 @@ export const ItemInfoBox = ({ item, slot }: ItemInfoBoxProps) => {
             className="text-muted-foreground hover:text-destructive flex cursor-pointer items-center gap-1 px-2 py-1 transition-colors"
             onClick={() => {
               useRecipeStore.getState().setRecipeSlot(slot, undefined);
-              useUIStore.getState().setSelectedIngredient(undefined);
+              useUIStore.getState().setSelection(undefined);
             }}
             aria-label="Remove item from slot"
           >
@@ -55,7 +55,7 @@ export const ItemInfoBox = ({ item, slot }: ItemInfoBoxProps) => {
         <button
           type="button"
           className="text-muted-foreground hover:text-foreground flex cursor-pointer items-center gap-1 px-2 py-1 transition-colors"
-          onClick={() => useUIStore.getState().setSelectedIngredient(undefined)}
+          onClick={() => useUIStore.getState().setSelection(undefined)}
           aria-label="Deselect"
         >
           <XIcon size={14} />
