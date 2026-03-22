@@ -1,7 +1,7 @@
 {
   "name": "crafting",
-  "version": "0.0.0",
-  "private": true,
+  "version": "2.0.0",
+  "private": false,
   "scripts": {
     "dev": "vite",
     "generate:tags": "bun scripts/fetch-tags.ts",
@@ -31,7 +31,6 @@
     "modern-screenshot": "^4.6.8",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "rfdc": "^1.4.1",
     "tailwind-merge": "^3.5.0",
     "tiny-invariant": "^1.3.3",
     "zustand": "^5.0.12"

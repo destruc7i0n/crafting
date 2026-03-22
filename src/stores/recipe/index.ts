@@ -1,4 +1,3 @@
-import rfdc from "rfdc";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -87,10 +86,10 @@ type RecipeActions = {
   clearAllSlots: () => void;
 };
 
-const clone = rfdc();
-
 const getDefaultRecipe = (): SingleRecipeState =>
-  clone({ ...recipeStateDefaults, id: generateUid("recipe"), recipeName: "recipe_1" });
+  JSON.parse(
+    JSON.stringify({ ...recipeStateDefaults, id: generateUid("recipe"), recipeName: "recipe_1" }),
+  );
 
 type ImmerState = RecipeState & RecipeActions;
 

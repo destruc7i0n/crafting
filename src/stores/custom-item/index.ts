@@ -1,3 +1,4 @@
+import { current } from "immer";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -88,10 +89,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
             }
           }
 
-          syncedItem = {
-            ...item,
-            id: { ...item.id },
-          };
+          syncedItem = current(item);
         });
 
         if (!syncedItem) {
