@@ -119,9 +119,9 @@ export interface BedrockFurnaceBody {
 }
 
 export interface BedrockSmithingTrimBody {
-  template: BedrockTagIngredient | EmptyObject;
-  base: BedrockTagIngredient | EmptyObject;
-  addition: BedrockTagIngredient | EmptyObject;
+  template: IngredientRef | EmptyObject;
+  base: IngredientRef | EmptyObject;
+  addition: IngredientRef | EmptyObject;
 }
 
 export interface BedrockSmithingTransformBody {

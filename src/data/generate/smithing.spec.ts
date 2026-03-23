@@ -287,38 +287,38 @@ describe("generate smithing", () => {
   });
 
   describe("bedrock", () => {
-    it("should generate bedrock smithing trim body", () => {
+    it("should generate bedrock smithing trim body with tags", () => {
       const recipeSlice: SingleRecipeState = {
         ...recipeStateDefaults,
         recipeType: RecipeType.SmithingTrim,
         group: "",
         slots: {
           "smithing.template": {
-            type: "default_item",
+            type: "tag_item",
             id: { id: "trim_templates", namespace: "minecraft" },
-            displayName: "trim_templates",
+            displayName: "#minecraft:trim_templates",
             texture: "",
-            count: 1,
             _version: MinecraftVersion.Bedrock,
+            tagSource: "vanilla",
+            values: [],
           },
           "smithing.base": {
-            type: "default_item",
-            id: {
-              id: "trimmable_armors",
-              namespace: "minecraft",
-            },
-            displayName: "trimmable_armors",
+            type: "tag_item",
+            id: { id: "trimmable_armors", namespace: "minecraft" },
+            displayName: "#minecraft:trimmable_armors",
             texture: "",
-            count: 1,
             _version: MinecraftVersion.Bedrock,
+            tagSource: "vanilla",
+            values: [],
           },
           "smithing.addition": {
-            type: "default_item",
+            type: "tag_item",
             id: { id: "trim_materials", namespace: "minecraft" },
-            displayName: "trim_materials",
+            displayName: "#minecraft:trim_materials",
             texture: "",
-            count: 1,
             _version: MinecraftVersion.Bedrock,
+            tagSource: "vanilla",
+            values: [],
           },
         },
         cooking: { experience: 0, time: 0 },
@@ -329,6 +329,48 @@ describe("generate smithing", () => {
         template: { tag: "minecraft:trim_templates" },
         base: { tag: "minecraft:trimmable_armors" },
         addition: { tag: "minecraft:trim_materials" },
+      });
+    });
+
+    it("should generate bedrock smithing trim body with regular items", () => {
+      const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
+        recipeType: RecipeType.SmithingTrim,
+        group: "",
+        slots: {
+          "smithing.template": {
+            type: "default_item",
+            id: { id: "netherite_upgrade_smithing_template", namespace: "minecraft" },
+            displayName: "netherite_upgrade_smithing_template",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+          "smithing.base": {
+            type: "default_item",
+            id: { id: "diamond_boots", namespace: "minecraft" },
+            displayName: "diamond_boots",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+          "smithing.addition": {
+            type: "default_item",
+            id: { id: "quartz", namespace: "minecraft" },
+            displayName: "quartz",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+        },
+        cooking: { experience: 0, time: 0 },
+        crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+        template: { item: "minecraft:netherite_upgrade_smithing_template" },
+        base: { item: "minecraft:diamond_boots" },
+        addition: { item: "minecraft:quartz" },
       });
     });
 

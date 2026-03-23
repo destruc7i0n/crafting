@@ -69,12 +69,11 @@ const PriorityField = () => {
     <Field
       label="Priority"
       htmlFor="bedrock-priority"
-      tooltip="Used to give priority if the same recipe exists in duplicate."
+      tooltip="Sets the priority order of the recipe. Lower numbers represent a higher priority."
     >
       <InputControl
         id="bedrock-priority"
         type="number"
-        min={0}
         step={1}
         value={priority}
         onCommit={(v) => setRecipeBedrockPriority(Math.max(0, Math.floor(Number(v || 0))))}

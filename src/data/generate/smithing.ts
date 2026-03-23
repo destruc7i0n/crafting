@@ -57,9 +57,9 @@ export const buildBedrock = (
 ): BedrockSmithingTrimBody | BedrockSmithingTransformBody | BedrockShapelessBody => {
   if (state.recipeType === RecipeType.SmithingTrim) {
     return {
-      template: state.template ? { tag: getRawId(state.template.id) } : {},
-      base: state.base ? { tag: getRawId(state.base.id) } : {},
-      addition: state.addition ? { tag: getRawId(state.addition.id) } : {},
+      template: formatIngredient(state.template, formatter),
+      base: formatIngredient(state.base, formatter),
+      addition: formatIngredient(state.addition, formatter),
     } satisfies BedrockSmithingTrimBody;
   }
 
