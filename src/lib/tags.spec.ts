@@ -8,6 +8,7 @@ import {
   createTagItem,
   isSameIngredient,
   resolveTagValues,
+  supportsCustomTagsForVersion,
   supportsItemTagsForVersion,
 } from "./tags";
 
@@ -21,8 +22,23 @@ describe("supportsItemTagsForVersion", () => {
     expect(supportsItemTagsForVersion(MinecraftVersion.V121)).toBe(true);
   });
 
+  it("returns true for Bedrock", () => {
+    expect(supportsItemTagsForVersion(MinecraftVersion.Bedrock)).toBe(true);
+  });
+});
+
+describe("supportsCustomTagsForVersion", () => {
+  it("returns false for 1.12", () => {
+    expect(supportsCustomTagsForVersion(MinecraftVersion.V112)).toBe(false);
+  });
+
+  it("returns true for 1.13+", () => {
+    expect(supportsCustomTagsForVersion(MinecraftVersion.V113)).toBe(true);
+    expect(supportsCustomTagsForVersion(MinecraftVersion.V121)).toBe(true);
+  });
+
   it("returns false for Bedrock", () => {
-    expect(supportsItemTagsForVersion(MinecraftVersion.Bedrock)).toBe(false);
+    expect(supportsCustomTagsForVersion(MinecraftVersion.Bedrock)).toBe(false);
   });
 });
 

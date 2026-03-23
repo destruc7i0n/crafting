@@ -2,6 +2,7 @@ import { TexturesType as MinecraftTexturesType } from "minecraft-textures";
 
 import { latestMinecraftVersion } from "@/data/constants";
 import {
+  getRawId,
   identifierUniqueKey,
   parseStringToMinecraftIdentifier,
 } from "@/data/models/identifier/utilities";
@@ -39,12 +40,13 @@ async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void
   const module = (await loadTextureModule()).default;
   let vanillaTags: Record<string, string[]> = {};
 
-  if (version !== MinecraftVersion.Bedrock) {
-    const tagPath = `/src/data/generated/vanilla-tags/${version}.json`;
-    const loadTagModule = tagLoaders[tagPath];
-    if (loadTagModule) {
-      vanillaTags = (await loadTagModule()).default;
-    }
+  const tagPath =
+    version === MinecraftVersion.Bedrock
+      ? `/src/data/generated/vanilla-tags/bedrock.json`
+      : `/src/data/generated/vanilla-tags/${version}.json`;
+  const loadTagModule = tagLoaders[tagPath];
+  if (loadTagModule) {
+    vanillaTags = (await loadTagModule()).default;
   }
 
   const mcTexturesItems = module.items;
@@ -65,6 +67,15 @@ async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void
     if (!itemsById[key]) {
       items.push(item);
       itemsById[key] = item;
+    }
+
+    // for bedrock items with data values (e.g. minecraft:banner:0)
+    // also index under the plain ID so tag values (e.g. "minecraft:banner") resolve correctly.
+    if (item.id.data !== undefined) {
+      const plainKey = getRawId(item.id);
+      if (!itemsById[plainKey]) {
+        itemsById[plainKey] = item;
+      }
     }
   }
 

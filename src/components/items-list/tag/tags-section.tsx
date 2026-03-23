@@ -28,6 +28,7 @@ interface TagsSectionProps {
   setExpandedTagUid: (uid: string | null) => void;
   showAddTagForm: boolean;
   onCloseAddTagForm: () => void;
+  supportsCustomTags: boolean;
 }
 
 const EMPTY_TAGS: Record<string, string[]> = {};
@@ -41,6 +42,7 @@ export const TagsSection = ({
   setExpandedTagUid,
   showAddTagForm,
   onCloseAddTagForm,
+  supportsCustomTags,
 }: TagsSectionProps) => {
   const { resources, version } = useResourcesForVersion();
   const tags = useTagStore((state) => state.tags);
@@ -113,7 +115,7 @@ export const TagsSection = ({
     downloadBlob(blob, `${getTagFileName(tag.id)}.json`);
   };
 
-  if (showAddTagForm && !expandedTagUid) {
+  if (supportsCustomTags && showAddTagForm && !expandedTagUid) {
     return (
       <div className="flex min-h-0 flex-1 flex-col gap-2">
         <AddTagForm
@@ -128,7 +130,9 @@ export const TagsSection = ({
     );
   }
 
-  const expandedTag = tags.find((tag) => tag.uid === expandedTagUid);
+  const expandedTag = supportsCustomTags
+    ? tags.find((tag) => tag.uid === expandedTagUid)
+    : undefined;
 
   if (expandedTag) {
     const tagItem = customTagItems[expandedTag.uid];
@@ -189,13 +193,13 @@ export const TagsSection = ({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2">
-      {filteredCustomTags.length > 0 && (
+      {supportsCustomTags && filteredCustomTags.length > 0 && (
         <span className="text-muted-foreground hidden text-xs font-medium lg:block">
           Custom Tags
         </span>
       )}
 
-      {filteredCustomTags.length > 0 && (
+      {supportsCustomTags && filteredCustomTags.length > 0 && (
         <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pb-0">
           {filteredCustomTags.map((tag) => {
             const tagItem = customTagItems[tag.uid];
@@ -237,7 +241,7 @@ export const TagsSection = ({
         </div>
       )}
 
-      {filteredCustomTags.length > 0 && (
+      {supportsCustomTags && filteredCustomTags.length > 0 && (
         <span className="text-muted-foreground hidden text-xs font-medium lg:block">
           Vanilla Tags
         </span>

@@ -60,6 +60,9 @@ export const resolveTagGraph = (graph: TagGraph): TagGraph => {
 };
 
 export const supportsItemTagsForVersion = (version: MinecraftVersion) =>
+  version === MinecraftVersion.Bedrock || isVersionAtLeast(version, MinecraftVersion.V113);
+
+export const supportsCustomTagsForVersion = (version: MinecraftVersion) =>
   isVersionAtLeast(version, MinecraftVersion.V113);
 
 export const createEmptyTag = (existingTags: Tag[]): Tag => {

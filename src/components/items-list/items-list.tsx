@@ -4,7 +4,7 @@ import { PlusIcon } from "lucide-react";
 
 import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
-import { supportsItemTagsForVersion } from "@/lib/tags";
+import { supportsCustomTagsForVersion, supportsItemTagsForVersion } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/stores/ui";
 
@@ -16,6 +16,7 @@ export const ItemsList = () => {
 
   const resourceItems = resources?.items;
   const supportsTags = supportsItemTagsForVersion(version);
+  const supportsCustomTags = supportsCustomTagsForVersion(version);
 
   const [search, setSearch] = useState("");
   const deferredSearch = useDeferredValue(search);
@@ -27,6 +28,7 @@ export const ItemsList = () => {
   const setSelection = useUIStore((state) => state.setSelection);
 
   const tab: "items" | "tags" = !supportsTags && activeTab === "tags" ? "items" : activeTab;
+  const showCreateButton = tab === "items" || supportsCustomTags;
   const isCreating = (tab === "items" && showAddItemForm) || (tab === "tags" && showAddTagForm);
 
   const handleCreateAction = () => {
@@ -101,7 +103,7 @@ export const ItemsList = () => {
 
         {!isCreating && tabSwitcher}
 
-        {!isCreating && (
+        {!isCreating && showCreateButton && (
           <button
             type="button"
             className="border-border hover:bg-accent flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border transition-colors"
@@ -117,7 +119,7 @@ export const ItemsList = () => {
       <div className="hidden items-center gap-2 lg:flex">
         {tabSwitcher ?? <span className="text-foreground text-sm font-medium">Items</span>}
 
-        {!isCreating && (
+        {!isCreating && showCreateButton && (
           <button
             type="button"
             className="border-border text-foreground hover:bg-accent ml-auto flex shrink-0 cursor-pointer items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium transition-colors"
@@ -150,6 +152,7 @@ export const ItemsList = () => {
             setExpandedTagUid={setExpandedTagUid}
             showAddTagForm={showAddTagForm}
             onCloseAddTagForm={() => setShowAddTagForm(false)}
+            supportsCustomTags={supportsCustomTags}
           />
         ) : (
           <ItemsSection
