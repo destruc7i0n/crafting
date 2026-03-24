@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 
 import {
-  AlertCircleIcon,
+  CircleAlertIcon,
   CheckIcon,
   ChevronDownIcon,
   ClipboardCopyIcon,
@@ -107,7 +107,7 @@ export const ItemOutput = () => {
         <div className="border-t lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
           {generatedResult.error ? (
             <div className="border-destructive/40 bg-destructive/10 text-destructive m-3 flex items-start gap-2.5 rounded-md border px-3 py-3 text-sm">
-              <AlertCircleIcon size={16} className="mt-0.5 shrink-0" />
+              <CircleAlertIcon size={16} className="mt-0.5 shrink-0" />
               <span>{generatedResult.error}</span>
             </div>
           ) : (

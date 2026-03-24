@@ -1,7 +1,7 @@
 import { ReactNode, memo, useMemo } from "react";
 
 import {
-  AlertTriangleIcon,
+  TriangleAlertIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   DownloadIcon,
@@ -33,7 +33,7 @@ const RecipeWarning = ({ content }: { content: ReactNode }) => (
   <div className="border-border flex w-10 shrink-0 items-center justify-center border-l">
     <Disclosure placement="right" content={content}>
       <span className="flex h-full w-full items-center justify-center p-2">
-        <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
+        <TriangleAlertIcon size={14} className="shrink-0 text-amber-500" />
       </span>
     </Disclosure>
   </div>
@@ -177,7 +177,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                 className="flex h-8 w-8 items-center justify-center"
                 title={`${invalidRecipesMap.size} invalid ${invalidRecipesMap.size === 1 ? "recipe" : "recipes"}`}
               >
-                <AlertTriangleIcon size={14} className="shrink-0 text-amber-500" />
+                <TriangleAlertIcon size={14} className="shrink-0 text-amber-500" />
               </div>
             )}
 
