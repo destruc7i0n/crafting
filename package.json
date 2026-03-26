@@ -26,7 +26,7 @@
     "clsx": "^2.1.1",
     "fflate": "^0.8.2",
     "immer": "^11.1.4",
-    "lucide-react": "^1.0.1",
+    "lucide-react": "^1.7.0",
     "minecraft-textures": "^1.21.11",
     "modern-screenshot": "^4.6.8",
     "react": "^19.2.4",
@@ -44,12 +44,12 @@
     "@vitejs/plugin-react": "^6.0.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "oxfmt": "^0.41.0",
-    "oxlint": "^1.56.0",
-    "oxlint-tsgolint": "^0.17.2",
+    "oxfmt": "^0.42.0",
+    "oxlint": "^1.57.0",
+    "oxlint-tsgolint": "^0.17.4",
     "tailwindcss": "^4.2.2",
     "typescript": "^6.0.2",
-    "vite": "^8.0.2",
-    "vitest": "^4.1.1"
+    "vite": "^8.0.3",
+    "vitest": "^4.1.2"
   }
 }
