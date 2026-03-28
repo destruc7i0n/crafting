@@ -13,6 +13,7 @@ export interface DatapackRecipeFile {
 }
 
 type JavaPackFormatVersion = Exclude<(typeof javaMinecraftVersions)[number], MinecraftVersion.V112>;
+type PackFormatVersion = number | [number, number];
 
 const packFormatByVersion = {
   [MinecraftVersion.V113]: 4,
@@ -30,10 +31,13 @@ const packFormatByVersion = {
   [MinecraftVersion.V1216]: 80,
   [MinecraftVersion.V1217]: 81,
   [MinecraftVersion.V1219]: 88,
-  [MinecraftVersion.V12111]: 94,
-} satisfies Record<JavaPackFormatVersion, number>;
+  [MinecraftVersion.V12111]: [94, 1],
+  [MinecraftVersion.V261]: [101, 1],
+} satisfies Record<JavaPackFormatVersion, PackFormatVersion>;
 
-type PackMetadata = { pack_format: number } | { min_format: number; max_format: number };
+type PackMetadata =
+  | { pack_format: number }
+  | { min_format: PackFormatVersion; max_format: PackFormatVersion };
 
 const getPackMetadata = (version: MinecraftVersion): PackMetadata => {
   const packFormat = packFormatByVersion[version as JavaPackFormatVersion];
@@ -42,16 +46,11 @@ const getPackMetadata = (version: MinecraftVersion): PackMetadata => {
     throw new Error(`Datapacks are not supported for ${version}`);
   }
 
-  if (isVersionAtLeast(version, MinecraftVersion.V1219)) {
-    return {
-      min_format: packFormat,
-      max_format: packFormat,
-    };
+  if (Array.isArray(packFormat)) {
+    return { min_format: packFormat, max_format: packFormat };
   }
 
-  return {
-    pack_format: packFormat,
-  };
+  return { pack_format: packFormat };
 };
 
 const generateTagFiles = (tags: Tag[]) => {
