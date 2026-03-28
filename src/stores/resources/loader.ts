@@ -20,7 +20,7 @@ const tagLoaders = import.meta.glob<{ default: Record<string, string[]> }>(
   "/src/data/generated/vanilla-tags/*.json",
 );
 
-// track in-flight loads — prevents double-fetch
+// track in-flight loads - prevents double-fetch
 const loadingVersions = new Set<MinecraftVersion>();
 
 async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void> {

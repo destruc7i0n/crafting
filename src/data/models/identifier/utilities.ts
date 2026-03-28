@@ -32,10 +32,10 @@ export function parseStringToMinecraftIdentifier(input: string): MinecraftIdenti
   };
 }
 
-// namespace:id — excludes data value
+// namespace:id - excludes data value
 export const getRawId = (id: MinecraftIdentifier): string => `${id.namespace}${SEPARATOR}${id.id}`;
 
-// namespace:id:data — includes data value for use as a stable React key / equality check
+// namespace:id:data - includes data value for use as a stable React key / equality check
 export const identifierUniqueKey = (id: MinecraftIdentifier): string =>
   id.data !== undefined ? `${getRawId(id)}:${id.data}` : getRawId(id);
 

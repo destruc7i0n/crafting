@@ -78,7 +78,7 @@ export const createFormatStrategy = (version: MinecraftVersion): FormatStrategy 
         return toTagRef(tagId);
       }
 
-      // version is Bedrock, or Java 1.13–1.21.1 — both use { tag }
+      // version is Bedrock, or Java 1.13–1.21.1 - both use { tag }
       return { tag: tagId };
     },
     objectResult: (identifier, count) => ({

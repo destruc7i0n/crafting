@@ -30,7 +30,8 @@ const packFormatByVersion = {
   [MinecraftVersion.V1215]: 71,
   [MinecraftVersion.V1216]: 80,
   [MinecraftVersion.V1217]: 81,
-  [MinecraftVersion.V1219]: 88,
+  // 1.21.9+: pack format uses major.minor - [major, minor] tuple
+  [MinecraftVersion.V1219]: [88, 0],
   [MinecraftVersion.V12111]: [94, 1],
   [MinecraftVersion.V261]: [101, 1],
 } satisfies Record<JavaPackFormatVersion, PackFormatVersion>;
