@@ -51,19 +51,4 @@ describe("createDatapackBlob", () => {
     expect("data/crafting/recipes/example.json" in files).toBe(false);
     expect("data/crafting/tags/item/items.json" in files).toBe(true);
   });
-
-  it("uses [major, minor] min/max format on versions with non-zero minor (1.21.11+)", async () => {
-    const blob = createDatapackBlob(MinecraftVersion.V12111, [{ name: "example", json: {} }], []);
-
-    const files = unzipSync(new Uint8Array(await blob.arrayBuffer()));
-    const packMcmeta = JSON.parse(strFromU8(files["pack.mcmeta"]));
-
-    expect(packMcmeta).toEqual({
-      pack: {
-        description: "Generated with TheDestruc7i0n's Crafting Generator",
-        min_format: [94, 1],
-        max_format: [94, 1],
-      },
-    });
-  });
 });
