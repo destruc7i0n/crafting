@@ -50,6 +50,19 @@ interface DownloadConfig {
   blockedTitle: string;
 }
 
+const DOWNLOAD_CONFIG: Record<"bedrock" | "java", DownloadConfig> = {
+  bedrock: {
+    label: "Download Behavior Pack",
+    readyTitle: "Download Behavior Pack",
+    blockedTitle: "Fix all recipes before downloading",
+  },
+  java: {
+    label: "Download Datapack",
+    readyTitle: "Download Datapack",
+    blockedTitle: "Fix all recipes before downloading",
+  },
+} as const;
+
 export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: RecipeSidebarProps) => {
   const recipes = useRecipeStore((state) => state.recipes);
   const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
@@ -70,21 +83,8 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     return new Map(issues.map((issue) => [issue.recipe.id, issue.errors]));
   }, [recipes, minecraftVersion]);
   const canDownloadPack = invalidRecipesMap.size === 0;
-  let downloadConfig: DownloadConfig | null = null;
-
-  if (minecraftVersion === MinecraftVersion.Bedrock) {
-    downloadConfig = {
-      label: "Download Behavior Pack",
-      readyTitle: "Download Behavior Pack",
-      blockedTitle: "Fix all recipes before downloading",
-    };
-  } else if (minecraftVersion !== MinecraftVersion.V112) {
-    downloadConfig = {
-      label: "Download Datapack",
-      readyTitle: "Download Datapack",
-      blockedTitle: "Fix all recipes before downloading",
-    };
-  }
+  const downloadConfig =
+    DOWNLOAD_CONFIG[minecraftVersion === MinecraftVersion.Bedrock ? "bedrock" : "java"];
 
   const handleSelectRecipe = (index: number) => {
     selectRecipe(index);

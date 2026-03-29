@@ -1,4 +1,4 @@
-import { type ComponentProps, type ReactNode, useState } from "react";
+import { type ComponentProps, type ReactNode, useEffect, useState } from "react";
 
 import { CircleHelpIcon } from "lucide-react";
 
@@ -82,6 +82,10 @@ export const InputControl = ({
   ...props
 }: InputControlProps) => {
   const [draft, setDraft] = useState(value ?? "");
+
+  useEffect(() => {
+    setDraft(value ?? "");
+  }, [value]);
 
   return (
     <input
