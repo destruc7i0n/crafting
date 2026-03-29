@@ -1,25 +1,13 @@
-import { MenuIcon } from "lucide-react";
-
 import { ResourceIcon } from "@/components/item/resource-icon";
 import { recipeTypeToItemId } from "@/data/constants";
 import { RecipeType } from "@/data/types";
-import { useUIStore } from "@/stores/ui";
 
 import { VersionSelector } from "../fields/version-selector";
 
 export function Header() {
-  const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
-
   return (
     <header className="flex items-center justify-between bg-[hsl(var(--header-bg))] px-4 py-2 text-[hsl(var(--header-fg))]">
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => setMobileRecipeSidebarOpen(true)}
-          className="cursor-pointer rounded-md p-2 transition-colors hover:bg-white/10 active:bg-white/20 lg:hidden"
-        >
-          <MenuIcon size={16} />
-        </button>
         <ResourceIcon
           itemId={recipeTypeToItemId[RecipeType.Crafting]}
           alt="Crafting table"

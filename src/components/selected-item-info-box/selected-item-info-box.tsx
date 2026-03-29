@@ -8,7 +8,7 @@ export const SelectedItemInfoBox = () => {
   if (!selection) return null;
 
   return (
-    <div className="pt-4">
+    <div className="pt-2 md:pt-4">
       {selection.type === "preview" ? (
         <ItemInfoBox item={selection.item} slot={selection.slot} />
       ) : (

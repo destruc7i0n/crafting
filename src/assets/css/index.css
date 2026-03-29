@@ -29,6 +29,17 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
+
+  --app-max-width: 96rem;
+  --app-header-height: 3.5rem;
+  --app-desktop-max-height: 57.5rem;
+  --items-panel-width-md: clamp(20rem, 36vw, 26.25rem);
+  --items-panel-width-lg: clamp(25rem, 34vw, 30rem);
+  --recipes-panel-width: 16.25rem;
+  --recipes-panel-width-collapsed: 3.25rem;
+  --mobile-tray-height-collapsed: clamp(11rem, 32svh, 17rem);
+  --mobile-tray-height-expanded: clamp(18rem, 52svh, 28rem);
+  --mobile-sheet-height: min(76svh, 40rem);
 }
 
 @layer base {

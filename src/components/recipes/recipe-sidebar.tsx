@@ -201,11 +201,13 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
   return (
     <div className="relative flex h-full max-h-full min-h-0 w-full flex-col gap-3 rounded-lg border p-3">
-      <div className="flex items-center gap-2">
+      <div className="flex shrink-0 items-center justify-between gap-2">
         <button
           type="button"
           onClick={createRecipe}
-          className="border-border bg-background text-foreground hover:bg-accent active:bg-accent/80 flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm font-medium transition-colors"
+          className={cn(
+            "border-border bg-background text-foreground hover:bg-accent active:bg-accent/80 flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm font-medium transition-colors",
+          )}
         >
           <PlusIcon size={16} />
           New Recipe
@@ -214,7 +216,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         <button
           type="button"
           onClick={mobile ? () => setMobileRecipeSidebarOpen(false) : toggleRecipeSidebar}
-          className="hover:bg-accent active:bg-accent/80 flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors lg:flex"
+          className="hover:bg-accent active:bg-accent/80 flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center self-stretch rounded-md transition-colors lg:flex"
           title={mobile ? "Close sidebar" : "Collapse sidebar"}
         >
           {mobile ? <XIcon size={16} /> : <ChevronLeftIcon size={16} />}
@@ -232,7 +234,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
             <div
               key={recipe.id}
               className={cn(
-                "group border-border flex overflow-hidden rounded-md border text-left transition-colors",
+                "group border-border flex shrink-0 overflow-hidden rounded-md border text-left transition-colors",
                 isSelected
                   ? "border-primary bg-primary/10 font-medium"
                   : "hover:bg-accent active:bg-accent/80",
@@ -308,7 +310,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
       </div>
 
       {downloadConfig && (
-        <div className="border-border mt-auto flex flex-col gap-2 border-t pt-3">
+        <div className="border-border mt-auto flex shrink-0 flex-col gap-2 border-t pt-3">
           <Tooltip content={downloadConfig.blockedTitle} placement="top" disabled={canDownloadPack}>
             <span className={cn(!canDownloadPack && "inline-block w-full")}>
               <button

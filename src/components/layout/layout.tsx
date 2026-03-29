@@ -1,4 +1,6 @@
-import { memo } from "react";
+import { memo, useState } from "react";
+
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/stores/ui";
@@ -8,56 +10,86 @@ import { ItemsList } from "../items-list/items-list";
 import { RecipeSidebar } from "../recipes/recipe-sidebar";
 import { Header } from "./header";
 
+import styles from "./layout.module.css";
+
 type LayoutProps = { children: React.ReactNode };
 
 const Layout = memo(({ children }: LayoutProps) => {
   const isMobileRecipeSidebarOpen = useUIStore((state) => state.isMobileRecipeSidebarOpen);
   const isRecipeSidebarExpanded = useUIStore((state) => state.isRecipeSidebarExpanded);
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
+  const [isMobileTrayExpanded, setMobileTrayExpanded] = useState(false);
 
   return (
     <>
-      <div className="flex min-h-screen flex-col lg:h-screen lg:overflow-hidden [@media(min-height:1120px)]:lg:h-auto [@media(min-height:1120px)]:lg:min-h-0 [@media(min-height:1120px)]:lg:overflow-visible">
+      <div className={styles.shell}>
         <Header />
 
         <div
           className={cn(
-            "mx-auto grid min-h-0 w-full max-w-screen-2xl flex-1 grid-cols-1 grid-rows-[50svh_50svh] gap-x-4 gap-y-0 px-0 lg:grid-rows-[minmax(0,1fr)] lg:gap-4 lg:p-4 [@media(min-height:1120px)]:lg:h-[920px] [@media(min-height:1120px)]:lg:max-h-[920px] [@media(min-height:1120px)]:lg:flex-none [@media(min-height:1120px)]:lg:overflow-hidden",
-            "[grid-template-areas:'content''items']",
-            isRecipeSidebarExpanded
-              ? "lg:grid-cols-[260px_minmax(0,1fr)_clamp(400px,34vw,480px)]"
-              : "lg:grid-cols-[52px_minmax(0,1fr)_clamp(420px,36vw,500px)]",
-            "lg:[grid-template-areas:'recipes_content_items']",
+            styles.frame,
+            isRecipeSidebarExpanded ? styles.desktopExpanded : styles.desktopCollapsed,
           )}
         >
-          <div className="hidden min-h-0 [grid-area:recipes] lg:flex">
+          <div className={styles.recipeColumn}>
             <RecipeSidebar collapsed={!isRecipeSidebarExpanded} />
           </div>
 
-          <div className="min-h-0 overflow-y-auto px-2 pt-2 pb-6 [grid-area:content] lg:p-0">
+          <div className={styles.contentColumn}>
             {children}
+            <div className="md:hidden">
+              <Footer />
+            </div>
           </div>
 
-          <div className="z-10 -mt-4 flex min-h-0 rounded-t-xl [grid-area:items] lg:mt-0 lg:rounded-none">
-            <ItemsList />
+          <div
+            className={cn(
+              styles.itemsColumn,
+              isMobileTrayExpanded ? styles.itemsColumnExpanded : styles.itemsColumnCollapsed,
+            )}
+          >
+            <button
+              type="button"
+              onClick={() => setMobileTrayExpanded((expanded) => !expanded)}
+              className={styles.trayToggle}
+              aria-expanded={isMobileTrayExpanded}
+              aria-controls="mobile-items-tray"
+            >
+              <span>Items & Tags</span>
+              {isMobileTrayExpanded ? (
+                <ChevronDownIcon size={16} className="text-muted-foreground" />
+              ) : (
+                <ChevronUpIcon size={16} className="text-muted-foreground" />
+              )}
+            </button>
+
+            <div id="mobile-items-tray" className={styles.itemsBody}>
+              <ItemsList />
+            </div>
           </div>
         </div>
 
         {isMobileRecipeSidebarOpen && (
-          <div className="fixed inset-0 z-50 lg:hidden">
+          <div className={styles.sheetOverlay}>
             <button
-              className="absolute inset-0 bg-black/40"
+              type="button"
+              aria-label="Close recipe sidebar"
+              className={styles.sheetBackdrop}
               onClick={() => setMobileRecipeSidebarOpen(false)}
             />
 
-            <div className="bg-background relative h-full w-[320px] max-w-[85vw] shadow-xl">
-              <RecipeSidebar mobile />
+            <div className={styles.sheet}>
+              <div className={styles.sheetBody}>
+                <RecipeSidebar mobile />
+              </div>
             </div>
           </div>
         )}
       </div>
 
-      <Footer />
+      <div className="hidden md:block">
+        <Footer />
+      </div>
     </>
   );
 });

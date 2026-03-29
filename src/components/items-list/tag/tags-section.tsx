@@ -142,7 +142,7 @@ export const TagsSection = ({
         <div className="flex items-center gap-3">
           <button
             type="button"
-            className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
+            className="text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded p-1 transition-colors"
             onClick={() => setExpandedTagUid(null)}
           >
             <ArrowLeftIcon size={16} />
@@ -162,7 +162,7 @@ export const TagsSection = ({
 
           <button
             type="button"
-            className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
+            className="text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded p-1 transition-colors"
             onClick={() => handleDownloadTag(expandedTag.uid)}
             title="Download tag JSON"
           >
@@ -171,7 +171,7 @@ export const TagsSection = ({
 
           <button
             type="button"
-            className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors"
+            className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive cursor-pointer rounded p-1 transition-colors"
             onClick={() => handleDeleteTag(expandedTag.uid)}
           >
             <Trash2Icon size={14} />
@@ -215,7 +215,7 @@ export const TagsSection = ({
                   <>
                     <button
                       type="button"
-                      className="text-muted-foreground hover:bg-accent hover:text-foreground rounded p-1 transition-colors"
+                      className="text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded p-1 transition-colors"
                       onClick={() => handleDownloadTag(tag.uid)}
                       title="Download tag JSON"
                     >
@@ -225,7 +225,7 @@ export const TagsSection = ({
                     <button
                       type="button"
                       value={tag.uid}
-                      className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded p-1 transition-colors"
+                      className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive cursor-pointer rounded p-1 transition-colors"
                       onClick={(event) => handleDeleteTag(event.currentTarget.value)}
                     >
                       <Trash2Icon size={14} />

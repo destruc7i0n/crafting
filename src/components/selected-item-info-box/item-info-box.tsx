@@ -19,9 +19,9 @@ const getTitle = (item: IngredientItem, slot: RecipeSlot | undefined) => {
 
 export const ItemInfoBox = ({ item, slot }: ItemInfoBoxProps) => {
   return (
-    <div className="border-border bg-background/90 flex flex-col rounded-md border px-3 py-2 text-xs leading-tight shadow-sm backdrop-blur-sm">
+    <div className="border-border bg-background/90 flex flex-col rounded-md border px-2 py-1.5 text-xs leading-tight shadow-sm backdrop-blur-sm sm:px-3 sm:py-2">
       <div className="text-foreground flex min-w-0 flex-col overflow-hidden">
-        <span className="text-muted-foreground pb-0.5 text-xs leading-tight font-medium">
+        <span className="text-muted-foreground truncate pb-0.5 text-xs leading-tight font-medium">
           {getTitle(item, slot)}
         </span>
         {item.type === "tag_item" ? (
@@ -37,11 +37,11 @@ export const ItemInfoBox = ({ item, slot }: ItemInfoBoxProps) => {
           </>
         )}
       </div>
-      <div className="flex items-center justify-end gap-1 pt-0.5">
+      <div className="flex flex-wrap items-center justify-end gap-1 pt-0.5 sm:flex-nowrap sm:pt-0.5">
         {slot !== undefined && (
           <button
             type="button"
-            className="text-muted-foreground hover:text-destructive flex cursor-pointer items-center gap-1 px-2 py-1 transition-colors"
+            className="text-muted-foreground hover:text-destructive flex cursor-pointer items-center gap-1 px-1 py-0.5 text-xs transition-colors sm:px-2 sm:py-1"
             onClick={() => {
               useRecipeStore.getState().setRecipeSlot(slot, undefined);
               useUIStore.getState().setSelection(undefined);
@@ -54,7 +54,7 @@ export const ItemInfoBox = ({ item, slot }: ItemInfoBoxProps) => {
         )}
         <button
           type="button"
-          className="text-muted-foreground hover:text-foreground flex cursor-pointer items-center gap-1 px-2 py-1 transition-colors"
+          className="text-muted-foreground hover:text-foreground flex cursor-pointer items-center gap-1 px-1 py-0.5 text-xs transition-colors sm:px-2 sm:py-1"
           onClick={() => useUIStore.getState().setSelection(undefined)}
           aria-label="Deselect"
         >

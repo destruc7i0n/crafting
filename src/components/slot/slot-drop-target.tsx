@@ -7,7 +7,6 @@ import {
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import invariant from "tiny-invariant";
 
-import { useItemSelection } from "@/hooks/use-item-selection";
 import { isItemDraggableData } from "@/lib/dnd";
 
 import { Slot, SlotProps } from "./slot";
@@ -35,21 +34,6 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
 
   const dataRef = useRef(data);
   dataRef.current = data;
-
-  const selection = useItemSelection();
-  const isDisabledForSelection =
-    selection !== undefined &&
-    !(
-      canDropRef.current?.({
-        source: {
-          data: {
-            type: "item" as const,
-            item: selection.item,
-            container: selection.type,
-          },
-        },
-      }) ?? true
-    );
 
   useEffect(() => {
     const el = ref.current;
@@ -80,12 +64,7 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
   }, []); // ensure listeners are created only once
 
   return (
-    <Slot
-      ref={ref}
-      active={isDraggedOver}
-      disabled={isInvalidTarget || isDisabledForSelection || disabledProp}
-      {...props}
-    >
+    <Slot ref={ref} active={isDraggedOver} disabled={isInvalidTarget || disabledProp} {...props}>
       {children}
     </Slot>
   );

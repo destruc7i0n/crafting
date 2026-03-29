@@ -24,6 +24,8 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
 
   const selection = useItemSelection();
   const isSlotSelected = selection?.type === "preview" && selection.slot === slot;
+  const isDisabledForSelection =
+    selection !== undefined && !canRecipeSlotAcceptIngredient(slot, selection.item);
 
   const dropTargetData = useMemo(
     (): ItemPreviewDropTargetData => ({ type: "preview", slot }),
@@ -36,6 +38,7 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
     <SlotDropTarget<ItemPreviewDropTargetData>
       data={dropTargetData}
       {...props}
+      disabled={isDisabledForSelection || props.disabled}
       className={cn(isSlotSelected && "ring-primary z-10 rounded ring-2", props.className)}
       canDrop={({ source }) => {
         if (isItemDraggableData(source.data)) {

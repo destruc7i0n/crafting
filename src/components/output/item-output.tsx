@@ -22,7 +22,7 @@ import "./prism-github.css";
 
 export const ItemOutput = () => {
   const [copied, setCopied] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const copyTimeoutRef = useRef<number | null>(null);
 
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);

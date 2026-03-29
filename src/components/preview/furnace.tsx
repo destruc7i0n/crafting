@@ -1,8 +1,12 @@
+import { useItemSelection } from "@/hooks/use-item-selection";
+
 import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
 import { ItemPreviewResultSlot } from "../item/item-preview-result-slot";
 import { SlotDropTarget } from "../slot/slot-drop-target";
 
 export const FurnacePreview = () => {
+  const selection = useItemSelection();
+
   return (
     <div
       className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
@@ -17,6 +21,7 @@ export const FurnacePreview = () => {
       <SlotDropTarget
         data={{}}
         canDrop={() => false}
+        disabled={selection !== undefined}
         inert
         style={{ position: "absolute", top: 104, left: 110 }}
       />

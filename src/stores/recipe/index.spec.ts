@@ -90,4 +90,12 @@ describe("recipe store", () => {
     expect(useRecipeStore.getState().selectedRecipeIndex).toBe(1);
     expect(useRecipeStore.getState().recipes[1]?.recipeName).toBe("recipe_2");
   });
+
+  it("keeps the final recipe when deleteRecipe is called with only one recipe left", () => {
+    useRecipeStore.getState().deleteRecipe(0);
+
+    expect(useRecipeStore.getState().selectedRecipeIndex).toBe(0);
+    expect(useRecipeStore.getState().recipes).toHaveLength(1);
+    expect(useRecipeStore.getState().recipes[0]?.recipeName).toBe("recipe_1");
+  });
 });

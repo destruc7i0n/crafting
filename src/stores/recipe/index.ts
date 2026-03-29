@@ -120,6 +120,10 @@ export const useRecipeStore = create<ImmerState>()(
       },
       deleteRecipe: (index: number) => {
         set((state) => {
+          if (state.recipes.length <= 1) {
+            return;
+          }
+
           const nextRecipeCount = Math.max(0, state.recipes.length - 1);
 
           if (nextRecipeCount === 0) {

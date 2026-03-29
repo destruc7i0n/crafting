@@ -54,7 +54,7 @@ export const ItemsList = () => {
   const items = useFuzzySearch(resourceItems ?? [], deferredSearch, (item) => [item.displayName]);
 
   const tabSwitcher = supportsTags ? (
-    <div className="bg-muted relative flex shrink-0 items-center self-stretch rounded-md p-0.5 lg:self-auto">
+    <div className="bg-muted relative flex shrink-0 items-center self-stretch rounded-md p-0.5 md:self-auto">
       <div
         className={cn(
           "bg-primary/40 absolute inset-y-0.5 rounded-sm transition-all duration-200 ease-in-out",
@@ -64,7 +64,7 @@ export const ItemsList = () => {
       <button
         type="button"
         className={cn(
-          "relative z-10 flex h-full w-1/2 cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors lg:h-auto lg:py-1 lg:text-sm",
+          "relative z-10 flex h-full w-1/2 cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors md:h-auto md:py-1 md:text-sm",
           tab === "items" ? "text-foreground" : "text-muted-foreground hover:text-foreground",
         )}
         onClick={() => handleTabChange("items")}
@@ -74,7 +74,7 @@ export const ItemsList = () => {
       <button
         type="button"
         className={cn(
-          "relative z-10 flex h-full w-1/2 cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors lg:h-auto lg:py-1 lg:text-sm",
+          "relative z-10 flex h-full w-1/2 cursor-pointer items-center justify-center rounded-sm px-2.5 text-xs font-medium transition-colors md:h-auto md:py-1 md:text-sm",
           tab === "tags" ? "text-foreground" : "text-muted-foreground hover:text-foreground",
         )}
         onClick={() => handleTabChange("tags")}
@@ -85,9 +85,8 @@ export const ItemsList = () => {
   ) : null;
 
   return (
-    <div className="bg-background mx-2 flex h-full min-h-0 w-full flex-1 flex-col gap-2 rounded-lg border p-2 lg:mx-0 lg:gap-3 lg:p-3">
-      {/* Mobile: compact single row */}
-      <div className="flex items-center gap-2 lg:hidden">
+    <div className="md:bg-background flex h-full min-h-0 flex-1 flex-col gap-2 self-stretch bg-transparent p-0 md:mx-0 md:w-full md:gap-3 md:rounded-lg md:border md:p-3">
+      <div className="flex items-center gap-2 md:hidden">
         {!isCreating && (
           <input
             type="search"
@@ -115,8 +114,7 @@ export const ItemsList = () => {
         )}
       </div>
 
-      {/* Desktop: tabs + add button */}
-      <div className="hidden items-center gap-2 lg:flex">
+      <div className="hidden items-center gap-2 md:flex">
         {tabSwitcher ?? <span className="text-foreground text-sm font-medium">Items</span>}
 
         {!isCreating && showCreateButton && (
@@ -134,7 +132,7 @@ export const ItemsList = () => {
       {!isCreating && (
         <input
           type="search"
-          className="border-input bg-background text-foreground placeholder:font-minecraft placeholder:text-muted-foreground hover:bg-accent focus:ring-ring hidden w-full rounded-md border px-3 py-2 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset lg:block"
+          className="border-input bg-background text-foreground placeholder:font-minecraft placeholder:text-muted-foreground hover:bg-accent focus:ring-ring hidden w-full rounded-md border px-3 py-2 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset md:block"
           placeholder={tab === "tags" ? "Search Tags..." : "Search Items..."}
           value={search}
           autoCapitalize="off"
@@ -144,7 +142,7 @@ export const ItemsList = () => {
         />
       )}
 
-      <div className="flex min-h-0 w-full flex-1 flex-col rounded-md">
+      <div className="flex min-h-0 w-full flex-1 flex-col gap-2 rounded-md md:gap-0">
         {tab === "tags" ? (
           <TagsSection
             search={deferredSearch}
