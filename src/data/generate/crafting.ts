@@ -181,6 +181,9 @@ export const buildJava = (
     return {
       type: formatter.recipeType("crafting_shapeless") as ShapelessCraftingRecipe["type"],
       category,
+      ...(isVersionAtLeast(version, MinecraftVersion.V261) && state.showNotification === false
+        ? { show_notification: false }
+        : {}),
       ingredients: populatedSlots.map((item) => formatIngredient(item, formatter)),
       ...(group ? { group } : {}),
       result: getResult(),
@@ -190,7 +193,7 @@ export const buildJava = (
   return {
     type: formatter.recipeType("crafting_shaped") as ShapedCraftingRecipe["type"],
     category,
-    ...(isVersionAtLeast(version, MinecraftVersion.V120) && state.showNotification === false
+    ...(isVersionAtLeast(version, MinecraftVersion.V119) && state.showNotification === false
       ? { show_notification: false }
       : {}),
     pattern: getPattern(grid, reverse, state.keepWhitespace),

@@ -83,6 +83,7 @@ const FileNameField = () => {
 
 export const DatapackOptions = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
+  const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
 
   if (minecraftVersion === MinecraftVersion.Bedrock) {
     return null;
@@ -90,7 +91,7 @@ export const DatapackOptions = () => {
 
   return (
     <div className="grid gap-2 sm:grid-cols-2">
-      <FileNameField />
+      <FileNameField key={selectedRecipeIndex} />
     </div>
   );
 };

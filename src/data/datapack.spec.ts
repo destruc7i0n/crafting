@@ -51,4 +51,23 @@ describe("createDatapackBlob", () => {
     expect("data/crafting/recipes/example.json" in files).toBe(false);
     expect("data/crafting/tags/item/items.json" in files).toBe(true);
   });
+
+  it("uses plural tags/items path on versions before 1.21", async () => {
+    const blob = createDatapackBlob(
+      MinecraftVersion.V120,
+      [],
+      [
+        {
+          uid: "tag-1",
+          id: "crafting:planks",
+          values: [],
+        },
+      ],
+    );
+
+    const files = unzipSync(new Uint8Array(await blob.arrayBuffer()));
+
+    expect("data/crafting/tags/items/planks.json" in files).toBe(true);
+    expect("data/crafting/tags/item/planks.json" in files).toBe(false);
+  });
 });

@@ -762,5 +762,98 @@ describe("generate crafting", () => {
         result: { item: "minecraft:stone_button", count: 1 },
       });
     });
+
+    it("should emit show_notification for shaped recipes on 1.19", () => {
+      const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
+        recipeType: RecipeType.Crafting,
+        group: "",
+        showNotification: false,
+        slots: {
+          "crafting.1": {
+            type: "default_item",
+            id: { id: "stone", namespace: "minecraft" },
+            displayName: "stone",
+            texture: "",
+            _version: MinecraftVersion.V119,
+          },
+          "crafting.result": {
+            type: "default_item",
+            id: { id: "stone_button", namespace: "minecraft" },
+            displayName: "stone_button",
+            texture: "",
+            _version: MinecraftVersion.V119,
+          },
+        },
+        crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
+        cooking: { time: 0, experience: 0 },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.V119)).toMatchObject({
+        show_notification: false,
+      });
+    });
+
+    it("should emit show_notification for shapeless recipes on 26.1", () => {
+      const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
+        recipeType: RecipeType.Crafting,
+        group: "",
+        showNotification: false,
+        slots: {
+          "crafting.1": {
+            type: "default_item",
+            id: { id: "stone", namespace: "minecraft" },
+            displayName: "stone",
+            texture: "",
+            _version: MinecraftVersion.V261,
+          },
+          "crafting.result": {
+            type: "default_item",
+            id: { id: "stone_button", namespace: "minecraft" },
+            displayName: "stone_button",
+            texture: "",
+            _version: MinecraftVersion.V261,
+          },
+        },
+        crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
+        cooking: { time: 0, experience: 0 },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.V261)).toMatchObject({
+        type: "minecraft:crafting_shapeless",
+        show_notification: false,
+      });
+    });
+
+    it("should not emit show_notification for shapeless recipes before 26.1", () => {
+      const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
+        recipeType: RecipeType.Crafting,
+        group: "",
+        showNotification: false,
+        slots: {
+          "crafting.1": {
+            type: "default_item",
+            id: { id: "stone", namespace: "minecraft" },
+            displayName: "stone",
+            texture: "",
+            _version: MinecraftVersion.V121,
+          },
+          "crafting.result": {
+            type: "default_item",
+            id: { id: "stone_button", namespace: "minecraft" },
+            displayName: "stone_button",
+            texture: "",
+            _version: MinecraftVersion.V121,
+          },
+        },
+        crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
+        cooking: { time: 0, experience: 0 },
+      };
+
+      const result = generate(recipeSlice, MinecraftVersion.V121);
+      expect(result).not.toHaveProperty("show_notification");
+    });
   });
 });

@@ -5,18 +5,26 @@ import { createFormatStrategy } from "./format/item-formatter";
 import { FormatStrategy } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import { BedrockShapelessBody, StonecutterInput, StonecuttingRecipe } from "./recipes/types";
+import { isVersionAtLeast } from "./version-utils";
 
 export const buildJava = (
   state: StonecutterInput,
   formatter: FormatStrategy,
+  version: MinecraftVersion,
 ): StonecuttingRecipe => {
   const result = state.result
     ? formatter.stonecutterResult(state.result.id, state.result.count)
     : { result: {} };
 
+  // group was removed from stonecutting in 26.1 (no recipe book)
+  const group =
+    !isVersionAtLeast(version, MinecraftVersion.V261) && state.group.length > 0
+      ? state.group
+      : undefined;
+
   return {
     type: formatter.recipeType("stonecutting") as "minecraft:stonecutting",
-    group: state.group.length > 0 ? state.group : undefined,
+    ...(group ? { group } : {}),
     ingredient: formatIngredient(state.ingredient, formatter),
     ...result,
   } satisfies StonecuttingRecipe;
@@ -66,5 +74,5 @@ export const generate = (
     return buildBedrock(input, formatter);
   }
 
-  return buildJava(input, formatter);
+  return buildJava(input, formatter, version);
 };

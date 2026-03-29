@@ -121,4 +121,41 @@ describe("generate stonecutting", () => {
       });
     });
   });
+
+  describe("group field", () => {
+    const makeSlice = (version: MinecraftVersion): SingleRecipeState => ({
+      ...recipeStateDefaults,
+      recipeType: RecipeType.Stonecutter,
+      group: "stone_variants",
+      slots: {
+        "stonecutter.ingredient": {
+          type: "default_item",
+          id: { id: "stone", namespace: "minecraft" },
+          displayName: "stone",
+          texture: "",
+          _version: version,
+        },
+        "stonecutter.result": {
+          type: "default_item",
+          id: { id: "stone_bricks", namespace: "minecraft" },
+          displayName: "stone_bricks",
+          texture: "",
+          _version: version,
+        },
+      },
+      cooking: { experience: 0, time: 0 },
+      crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
+    });
+
+    it("includes group before 26.1", () => {
+      expect(generate(makeSlice(MinecraftVersion.V121), MinecraftVersion.V121)).toMatchObject({
+        group: "stone_variants",
+      });
+    });
+
+    it("omits group on 26.1+ (no recipe book)", () => {
+      const result = generate(makeSlice(MinecraftVersion.V261), MinecraftVersion.V261);
+      expect(result).not.toHaveProperty("group");
+    });
+  });
 });

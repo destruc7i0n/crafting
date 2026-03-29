@@ -142,7 +142,7 @@ const generateJavaInner = (
     case RecipeType.SmithingTrim:
       return buildJavaSmithing(extractSmithingInput(state), formatter, version);
     case RecipeType.Stonecutter:
-      return buildJavaStonecutter(extractStonecutterInput(state), formatter);
+      return buildJavaStonecutter(extractStonecutterInput(state), formatter, version);
     default:
       throw new Error(`Unsupported Java recipe type: ${state.recipeType as string}`);
   }

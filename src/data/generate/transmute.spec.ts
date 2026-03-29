@@ -54,4 +54,40 @@ describe("generate transmute", () => {
       result: { id: "minecraft:blue_shulker_box" },
     });
   });
+
+  it("should include category on 1.19+ when set", () => {
+    const formatter = createFormatStrategy(MinecraftVersion.V1212);
+
+    expect(
+      buildJava(
+        {
+          input: {
+            type: "default_item",
+            id: { id: "oak_planks", namespace: "minecraft" },
+            displayName: "oak_planks",
+            texture: "",
+            _version: MinecraftVersion.V1212,
+          },
+          material: {
+            type: "default_item",
+            id: { id: "blue_dye", namespace: "minecraft" },
+            displayName: "blue_dye",
+            texture: "",
+            _version: MinecraftVersion.V1212,
+          },
+          result: {
+            type: "default_item",
+            id: { id: "blue_planks", namespace: "minecraft" },
+            displayName: "blue_planks",
+            texture: "",
+            _version: MinecraftVersion.V1212,
+          },
+          group: "",
+          category: "building",
+        },
+        formatter,
+        MinecraftVersion.V1212,
+      ),
+    ).toMatchObject({ category: "building" });
+  });
 });

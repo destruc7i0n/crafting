@@ -15,6 +15,19 @@ const createItem = (raw: string, version = MinecraftVersion.V121) => ({
   _version: version,
 });
 
+const createTagItem = (raw: string, version = MinecraftVersion.V121) => ({
+  type: "tag_item" as const,
+  id: {
+    id: raw.split(":").at(-1) ?? raw,
+    namespace: raw.includes(":") ? raw.split(":")[0] : "minecraft",
+  },
+  displayName: `#${raw}`,
+  texture: "",
+  tagSource: "vanilla" as const,
+  values: [],
+  _version: version,
+});
+
 const createRecipe = (
   recipeType: RecipeType,
   slots: SingleRecipeState["slots"] = {},
@@ -137,6 +150,30 @@ describe("validateRecipe", () => {
         "Add a material item",
         "Add a result item",
       ],
+    });
+  });
+
+  it("rejects a tag item in a result slot", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": createItem("minecraft:stone"),
+      "crafting.result": createTagItem("minecraft:planks"),
+    });
+
+    expect(validateRecipe(recipe, MinecraftVersion.V121)).toEqual({
+      valid: false,
+      errors: ["Result slots must contain items, not tags"],
+    });
+  });
+
+  it("rejects tag ingredients on versions that predate tag support", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": createTagItem("minecraft:planks", MinecraftVersion.V112),
+      "crafting.result": createItem("minecraft:stick", MinecraftVersion.V112),
+    });
+
+    expect(validateRecipe(recipe, MinecraftVersion.V112)).toEqual({
+      valid: false,
+      errors: ["Item tags are not available in Java 1.12"],
     });
   });
 

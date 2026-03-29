@@ -60,6 +60,8 @@ export const ItemOutput = () => {
     }, 1000);
   };
 
+  if (!recipeState) return null;
+
   return (
     <div className="bg-card rounded-lg border lg:flex lg:min-h-0 lg:flex-col">
       <div className="flex items-center justify-between px-4 py-2">
