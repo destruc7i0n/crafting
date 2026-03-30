@@ -1,7 +1,25 @@
 @reference "@/assets/css/index.css";
 
 .shell {
-  @apply flex min-h-screen flex-col overflow-x-clip;
+  @apply flex h-svh flex-col overflow-hidden;
+
+  --app-max-width: var(--breakpoint-2xl);
+  /* h-14 */
+  --app-header-height: calc(var(--spacing) * 14);
+  /* 920px - design max-height for desktop frame; triggers at viewport height >= 70rem (1120px) */
+  --app-desktop-max-height: 920px;
+  /* items panel at 48rem breakpoint: clamps 320–420px at 36vw */
+  --items-panel-width-md: clamp(20rem, 36vw, 420px);
+  /* items panel at 64rem+ breakpoint: clamps 400–480px at 34vw */
+  --items-panel-width-lg: clamp(25rem, 34vw, 30rem);
+  /* 260px - expanded recipe sidebar width */
+  --recipes-panel-width: 260px;
+  /* 52px - collapsed recipe sidebar, icon-only column */
+  --recipes-panel-width-collapsed: 52px;
+  /* mobile bottom tray expanded: 45% of viewport height */
+  --mobile-tray-height-expanded: 45svh;
+  /* mobile recipe sheet: 90% of viewport height */
+  --mobile-sheet-height: 90svh;
 }
 
 .frame {
@@ -21,18 +39,14 @@
 .content-column {
   @apply min-h-0 min-w-0 overflow-y-auto;
   grid-area: content;
-  padding: 0.5rem 0.5rem
-    calc(var(--mobile-tray-height-collapsed) + 0.75rem + env(safe-area-inset-bottom));
+  /* ~2.5rem toggle button height + 0.75rem gap */
+  padding: 0.5rem 0.5rem calc(2.5rem + 0.75rem + env(safe-area-inset-bottom));
 }
 
 .items-column {
-  @apply bg-card border-border border-border/70 fixed inset-x-0 bottom-0 z-20 mx-auto flex w-[min(100%,var(--app-max-width))] min-w-0 flex-col overflow-hidden rounded-t-2xl border-t border-b;
+  @apply bg-card border-border/70 fixed inset-x-0 bottom-0 z-20 mx-auto flex w-[min(100%,var(--app-max-width))] min-w-0 flex-col overflow-hidden rounded-t-2xl border-t;
   grid-area: items;
   box-shadow: 0 -6px 18px rgb(0 0 0 / 0.1);
-}
-
-.items-column-collapsed {
-  @apply h-(--mobile-tray-height-collapsed);
 }
 
 .items-column-expanded {
@@ -61,7 +75,7 @@
 }
 
 .sheet-backdrop {
-  @apply absolute inset-0 cursor-pointer bg-black/40;
+  @apply absolute inset-0 cursor-pointer bg-black/80;
 }
 
 .sheet {
@@ -111,7 +125,7 @@
   }
 
   .frame {
-    @apply h-auto overflow-visible;
+    @apply overflow-visible;
     grid-template-areas: "recipes content items";
   }
 

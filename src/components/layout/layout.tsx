@@ -43,17 +43,13 @@ const Layout = memo(({ children }: LayoutProps) => {
           </div>
 
           <div
-            className={cn(
-              styles.itemsColumn,
-              isMobileTrayExpanded ? styles.itemsColumnExpanded : styles.itemsColumnCollapsed,
-            )}
+            className={cn(styles.itemsColumn, isMobileTrayExpanded && styles.itemsColumnExpanded)}
           >
             <button
               type="button"
               onClick={() => setMobileTrayExpanded((expanded) => !expanded)}
               className={styles.trayToggle}
               aria-expanded={isMobileTrayExpanded}
-              aria-controls="mobile-items-tray"
             >
               <span>Items & Tags</span>
               {isMobileTrayExpanded ? (
@@ -63,9 +59,11 @@ const Layout = memo(({ children }: LayoutProps) => {
               )}
             </button>
 
-            <div id="mobile-items-tray" className={styles.itemsBody}>
-              <ItemsList />
-            </div>
+            {isMobileTrayExpanded && (
+              <div className={styles.itemsBody}>
+                <ItemsList />
+              </div>
+            )}
           </div>
         </div>
 
