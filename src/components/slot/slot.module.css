@@ -1,0 +1,43 @@
+.slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 2px;
+  border-color: var(--minecraft-slot-border-tl) var(--minecraft-slot-border-br)
+    var(--minecraft-slot-border-br) var(--minecraft-slot-border-tl);
+  background-color: hsl(var(--minecraft-slot-bg));
+}
+
+.slot:not(.inert):hover,
+.active {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.active {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.disabled {
+  filter: brightness(0.75);
+}
+
+.slot:before,
+.slot:after {
+  background-color: hsl(var(--minecraft-slot-bg));
+  pointer-events: none;
+  position: absolute;
+  content: "";
+  height: 2px;
+  width: 2px;
+}
+
+.slot:before {
+  right: -2px;
+  top: -2px;
+}
+
+.slot:after {
+  bottom: -2px;
+  left: -2px;
+}

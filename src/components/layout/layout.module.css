@@ -1,0 +1,172 @@
+@reference "@/assets/css/index.css";
+
+.shell {
+  @apply flex h-svh flex-col overflow-hidden;
+
+  --app-max-width: var(--breakpoint-2xl);
+  /* h-14 */
+  --app-header-height: calc(var(--spacing) * 14);
+  /* 920px - design max-height for desktop frame; triggers at viewport height >= 70rem (1120px) */
+  --app-desktop-max-height: 920px;
+  /* items panel at 48rem breakpoint: clamps 320–420px at 36vw */
+  --items-panel-width-md: clamp(20rem, 36vw, 420px);
+  /* items panel at 64rem+ breakpoint: clamps 400–480px at 34vw */
+  --items-panel-width-lg: clamp(25rem, 34vw, 30rem);
+  /* 260px - expanded recipe sidebar width */
+  --recipes-panel-width: 260px;
+  /* 52px - collapsed recipe sidebar, icon-only column */
+  --recipes-panel-width-collapsed: 52px;
+  /* mobile bottom tray expanded: 45% of viewport height */
+  --mobile-tray-height-expanded: 45svh;
+  /* mobile recipe sheet: 90% of viewport height */
+  --mobile-sheet-height: 90svh;
+}
+
+.frame {
+  @apply mx-auto grid min-h-0 w-full max-w-(--app-max-width) flex-1 overflow-hidden px-0;
+  grid-template-areas:
+    "content"
+    "items";
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: calc(100svh - var(--app-header-height));
+}
+
+.recipe-column {
+  @apply hidden min-h-0;
+  grid-area: recipes;
+}
+
+.content-column {
+  @apply min-h-0 min-w-0 overflow-y-auto;
+  grid-area: content;
+  overscroll-behavior-y: contain;
+  padding: 0.5rem;
+}
+
+.items-column {
+  @apply bg-card border-border/70 flex min-h-0 min-w-0 flex-col overflow-hidden rounded-t-2xl border-t;
+  grid-area: items;
+}
+
+.items-column-expanded {
+  max-height: var(--mobile-tray-height-expanded);
+}
+
+.tray-toggle {
+  @apply border-border/70 text-foreground flex cursor-pointer items-center justify-center gap-1 border-b px-4 py-2 text-center text-sm font-semibold transition-colors duration-150;
+
+  &:hover {
+    @apply bg-muted/50;
+  }
+
+  &:active {
+    @apply bg-muted;
+  }
+}
+
+.items-body {
+  @apply min-h-0 flex-1 overflow-x-clip overflow-y-auto;
+  overscroll-behavior-y: contain;
+  padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+.sheet-overlay {
+  @apply fixed inset-0 z-50 flex items-end;
+}
+
+.sheet-backdrop {
+  @apply absolute inset-0 cursor-pointer bg-black/80;
+}
+
+.sheet {
+  @apply border-border bg-background relative flex h-(--mobile-sheet-height) w-full flex-col rounded-t-2xl border-t;
+  box-shadow: 0 -12px 28px rgb(0 0 0 / 0.2);
+}
+
+.sheet-body {
+  @apply flex min-h-0 flex-1 flex-col p-2;
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+@media (width >= 48rem) {
+  .frame {
+    @apply min-h-0 gap-4 overflow-hidden p-4;
+    grid-template-areas: "content items";
+    grid-template-columns: minmax(0, 1fr) var(--items-panel-width-md);
+    grid-template-rows: minmax(0, 1fr);
+    height: calc(100svh - var(--app-header-height));
+  }
+
+  .content-column {
+    @apply min-h-0 overflow-y-auto p-0;
+  }
+
+  .items-column {
+    @apply static mx-0 min-h-0 w-auto overflow-visible rounded-none border-0 bg-transparent shadow-none;
+  }
+
+  .items-column-collapsed,
+  .items-column-expanded {
+    @apply h-auto max-h-none;
+  }
+
+  .tray-toggle {
+    @apply hidden;
+  }
+
+  .items-body {
+    @apply p-0;
+  }
+}
+
+@media (width >= 64rem) {
+  .shell {
+    @apply h-screen overflow-hidden;
+  }
+
+  .frame {
+    @apply overflow-visible;
+    grid-template-areas: "recipes content items";
+  }
+
+  .recipe-column {
+    @apply flex;
+  }
+
+  .content-column {
+    @apply p-0;
+  }
+
+  .items-column {
+    @apply mt-0 border-0;
+  }
+
+  .desktop-expanded {
+    grid-template-columns:
+      var(--recipes-panel-width)
+      minmax(0, 1fr)
+      var(--items-panel-width-lg);
+  }
+
+  .desktop-collapsed {
+    grid-template-columns:
+      var(--recipes-panel-width-collapsed)
+      minmax(0, 1fr)
+      var(--items-panel-width-lg);
+  }
+
+  .sheet-overlay {
+    @apply hidden;
+  }
+}
+
+/* 70rem pairs with --app-desktop-max-height (57.5rem) */
+@media (width >= 64rem) and (height >= 70rem) {
+  .shell {
+    @apply h-auto min-h-0 overflow-visible;
+  }
+
+  .frame {
+    @apply h-(--app-desktop-max-height) max-h-(--app-desktop-max-height) flex-none overflow-hidden;
+  }
+}

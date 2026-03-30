@@ -1,0 +1,29 @@
+@import "@jongwooo/prism-theme-github/themes/prism-github-skeleton.css";
+
+/* color tokens adapted from https://github.com/jongwooo/prism-theme-github/blob/0cfdb9631bd4985746c1b5876b89b47dbde23d37/themes/prism-github-default-auto.css */
+
+html.light {
+  --color-fg-default: #24292f;
+  --color-bg-code-block: #f6f8fa;
+  --color-bg-inline-code-block: rgb(175 184 193 / 20%);
+  --color-gray: #6e7781;
+  --color-red: #cf222e;
+  --color-green: #116329;
+  --color-blue: #0550ae;
+  --color-indigo: #0a3069;
+  --color-purple: #8250df;
+  --color-brown: #953800;
+}
+
+html.dark {
+  --color-fg-default: #c9d1d9;
+  --color-bg-code-block: #161b22;
+  --color-bg-inline-code-block: rgb(110 118 129 / 40%);
+  --color-gray: #8b949e;
+  --color-red: #ff7b72;
+  --color-green: #7ee787;
+  --color-blue: #79c0ff;
+  --color-indigo: #a5d6ff;
+  --color-purple: #d2a8ff;
+  --color-brown: #ffa657;
+}
