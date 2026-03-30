@@ -18,7 +18,7 @@ const Layout = memo(({ children }: LayoutProps) => {
   const isMobileRecipeSidebarOpen = useUIStore((state) => state.isMobileRecipeSidebarOpen);
   const isRecipeSidebarExpanded = useUIStore((state) => state.isRecipeSidebarExpanded);
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
-  const [isMobileTrayExpanded, setMobileTrayExpanded] = useState(false);
+  const [isMobileTrayExpanded, setMobileTrayExpanded] = useState(true);
 
   const handleMobileTrayToggle = () => {
     if (isMobileTrayExpanded) {
