@@ -39,18 +39,17 @@
 .content-column {
   @apply min-h-0 min-w-0 overflow-y-auto;
   grid-area: content;
-  /* ~2.5rem toggle button height + 0.75rem gap */
-  padding: 0.5rem 0.5rem calc(2.5rem + 0.75rem + env(safe-area-inset-bottom));
+  overscroll-behavior-y: contain;
+  padding: 0.5rem;
 }
 
 .items-column {
-  @apply bg-card border-border/70 fixed inset-x-0 bottom-0 z-20 mx-auto flex w-[min(100%,var(--app-max-width))] min-w-0 flex-col overflow-hidden rounded-t-2xl border-t;
+  @apply bg-card border-border/70 flex min-h-0 min-w-0 flex-col overflow-hidden rounded-t-2xl border-t;
   grid-area: items;
-  box-shadow: 0 -6px 18px rgb(0 0 0 / 0.1);
 }
 
 .items-column-expanded {
-  @apply h-(--mobile-tray-height-expanded);
+  max-height: var(--mobile-tray-height-expanded);
 }
 
 .tray-toggle {
@@ -67,6 +66,7 @@
 
 .items-body {
   @apply flex min-h-0 flex-1 overflow-x-clip overflow-y-auto;
+  overscroll-behavior-y: contain;
   padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom));
 }
 
@@ -102,12 +102,12 @@
   }
 
   .items-column {
-    @apply static inset-x-auto bottom-auto mx-0 min-h-0 w-auto overflow-visible rounded-none border-0 bg-transparent shadow-none;
+    @apply static mx-0 min-h-0 w-auto overflow-visible rounded-none border-0 bg-transparent shadow-none;
   }
 
   .items-column-collapsed,
   .items-column-expanded {
-    @apply h-auto;
+    @apply h-auto max-h-none;
   }
 
   .tray-toggle {
