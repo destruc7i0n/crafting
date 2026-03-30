@@ -20,6 +20,14 @@ const Layout = memo(({ children }: LayoutProps) => {
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
   const [isMobileTrayExpanded, setMobileTrayExpanded] = useState(false);
 
+  const handleMobileTrayToggle = () => {
+    if (isMobileTrayExpanded) {
+      useUIStore.getState().setSelection(undefined);
+    }
+
+    setMobileTrayExpanded(!isMobileTrayExpanded);
+  };
+
   return (
     <>
       <div className={styles.shell}>
@@ -47,7 +55,7 @@ const Layout = memo(({ children }: LayoutProps) => {
           >
             <button
               type="button"
-              onClick={() => setMobileTrayExpanded((expanded) => !expanded)}
+              onClick={handleMobileTrayToggle}
               className={styles.trayToggle}
               aria-expanded={isMobileTrayExpanded}
             >
@@ -59,11 +67,11 @@ const Layout = memo(({ children }: LayoutProps) => {
               )}
             </button>
 
-            {isMobileTrayExpanded && (
-              <div className={styles.itemsBody}>
-                <ItemsList />
-              </div>
-            )}
+            <div
+              className={cn(styles.itemsBody, isMobileTrayExpanded ? "flex" : "hidden", "md:flex")}
+            >
+              <ItemsList />
+            </div>
           </div>
         </div>
 
