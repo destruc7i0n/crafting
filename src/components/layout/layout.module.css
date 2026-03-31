@@ -6,14 +6,14 @@
   --app-max-width: var(--breakpoint-2xl);
   /* h-14 */
   --app-header-height: calc(var(--spacing) * 14);
-  /* 920px - design max-height for desktop frame; triggers at viewport height >= 70rem (1120px) */
+  /* 920px - design max-height for desktop frame */
   --app-desktop-max-height: 920px;
   /* items panel at 48rem breakpoint: clamps 320–420px at 36vw */
   --items-panel-width-md: clamp(20rem, 36vw, 420px);
   /* items panel at 64rem+ breakpoint: clamps 400–480px at 34vw */
   --items-panel-width-lg: clamp(25rem, 34vw, 30rem);
-  /* 260px - expanded recipe sidebar width */
-  --recipes-panel-width: 260px;
+  /* 320px - expanded desktop recipe sidebar width */
+  --recipes-panel-width-desktop: 320px;
   /* 52px - collapsed recipe sidebar, icon-only column */
   --recipes-panel-width-collapsed: 52px;
   /* mobile bottom tray expanded: 45% of viewport height */
@@ -88,6 +88,7 @@
   padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
 }
 
+/* 48rem = --breakpoint-md */
 @media (width >= 48rem) {
   .frame {
     @apply min-h-0 gap-4 overflow-hidden p-4;
@@ -119,6 +120,7 @@
   }
 }
 
+/* 64rem = --breakpoint-lg */
 @media (width >= 64rem) {
   .shell {
     @apply h-screen overflow-hidden;
@@ -143,7 +145,7 @@
 
   .desktop-expanded {
     grid-template-columns:
-      var(--recipes-panel-width)
+      var(--recipes-panel-width-desktop)
       minmax(0, 1fr)
       var(--items-panel-width-lg);
   }
@@ -160,7 +162,7 @@
   }
 }
 
-/* 70rem pairs with --app-desktop-max-height (57.5rem) */
+/* 64rem = --breakpoint-lg, 70rem = 1120px viewport-height trigger for 920px frame */
 @media (width >= 64rem) and (height >= 70rem) {
   .shell {
     @apply h-auto min-h-0 overflow-visible;

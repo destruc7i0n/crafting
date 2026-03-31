@@ -272,14 +272,14 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
             >
               <div
                 onClick={() => handleSelectRecipe(index)}
-                className="flex flex-1 cursor-pointer items-center gap-2 truncate px-2 py-2"
+                className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 px-2 py-2"
               >
                 <ResourceIcon
                   itemId={recipeTypeToItemId[recipe.recipeType]}
                   className="h-6 w-6 shrink-0"
                 />
 
-                <div className="flex flex-1 flex-col truncate">
+                <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
                   <span className="truncate text-sm" title={sidebarTitle}>
                     {sidebarTitle}
                   </span>
