@@ -4,9 +4,10 @@ import { RecipeType } from "@/data/types";
 
 import { SingleRecipeState, useRecipeStore } from "./index";
 
-const createRecipe = (recipeName: string): SingleRecipeState => ({
-  id: recipeName,
-  recipeName,
+const createRecipe = (id: string): SingleRecipeState => ({
+  id,
+  nameMode: "auto",
+  name: "",
   recipeType: RecipeType.Crafting,
   group: "",
   category: "",
@@ -23,7 +24,8 @@ const createRecipe = (recipeName: string): SingleRecipeState => ({
     experience: 0,
   },
   bedrock: {
-    identifier: `crafting:${recipeName}`,
+    identifierMode: "auto",
+    identifierName: "",
     priority: 0,
   },
 });
@@ -75,7 +77,7 @@ describe("recipe store", () => {
     useRecipeStore.getState().deleteRecipe(1);
 
     expect(useRecipeStore.getState().selectedRecipeIndex).toBe(1);
-    expect(useRecipeStore.getState().recipes[1]?.recipeName).toBe("recipe_3");
+    expect(useRecipeStore.getState().recipes[1]?.id).toBe("recipe_3");
   });
 
   it("falls back to the previous recipe when deleting the last selected recipe", () => {
@@ -88,7 +90,7 @@ describe("recipe store", () => {
     useRecipeStore.getState().deleteRecipe(2);
 
     expect(useRecipeStore.getState().selectedRecipeIndex).toBe(1);
-    expect(useRecipeStore.getState().recipes[1]?.recipeName).toBe("recipe_2");
+    expect(useRecipeStore.getState().recipes[1]?.id).toBe("recipe_2");
   });
 
   it("keeps the final recipe when deleteRecipe is called with only one recipe left", () => {
@@ -96,6 +98,20 @@ describe("recipe store", () => {
 
     expect(useRecipeStore.getState().selectedRecipeIndex).toBe(0);
     expect(useRecipeStore.getState().recipes).toHaveLength(1);
-    expect(useRecipeStore.getState().recipes[0]?.recipeName).toBe("recipe_1");
+    expect(useRecipeStore.getState().recipes[0]?.id).toBe("recipe_1");
+  });
+
+  it("creates recipes with auto naming defaults", () => {
+    useRecipeStore.getState().createRecipe();
+
+    expect(useRecipeStore.getState().recipes[1]).toMatchObject({
+      nameMode: "auto",
+      name: "",
+      bedrock: {
+        identifierMode: "auto",
+        identifierName: "",
+        priority: 0,
+      },
+    });
   });
 });

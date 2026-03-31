@@ -2,14 +2,20 @@ import { createDatapackBlob, downloadBlob } from "@/data/datapack";
 import { generate } from "@/data/generate";
 import { Tag } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
+import { NamingContext, resolveRecipeNames } from "@/lib/recipe-name";
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { validateDatapackExport } from "../validate-datapack-export";
 
+interface DownloadDatapackOptions {
+  tags: Tag[];
+  context: NamingContext;
+}
+
 export const downloadDatapack = async (
   recipes: SingleRecipeState[],
   version: MinecraftVersion,
-  tags: Tag[],
+  { tags, context }: DownloadDatapackOptions,
 ) => {
   if (version === MinecraftVersion.Bedrock) {
     alert("Datapack export is only available for Java versions.");
@@ -21,7 +27,7 @@ export const downloadDatapack = async (
     return;
   }
 
-  const invalidRecipes = validateDatapackExport(recipes, version).map(
+  const invalidRecipes = validateDatapackExport(recipes, version, context).map(
     (recipe) => `${recipe.name}: ${recipe.errors.join(", ")}`,
   );
 
@@ -33,15 +39,13 @@ export const downloadDatapack = async (
   }
 
   const recipeFiles: { name: string; json: object }[] = [];
+  const resolvedNames = resolveRecipeNames(recipes, context).byId;
 
   for (const recipe of recipes) {
     try {
-      const recipeName = recipe.recipeName.trim();
+      const recipeName = resolvedNames[recipe.id]?.javaName;
 
-      if (!recipeName) {
-        invalidRecipes.push("(unnamed): Add a file name");
-        continue;
-      }
+      if (!recipeName) continue;
 
       recipeFiles.push({
         name: recipeName,
@@ -49,7 +53,7 @@ export const downloadDatapack = async (
       });
     } catch (error) {
       invalidRecipes.push(
-        `${recipe.recipeName.trim() || "(unnamed)"}: ${error instanceof Error ? error.message : "Failed to generate recipe"}`,
+        `${resolvedNames[recipe.id]?.sidebarTitle ?? "Recipe"}: ${error instanceof Error ? error.message : "Failed to generate recipe"}`,
       );
     }
   }

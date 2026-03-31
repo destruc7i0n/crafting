@@ -5,6 +5,8 @@ import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 
 import { validateBehaviorPackExport } from "./validate-behavior-pack-export";
 
+let recipeId = 0;
+
 const createItem = (raw: string, version = MinecraftVersion.Bedrock) => ({
   type: "default_item" as const,
   id: {
@@ -12,131 +14,140 @@ const createItem = (raw: string, version = MinecraftVersion.Bedrock) => ({
     id: raw.split(":").at(-1) ?? raw,
     namespace: raw.includes(":") ? raw.split(":")[0] : "minecraft",
   },
-  displayName: raw,
+  displayName: raw.split(":").at(-1) ?? raw,
   texture: "",
   _version: version,
 });
 
 const createCraftingRecipe = (
   slots: SingleRecipeState["slots"],
-  identifier = "crafting:recipe_1",
-  recipeName = "recipe_1",
+  overrides: Partial<SingleRecipeState> = {},
 ): SingleRecipeState => ({
   ...recipeStateDefaults,
+  id: overrides.id ?? `recipe-${(recipeId += 1)}`,
   recipeType: RecipeType.Crafting,
-  recipeName,
-  group: "",
   slots,
   crafting: { ...recipeStateDefaults.crafting, shapeless: true },
-  bedrock: { identifier, priority: 0 },
+  ...overrides,
 });
 
 describe("validateBehaviorPackExport", () => {
-  it("flags missing Bedrock identifiers", () => {
-    const issues = validateBehaviorPackExport([
-      createCraftingRecipe(
-        {
-          "crafting.1": createItem("minecraft:stone"),
-          "crafting.result": createItem("minecraft:stone_button"),
-        },
-        "   ",
-      ),
-    ]);
+  it("flags blank manual Bedrock names", () => {
+    const issues = validateBehaviorPackExport(
+      [
+        createCraftingRecipe(
+          {
+            "crafting.1": createItem("minecraft:stone"),
+            "crafting.result": createItem("minecraft:stone_button"),
+          },
+          {
+            bedrock: { identifierMode: "manual", identifierName: "", priority: 0 },
+          },
+        ),
+      ],
+      { bedrockNamespace: "crafting" },
+    );
 
     expect(issues).toEqual([
       {
         recipe: expect.any(Object),
-        name: "recipe_1",
-        errors: ["Add a Bedrock identifier"],
+        name: "stone_button",
+        errors: ["Add a Bedrock name"],
       },
     ]);
   });
 
-  it("flags duplicate identifiers on each conflicting recipe", () => {
-    const issues = validateBehaviorPackExport([
-      createCraftingRecipe(
-        {
+  it("rewrites duplicate auto identifiers before export", () => {
+    const issues = validateBehaviorPackExport(
+      [
+        createCraftingRecipe({
           "crafting.1": createItem("minecraft:stone"),
           "crafting.result": createItem("minecraft:stone_button"),
-        },
-        "crafting:duplicate",
-        "recipe_1",
-      ),
-      createCraftingRecipe(
-        {
+        }),
+        createCraftingRecipe({
           "crafting.1": createItem("minecraft:oak_planks"),
-          "crafting.result": createItem("minecraft:stick"),
-        },
-        "crafting:duplicate",
-        "recipe_2",
-      ),
-    ]);
+          "crafting.result": createItem("minecraft:stone_button"),
+        }),
+      ],
+      { bedrockNamespace: "crafting" },
+    );
 
-    expect(issues).toEqual([
-      {
-        recipe: expect.any(Object),
-        name: "recipe_1",
-        errors: ["Duplicate Bedrock identifier: crafting:duplicate"],
-      },
-      {
-        recipe: expect.any(Object),
-        name: "recipe_2",
-        errors: ["Duplicate Bedrock identifier: crafting:duplicate"],
-      },
-    ]);
+    expect(issues).toEqual([]);
   });
 
   it("flags invalid Bedrock identifier syntax", () => {
-    const issues = validateBehaviorPackExport([
-      createCraftingRecipe(
-        {
-          "crafting.1": createItem("minecraft:stone"),
-          "crafting.result": createItem("minecraft:stone_button"),
-        },
-        "Crafting:Bad-Id",
-      ),
-    ]);
+    const issues = validateBehaviorPackExport(
+      [
+        createCraftingRecipe(
+          {
+            "crafting.1": createItem("minecraft:stone"),
+            "crafting.result": createItem("minecraft:stone_button"),
+          },
+          {
+            bedrock: { identifierMode: "manual", identifierName: "Bad-Id", priority: 0 },
+          },
+        ),
+      ],
+      { bedrockNamespace: "Crafting" },
+    );
 
     expect(issues).toEqual([
       {
         recipe: expect.any(Object),
-        name: "recipe_1",
+        name: "stone_button",
         errors: ["Use a valid Bedrock identifier (namespace:name; a-z, 0-9, _)"],
       },
     ]);
   });
 
-  it("flags filename collisions from different identifiers", () => {
-    const issues = validateBehaviorPackExport([
-      createCraftingRecipe(
-        {
-          "crafting.1": createItem("minecraft:stone"),
-          "crafting.result": createItem("minecraft:stone_button"),
-        },
-        "crafting:foo_bar",
-        "recipe_1",
-      ),
-      createCraftingRecipe(
-        {
+  it("keeps distinct manual Bedrock names valid in one namespace", () => {
+    const issues = validateBehaviorPackExport(
+      [
+        createCraftingRecipe(
+          {
+            "crafting.1": createItem("minecraft:stone"),
+            "crafting.result": createItem("minecraft:stone_button"),
+          },
+          {
+            bedrock: { identifierMode: "manual", identifierName: "foo_bar", priority: 0 },
+          },
+        ),
+        createCraftingRecipe(
+          {
+            "crafting.1": createItem("minecraft:oak_planks"),
+            "crafting.result": createItem("minecraft:stick"),
+          },
+          {
+            bedrock: { identifierMode: "manual", identifierName: "bar", priority: 0 },
+          },
+        ),
+      ],
+      { bedrockNamespace: "crafting_foo" },
+    );
+
+    expect(issues).toEqual([]);
+  });
+
+  it("does not flag autos when only a similar manual Bedrock suffix exists", () => {
+    const issues = validateBehaviorPackExport(
+      [
+        createCraftingRecipe(
+          {
+            "crafting.1": createItem("minecraft:stone"),
+            "crafting.result": createItem("minecraft:stick_2"),
+          },
+          {
+            bedrock: { identifierMode: "manual", identifierName: "stick_2", priority: 0 },
+          },
+        ),
+        createCraftingRecipe({
           "crafting.1": createItem("minecraft:oak_planks"),
           "crafting.result": createItem("minecraft:stick"),
-        },
-        "crafting_foo:bar",
-        "recipe_2",
-      ),
-    ]);
+        }),
+      ],
+      { bedrockNamespace: "crafting" },
+    );
 
-    expect(issues).toEqual([
-      {
-        recipe: expect.any(Object),
-        name: "recipe_1",
-        errors: ["Behavior pack filename collision: crafting_foo_bar.json"],
-      },
-      {
-        recipe: expect.any(Object),
-        name: "recipe_2",
-        errors: ["Behavior pack filename collision: crafting_foo_bar.json"],
-      },
-    ]);
+    expect(issues).toEqual([]);
   });
 });

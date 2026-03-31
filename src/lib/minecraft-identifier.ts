@@ -91,6 +91,9 @@ export const sanitizeJavaIdentifierNamespace = (value: string) =>
 export const sanitizeJavaIdentifierPath = (value: string) =>
   sanitizeIdentifierPart(value, JAVA_PATH_INVALID_PATTERN);
 
+export const sanitizeBedrockIdentifierPart = (value: string) =>
+  sanitizeIdentifierPart(value, BEDROCK_IDENTIFIER_INVALID_PATTERN);
+
 export const isValidJavaIdentifierNamespace = (value: string) =>
   isValidIdentifierPart(value, JAVA_NAMESPACE_PATTERN);
 

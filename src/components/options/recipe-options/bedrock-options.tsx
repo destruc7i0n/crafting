@@ -1,17 +1,18 @@
 import { useState } from "react";
 
+import { PencilIcon, RotateCcwIcon } from "lucide-react";
+
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import {
-  bedrockIdentifierHint,
-  isValidBedrockNamespacedIdentifier,
-} from "@/lib/minecraft-identifier";
+import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
+import { isValidBedrockIdentifierPart } from "@/lib/minecraft-identifier";
+import { getCommittedRecipeName, sanitizeRecipeName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
-import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
-import { useSettingsStore } from "@/stores/settings";
-import { selectMinecraftVersion } from "@/stores/settings/selectors";
+import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
+import { DEFAULT_BEDROCK_NAMESPACE, useSettingsStore } from "@/stores/settings";
+import { selectBedrockNamespace, selectMinecraftVersion } from "@/stores/settings/selectors";
 
-import { Field, InputControl } from "./shared";
+import { Field, IconActionButton, InputControl, ReadonlyValueRow } from "./shared";
 
 const bedrockPriorityRecipeTypes = [
   RecipeType.Crafting,
@@ -21,40 +22,130 @@ const bedrockPriorityRecipeTypes = [
   RecipeType.SmithingTransform,
 ] as const;
 
-const IdentifierField = () => {
-  const identifier = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.bedrock.identifier ?? "",
-  );
-  const setRecipeBedrockIdentifier = useRecipeStore((state) => state.setRecipeBedrockIdentifier);
-  const [showError, setShowError] = useState(false);
+const NamespaceField = () => {
+  const bedrockNamespace = useSettingsStore(selectBedrockNamespace);
+  const setBedrockNamespace = useSettingsStore((state) => state.setBedrockNamespace);
 
   return (
     <Field
-      label="Identifier"
-      htmlFor="bedrock-identifier"
-      error={
-        showError ? (
-          <span className="text-destructive text-[10px]">{bedrockIdentifierHint}</span>
-        ) : undefined
+      label={
+        <span className="flex items-center gap-2">
+          <span>Namespace</span>
+          <span className="bg-background text-muted-foreground shrink-0 rounded-full border px-1.5 py-0.5 text-[10px] font-medium tracking-wide uppercase">
+            Global
+          </span>
+        </span>
       }
+      htmlFor="bedrock-namespace"
     >
       <InputControl
-        id="bedrock-identifier"
+        id="bedrock-namespace"
         type="text"
-        value={identifier}
-        onChange={(e) =>
-          setShowError(
-            e.target.value.trim().length > 0 && !isValidBedrockNamespacedIdentifier(e.target.value),
-          )
+        value={bedrockNamespace}
+        onCommit={(value) =>
+          setBedrockNamespace(getCommittedRecipeName(value, DEFAULT_BEDROCK_NAMESPACE))
         }
-        onCommit={(v) => setRecipeBedrockIdentifier(v)}
         autoCapitalize="off"
         autoCorrect="off"
         spellCheck={false}
-        aria-invalid={showError}
-        className={cn(showError && "border-destructive focus:ring-destructive")}
-        placeholder="namespace:name"
+        placeholder="crafting"
       />
+    </Field>
+  );
+};
+
+const NameField = () => {
+  const recipe = useRecipeStore(selectCurrentRecipe);
+  const setRecipeBedrockIdentifierMode = useRecipeStore(
+    (state) => state.setRecipeBedrockIdentifierMode,
+  );
+  const setRecipeBedrockIdentifierName = useRecipeStore(
+    (state) => state.setRecipeBedrockIdentifierName,
+  );
+  const naming = useCurrentRecipeName();
+  const [showNameError, setShowNameError] = useState(false);
+
+  if (!recipe || !naming) {
+    return null;
+  }
+
+  const isManual = recipe.bedrock.identifierMode === "manual";
+  const bedrockName = naming.resolvedBedrockName ?? naming.autoBedrockName;
+  const bedrockIdentifier = naming.resolvedBedrockIdentifier ?? "Missing Bedrock name";
+
+  return (
+    <Field
+      label="Name"
+      htmlFor={isManual ? "bedrock-name" : undefined}
+      error={
+        showNameError ? (
+          <span className="text-destructive text-[10px]">
+            Use a name only. The namespace comes from the field above.
+          </span>
+        ) : undefined
+      }
+    >
+      <div className="flex items-center gap-2">
+        {isManual ? (
+          <>
+            <InputControl
+              id="bedrock-name"
+              type="text"
+              value={recipe.bedrock.identifierName}
+              onChange={(event) =>
+                setShowNameError(
+                  event.target.value.includes(":") ||
+                    (event.target.value.trim().length > 0 &&
+                      !isValidBedrockIdentifierPart(sanitizeRecipeName(event.target.value))),
+                )
+              }
+              onCommit={(value) => {
+                setRecipeBedrockIdentifierName(
+                  getCommittedRecipeName(value, naming.autoBedrockName),
+                );
+                setShowNameError(false);
+              }}
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
+              aria-invalid={showNameError}
+              className={cn(
+                "min-w-0 flex-1",
+                showNameError && "border-destructive focus:ring-destructive",
+              )}
+              placeholder={naming.autoBedrockName}
+            />
+
+            <IconActionButton
+              label="Use auto Bedrock name"
+              onClick={() => {
+                setRecipeBedrockIdentifierName("");
+                setRecipeBedrockIdentifierMode("auto");
+                setShowNameError(false);
+              }}
+            >
+              <RotateCcwIcon size={14} />
+            </IconActionButton>
+          </>
+        ) : (
+          <>
+            <ReadonlyValueRow value={bedrockName} badge="Auto" />
+
+            <IconActionButton
+              label="Customize Bedrock name"
+              onClick={() => {
+                setRecipeBedrockIdentifierName(bedrockName);
+                setRecipeBedrockIdentifierMode("manual");
+              }}
+            >
+              <PencilIcon size={14} />
+            </IconActionButton>
+          </>
+        )}
+      </div>
+      <p className="text-muted-foreground truncate text-xs" title={bedrockIdentifier}>
+        Identifier: {bedrockIdentifier}
+      </p>
     </Field>
   );
 };
@@ -95,8 +186,11 @@ export const BedrockOptions = () => {
     bedrockPriorityRecipeTypes.includes(recipeType as (typeof bedrockPriorityRecipeTypes)[number]);
 
   return (
-    <div className="grid gap-2 sm:grid-cols-2">
-      <IdentifierField />
+    <div className="grid gap-3 sm:grid-cols-2">
+      <div className="sm:col-span-2">
+        <NamespaceField />
+      </div>
+      <NameField />
       {supportsPriority && <PriorityField />}
     </div>
   );

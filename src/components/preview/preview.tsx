@@ -4,8 +4,12 @@ import { DownloadIcon } from "lucide-react";
 
 import { downloadBlob } from "@/data/datapack";
 import { RecipeType } from "@/data/types";
+import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
+import { getPreviewBaseName, toPreviewFileName } from "@/lib/recipe-name";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
+import { useSettingsStore } from "@/stores/settings";
+import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
 import { CraftingGridPreview } from "./crafting-grid";
 import { FurnacePreview } from "./furnace";
@@ -14,6 +18,8 @@ import { StonecutterPreview } from "./stonecutter";
 
 export const Preview = memo(() => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
+  const minecraftVersion = useSettingsStore(selectMinecraftVersion);
+  const naming = useCurrentRecipeName();
   const previewRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
   let preview: ReactNode = null;
@@ -76,10 +82,12 @@ export const Preview = memo(() => {
         width: element.offsetWidth * scale,
       });
 
-      downloadBlob(
-        blob,
-        recipeType === RecipeType.Crafting ? "crafting-grid.png" : `${recipeType}-preview.png`,
-      );
+      const previewBaseName = naming ? getPreviewBaseName(naming, minecraftVersion) : undefined;
+      const fileName =
+        (previewBaseName ? toPreviewFileName(previewBaseName) : undefined) ??
+        (recipeType === RecipeType.Crafting ? "crafting-grid.png" : `${recipeType}-preview.png`);
+
+      downloadBlob(blob, fileName);
     } catch (error) {
       console.error("Image generation error", error);
       window.alert("Could not download preview image.");

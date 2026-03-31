@@ -64,10 +64,12 @@ describe("generate orchestrator", () => {
       },
       crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
       cooking: { time: 0, experience: 0 },
-      bedrock: { identifier: "crafting:test", priority: 0 },
+      bedrock: { identifierMode: "auto", identifierName: "", priority: 0 },
     };
 
-    expect(generate(state, MinecraftVersion.Bedrock)).toEqual({
+    expect(
+      generate(state, MinecraftVersion.Bedrock, { bedrockIdentifier: "crafting:test" }),
+    ).toEqual({
       format_version: "1.20.10",
       "minecraft:recipe_furnace": {
         description: { identifier: "crafting:test" },
@@ -118,10 +120,12 @@ describe("generate orchestrator", () => {
       },
       crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
       cooking: { time: 0, experience: 0 },
-      bedrock: { identifier: "smithing:upgrade", priority: 2 },
+      bedrock: { identifierMode: "auto", identifierName: "", priority: 2 },
     };
 
-    expect(generate(state, MinecraftVersion.Bedrock)).toEqual({
+    expect(
+      generate(state, MinecraftVersion.Bedrock, { bedrockIdentifier: "smithing:upgrade" }),
+    ).toEqual({
       format_version: "1.20.10",
       "minecraft:recipe_smithing_transform": {
         description: { identifier: "smithing:upgrade" },
@@ -143,7 +147,7 @@ describe("generate orchestrator", () => {
       slots: {},
       crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
       cooking: { time: 0, experience: 0 },
-      bedrock: { identifier: "", priority: 0 },
+      bedrock: { identifierMode: "auto", identifierName: "", priority: 0 },
     };
 
     expect(() => generate(state, MinecraftVersion.Bedrock)).toThrow(
@@ -159,11 +163,27 @@ describe("generate orchestrator", () => {
       slots: {},
       crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
       cooking: { time: 0, experience: 0 },
-      bedrock: { identifier: "   ", priority: 0 },
+      bedrock: { identifierMode: "auto", identifierName: "", priority: 0 },
     };
 
-    expect(() => generate(state, MinecraftVersion.Bedrock)).toThrow(
+    expect(() => generate(state, MinecraftVersion.Bedrock, { bedrockIdentifier: "   " })).toThrow(
       "Bedrock recipes must have an identifier",
     );
+  });
+
+  it("throws when bedrock recipe has invalid identifier syntax", () => {
+    const state: SingleRecipeState = {
+      ...recipeStateDefaults,
+      recipeType: RecipeType.Crafting,
+      group: "",
+      slots: {},
+      crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
+      cooking: { time: 0, experience: 0 },
+      bedrock: { identifierMode: "auto", identifierName: "", priority: 0 },
+    };
+
+    expect(() =>
+      generate(state, MinecraftVersion.Bedrock, { bedrockIdentifier: "Crafting:Bad-Id" }),
+    ).toThrow("Bedrock recipes must use a valid identifier");
   });
 });

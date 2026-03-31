@@ -48,7 +48,7 @@ export const CheckboxField = ({
 );
 
 interface FieldProps {
-  label: string;
+  label: ReactNode;
   children: ReactNode;
   htmlFor?: string;
   tooltip?: string;
@@ -122,3 +122,49 @@ export const InputControl = ({
     />
   );
 };
+
+interface IconActionButtonProps extends ComponentProps<"button"> {
+  label: string;
+}
+
+export const IconActionButton = ({
+  label,
+  className,
+  children,
+  type = "button",
+  ...props
+}: IconActionButtonProps) => (
+  <Disclosure content={label} placement="top">
+    <button
+      {...props}
+      type={type}
+      className={cn(
+        "border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground active:bg-accent/80 inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+        className,
+      )}
+    >
+      {children}
+      <span className="sr-only">{label}</span>
+    </button>
+  </Disclosure>
+);
+
+interface ReadonlyValueRowProps {
+  value: string;
+  badge?: string;
+  title?: string;
+}
+
+export const ReadonlyValueRow = ({ value, badge, title = value }: ReadonlyValueRowProps) => (
+  <div
+    className="border-input bg-muted/30 flex h-9 min-w-0 flex-1 items-center gap-2 rounded-md border px-2 text-sm"
+    title={title}
+  >
+    <span className="text-foreground/80 min-w-0 flex-1 truncate">{value}</span>
+    {badge ? (
+      <span className="bg-background text-muted-foreground shrink-0 rounded-full border px-1.5 py-0.5 text-[10px] font-medium tracking-wide uppercase">
+        {badge}
+      </span>
+    ) : null}
+  </div>
+);

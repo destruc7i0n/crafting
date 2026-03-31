@@ -1,3 +1,7 @@
+import {
+  bedrockIdentifierHint,
+  isValidBedrockNamespacedIdentifier,
+} from "@/lib/minecraft-identifier";
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
@@ -27,6 +31,10 @@ import {
 } from "./stonecutter";
 import { buildJava as buildJavaTransmute } from "./transmute";
 import { wrapBedrockRecipe } from "./wrapper/bedrock";
+
+export interface GenerateOptions {
+  bedrockIdentifier?: string;
+}
 
 const extractCookingInput = (state: SingleRecipeState): CookingInput => ({
   recipeType: state.recipeType as CookingInput["recipeType"],
@@ -168,14 +176,24 @@ const generateBedrockInner = (state: SingleRecipeState, formatter: FormatStrateg
   }
 };
 
-export function generate(state: SingleRecipeState, version: MinecraftVersion): GeneratedRecipe {
+export function generate(
+  state: SingleRecipeState,
+  version: MinecraftVersion,
+  options?: GenerateOptions,
+): GeneratedRecipe {
   const formatter = createFormatStrategy(version);
 
   if (version === MinecraftVersion.Bedrock) {
-    const identifier = state.bedrock.identifier.trim();
+    const identifier = options?.bedrockIdentifier?.trim();
 
     if (!identifier) {
       throw new Error("Bedrock recipes must have an identifier");
+    }
+
+    if (!isValidBedrockNamespacedIdentifier(identifier)) {
+      throw new Error(
+        `Bedrock recipes must use a valid identifier (namespace:name; ${bedrockIdentifierHint})`,
+      );
     }
 
     const inner = generateBedrockInner(state, formatter);

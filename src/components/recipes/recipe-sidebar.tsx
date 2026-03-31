@@ -13,19 +13,21 @@ import {
 import { Disclosure } from "@/components/disclosure/disclosure";
 import { ResourceIcon } from "@/components/item/resource-icon";
 import { Tooltip } from "@/components/tooltip/tooltip";
-import { recipeTypeToItemId, recipeTypeToName } from "@/data/constants";
+import { recipeTypeToItemId } from "@/data/constants";
 import { MinecraftVersion } from "@/data/types";
 import { getSupportedRecipeTypesForVersion } from "@/data/versions";
+import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
 import { confirmAction } from "@/lib/confirm";
 import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
 import { downloadRecipeJson } from "@/lib/download/recipe";
+import { getRecipeExportDetail, toJavaRecipeFileName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
 import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
 import { validateDatapackExport } from "@/lib/validate-datapack-export";
 import { useRecipeStore } from "@/stores/recipe";
 import { useSettingsStore } from "@/stores/settings";
-import { selectMinecraftVersion } from "@/stores/settings/selectors";
+import { selectBedrockNamespace, selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useTagStore } from "@/stores/tag";
 import { useUIStore } from "@/stores/ui";
 
@@ -63,6 +65,25 @@ const DOWNLOAD_CONFIG: Record<"bedrock" | "java", DownloadConfig> = {
   },
 } as const;
 
+const getRecipeDownloadTarget = (
+  version: MinecraftVersion,
+  naming: { javaName?: string; bedrockIdentifier?: string } | undefined,
+) => {
+  if (!naming) {
+    return undefined;
+  }
+
+  if (version === MinecraftVersion.Bedrock) {
+    return naming.bedrockIdentifier;
+  }
+
+  if (naming.javaName) {
+    return toJavaRecipeFileName(naming.javaName);
+  }
+
+  return undefined;
+};
+
 export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: RecipeSidebarProps) => {
   const recipes = useRecipeStore((state) => state.recipes);
   const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
@@ -71,6 +92,8 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   const selectRecipe = useRecipeStore((state) => state.selectRecipe);
 
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
+  const bedrockNamespace = useSettingsStore(selectBedrockNamespace);
+  const resolvedNames = useResolvedRecipeNames();
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
   const toggleRecipeSidebar = useUIStore((state) => state.toggleRecipeSidebar);
 
@@ -78,10 +101,10 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   const invalidRecipesMap = useMemo(() => {
     const issues =
       minecraftVersion === MinecraftVersion.Bedrock
-        ? validateBehaviorPackExport(recipes)
-        : validateDatapackExport(recipes, minecraftVersion);
+        ? validateBehaviorPackExport(recipes, { bedrockNamespace })
+        : validateDatapackExport(recipes, minecraftVersion, { bedrockNamespace });
     return new Map(issues.map((issue) => [issue.recipe.id, issue.errors]));
-  }, [recipes, minecraftVersion]);
+  }, [recipes, minecraftVersion, bedrockNamespace]);
   const canDownloadPack = invalidRecipesMap.size === 0;
   const downloadConfig =
     DOWNLOAD_CONFIG[minecraftVersion === MinecraftVersion.Bedrock ? "bedrock" : "java"];
@@ -108,11 +131,14 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     }
 
     if (minecraftVersion === MinecraftVersion.Bedrock) {
-      await downloadBehaviorPack(recipes, minecraftVersion);
+      await downloadBehaviorPack(recipes, minecraftVersion, { bedrockNamespace });
       return;
     }
 
-    await downloadDatapack(recipes, minecraftVersion, useTagStore.getState().tags);
+    await downloadDatapack(recipes, minecraftVersion, {
+      tags: useTagStore.getState().tags,
+      context: { bedrockNamespace },
+    });
   };
 
   if (collapsed) {
@@ -141,10 +167,9 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
             const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
             const recipeErrors = invalidRecipesMap.get(recipe.id);
             const hasWarning = !isSupported || !!recipeErrors;
-            const label =
-              minecraftVersion === MinecraftVersion.Bedrock
-                ? `${recipe.bedrock.identifier} (${recipeTypeToName[recipe.recipeType]})`
-                : `${recipe.recipeName} (${recipeTypeToName[recipe.recipeType]})`;
+            const naming = resolvedNames.byId[recipe.id];
+            const detail = getRecipeExportDetail(naming, minecraftVersion);
+            const label = naming ? `${naming.sidebarTitle} (${detail})` : "Recipe";
 
             return (
               <Tooltip key={recipe.id} content={label}>
@@ -229,6 +254,10 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
           const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
           const recipeErrors = invalidRecipesMap.get(recipe.id);
           const hasWarning = !isSupported || !!recipeErrors;
+          const naming = resolvedNames.byId[recipe.id];
+          const sidebarTitle = naming?.sidebarTitle ?? "Recipe";
+          const detail = getRecipeExportDetail(naming, minecraftVersion);
+          const downloadTarget = getRecipeDownloadTarget(minecraftVersion, naming);
 
           return (
             <div
@@ -251,25 +280,26 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                 />
 
                 <div className="flex flex-1 flex-col truncate">
-                  <span className="truncate text-sm">
-                    {minecraftVersion === MinecraftVersion.Bedrock
-                      ? recipe.bedrock.identifier
-                      : recipe.recipeName}
+                  <span className="truncate text-sm" title={sidebarTitle}>
+                    {sidebarTitle}
                   </span>
-                  <span className="text-muted-foreground truncate text-xs">
-                    {recipeTypeToName[recipe.recipeType]}
+                  <span className="text-muted-foreground truncate text-xs" title={detail}>
+                    {detail}
                   </span>
                 </div>
 
                 <span className="flex shrink-0 items-center gap-2">
                   <button
                     type="button"
-                    className="text-muted-foreground hover:text-foreground cursor-pointer rounded transition-colors"
+                    className="text-muted-foreground hover:text-foreground cursor-pointer rounded transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+                    disabled={!downloadTarget}
                     onClick={(e) => {
                       e.stopPropagation();
-                      downloadRecipeJson(recipe, minecraftVersion);
+                      if (downloadTarget) {
+                        downloadRecipeJson(recipe, minecraftVersion, downloadTarget);
+                      }
                     }}
-                    title={`Download ${minecraftVersion === MinecraftVersion.Bedrock ? recipe.bedrock.identifier : recipe.recipeName}`}
+                    title={`Download ${detail}`}
                   >
                     <DownloadIcon size={14} />
                   </button>

@@ -8,8 +8,12 @@ import {
   DownloadIcon,
 } from "lucide-react";
 
+import { Tooltip } from "@/components/tooltip/tooltip";
 import { generate } from "@/data/generate";
+import { MinecraftVersion } from "@/data/types";
+import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
 import { downloadRecipeJson } from "@/lib/download/recipe";
+import { toJavaRecipeFileName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
@@ -27,11 +31,31 @@ export const ItemOutput = () => {
 
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const recipeState = useRecipeStore(selectCurrentRecipe);
+  const naming = useCurrentRecipeName();
+  let downloadTarget: string | undefined;
+
+  if (minecraftVersion === MinecraftVersion.Bedrock) {
+    downloadTarget = naming?.resolvedBedrockIdentifier;
+  } else if (naming?.resolvedJavaName) {
+    downloadTarget = toJavaRecipeFileName(naming.resolvedJavaName);
+  }
 
   const generatedResult = useMemo(() => {
+    if (!recipeState) {
+      return {
+        recipe: {},
+      };
+    }
+
     try {
       return {
-        recipe: generate(recipeState, minecraftVersion),
+        recipe: generate(
+          recipeState,
+          minecraftVersion,
+          minecraftVersion === MinecraftVersion.Bedrock && naming
+            ? { bedrockIdentifier: naming.resolvedBedrockIdentifier }
+            : undefined,
+        ),
       };
     } catch (error) {
       return {
@@ -39,7 +63,7 @@ export const ItemOutput = () => {
         error: error instanceof Error ? error.message : "Failed to generate recipe",
       };
     }
-  }, [recipeState, minecraftVersion]);
+  }, [recipeState, minecraftVersion, naming]);
 
   const handleCopy = async () => {
     if (copied) return;
@@ -62,6 +86,13 @@ export const ItemOutput = () => {
 
   if (!recipeState) return null;
 
+  let copyTooltip = "Copy JSON";
+  if (generatedResult.error) {
+    copyTooltip = "Copy unavailable";
+  } else if (copied) {
+    copyTooltip = "Copied";
+  }
+
   return (
     <div className="bg-card rounded-lg border lg:flex lg:min-h-0 lg:flex-col">
       <div className="flex items-center justify-between px-4 py-2">
@@ -78,24 +109,29 @@ export const ItemOutput = () => {
         </button>
 
         <div className="flex items-center gap-1">
+          <Tooltip content={copyTooltip} placement="top">
+            <button
+              type="button"
+              onClick={handleCopy}
+              disabled={!!generatedResult.error}
+              className="text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded-md p-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {copied ? (
+                <CheckIcon size={14} className="text-primary" />
+              ) : (
+                <ClipboardCopyIcon size={14} />
+              )}
+              <span className="sr-only">{copied ? "Copied" : "Copy"}</span>
+            </button>
+          </Tooltip>
           <button
             type="button"
-            onClick={handleCopy}
-            disabled={!!generatedResult.error}
-            className="text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded-md p-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-40"
-            title="Copy JSON"
-          >
-            {copied ? (
-              <CheckIcon size={14} className="text-primary" />
-            ) : (
-              <ClipboardCopyIcon size={14} />
-            )}
-            <span className="sr-only">{copied ? "Copied" : "Copy"}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => downloadRecipeJson(recipeState, minecraftVersion)}
-            disabled={!!generatedResult.error}
+            onClick={() => {
+              if (downloadTarget) {
+                downloadRecipeJson(recipeState, minecraftVersion, downloadTarget);
+              }
+            }}
+            disabled={!!generatedResult.error || !downloadTarget}
             className="border-border bg-accent/30 text-foreground hover:bg-accent inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             title="Download JSON"
           >

@@ -1,94 +1,705 @@
 import { describe, expect, it } from "vitest";
 
+import { MinecraftVersion, RecipeType } from "@/data/types";
+import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+
 import {
-  getNextBedrockIdentifierNumber,
-  getNextRecipeNumber,
-  getRecipeLabel,
-  isDuplicateRecipeName,
+  getAutoRecipeName,
+  getCommittedRecipeName,
+  getCurrentRecipeName,
+  getPreviewBaseName,
+  getRecipeExportDetail,
+  resolveRecipeNames,
   sanitizeRecipeName,
+  toJavaRecipeFileName,
+  toPreviewFileName,
 } from "./recipe-name";
 
+const createItem = (raw: string, displayName = raw, version = MinecraftVersion.V261) => ({
+  type: "default_item" as const,
+  id: {
+    raw,
+    id: raw.split(":").at(-1) ?? raw,
+    namespace: raw.includes(":") ? raw.split(":")[0] : "minecraft",
+  },
+  displayName,
+  texture: "",
+  _version: version,
+});
+
+const createRecipe = (
+  recipeType: RecipeType,
+  slots: SingleRecipeState["slots"],
+  overrides: Partial<SingleRecipeState> = {},
+): SingleRecipeState => ({
+  ...recipeStateDefaults,
+  id: overrides.id ?? `${recipeType}-${Math.random().toString(36).slice(2, 8)}`,
+  recipeType,
+  slots,
+  ...overrides,
+});
+
 describe("sanitizeRecipeName", () => {
-  it("removes special characters", () => {
-    expect(sanitizeRecipeName("my recipe!")).toBe("myrecipe");
-  });
-
-  it("preserves underscores and alphanumeric", () => {
-    expect(sanitizeRecipeName("recipe_1")).toBe("recipe_1");
+  it("normalizes to lowercase underscore names", () => {
+    expect(sanitizeRecipeName("My Recipe!")).toBe("my_recipe");
   });
 });
 
-describe("getRecipeLabel", () => {
-  it("returns trimmed recipe name", () => {
-    expect(getRecipeLabel({ recipeName: " test_recipe " })).toBe("test_recipe");
+describe("getCommittedRecipeName", () => {
+  it("keeps a sanitized manual name when one is provided", () => {
+    expect(getCommittedRecipeName("Stone Button", "stick")).toBe("stone_button");
   });
 
-  it("returns (unnamed) for empty name", () => {
-    expect(getRecipeLabel({ recipeName: "" })).toBe("(unnamed)");
-  });
-
-  it("returns (unnamed) for whitespace-only name", () => {
-    expect(getRecipeLabel({ recipeName: "   " })).toBe("(unnamed)");
+  it("falls back to a valid name when the manual input sanitizes to blank", () => {
+    expect(getCommittedRecipeName("   ", "stone_button")).toBe("stone_button");
   });
 });
 
-describe("getNextRecipeNumber", () => {
-  it("returns 1 for empty list", () => {
-    expect(getNextRecipeNumber([])).toBe(1);
+describe("name formatting helpers", () => {
+  it("formats java recipe file names at the edge", () => {
+    expect(toJavaRecipeFileName("stick")).toBe("stick.json");
   });
 
-  it("returns next sequential number", () => {
+  it("formats preview file names at the edge", () => {
+    expect(toPreviewFileName("stick")).toBe("stick.png");
+  });
+});
+
+describe("getRecipeExportDetail", () => {
+  it("formats Java export names with a file extension", () => {
+    expect(
+      getRecipeExportDetail(
+        {
+          sidebarTitle: "Stick",
+          javaName: "stick",
+        },
+        MinecraftVersion.V121,
+      ),
+    ).toBe("stick.json");
+  });
+
+  it("shows a missing Java name state when no export name is resolved", () => {
+    expect(
+      getRecipeExportDetail(
+        {
+          sidebarTitle: "Stick",
+        },
+        MinecraftVersion.V121,
+      ),
+    ).toBe("Missing file name");
+  });
+
+  it("shows the full Bedrock identifier", () => {
+    expect(
+      getRecipeExportDetail(
+        {
+          sidebarTitle: "Stick",
+          bedrockIdentifier: "crafting:stick",
+        },
+        MinecraftVersion.Bedrock,
+      ),
+    ).toBe("crafting:stick");
+  });
+
+  it("shows a missing Bedrock name state when no identifier is resolved", () => {
+    expect(
+      getRecipeExportDetail(
+        {
+          sidebarTitle: "Stick",
+        },
+        MinecraftVersion.Bedrock,
+      ),
+    ).toBe("Missing Bedrock name");
+  });
+});
+
+describe("getAutoRecipeName", () => {
+  it("uses the result name for transmute recipes", () => {
+    const recipe = createRecipe(RecipeType.CraftingTransmute, {
+      "crafting.1": createItem("minecraft:bundle"),
+      "crafting.2": createItem("minecraft:red_dye"),
+      "crafting.result": createItem("minecraft:red_bundle"),
+    });
+
+    expect(getAutoRecipeName(recipe)).toBe("red_bundle");
+  });
+
+  it("uses smelting suffixes", () => {
+    const recipe = createRecipe(RecipeType.Smelting, {
+      "cooking.ingredient": createItem("minecraft:kelp"),
+      "cooking.result": createItem("minecraft:dried_kelp"),
+    });
+
+    expect(getAutoRecipeName(recipe)).toBe("dried_kelp_from_smelting");
+  });
+
+  it("uses smoking suffixes", () => {
+    const recipe = createRecipe(RecipeType.Smoking, {
+      "cooking.ingredient": createItem("minecraft:potato"),
+      "cooking.result": createItem("minecraft:baked_potato"),
+    });
+
+    expect(getAutoRecipeName(recipe)).toBe("baked_potato_from_smoking");
+  });
+
+  it("uses campfire suffixes", () => {
+    const recipe = createRecipe(RecipeType.CampfireCooking, {
+      "cooking.ingredient": createItem("minecraft:potato"),
+      "cooking.result": createItem("minecraft:baked_potato"),
+    });
+
+    expect(getAutoRecipeName(recipe)).toBe("baked_potato_from_campfire_cooking");
+  });
+
+  it("uses stonecutting result-first names", () => {
+    const recipe = createRecipe(RecipeType.Stonecutter, {
+      "stonecutter.ingredient": createItem("minecraft:andesite"),
+      "stonecutter.result": createItem("minecraft:andesite_wall"),
+    });
+
+    expect(getAutoRecipeName(recipe)).toBe("andesite_wall_from_andesite_stonecutting");
+  });
+
+  it("uses smithing transform smithing names", () => {
+    const recipe = createRecipe(RecipeType.SmithingTransform, {
+      "smithing.template": createItem("minecraft:netherite_upgrade_smithing_template"),
+      "smithing.base": createItem("minecraft:diamond_pickaxe"),
+      "smithing.addition": createItem("minecraft:netherite_ingot"),
+      "smithing.result": createItem("minecraft:netherite_pickaxe"),
+    });
+
+    expect(getAutoRecipeName(recipe)).toBe("netherite_pickaxe_smithing");
+  });
+
+  it("uses smithing trim template-first names", () => {
+    const recipe = createRecipe(
+      RecipeType.SmithingTrim,
+      {
+        "smithing.template": createItem("minecraft:coast_armor_trim_smithing_template"),
+        "smithing.base": createItem("minecraft:diamond_chestplate"),
+        "smithing.addition": createItem("minecraft:redstone"),
+      },
+      { smithingTrimPattern: "minecraft:coast" },
+    );
+
+    expect(getAutoRecipeName(recipe)).toBe("coast_armor_trim_smithing_template_smithing_trim");
+  });
+
+  it("keeps firework rocket crafting result-first naming", () => {
+    const recipe = createRecipe(
+      RecipeType.Crafting,
+      {
+        "crafting.1": createItem("minecraft:paper"),
+        "crafting.2": createItem("minecraft:gunpowder"),
+        "crafting.result": createItem("minecraft:firework_rocket"),
+      },
+      { crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
+    );
+
+    expect(getAutoRecipeName(recipe)).toBe("firework_rocket");
+  });
+});
+
+describe("resolveRecipeNames", () => {
+  it("preserves unique auto names", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": createItem("minecraft:iron_ingot"),
+      "crafting.result": createItem("minecraft:iron_nugget", "Iron Nugget"),
+    });
+
+    const resolved = resolveRecipeNames([recipe], { bedrockNamespace: "crafting" }).byId[recipe.id];
+
+    expect(resolved).toEqual({
+      sidebarTitle: "Iron Nugget",
+      javaName: "iron_nugget",
+      bedrockName: "iron_nugget",
+      bedrockIdentifier: "crafting:iron_nugget",
+    });
+  });
+
+  it("rewrites later auto recipe names with numeric suffixes when they collide", () => {
     const recipes = [
-      { recipeName: "recipe_1" },
-      { recipeName: "recipe_2" },
-      { recipeName: "recipe_3" },
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:oak_planks"),
+          "crafting.result": createItem("minecraft:stick", "Stick"),
+        },
+        { id: "first", crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:bamboo"),
+          "crafting.result": createItem("minecraft:stick", "Stick"),
+        },
+        { id: "second", crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
+      ),
     ];
-    expect(getNextRecipeNumber(recipes)).toBe(4);
+
+    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+
+    expect(resolved.first?.javaName).toBe("stick");
+    expect(resolved.second?.javaName).toBe("stick_2");
+    expect(resolved.first?.sidebarTitle).toBe("Stick");
+    expect(resolved.second?.sidebarTitle).toBe("Stick (2)");
   });
 
-  it("returns first gap in sequence", () => {
-    const recipes = [{ recipeName: "recipe_1" }, { recipeName: "recipe_3" }];
-    expect(getNextRecipeNumber(recipes)).toBe(2);
+  it("keeps resolved Java and Bedrock export details available for sidebar usage", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": createItem("minecraft:stone"),
+      "crafting.result": createItem("minecraft:stone_button", "Stone Button"),
+    });
+
+    const resolved = resolveRecipeNames([recipe], { bedrockNamespace: "crafting" }).byId[recipe.id];
+
+    expect(resolved?.sidebarTitle).toBe("Stone Button");
+    expect(resolved?.javaName).toBe("stone_button");
+    expect(resolved?.bedrockIdentifier).toBe("crafting:stone_button");
   });
 
-  it("returns 1 when only oversized number exists", () => {
-    const recipes = [{ recipeName: "recipe_11234234234234236" }];
-    expect(getNextRecipeNumber(recipes)).toBe(1);
-  });
-
-  it("ignores non-matching names", () => {
-    const recipes = [{ recipeName: "custom_name" }, { recipeName: "recipe_1" }];
-    expect(getNextRecipeNumber(recipes)).toBe(2);
-  });
-});
-
-describe("getNextBedrockIdentifierNumber", () => {
-  it("returns 1 for empty list", () => {
-    expect(getNextBedrockIdentifierNumber([])).toBe(1);
-  });
-
-  it("returns next sequential number", () => {
+  it("preserves manual java names and rewrites auto names around them", () => {
     const recipes = [
-      { bedrock: { identifier: "crafting:recipe_1" } },
-      { bedrock: { identifier: "crafting:recipe_2" } },
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:stone_button"),
+        },
+        { id: "manual", nameMode: "manual", name: "custom_button" },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:custom_button"),
+        },
+        { id: "auto" },
+      ),
     ];
-    expect(getNextBedrockIdentifierNumber(recipes)).toBe(3);
+
+    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+
+    expect(resolved.manual?.javaName).toBe("custom_button");
+    expect(resolved.auto?.javaName).toBe("custom_button_2");
   });
 
-  it("returns 1 when only oversized number exists", () => {
-    const recipes = [{ bedrock: { identifier: "crafting:recipe_11234234234234236" } }];
-    expect(getNextBedrockIdentifierNumber(recipes)).toBe(1);
+  it("preserves manual bedrock names and rewrites auto names around them", () => {
+    const recipes = [
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:stone_button"),
+        },
+        {
+          id: "manual",
+          bedrock: { identifierMode: "manual", identifierName: "shared_name", priority: 0 },
+        },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:oak_planks"),
+          "crafting.result": createItem("minecraft:shared_name"),
+        },
+        { id: "auto" },
+      ),
+    ];
+
+    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+
+    expect(resolved.manual?.bedrockIdentifier).toBe("crafting:shared_name");
+    expect(resolved.auto?.bedrockIdentifier).toBe("crafting:shared_name_2");
+  });
+
+  it("does not let a blank manual java name reserve an auto-generated name", () => {
+    const recipes = [
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:stick"),
+        },
+        { id: "manual", nameMode: "manual", name: "" },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:oak_planks"),
+          "crafting.result": createItem("minecraft:stick"),
+        },
+        { id: "auto", crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
+      ),
+    ];
+
+    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+
+    expect(resolved.manual?.javaName).toBeUndefined();
+    expect(resolved.manual?.bedrockIdentifier).toBe("crafting:stick");
+    expect(resolved.auto?.javaName).toBe("stick");
+  });
+
+  it("does not let a blank manual bedrock name reserve an auto-generated identifier", () => {
+    const recipes = [
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:stick"),
+        },
+        {
+          id: "manual",
+          bedrock: { identifierMode: "manual", identifierName: "", priority: 0 },
+        },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:oak_planks"),
+          "crafting.result": createItem("minecraft:stick"),
+        },
+        { id: "auto", crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
+      ),
+    ];
+
+    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+
+    expect(resolved.manual?.bedrockIdentifier).toBeUndefined();
+    expect(resolved.auto?.bedrockIdentifier).toBe("crafting:stick");
+  });
+
+  it("only reserves exact manual names", () => {
+    const recipes = [
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:stick_2"),
+        },
+        { id: "manual", nameMode: "manual", name: "stick_2" },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:oak_planks"),
+          "crafting.result": createItem("minecraft:stick"),
+        },
+        { id: "auto", crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
+      ),
+    ];
+
+    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+
+    expect(resolved.manual?.javaName).toBe("stick_2");
+    expect(resolved.auto?.javaName).toBe("stick");
+  });
+
+  it("only reserves exact manual bedrock names", () => {
+    const recipes = [
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:stick_2"),
+        },
+        {
+          id: "manual",
+          bedrock: { identifierMode: "manual", identifierName: "stick_2", priority: 0 },
+        },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:oak_planks"),
+          "crafting.result": createItem("minecraft:stick"),
+        },
+        { id: "auto", crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
+      ),
+    ];
+
+    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+
+    expect(resolved.manual?.bedrockIdentifier).toBe("crafting:stick_2");
+    expect(resolved.auto?.bedrockIdentifier).toBe("crafting:stick");
+  });
+
+  it("uses smelting-specific fallbacks when smelting results collide", () => {
+    const recipes = [
+      createRecipe(
+        RecipeType.Smelting,
+        {
+          "cooking.ingredient": createItem("minecraft:raw_copper"),
+          "cooking.result": createItem("minecraft:copper_ingot"),
+        },
+        { id: "first" },
+      ),
+      createRecipe(
+        RecipeType.Smelting,
+        {
+          "cooking.ingredient": createItem("minecraft:copper_ore"),
+          "cooking.result": createItem("minecraft:copper_ingot"),
+        },
+        { id: "second" },
+      ),
+    ];
+
+    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+
+    expect(resolved.first?.javaName).toBe("copper_ingot_from_smelting");
+    expect(resolved.second?.javaName).toBe("copper_ingot_from_smelting_copper_ore");
+  });
+
+  it("keeps crafting result names short when a smelting recipe makes the same item", () => {
+    const recipes = [
+      createRecipe(
+        RecipeType.Smelting,
+        {
+          "cooking.ingredient": createItem("minecraft:oak_log"),
+          "cooking.result": createItem("minecraft:charcoal", "Charcoal"),
+        },
+        { id: "smelting" },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:coal"),
+          "crafting.result": createItem("minecraft:charcoal", "Charcoal"),
+        },
+        { id: "crafting", crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
+      ),
+    ];
+
+    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+
+    expect(resolved.smelting?.javaName).toBe("charcoal_from_smelting");
+    expect(resolved.crafting?.javaName).toBe("charcoal");
+  });
+
+  it("uses the global namespace for resolved Bedrock identifiers", () => {
+    const recipes = [
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:foo_bar"),
+        },
+        {
+          id: "first",
+          bedrock: { identifierMode: "manual", identifierName: "foo_bar", priority: 0 },
+        },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:foo_bar"),
+        },
+        {
+          id: "second",
+          bedrock: { identifierMode: "manual", identifierName: "foo_bar", priority: 0 },
+          nameMode: "auto",
+        },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:foo_bar"),
+        },
+        { id: "third" },
+      ),
+    ];
+
+    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting_foo" }).byId;
+
+    expect(resolved.first?.bedrockIdentifier).toBe("crafting_foo:foo_bar");
+    expect(resolved.third?.bedrockIdentifier).toMatch(/^crafting_foo:/);
   });
 });
 
-describe("isDuplicateRecipeName", () => {
-  it("detects duplicates excluding current index", () => {
-    const recipes = [{ recipeName: "a" }, { recipeName: "b" }, { recipeName: "a" }];
-    expect(isDuplicateRecipeName("a", recipes, 0)).toBe(true);
+describe("getPreviewBaseName", () => {
+  it("uses resolved unique java names when auto names collide", () => {
+    const recipes = [
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:oak_planks"),
+          "crafting.result": createItem("minecraft:stick"),
+        },
+        { id: "first", crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:bamboo"),
+          "crafting.result": createItem("minecraft:stick"),
+        },
+        { id: "second", crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
+      ),
+    ];
+
+    const naming = getCurrentRecipeName(recipes, 1, { bedrockNamespace: "crafting" });
+
+    expect(naming).toBeDefined();
+    expect(getPreviewBaseName(naming!, MinecraftVersion.V121)).toBe("stick_2");
   });
 
-  it("returns false when no duplicates", () => {
-    const recipes = [{ recipeName: "a" }, { recipeName: "b" }];
-    expect(isDuplicateRecipeName("a", recipes, 0)).toBe(false);
+  it("prefers the resolved name for the active minecraft version", () => {
+    const recipe = createRecipe(
+      RecipeType.Crafting,
+      {
+        "crafting.1": createItem("minecraft:stone"),
+        "crafting.result": createItem("minecraft:stone_button"),
+      },
+      {
+        nameMode: "manual",
+        name: "custom_java",
+        bedrock: { identifierMode: "manual", identifierName: "custom_bedrock", priority: 0 },
+      },
+    );
+
+    const naming = getCurrentRecipeName([recipe], 0, { bedrockNamespace: "crafting" });
+
+    expect(naming).toBeDefined();
+    expect(getPreviewBaseName(naming!, MinecraftVersion.V121)).toBe("custom_java");
+    expect(getPreviewBaseName(naming!, MinecraftVersion.Bedrock)).toBe("custom_bedrock");
+  });
+
+  it("falls back to auto names when manual names are blank", () => {
+    const recipe = createRecipe(
+      RecipeType.Crafting,
+      {
+        "crafting.1": createItem("minecraft:stone"),
+        "crafting.result": createItem("minecraft:stone_button"),
+      },
+      {
+        nameMode: "manual",
+        name: "",
+        bedrock: { identifierMode: "manual", identifierName: "", priority: 0 },
+      },
+    );
+
+    const naming = getCurrentRecipeName([recipe], 0, { bedrockNamespace: "crafting" });
+
+    expect(naming).toBeDefined();
+    expect(getPreviewBaseName(naming!, MinecraftVersion.V121)).toBe("stone_button");
+    expect(getPreviewBaseName(naming!, MinecraftVersion.Bedrock)).toBe("stone_button");
+  });
+});
+
+describe("getCurrentRecipeName", () => {
+  it("returns local and resolved names for the selected recipe", () => {
+    const recipes = [
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:stone"),
+          "crafting.result": createItem("minecraft:stone_button"),
+        },
+        { id: "first" },
+      ),
+      createRecipe(
+        RecipeType.Crafting,
+        {
+          "crafting.1": createItem("minecraft:oak_planks"),
+          "crafting.result": createItem("minecraft:stone_button"),
+        },
+        { id: "second" },
+      ),
+    ];
+
+    const naming = getCurrentRecipeName(recipes, 1, { bedrockNamespace: "crafting" });
+
+    expect(naming).toEqual({
+      autoName: "stone_button",
+      autoBedrockName: "stone_button",
+      resolvedJavaName: "stone_button_2",
+      resolvedBedrockName: "stone_button_2",
+      resolvedBedrockIdentifier: "crafting:stone_button_2",
+    });
+  });
+
+  it("returns the resolved Bedrock name segment separately from the composed identifier", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": createItem("minecraft:stone"),
+      "crafting.result": createItem("minecraft:stone_button"),
+    });
+
+    const naming = getCurrentRecipeName([recipe], 0, { bedrockNamespace: "custom_pack" });
+
+    expect(naming?.autoBedrockName).toBe("stone_button");
+    expect(naming?.resolvedBedrockName).toBe("stone_button");
+    expect(naming?.resolvedBedrockIdentifier).toBe("custom_pack:stone_button");
+  });
+
+  it("keeps blank manual names unresolved while preserving auto suggestions", () => {
+    const recipe = createRecipe(
+      RecipeType.Crafting,
+      {
+        "crafting.1": createItem("minecraft:stone"),
+        "crafting.result": createItem("minecraft:stone_button"),
+      },
+      {
+        nameMode: "manual",
+        name: "",
+        bedrock: { identifierMode: "manual", identifierName: "", priority: 0 },
+      },
+    );
+
+    const naming = getCurrentRecipeName([recipe], 0, { bedrockNamespace: "crafting" });
+
+    expect(naming).toEqual({
+      autoName: "stone_button",
+      autoBedrockName: "stone_button",
+      resolvedJavaName: undefined,
+      resolvedBedrockName: undefined,
+      resolvedBedrockIdentifier: undefined,
+    });
+  });
+
+  it("keeps the selected recipe output stable when unrelated recipes do not change its resolved name", () => {
+    const selectedRecipe = createRecipe(
+      RecipeType.Crafting,
+      {
+        "crafting.1": createItem("minecraft:stone"),
+        "crafting.result": createItem("minecraft:stone_button"),
+      },
+      { id: "selected" },
+    );
+
+    const first = getCurrentRecipeName(
+      [
+        selectedRecipe,
+        createRecipe(
+          RecipeType.Crafting,
+          {
+            "crafting.1": createItem("minecraft:oak_planks"),
+            "crafting.result": createItem("minecraft:stick"),
+          },
+          { id: "other-1" },
+        ),
+      ],
+      0,
+      { bedrockNamespace: "crafting" },
+    );
+
+    const second = getCurrentRecipeName(
+      [
+        selectedRecipe,
+        createRecipe(
+          RecipeType.Crafting,
+          {
+            "crafting.1": createItem("minecraft:bamboo"),
+            "crafting.result": createItem("minecraft:stick"),
+          },
+          { id: "other-2" },
+        ),
+      ],
+      0,
+      { bedrockNamespace: "crafting" },
+    );
+
+    expect(second).toEqual(first);
   });
 });

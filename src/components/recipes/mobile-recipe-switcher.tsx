@@ -1,8 +1,9 @@
 import { ChevronRightIcon } from "lucide-react";
 
 import { ResourceIcon } from "@/components/item/resource-icon";
-import { recipeTypeToItemId, recipeTypeToName } from "@/data/constants";
-import { MinecraftVersion } from "@/data/types";
+import { recipeTypeToItemId } from "@/data/constants";
+import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
+import { getRecipeExportDetail } from "@/lib/recipe-name";
 import { useRecipeStore } from "@/stores/recipe";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
@@ -11,6 +12,7 @@ import { useUIStore } from "@/stores/ui";
 export const MobileRecipeSwitcher = () => {
   const recipes = useRecipeStore((state) => state.recipes);
   const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
+  const resolvedNames = useResolvedRecipeNames();
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
 
@@ -19,10 +21,9 @@ export const MobileRecipeSwitcher = () => {
   // the recipe store should always have a valid selected recipe
   if (!currentRecipe) return null;
 
-  const recipeLabel =
-    minecraftVersion === MinecraftVersion.Bedrock
-      ? currentRecipe.bedrock.identifier
-      : currentRecipe.recipeName;
+  const naming = resolvedNames.byId[currentRecipe.id];
+  const sidebarTitle = naming?.sidebarTitle ?? "Recipe";
+  const detail = getRecipeExportDetail(naming, minecraftVersion);
 
   return (
     <button
@@ -36,10 +37,9 @@ export const MobileRecipeSwitcher = () => {
       />
 
       <span className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm font-semibold">{recipeLabel}</span>
+        <span className="truncate text-sm font-semibold">{sidebarTitle}</span>
         <span className="text-muted-foreground truncate text-xs">
-          {recipeTypeToName[currentRecipe.recipeType]} · {recipes.length}{" "}
-          {recipes.length === 1 ? "recipe" : "recipes"}
+          {detail} · {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
         </span>
       </span>
 

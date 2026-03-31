@@ -3,7 +3,7 @@ import { MinecraftVersion } from "@/data/types";
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { bedrockIdentifierHint, isValidBedrockNamespacedIdentifier } from "./minecraft-identifier";
-import { getRecipeLabel } from "./recipe-name";
+import { NamingContext, resolveRecipeNames, sanitizeRecipeName } from "./recipe-name";
 import { validateRecipe } from "./validate-recipe";
 
 export interface BehaviorPackRecipeIssue {
@@ -14,10 +14,12 @@ export interface BehaviorPackRecipeIssue {
 
 export const validateBehaviorPackExport = (
   recipes: SingleRecipeState[],
+  context: NamingContext,
 ): BehaviorPackRecipeIssue[] => {
+  const resolvedNames = resolveRecipeNames(recipes, context).byId;
   const issues = recipes.map((recipe) => ({
     recipe,
-    name: getRecipeLabel(recipe),
+    name: resolvedNames[recipe.id]?.sidebarTitle ?? "Recipe",
     errors: [...validateRecipe(recipe, MinecraftVersion.Bedrock).errors],
   }));
 
@@ -25,7 +27,16 @@ export const validateBehaviorPackExport = (
   const fileNameToEntries = new Map<string, { indexes: number[]; identifiers: Set<string> }>();
 
   for (const [index, recipe] of recipes.entries()) {
-    const identifier = recipe.bedrock.identifier.trim();
+    const isBlankManualBedrockName =
+      recipe.bedrock.identifierMode === "manual" &&
+      sanitizeRecipeName(recipe.bedrock.identifierName).length === 0;
+
+    if (isBlankManualBedrockName) {
+      issues[index].errors.push("Add a Bedrock name");
+      continue;
+    }
+
+    const identifier = resolvedNames[recipe.id]?.bedrockIdentifier?.trim();
 
     if (!identifier) {
       issues[index].errors.push("Add a Bedrock identifier");

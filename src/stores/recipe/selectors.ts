@@ -10,5 +10,4 @@ export const selectCurrentRecipeSlot = (slot: RecipeSlot) => (state: RecipeState
 export const selectCurrentRecipeType = (state: RecipeState) =>
   selectCurrentRecipe(state)?.recipeType;
 
-export const selectCurrentRecipeName = (state: RecipeState) =>
-  selectCurrentRecipe(state)?.recipeName;
+export const selectCurrentRecipeName = (state: RecipeState) => selectCurrentRecipe(state)?.name;

@@ -4,12 +4,12 @@ import { immer } from "zustand/middleware/immer";
 
 import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
-import { getNextBedrockIdentifierNumber, getNextRecipeNumber } from "@/lib/recipe-name";
 import { generateUid } from "@/lib/utils";
 
 export interface SingleRecipeState {
   id: string;
-  recipeName: string;
+  nameMode: "auto" | "manual";
+  name: string;
   recipeType: RecipeType;
   group: string;
   category: string;
@@ -26,14 +26,16 @@ export interface SingleRecipeState {
     experience: number;
   };
   bedrock: {
-    identifier: string;
+    identifierMode: "auto" | "manual";
+    identifierName: string;
     priority: number;
   };
 }
 
 export const recipeStateDefaults: SingleRecipeState = {
   id: "",
-  recipeName: "",
+  nameMode: "auto",
+  name: "",
   recipeType: RecipeType.Crafting,
   group: "",
   category: "",
@@ -49,7 +51,7 @@ export const recipeStateDefaults: SingleRecipeState = {
     time: 0,
     experience: 0,
   },
-  bedrock: { identifier: "crafting:recipe_1", priority: 0 },
+  bedrock: { identifierMode: "auto", identifierName: "", priority: 0 },
 };
 
 export type RecipeState = {
@@ -62,8 +64,8 @@ type RecipeActions = {
   createRecipe: () => void;
   deleteRecipe: (index: number) => void;
 
+  setRecipeNameMode: (mode: SingleRecipeState["nameMode"]) => void;
   setRecipeName: (name: string) => void;
-  setRecipeNameAtIndex: (index: number, name: string) => void;
   setRecipeType: (type: RecipeType) => void;
   setRecipeGroup: (group: string) => void;
   setRecipeCategory: (category: string) => void;
@@ -76,7 +78,8 @@ type RecipeActions = {
   setRecipeCraftingTwoByTwo: (twoByTwo: boolean) => void;
   setRecipeCookingTime: (time: number) => void;
   setRecipeCookingExperience: (experience: number) => void;
-  setRecipeBedrockIdentifier: (identifier: string) => void;
+  setRecipeBedrockIdentifierMode: (mode: SingleRecipeState["bedrock"]["identifierMode"]) => void;
+  setRecipeBedrockIdentifierName: (identifierName: string) => void;
   setRecipeBedrockPriority: (priority: number) => void;
   syncCustomSlotItem: (
     match: (item: IngredientItem) => boolean,
@@ -87,9 +90,7 @@ type RecipeActions = {
 };
 
 const getDefaultRecipe = (): SingleRecipeState =>
-  JSON.parse(
-    JSON.stringify({ ...recipeStateDefaults, id: generateUid("recipe"), recipeName: "recipe_1" }),
-  );
+  JSON.parse(JSON.stringify({ ...recipeStateDefaults, id: generateUid("recipe") }));
 
 type ImmerState = RecipeState & RecipeActions;
 
@@ -110,10 +111,6 @@ export const useRecipeStore = create<ImmerState>()(
       createRecipe: () => {
         set((state) => {
           const recipe = getDefaultRecipe();
-          const nameNext = getNextRecipeNumber(state.recipes);
-          const idNext = getNextBedrockIdentifierNumber(state.recipes);
-          recipe.recipeName = `recipe_${nameNext}`;
-          recipe.bedrock = { identifier: `crafting:recipe_${idNext}`, priority: 0 };
           state.recipes.push(recipe);
           state.selectedRecipeIndex = state.recipes.length - 1;
         });
@@ -137,16 +134,16 @@ export const useRecipeStore = create<ImmerState>()(
           state.recipes.splice(index, 1);
         });
       },
+      setRecipeNameMode: (mode: SingleRecipeState["nameMode"]) => {
+        set((state) => {
+          const recipe = getSelectedRecipe(state);
+          if (recipe) recipe.nameMode = mode;
+        });
+      },
       setRecipeName: (name: string) => {
         set((state) => {
           const recipe = getSelectedRecipe(state);
-          if (recipe) recipe.recipeName = name;
-        });
-      },
-      setRecipeNameAtIndex: (index: number, name: string) => {
-        set((state) => {
-          const recipe = state.recipes[index];
-          if (recipe) recipe.recipeName = name;
+          if (recipe) recipe.name = name;
         });
       },
       setRecipeType: (type: RecipeType) => {
@@ -223,11 +220,18 @@ export const useRecipeStore = create<ImmerState>()(
           if (recipe) recipe.cooking.experience = experience;
         });
       },
-      setRecipeBedrockIdentifier: (identifier: string) => {
+      setRecipeBedrockIdentifierMode: (mode: SingleRecipeState["bedrock"]["identifierMode"]) => {
         set((state) => {
           const recipe = getSelectedRecipe(state);
           if (!recipe) return;
-          recipe.bedrock.identifier = identifier;
+          recipe.bedrock.identifierMode = mode;
+        });
+      },
+      setRecipeBedrockIdentifierName: (identifierName: string) => {
+        set((state) => {
+          const recipe = getSelectedRecipe(state);
+          if (!recipe) return;
+          recipe.bedrock.identifierName = identifierName;
         });
       },
       setRecipeBedrockPriority: (priority: number) => {
@@ -279,7 +283,21 @@ export const useRecipeStore = create<ImmerState>()(
       }),
       onRehydrateStorage: () => (state) => {
         if (!state) return;
-        if (state.recipes.length === 0) {
+
+        const hasLegacyRecipeShape = state.recipes.some(
+          (recipe) =>
+            typeof recipe !== "object" ||
+            recipe === null ||
+            !("nameMode" in recipe) ||
+            !("name" in recipe) ||
+            !("bedrock" in recipe) ||
+            typeof recipe.bedrock !== "object" ||
+            recipe.bedrock === null ||
+            !("identifierMode" in recipe.bedrock) ||
+            !("identifierName" in recipe.bedrock),
+        );
+
+        if (!Array.isArray(state.recipes) || state.recipes.length === 0 || hasLegacyRecipeShape) {
           state.recipes = [getDefaultRecipe()];
           state.selectedRecipeIndex = 0;
         } else {

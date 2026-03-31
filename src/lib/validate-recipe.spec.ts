@@ -35,13 +35,12 @@ const createRecipe = (
 ): SingleRecipeState => ({
   ...recipeStateDefaults,
   recipeType,
-  recipeName: "recipe_1",
   slots,
   ...overrides,
 });
 
 describe("validateRecipe", () => {
-  it("requires a file name for Java exports", () => {
+  it("does not require a file name for Java exports", () => {
     const recipe = createRecipe(
       RecipeType.Crafting,
       {
@@ -49,13 +48,14 @@ describe("validateRecipe", () => {
         "crafting.result": createItem("minecraft:stone_button"),
       },
       {
-        recipeName: "",
+        nameMode: "manual",
+        name: "",
       },
     );
 
     expect(validateRecipe(recipe, MinecraftVersion.V121)).toEqual({
-      valid: false,
-      errors: ["Add a file name"],
+      valid: true,
+      errors: [],
     });
   });
 

@@ -2,6 +2,7 @@ import { createBehaviorPackBlob } from "@/data/behavior-pack";
 import { downloadBlob } from "@/data/datapack";
 import { generate } from "@/data/generate";
 import { MinecraftVersion } from "@/data/types";
+import { NamingContext, resolveRecipeNames } from "@/lib/recipe-name";
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { validateBehaviorPackExport } from "../validate-behavior-pack-export";
@@ -9,13 +10,14 @@ import { validateBehaviorPackExport } from "../validate-behavior-pack-export";
 export const downloadBehaviorPack = async (
   recipes: SingleRecipeState[],
   version: MinecraftVersion,
+  context: NamingContext,
 ) => {
   if (version !== MinecraftVersion.Bedrock) {
     alert("Behavior pack export is only available for Bedrock.");
     return;
   }
 
-  const invalidRecipes = validateBehaviorPackExport(recipes).map(
+  const invalidRecipes = validateBehaviorPackExport(recipes, context).map(
     (recipe) => `${recipe.name}: ${recipe.errors.join(", ")}`,
   );
 
@@ -27,15 +29,19 @@ export const downloadBehaviorPack = async (
   }
 
   const recipeFiles: { identifier: string; json: object }[] = [];
+  const resolvedNames = resolveRecipeNames(recipes, context).byId;
 
   for (const recipe of recipes) {
     try {
+      const naming = resolvedNames[recipe.id];
+      if (!naming?.bedrockIdentifier) continue;
+
       recipeFiles.push({
-        identifier: recipe.bedrock.identifier.trim(),
-        json: generate(recipe, version),
+        identifier: naming.bedrockIdentifier,
+        json: generate(recipe, version, { bedrockIdentifier: naming.bedrockIdentifier }),
       });
     } catch (error) {
-      const label = recipe.recipeName.trim() || "(unnamed)";
+      const label = resolvedNames[recipe.id]?.sidebarTitle ?? "Recipe";
       invalidRecipes.push(
         `${label}: ${error instanceof Error ? error.message : "Failed to generate recipe"}`,
       );
