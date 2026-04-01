@@ -2,17 +2,17 @@ import { describe, expect, it } from "vitest";
 
 import { MinecraftVersion } from "@/data/types";
 
-import { createFormatStrategy } from "./format/item-formatter";
+import { createRecipeFormatter } from "./format/recipe-formatter";
 import { formatIngredient, formatIngredientString } from "./ingredient";
 
 describe("formatIngredient", () => {
   it("returns empty object for undefined item", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V121);
+    const formatter = createRecipeFormatter(MinecraftVersion.V121);
     expect(formatIngredient(undefined, formatter)).toEqual({});
   });
 
   it("formats a default item using the formatter", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V1212);
+    const formatter = createRecipeFormatter(MinecraftVersion.V1212);
     const item = {
       type: "default_item" as const,
       id: { namespace: "minecraft", id: "stone" },
@@ -25,7 +25,7 @@ describe("formatIngredient", () => {
   });
 
   it("formats a tag item as a tag reference", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V1212);
+    const formatter = createRecipeFormatter(MinecraftVersion.V1212);
     const tagItem = {
       type: "tag_item" as const,
       id: { namespace: "minecraft", id: "logs" },
@@ -40,7 +40,7 @@ describe("formatIngredient", () => {
   });
 
   it("formats a 1.14 item ingredient with object format", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V114);
+    const formatter = createRecipeFormatter(MinecraftVersion.V114);
     const item = {
       type: "default_item" as const,
       id: { namespace: "minecraft", id: "stone" },

@@ -3,8 +3,8 @@ import { SingleRecipeState } from "@/stores/recipe";
 
 import { IngredientItem } from "../models/types";
 import { MinecraftVersion, SLOTS } from "../types";
-import { createFormatStrategy } from "./format/item-formatter";
-import { FormatStrategy } from "./format/types";
+import { createRecipeFormatter } from "./format/recipe-formatter";
+import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import {
   BedrockShapedBody,
@@ -161,7 +161,7 @@ function getKeyForGrid(grid: (IngredientItem | undefined)[]): {
 
 export const buildJava = (
   state: CraftingInput,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
   version: MinecraftVersion,
 ): ShapedCraftingRecipe | ShapelessCraftingRecipe => {
   const grid = state.grid;
@@ -207,7 +207,7 @@ export const buildJava = (
 
 export const buildBedrock = (
   state: CraftingInput,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
 ): BedrockShapedBody | BedrockShapelessBody => {
   const grid = state.grid;
   const populatedSlots = grid.filter((item): item is IngredientItem => Boolean(item));
@@ -278,7 +278,7 @@ export const generate = (
   version: MinecraftVersion,
 ): ShapedCraftingRecipe | ShapelessCraftingRecipe | BedrockShapedBody | BedrockShapelessBody => {
   const input = extractCraftingInput(state);
-  const formatter = createFormatStrategy(version);
+  const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {
     return buildBedrock(input, formatter);

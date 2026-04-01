@@ -61,10 +61,10 @@ describe("generate crafting", () => {
         expect(generate(recipeSlice, MinecraftVersion.V112)).toEqual({
           type: "crafting_shapeless",
           ingredients: [
-            { item: "stone", data: 1 },
-            { item: "stone", data: 1 },
+            { item: "minecraft:stone", data: 1 },
+            { item: "minecraft:stone", data: 1 },
           ],
-          result: { item: "cobblestone", count: 10 },
+          result: { item: "minecraft:cobblestone", count: 10 },
         });
       });
     });
@@ -174,9 +174,9 @@ describe("generate crafting", () => {
           type: "crafting_shaped",
           pattern: ["##", "##", "##"],
           key: {
-            "#": { item: "stone", data: 1 },
+            "#": { item: "minecraft:stone", data: 1 },
           },
-          result: { item: "cobblestone", count: 10 },
+          result: { item: "minecraft:cobblestone", count: 10 },
         });
       });
 
@@ -284,12 +284,12 @@ describe("generate crafting", () => {
           type: "crafting_shaped",
           pattern: ["#P ", "#i ", "#/ "],
           key: {
-            "#": { item: "stone", data: 1 },
-            P: { item: "paper", data: 1 },
-            i: { item: "iron_ingot", data: 1 },
-            "/": { item: "stick", data: 1 },
+            "#": { item: "minecraft:stone", data: 1 },
+            P: { item: "minecraft:paper", data: 1 },
+            i: { item: "minecraft:iron_ingot", data: 1 },
+            "/": { item: "minecraft:stick", data: 1 },
           },
-          result: { item: "cobblestone", count: 10 },
+          result: { item: "minecraft:cobblestone", count: 10 },
         });
       });
     });

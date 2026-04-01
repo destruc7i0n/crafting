@@ -1,10 +1,10 @@
 import { MinecraftVersion } from "../types";
-import { createFormatStrategy } from "./format/item-formatter";
+import { createRecipeFormatter } from "./format/recipe-formatter";
 import { buildJava } from "./transmute";
 
 describe("generate transmute", () => {
   it("should generate a crafting transmute recipe without category when unset", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V1212);
+    const formatter = createRecipeFormatter(MinecraftVersion.V1212);
 
     expect(
       buildJava(
@@ -56,7 +56,7 @@ describe("generate transmute", () => {
   });
 
   it("should include category on 1.19+ when set", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V1212);
+    const formatter = createRecipeFormatter(MinecraftVersion.V1212);
 
     expect(
       buildJava(

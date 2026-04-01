@@ -1,7 +1,7 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { MinecraftVersion, SLOTS } from "../types";
-import { FormatStrategy } from "./format/types";
+import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import { CraftingTransmuteRecipe, TransmuteInput } from "./recipes/types";
 import { isVersionAtLeast } from "./version-utils";
@@ -26,7 +26,7 @@ export const validateTransmute = (state: SingleRecipeState): string[] => {
 
 export const buildJava = (
   state: TransmuteInput,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
   version: MinecraftVersion,
 ): CraftingTransmuteRecipe => {
   const group = state.group.length > 0 ? state.group : undefined;

@@ -189,4 +189,22 @@ describe("validateRecipe", () => {
       errors: ["Add a trim pattern"],
     });
   });
+
+  it("rejects unsupported Bedrock furnace features", () => {
+    const recipe = createRecipe(RecipeType.Smelting, {
+      "cooking.ingredient": createTagItem("minecraft:logs", MinecraftVersion.Bedrock),
+      "cooking.result": {
+        ...createItem("minecraft:charcoal", MinecraftVersion.Bedrock),
+        count: 2,
+      },
+    });
+
+    expect(validateRecipe(recipe, MinecraftVersion.Bedrock)).toEqual({
+      valid: false,
+      errors: [
+        "Bedrock furnace recipes do not support tag ingredients",
+        "Bedrock furnace recipes do not support result counts",
+      ],
+    });
+  });
 });

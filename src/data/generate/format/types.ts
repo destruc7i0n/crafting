@@ -20,7 +20,7 @@ export interface StonecutterResultShape {
   count?: number;
 }
 
-export interface FormatStrategy {
+export interface RecipeFormatter {
   ingredient: (id: MinecraftIdentifier, includeData?: boolean) => FormatIngredient;
   ingredientTag: (tagId: string) => FormatIngredient;
   objectResult: (id: MinecraftIdentifier, count?: number) => ObjectResultRef;

@@ -74,8 +74,8 @@ describe("generate orchestrator", () => {
       "minecraft:recipe_furnace": {
         description: { identifier: "crafting:test" },
         tags: ["furnace"],
-        input: { item: "minecraft:sand" },
-        output: { item: "minecraft:glass", count: 1 },
+        input: "minecraft:sand",
+        output: "minecraft:glass",
       },
     });
   });

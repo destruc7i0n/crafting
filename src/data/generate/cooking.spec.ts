@@ -317,8 +317,41 @@ describe("generate cooking", () => {
       };
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
-        input: { item: "minecraft:sand" },
-        output: { item: "minecraft:glass", count: 1 },
+        input: "minecraft:sand",
+        output: "minecraft:glass",
+      });
+    });
+
+    it("should preserve legacy data on bedrock furnace input strings", () => {
+      const recipeSlice: SingleRecipeState = {
+        ...recipeStateDefaults,
+        recipeType: RecipeType.Smelting,
+        group: "",
+        slots: {
+          "cooking.ingredient": {
+            type: "default_item",
+            id: { id: "wood", namespace: "minecraft", data: 4 },
+            displayName: "wood",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+          "cooking.result": {
+            type: "default_item",
+            id: { id: "charcoal", namespace: "minecraft" },
+            displayName: "charcoal",
+            texture: "",
+            count: 1,
+            _version: MinecraftVersion.Bedrock,
+          },
+        },
+        crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
+        cooking: { time: 0, experience: 0 },
+      };
+
+      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+        input: "minecraft:wood:4",
+        output: "minecraft:charcoal",
       });
     });
 

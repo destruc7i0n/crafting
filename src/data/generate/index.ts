@@ -11,8 +11,8 @@ import {
   buildJava as buildJavaCrafting,
   extractCraftingInput,
 } from "./crafting";
-import { createFormatStrategy } from "./format/item-formatter";
-import { FormatStrategy } from "./format/types";
+import { createRecipeFormatter } from "./format/recipe-formatter";
+import { RecipeFormatter } from "./format/types";
 import {
   BedrockBody,
   BedrockFormatVersion,
@@ -133,7 +133,7 @@ const getBedrockRecipeMeta = (state: SingleRecipeState): BedrockRecipeMeta => {
 const generateJavaInner = (
   state: SingleRecipeState,
   version: MinecraftVersion,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
 ): JavaRecipe => {
   switch (state.recipeType) {
     case RecipeType.Crafting:
@@ -156,7 +156,10 @@ const generateJavaInner = (
   }
 };
 
-const generateBedrockInner = (state: SingleRecipeState, formatter: FormatStrategy): BedrockBody => {
+const generateBedrockInner = (
+  state: SingleRecipeState,
+  formatter: RecipeFormatter,
+): BedrockBody => {
   switch (state.recipeType) {
     case RecipeType.Crafting:
       return buildBedrockCrafting(extractCraftingInput(state), formatter);
@@ -164,7 +167,7 @@ const generateBedrockInner = (state: SingleRecipeState, formatter: FormatStrateg
     case RecipeType.Blasting:
     case RecipeType.Smoking:
     case RecipeType.CampfireCooking:
-      return buildBedrockCooking(extractCookingInput(state), formatter);
+      return buildBedrockCooking(extractCookingInput(state));
     case RecipeType.Smithing:
     case RecipeType.SmithingTransform:
     case RecipeType.SmithingTrim:
@@ -181,7 +184,7 @@ export function generate(
   version: MinecraftVersion,
   options?: GenerateOptions,
 ): GeneratedRecipe {
-  const formatter = createFormatStrategy(version);
+  const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {
     const identifier = options?.bedrockIdentifier?.trim();

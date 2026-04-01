@@ -1,15 +1,15 @@
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { MinecraftVersion, SLOTS } from "../types";
-import { createFormatStrategy } from "./format/item-formatter";
-import { FormatStrategy } from "./format/types";
+import { createRecipeFormatter } from "./format/recipe-formatter";
+import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import { BedrockShapelessBody, StonecutterInput, StonecuttingRecipe } from "./recipes/types";
 import { isVersionAtLeast } from "./version-utils";
 
 export const buildJava = (
   state: StonecutterInput,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
   version: MinecraftVersion,
 ): StonecuttingRecipe => {
   const result = state.result
@@ -32,7 +32,7 @@ export const buildJava = (
 
 export const buildBedrock = (
   state: StonecutterInput,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
 ): BedrockShapelessBody => {
   const ingredients = state.ingredient ? [formatIngredient(state.ingredient, formatter)] : [];
 
@@ -68,7 +68,7 @@ export const generate = (
   version: MinecraftVersion,
 ): StonecuttingRecipe | BedrockShapelessBody => {
   const input = extractInput(state);
-  const formatter = createFormatStrategy(version);
+  const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {
     return buildBedrock(input, formatter);

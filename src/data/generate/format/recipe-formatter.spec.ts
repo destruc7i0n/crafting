@@ -1,17 +1,36 @@
 import { MinecraftVersion } from "@/data/types";
 
-import { createFormatStrategy } from "./item-formatter";
+import {
+  bedrockRecipeFormatter,
+  createRecipeFormatter,
+  javaV112RecipeFormatter,
+  javaV113RecipeFormatter,
+  javaV114RecipeFormatter,
+  javaV1212RecipeFormatter,
+  javaV121RecipeFormatter,
+} from "./recipe-formatter";
 
 const id112 = { namespace: "minecraft", id: "stone", data: 1 };
 const id = { namespace: "minecraft", id: "stone" };
 
-describe("createFormatStrategy", () => {
-  it("formats 1.12 ingredients/results", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V112);
+describe("createRecipeFormatter", () => {
+  it("selects formatters by version range", () => {
+    expect(createRecipeFormatter(MinecraftVersion.V112)).toBe(javaV112RecipeFormatter);
+    expect(createRecipeFormatter(MinecraftVersion.V113)).toBe(javaV113RecipeFormatter);
+    expect(createRecipeFormatter(MinecraftVersion.V114)).toBe(javaV114RecipeFormatter);
+    expect(createRecipeFormatter(MinecraftVersion.V120)).toBe(javaV114RecipeFormatter);
+    expect(createRecipeFormatter(MinecraftVersion.V121)).toBe(javaV121RecipeFormatter);
+    expect(createRecipeFormatter(MinecraftVersion.V1212)).toBe(javaV1212RecipeFormatter);
+    expect(createRecipeFormatter(MinecraftVersion.V12111)).toBe(javaV1212RecipeFormatter);
+    expect(createRecipeFormatter(MinecraftVersion.Bedrock)).toBe(bedrockRecipeFormatter);
+  });
 
-    expect(formatter.ingredient(id112)).toEqual({ item: "stone", data: 1 });
+  it("formats 1.12 ingredients/results", () => {
+    const formatter = createRecipeFormatter(MinecraftVersion.V112);
+
+    expect(formatter.ingredient(id112)).toEqual({ item: "minecraft:stone", data: 1 });
     expect(formatter.objectResult(id112, 2)).toEqual({
-      item: "stone",
+      item: "minecraft:stone",
       data: 1,
       count: 2,
     });
@@ -19,7 +38,7 @@ describe("createFormatStrategy", () => {
   });
 
   it("throws for 1.12 ingredientTag (tags not supported)", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V112);
+    const formatter = createRecipeFormatter(MinecraftVersion.V112);
 
     expect(() => formatter.ingredientTag("minecraft:logs")).toThrow(
       "Item tags are not supported in Java 1.12",
@@ -27,7 +46,7 @@ describe("createFormatStrategy", () => {
   });
 
   it("formats 1.14 ingredients/results", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V114);
+    const formatter = createRecipeFormatter(MinecraftVersion.V114);
 
     expect(formatter.ingredient(id)).toEqual({ item: "minecraft:stone" });
     expect(formatter.ingredientTag("minecraft:logs")).toEqual({ tag: "minecraft:logs" });
@@ -44,7 +63,7 @@ describe("createFormatStrategy", () => {
   });
 
   it("formats 1.21 result ids", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V121);
+    const formatter = createRecipeFormatter(MinecraftVersion.V121);
 
     expect(formatter.ingredient(id)).toEqual({ item: "minecraft:stone" });
     expect(formatter.objectResult(id, 2)).toEqual({ id: "minecraft:stone", count: 2 });
@@ -55,14 +74,14 @@ describe("createFormatStrategy", () => {
   });
 
   it("formats 1.21.2 string ingredients", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.V1212);
+    const formatter = createRecipeFormatter(MinecraftVersion.V1212);
 
     expect(formatter.ingredient(id)).toBe("minecraft:stone");
     expect(formatter.ingredientTag("minecraft:logs")).toBe("#minecraft:logs");
   });
 
   it("formats bedrock item refs", () => {
-    const formatter = createFormatStrategy(MinecraftVersion.Bedrock);
+    const formatter = createRecipeFormatter(MinecraftVersion.Bedrock);
 
     expect(formatter.ingredient(id112)).toEqual({ item: "minecraft:stone", data: 1 });
     expect(formatter.ingredientTag("minecraft:logs")).toEqual({

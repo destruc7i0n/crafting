@@ -2,22 +2,22 @@ import { getRawId } from "@/data/models/identifier/utilities";
 import { IngredientItem } from "@/data/models/types";
 import { toTagRef } from "@/lib/tags";
 
-import { FormatStrategy } from "./format/types";
+import { RecipeFormatter } from "./format/types";
 import { EmptyObject, IngredientRef } from "./recipes/types";
 
 export function formatIngredient(
   item: IngredientItem,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
   includeData?: boolean,
 ): IngredientRef;
 export function formatIngredient(
   item: IngredientItem | undefined,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
   includeData?: boolean,
 ): IngredientRef | EmptyObject;
 export function formatIngredient(
   item: IngredientItem | undefined,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
   includeData = true,
 ): IngredientRef | EmptyObject {
   if (!item) {

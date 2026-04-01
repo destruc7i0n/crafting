@@ -114,8 +114,8 @@ export interface BedrockShapelessBody {
 }
 
 export interface BedrockFurnaceBody {
-  input: IngredientRef | EmptyObject;
-  output: ObjectResultRef | EmptyObject;
+  input: string | EmptyObject;
+  output: string | EmptyObject;
 }
 
 export interface BedrockSmithingTrimBody {

@@ -2,8 +2,8 @@ import { getRawId } from "@/data/models/identifier/utilities";
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
-import { createFormatStrategy } from "./format/item-formatter";
-import { FormatStrategy } from "./format/types";
+import { createRecipeFormatter } from "./format/recipe-formatter";
+import { RecipeFormatter } from "./format/types";
 import { formatIngredient, formatIngredientString } from "./ingredient";
 import {
   BedrockShapelessBody,
@@ -18,7 +18,7 @@ import { isVersionAtLeast } from "./version-utils";
 
 export const buildJava = (
   state: SmithingInput,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
   version: MinecraftVersion,
 ): SmithingRecipe | SmithingTrimRecipe | SmithingTransformRecipe => {
   if (state.recipeType === RecipeType.Smithing) {
@@ -53,7 +53,7 @@ export const buildJava = (
 
 export const buildBedrock = (
   state: SmithingInput,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
 ): BedrockSmithingTrimBody | BedrockSmithingTransformBody | BedrockShapelessBody => {
   if (state.recipeType === RecipeType.SmithingTrim) {
     return {
@@ -140,7 +140,7 @@ export const generate = (
   | BedrockSmithingTransformBody
   | BedrockShapelessBody => {
   const input = extractInput(state);
-  const formatter = createFormatStrategy(version);
+  const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {
     return buildBedrock(input, formatter);

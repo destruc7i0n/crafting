@@ -1,8 +1,9 @@
+import { getFullId } from "@/data/models/identifier/utilities";
 import { SingleRecipeState } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
-import { createFormatStrategy } from "./format/item-formatter";
-import { FormatStrategy } from "./format/types";
+import { createRecipeFormatter } from "./format/recipe-formatter";
+import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import { BedrockFurnaceBody, CookingInput, CookingRecipe } from "./recipes/types";
 import { isVersionAtLeast } from "./version-utils";
@@ -19,7 +20,7 @@ const recipeTypeToBaseCookingType: Record<
 
 export const buildJava = (
   state: CookingInput,
-  formatter: FormatStrategy,
+  formatter: RecipeFormatter,
   version: MinecraftVersion,
 ): CookingRecipe => {
   const group = state.group.length > 0 ? state.group : undefined;
@@ -46,16 +47,13 @@ export const buildJava = (
   } satisfies CookingRecipe;
 };
 
-export const buildBedrock = (
-  state: CookingInput,
-  formatter: FormatStrategy,
-): BedrockFurnaceBody => {
+export const buildBedrock = (state: CookingInput): BedrockFurnaceBody => {
   const input = state.ingredient;
   const output = state.result;
 
   return {
-    input: formatIngredient(input, formatter),
-    output: output ? formatter.objectResult(output.id, output.count) : {},
+    input: input && input.type !== "tag_item" ? getFullId(input.id) : {},
+    output: output && output.type !== "tag_item" ? getFullId(output.id) : {},
   } satisfies BedrockFurnaceBody;
 };
 
@@ -69,7 +67,7 @@ const extractInput = (state: SingleRecipeState): CookingInput => ({
   category: state.category || undefined,
 });
 
-export const validateCooking = (state: SingleRecipeState): string[] => {
+export const validateCooking = (state: SingleRecipeState, version?: MinecraftVersion): string[] => {
   const input = extractInput(state);
   const errors: string[] = [];
 
@@ -81,6 +79,16 @@ export const validateCooking = (state: SingleRecipeState): string[] => {
     errors.push("Add a result item");
   }
 
+  if (version === MinecraftVersion.Bedrock) {
+    if (input.ingredient?.type === "tag_item") {
+      errors.push("Bedrock furnace recipes do not support tag ingredients");
+    }
+
+    if (input.result?.count !== undefined && input.result.count > 1) {
+      errors.push("Bedrock furnace recipes do not support result counts");
+    }
+  }
+
   return errors;
 };
 
@@ -89,11 +97,11 @@ export const generate = (
   version: MinecraftVersion,
 ): CookingRecipe | BedrockFurnaceBody => {
   const input = extractInput(state);
-  const formatter = createFormatStrategy(version);
 
   if (version === MinecraftVersion.Bedrock) {
-    return buildBedrock(input, formatter);
+    return buildBedrock(input);
   }
 
+  const formatter = createRecipeFormatter(version);
   return buildJava(input, formatter, version);
 };

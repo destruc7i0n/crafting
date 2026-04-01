@@ -55,7 +55,7 @@ export const validateRecipe = (
     case RecipeType.Blasting:
     case RecipeType.CampfireCooking:
     case RecipeType.Smoking:
-      errors.push(...validateCooking(recipe));
+      errors.push(...validateCooking(recipe, version));
       break;
     case RecipeType.Stonecutter:
       errors.push(...validateStonecutter(recipe));
