@@ -7,10 +7,12 @@ import { Tooltip } from "@/components/tooltip/tooltip";
 import { downloadBlob } from "@/data/datapack";
 import { RecipeType } from "@/data/types";
 import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
+import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useItemSelection } from "@/hooks/use-item-selection";
 import { getPreviewBaseName, toPreviewFileName } from "@/lib/recipe-name";
+import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
-import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
+import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useUIStore } from "@/stores/ui";
@@ -20,19 +22,20 @@ import { FurnacePreview } from "./furnace";
 import { SmithingPreview } from "./smithing";
 import { StonecutterPreview } from "./stonecutter";
 
-const ACTION_BUTTON_CLASS_NAME =
-  "border-border bg-background text-foreground hover:bg-accent active:bg-accent/80 inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50";
-
 export const Preview = memo(() => {
-  const recipe = useRecipeStore(selectCurrentRecipe);
   const recipeType = useRecipeStore(selectCurrentRecipeType);
   const clearSelectedRecipeSlots = useRecipeStore((state) => state.clearSelectedRecipeSlots);
+  const hasFilledSlots = useRecipeStore((state) =>
+    Object.values(state.recipes[state.selectedRecipeIndex]?.slots ?? {}).some(
+      (slotItem) => slotItem != null,
+    ),
+  );
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const naming = useCurrentRecipeName();
+  const isTouchDevice = useIsTouchDevice();
   const selection = useItemSelection();
   const previewRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const hasFilledSlots = Object.values(recipe?.slots ?? {}).some((slotItem) => slotItem != null);
   let preview: ReactNode = null;
 
   switch (recipeType) {
@@ -132,14 +135,54 @@ export const Preview = memo(() => {
     >
       <div className="w-full overflow-x-auto">
         <div className="mx-auto w-fit min-w-0">
-          <div ref={previewRef} className="w-fit min-w-0">
-            {preview}
+          <div className="group relative w-fit min-w-0">
+            <div ref={previewRef} className="w-fit min-w-0">
+              {preview}
+            </div>
+
+            <div
+              className={cn(
+                "absolute right-2 bottom-2 z-10 flex items-center gap-1 transition-opacity",
+                isTouchDevice || isDownloading
+                  ? "opacity-100"
+                  : "pointer-events-none opacity-0 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100",
+              )}
+            >
+              <Tooltip
+                content={isDownloading ? "Saving preview image" : "Download preview image"}
+                placement="top"
+              >
+                <button
+                  type="button"
+                  className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-[opacity,colors] focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={handleDownloadPreview}
+                  disabled={isDownloading}
+                  aria-label={isDownloading ? "Saving preview image" : "Download preview image"}
+                >
+                  <ImageDownIcon size={14} />
+                  <span className="sr-only">{isDownloading ? "Saving Image" : "Save Image"}</span>
+                </button>
+              </Tooltip>
+
+              <Tooltip content="Clear recipe" placement="top-end">
+                <button
+                  type="button"
+                  className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-[opacity,colors] focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={handleClearRecipe}
+                  disabled={!hasFilledSlots}
+                  aria-label="Clear recipe"
+                >
+                  <EraserIcon size={14} />
+                  <span className="sr-only">Clear Recipe</span>
+                </button>
+              </Tooltip>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-3 flex flex-col gap-2">
-        {selection ? (
+      {selection ? (
+        <div className="mt-3 flex flex-col gap-2">
           <div className="min-w-0 flex-1">
             <div className="border-border/70 border-t pt-3">
               {selection.type === "preview" ? (
@@ -149,41 +192,8 @@ export const Preview = memo(() => {
               )}
             </div>
           </div>
-        ) : null}
-
-        <div className="flex justify-center">
-          <div className="flex shrink-0 items-center justify-end gap-2">
-            <Tooltip
-              content={isDownloading ? "Saving preview image" : "Download preview image"}
-              placement="bottom"
-            >
-              <button
-                type="button"
-                className={ACTION_BUTTON_CLASS_NAME}
-                onClick={handleDownloadPreview}
-                disabled={isDownloading}
-                aria-label={isDownloading ? "Saving preview image" : "Download preview image"}
-              >
-                <ImageDownIcon size={14} />
-                <span>{isDownloading ? "Saving Image" : "Save Image"}</span>
-              </button>
-            </Tooltip>
-
-            <Tooltip content="Clear recipe" placement="bottom">
-              <button
-                type="button"
-                className={ACTION_BUTTON_CLASS_NAME}
-                onClick={handleClearRecipe}
-                disabled={!hasFilledSlots}
-                aria-label="Clear recipe"
-              >
-                <EraserIcon size={14} />
-                <span>Clear Recipe</span>
-              </button>
-            </Tooltip>
-          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 });

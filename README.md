@@ -1,10 +1,11 @@
 # Crafting Generator
 
-Generate Minecraft recipes for Java and Bedrock.
+Generate JSON recipes for Minecraft Java and Bedrock with a drag and drop interface.
 
 ## Features
 
 - Drag and drop recipe editor
+  - Optimized for mobile devices
 - Java (`1.12`+) and Bedrock support
 - Crafting, furnace, stonecutter, and smithing recipe generation
 - Custom items and tag editing
