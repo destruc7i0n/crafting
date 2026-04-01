@@ -3,13 +3,15 @@
 
 import path from "node:path";
 
+import { latestVersion } from "minecraft-textures";
+
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const outputPath = path.join(repoRoot, "src/data/generated/bedrock-mappings.json");
 const geyserMappingsUrl = "https://raw.githubusercontent.com/GeyserMC/mappings/master/items.json";
 const mojangBedrockSamplesUrl =
   "https://raw.githubusercontent.com/Mojang/bedrock-samples/main/metadata/vanilladata_modules/mojang-items.json";
 
-type GeyserEntry = {
+type GeyserItemMapping = {
   bedrock_identifier: string;
   bedrock_data: number;
 };
@@ -21,9 +23,14 @@ type BedrockSamplesMojangItem = {
 type BedrockSamplesMojangItemsFile = {
   data_items: BedrockSamplesMojangItem[];
 };
+type MinecraftTexturesFile = {
+  items: Array<{
+    id: string;
+  }>;
+};
 
 type BedrockTranslation = {
-  id?: string;
+  id: string;
   data?: number;
 };
 
@@ -54,19 +61,24 @@ const fetchBedrockMappings = async () => {
     );
   }
 
-  const raw = (await geyserResponse.json()) as Record<string, GeyserEntry>;
+  const raw = (await geyserResponse.json()) as Record<string, GeyserItemMapping>;
   const mojangData = (await mojangResponse.json()) as BedrockSamplesMojangItemsFile;
+  const textureData = (
+    await import(`minecraft-textures/dist/textures/json/${latestVersion}.json`, {
+      with: { type: "json" },
+    })
+  ).default as MinecraftTexturesFile;
   const validBedrockIds = new Set(mojangData.data_items.map((item) => item.name));
-
+  const textureItemIds = new Set(textureData.items.map((item) => item.id));
   const translations: Record<string, BedrockTranslation | null> = {};
-  const seenBedrockKeys = new Set<string>();
+  const candidates: Array<{
+    javaId: string;
+    bedrockId: string;
+    bedrockData: number;
+  }> = [];
 
   for (const [javaId, entry] of Object.entries(raw)) {
-    const idDiffers = entry.bedrock_identifier !== javaId;
-
-    // geyser sends the data as item "damage" for older client compatibility
-    // we should only consider it if the id has changed (ex. white_banner -> banner:15)
-    if (!idDiffers) {
+    if (entry.bedrock_identifier === javaId) {
       continue;
     }
 
@@ -75,34 +87,63 @@ const fetchBedrockMappings = async () => {
       continue;
     }
 
+    // write invalid remaps as null so bedrock mode hides them instead of
+    // falling back to the java id.
     if (!validBedrockIds.has(entry.bedrock_identifier)) {
-      console.log(`Excluding ${javaId} → ${entry.bedrock_identifier} (not in Mojang item list)`);
       translations[javaId] = null;
       continue;
     }
 
-    const bedrockKey = `${entry.bedrock_identifier}:${entry.bedrock_data}`;
-
-    if (seenBedrockKeys.has(bedrockKey)) {
-      console.log(
-        `Excluding ${javaId} → ${entry.bedrock_identifier} (collision with already-mapped Bedrock ID)`,
-      );
-      translations[javaId] = null;
+    // if bedrock now has the same id directly, let it pass through unchanged.
+    if (validBedrockIds.has(javaId)) {
       continue;
     }
 
-    seenBedrockKeys.add(bedrockKey);
+    candidates.push({
+      javaId,
+      bedrockId: entry.bedrock_identifier,
+      bedrockData: entry.bedrock_data,
+    });
+  }
 
-    const translation: BedrockTranslation = {};
+  const mappedTargetCounts = new Map<string, number>();
 
-    translation.id = entry.bedrock_identifier;
-    translation.data = entry.bedrock_data;
+  // we need two passes here: first collect candidate remaps, then count shared
+  // bedrock ids so we only keep `data` when necessary
+  for (const candidate of candidates) {
+    mappedTargetCounts.set(
+      candidate.bedrockId,
+      (mappedTargetCounts.get(candidate.bedrockId) ?? 0) + 1,
+    );
+  }
 
-    translations[javaId] = translation;
+  const seenResolvedKeys = new Set<string>();
+
+  for (const candidate of candidates) {
+    const sharesMappedTarget = (mappedTargetCounts.get(candidate.bedrockId) ?? 0) > 1;
+    const collidesWithDirectTextureItem = textureItemIds.has(candidate.bedrockId);
+    const needsData = sharesMappedTarget || collidesWithDirectTextureItem;
+
+    // keep `data` for shared bedrock item families like banners/beds
+    const translation: BedrockTranslation = {
+      id: candidate.bedrockId,
+      ...(needsData ? { data: candidate.bedrockData } : {}),
+    };
+
+    const resolvedKey =
+      translation.data === undefined ? translation.id : `${translation.id}:${translation.data}`;
+
+    if (seenResolvedKeys.has(resolvedKey)) {
+      translations[candidate.javaId] = null;
+      continue;
+    }
+
+    seenResolvedKeys.add(resolvedKey);
+    translations[candidate.javaId] = translation;
   }
 
   const sortedTranslations = Object.fromEntries(
-    Object.entries(translations).sort(([a], [b]) => a.localeCompare(b)),
+    Object.entries(translations).sort(([left], [right]) => left.localeCompare(right)),
   );
 
   await Bun.write(outputPath, `${JSON.stringify(sortedTranslations, null, 2)}\n`);
