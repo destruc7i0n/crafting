@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { RecipeType } from "@/data/types";
+import { IngredientItem } from "@/data/models/types";
+import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
 
 import { SingleRecipeState, useRecipeStore } from "./index";
 
@@ -28,6 +29,14 @@ const createRecipe = (id: string): SingleRecipeState => ({
     identifierName: "",
     priority: 0,
   },
+});
+
+const createItem = (id: string): IngredientItem => ({
+  type: "default_item",
+  id: { namespace: "minecraft", id },
+  displayName: id,
+  texture: `${id}.png`,
+  _version: MinecraftVersion.V121,
 });
 
 describe("recipe store", () => {
@@ -112,6 +121,73 @@ describe("recipe store", () => {
         identifierName: "",
         priority: 0,
       },
+    });
+  });
+
+  it("clears only the selected recipe slots and preserves its other fields", () => {
+    const firstRecipe = createRecipe("recipe_1");
+    firstRecipe.slots = {
+      [SLOTS.crafting.slot1]: createItem("oak_log"),
+    };
+
+    const secondRecipe = createRecipe("recipe_2");
+    secondRecipe.nameMode = "manual";
+    secondRecipe.name = "polished_stone";
+    secondRecipe.group = "building";
+    secondRecipe.category = "decorations";
+    secondRecipe.crafting = {
+      shapeless: true,
+      keepWhitespace: true,
+      twoByTwo: true,
+    };
+    secondRecipe.cooking = {
+      time: 200,
+      experience: 0.35,
+    };
+    secondRecipe.bedrock = {
+      identifierMode: "manual",
+      identifierName: "stone_recipe",
+      priority: 3,
+    };
+    secondRecipe.slots = {
+      [SLOTS.crafting.slot1]: createItem("stone"),
+      [SLOTS.crafting.result]: createItem("polished_andesite"),
+    };
+
+    useRecipeStore.setState((state) => ({
+      ...state,
+      recipes: [firstRecipe, secondRecipe],
+      selectedRecipeIndex: 1,
+    }));
+
+    useRecipeStore.getState().clearSelectedRecipeSlots();
+
+    expect(useRecipeStore.getState().recipes[0]?.slots).toEqual({
+      [SLOTS.crafting.slot1]: expect.objectContaining({
+        displayName: "oak_log",
+      }),
+    });
+    expect(useRecipeStore.getState().recipes[1]).toMatchObject({
+      id: "recipe_2",
+      nameMode: "manual",
+      name: "polished_stone",
+      group: "building",
+      category: "decorations",
+      crafting: {
+        shapeless: true,
+        keepWhitespace: true,
+        twoByTwo: true,
+      },
+      cooking: {
+        time: 200,
+        experience: 0.35,
+      },
+      bedrock: {
+        identifierMode: "manual",
+        identifierName: "stone_recipe",
+        priority: 3,
+      },
+      slots: {},
     });
   });
 });

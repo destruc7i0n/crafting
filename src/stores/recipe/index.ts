@@ -63,6 +63,7 @@ type RecipeActions = {
   selectRecipe: (index: number) => void;
   createRecipe: () => void;
   deleteRecipe: (index: number) => void;
+  clearSelectedRecipeSlots: () => void;
 
   setRecipeNameMode: (mode: SingleRecipeState["nameMode"]) => void;
   setRecipeName: (name: string) => void;
@@ -132,6 +133,14 @@ export const useRecipeStore = create<ImmerState>()(
           }
 
           state.recipes.splice(index, 1);
+        });
+      },
+      clearSelectedRecipeSlots: () => {
+        set((state) => {
+          const recipe = getSelectedRecipe(state);
+          if (recipe) {
+            recipe.slots = {};
+          }
         });
       },
       setRecipeNameMode: (mode: SingleRecipeState["nameMode"]) => {
