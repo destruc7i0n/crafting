@@ -82,6 +82,18 @@ const ensureName = (value: string | undefined) => {
   return sanitized || FALLBACK_NAME;
 };
 
+const toNames = (...values: Array<string | undefined>) =>
+  unique(
+    values.flatMap((value) => {
+      if (!value) {
+        return [];
+      }
+
+      const name = sanitizeRecipeName(value);
+      return name ? [name] : [];
+    }),
+  );
+
 const itemSlug = (item: IngredientItem | undefined) => {
   if (!item) return undefined;
 
@@ -135,142 +147,137 @@ const getSidebarBaseTitle = (recipe: SingleRecipeState) => {
   return `${recipeTypeToName[recipe.recipeType]} Recipe`;
 };
 
-const getCraftingPossibleNames = (recipe: SingleRecipeState) => {
-  const result = itemSlug(recipe.slots[SLOTS.crafting.result]);
-  const base = ensureName(result || "crafting_recipe");
+const getCraftingNames = (recipe: SingleRecipeState) =>
+  toNames(itemSlug(recipe.slots[SLOTS.crafting.result]) ?? "crafting_recipe");
 
-  return unique([base]);
+const getTransmuteNames = (recipe: SingleRecipeState) =>
+  toNames(itemSlug(recipe.slots[SLOTS.crafting.result]) ?? "crafting_transmute_recipe");
+
+const buildCookingNames = (
+  result: string | undefined,
+  ingredient: string | undefined,
+  {
+    fallback,
+    resultSuffix,
+    ingredientSuffix,
+    extras = [],
+  }: {
+    fallback: string;
+    resultSuffix: string;
+    ingredientSuffix: string;
+    extras?: Array<string | undefined>;
+  },
+) => {
+  let base = fallback;
+
+  if (result) {
+    base = `${result}${resultSuffix}`;
+  } else if (ingredient) {
+    base = `${ingredient}${ingredientSuffix}`;
+  }
+
+  return toNames(ensureName(base), ...extras);
 };
 
-const getTransmutePossibleNames = (recipe: SingleRecipeState) => {
-  const result = itemSlug(recipe.slots[SLOTS.crafting.result]);
-  const base = ensureName(result || "crafting_transmute_recipe");
-
-  return unique([base]);
-};
-
-const getCookingPossibleNames = (recipe: SingleRecipeState) => {
+const getCookingNames = (recipe: SingleRecipeState) => {
   const result = itemSlug(recipe.slots[SLOTS.cooking.result]);
   const ingredient = itemSlug(recipe.slots[SLOTS.cooking.ingredient]);
 
   switch (recipe.recipeType) {
-    case RecipeType.Smelting: {
-      let baseSource = "smelting";
-      if (result) {
-        baseSource = `${result}_from_smelting`;
-      } else if (ingredient) {
-        baseSource = `${ingredient}_smelting`;
-      }
-      const base = ensureName(baseSource);
-
-      return unique([
-        base,
-        result && ingredient ? `${result}_from_smelting_${ingredient}` : "",
-        result ?? "",
-      ]);
-    }
-    case RecipeType.Blasting: {
-      let baseSource = "blasting";
-      if (result) {
-        baseSource = `${result}_from_blasting`;
-      } else if (ingredient) {
-        baseSource = `${ingredient}_blasting`;
-      }
-      const base = ensureName(baseSource);
-
-      return unique([base, result && ingredient ? `${result}_from_blasting_${ingredient}` : ""]);
-    }
-    case RecipeType.Smoking: {
-      let baseSource = "smoking";
-      if (result) {
-        baseSource = `${result}_from_smoking`;
-      } else if (ingredient) {
-        baseSource = `${ingredient}_smoking`;
-      }
-      const base = ensureName(baseSource);
-
-      return unique([base]);
-    }
-    case RecipeType.CampfireCooking: {
-      let baseSource = "campfire_cooking";
-      if (result) {
-        baseSource = `${result}_from_campfire_cooking`;
-      } else if (ingredient) {
-        baseSource = `${ingredient}_campfire_cooking`;
-      }
-      const base = ensureName(baseSource);
-
-      return unique([base]);
-    }
+    case RecipeType.Smelting:
+      return buildCookingNames(result, ingredient, {
+        fallback: "smelting",
+        resultSuffix: "_from_smelting",
+        ingredientSuffix: "_smelting",
+        extras: [
+          result && ingredient ? `${result}_from_smelting_${ingredient}` : undefined,
+          result,
+        ],
+      });
+    case RecipeType.Blasting:
+      return buildCookingNames(result, ingredient, {
+        fallback: "blasting",
+        resultSuffix: "_from_blasting",
+        ingredientSuffix: "_blasting",
+        extras: [result && ingredient ? `${result}_from_blasting_${ingredient}` : undefined],
+      });
+    case RecipeType.Smoking:
+      return buildCookingNames(result, ingredient, {
+        fallback: "smoking",
+        resultSuffix: "_from_smoking",
+        ingredientSuffix: "_smoking",
+      });
+    case RecipeType.CampfireCooking:
+      return buildCookingNames(result, ingredient, {
+        fallback: "campfire_cooking",
+        resultSuffix: "_from_campfire_cooking",
+        ingredientSuffix: "_campfire_cooking",
+      });
     default:
       return [FALLBACK_NAME];
   }
 };
 
-const getStonecuttingPossibleNames = (recipe: SingleRecipeState) => {
+const getStonecuttingNames = (recipe: SingleRecipeState) => {
   const result = itemSlug(recipe.slots[SLOTS.stonecutter.result]);
   const ingredient = itemSlug(recipe.slots[SLOTS.stonecutter.ingredient]);
-  let baseSource = "stonecutting_recipe";
+  let base = "stonecutting_recipe";
+
   if (result && ingredient) {
-    baseSource = `${result}_from_${ingredient}_stonecutting`;
+    base = `${result}_from_${ingredient}_stonecutting`;
   } else if (result) {
-    baseSource = `${result}_stonecutting`;
+    base = `${result}_stonecutting`;
   } else if (ingredient) {
-    baseSource = `${ingredient}_stonecutting`;
+    base = `${ingredient}_stonecutting`;
   }
 
-  const base = ensureName(baseSource);
-
-  return unique([base]);
+  return toNames(ensureName(base));
 };
 
-const getSmithingPossibleNames = (recipe: SingleRecipeState) => {
+const getSmithingNames = (recipe: SingleRecipeState) => {
   const result = itemSlug(recipe.slots[SLOTS.smithing.result]);
   const template = itemSlug(recipe.slots[SLOTS.smithing.template]);
   const baseItem = itemSlug(recipe.slots[SLOTS.smithing.base]);
 
   if (recipe.recipeType === RecipeType.SmithingTrim) {
-    const templateName = ensureName(template ? `${template}_smithing_trim` : "smithing_trim");
-
-    return unique([templateName]);
+    return toNames(template ? `${template}_smithing_trim` : "smithing_trim");
   }
 
-  let smithingBaseSource = "smithing_recipe";
+  let base = "smithing_recipe";
+
   if (result) {
-    smithingBaseSource = `${result}_smithing`;
+    base = `${result}_smithing`;
   } else if (baseItem) {
-    smithingBaseSource = `${baseItem}_smithing`;
+    base = `${baseItem}_smithing`;
   }
 
-  const smithingName = ensureName(smithingBaseSource);
-
-  return unique([smithingName]);
+  return toNames(base);
 };
 
-const getAutoRecipePossibleNames = (recipe: SingleRecipeState) => {
+const getRecipeNameCandidates = (recipe: SingleRecipeState) => {
   switch (recipe.recipeType) {
     case RecipeType.Crafting:
-      return getCraftingPossibleNames(recipe);
+      return getCraftingNames(recipe);
     case RecipeType.CraftingTransmute:
-      return getTransmutePossibleNames(recipe);
+      return getTransmuteNames(recipe);
     case RecipeType.Smelting:
     case RecipeType.Blasting:
     case RecipeType.Smoking:
     case RecipeType.CampfireCooking:
-      return getCookingPossibleNames(recipe);
+      return getCookingNames(recipe);
     case RecipeType.Stonecutter:
-      return getStonecuttingPossibleNames(recipe);
+      return getStonecuttingNames(recipe);
     case RecipeType.Smithing:
     case RecipeType.SmithingTransform:
     case RecipeType.SmithingTrim:
-      return getSmithingPossibleNames(recipe);
+      return getSmithingNames(recipe);
     default:
       return [FALLBACK_NAME];
   }
 };
 
 export const getAutoRecipeName = (recipe: SingleRecipeState) =>
-  getAutoRecipePossibleNames(recipe)[0] ?? FALLBACK_NAME;
+  getRecipeNameCandidates(recipe)[0] ?? FALLBACK_NAME;
 
 const getManualJavaName = (recipe: SingleRecipeState) => {
   const manualName = sanitizeRecipeName(recipe.name);
@@ -298,14 +305,9 @@ const getAutoBedrockName = (recipe: SingleRecipeState) =>
 const getBedrockIdentifier = (bedrockName: string | undefined, context: NamingContext) =>
   bedrockName ? `${context.bedrockNamespace}:${bedrockName}` : undefined;
 
-const resolveUniqueNames = (
-  entries: NameEntry[],
-  toKey: (name: string) => string,
-  canUseName: (name: string, usedNames: Set<string>, usedKeys: Set<string>) => boolean,
-) => {
+const assignUniqueNames = (entries: NameEntry[]) => {
   const namesById: Record<string, string> = {};
   const usedNames = new Set<string>();
-  const usedKeys = new Set<string>();
 
   for (const entry of entries) {
     if (!entry.fixedName) {
@@ -314,7 +316,6 @@ const resolveUniqueNames = (
 
     namesById[entry.recipe.id] = entry.fixedName;
     usedNames.add(entry.fixedName);
-    usedKeys.add(toKey(entry.fixedName));
   }
 
   for (const entry of entries) {
@@ -325,7 +326,7 @@ const resolveUniqueNames = (
     const possibleNames = unique(
       entry.possibleNames.length > 0 ? entry.possibleNames : [FALLBACK_NAME],
     );
-    let selectedName = possibleNames.find((name) => canUseName(name, usedNames, usedKeys));
+    let selectedName = possibleNames.find((name) => !usedNames.has(name));
 
     if (!selectedName) {
       const base = possibleNames[possibleNames.length - 1] ?? FALLBACK_NAME;
@@ -334,12 +335,11 @@ const resolveUniqueNames = (
       do {
         selectedName = `${base}_${index}`;
         index += 1;
-      } while (!canUseName(selectedName, usedNames, usedKeys));
+      } while (usedNames.has(selectedName));
     }
 
     namesById[entry.recipe.id] = selectedName;
     usedNames.add(selectedName);
-    usedKeys.add(toKey(selectedName));
   }
 
   return namesById;
@@ -367,50 +367,41 @@ const buildSidebarTitles = (recipes: SingleRecipeState[]) => {
   return labels;
 };
 
+const getJavaNameEntry = (recipe: SingleRecipeState): NameEntry => {
+  const manualName = getManualJavaName(recipe);
+
+  return {
+    recipe,
+    fixedName: recipe.nameMode === "manual" ? manualName : undefined,
+    possibleNames: recipe.nameMode === "manual" ? [] : getRecipeNameCandidates(recipe),
+    skipAssignment: recipe.nameMode === "manual" && !manualName,
+  };
+};
+
+const getBedrockNameEntry = (recipe: SingleRecipeState): NameEntry => {
+  const manualIdentifierName = getManualBedrockName(recipe);
+  const manualJavaName = getManualJavaName(recipe);
+  const autoNames = getRecipeNameCandidates(recipe);
+  const autoBedrockName = getAutoBedrockName(recipe);
+
+  return {
+    recipe,
+    fixedName: recipe.bedrock.identifierMode === "manual" ? manualIdentifierName : undefined,
+    possibleNames:
+      recipe.bedrock.identifierMode === "manual"
+        ? []
+        : unique([autoBedrockName, ...(!manualJavaName ? autoNames.slice(1) : [])]),
+    skipAssignment: recipe.bedrock.identifierMode === "manual" && !manualIdentifierName,
+  };
+};
+
 export const resolveRecipeNames = (
   recipes: SingleRecipeState[],
   context: NamingContext,
 ): ResolvedRecipeNames => {
   const sidebarTitles = buildSidebarTitles(recipes);
-
-  const javaAssignments = resolveUniqueNames(
-    recipes.map((recipe) => {
-      const manualName = getManualJavaName(recipe);
-
-      return {
-        recipe,
-        fixedName: recipe.nameMode === "manual" ? manualName : undefined,
-        possibleNames: recipe.nameMode === "manual" ? [] : getAutoRecipePossibleNames(recipe),
-        skipAssignment: recipe.nameMode === "manual" && !manualName,
-      };
-    }),
-    (name) => name,
-    (name, usedNames) => !usedNames.has(name),
-  );
-
-  const bedrockAssignments = resolveUniqueNames(
-    recipes.map((recipe) => {
-      const manualIdentifierName = getManualBedrockName(recipe);
-      const manualJavaName = getManualJavaName(recipe);
-      const autoRecipePossibleNames = getAutoRecipePossibleNames(recipe);
-      const autoBedrockName = getAutoBedrockName(recipe);
-
-      return {
-        recipe,
-        fixedName: recipe.bedrock.identifierMode === "manual" ? manualIdentifierName : undefined,
-        possibleNames:
-          recipe.bedrock.identifierMode === "manual"
-            ? []
-            : unique([
-                autoBedrockName,
-                ...(!manualJavaName ? autoRecipePossibleNames.slice(1) : []),
-              ]),
-        skipAssignment: recipe.bedrock.identifierMode === "manual" && !manualIdentifierName,
-      };
-    }),
-    (name) => name,
-    (name, usedNames) => !usedNames.has(name),
-  );
+  const javaAssignments = assignUniqueNames(recipes.map(getJavaNameEntry));
+  const bedrockAssignments = assignUniqueNames(recipes.map(getBedrockNameEntry));
 
   const byId: Record<string, RecipeNaming> = {};
 
