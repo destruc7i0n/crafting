@@ -25,7 +25,7 @@ import { getRecipeExportDetail, toJavaRecipeFileName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
 import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
 import { validateDatapackExport } from "@/lib/validate-datapack-export";
-import { useRecipeStore } from "@/stores/recipe";
+import { SingleRecipeState, useRecipeStore } from "@/stores/recipe";
 import { useSettingsStore } from "@/stores/settings";
 import { selectBedrockNamespace, selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useTagStore } from "@/stores/tag";
@@ -52,6 +52,18 @@ interface DownloadConfig {
   blockedTitle: string;
 }
 
+interface RecipeRow {
+  recipe: SingleRecipeState;
+  index: number;
+  isSelected: boolean;
+  isSupported: boolean;
+  hasWarning: boolean;
+  errors?: string[];
+  title: string;
+  detail: string;
+  downloadTarget?: string;
+}
+
 const DOWNLOAD_CONFIG: Record<"bedrock" | "java", DownloadConfig> = {
   bedrock: {
     label: "Download Behavior Pack",
@@ -64,6 +76,45 @@ const DOWNLOAD_CONFIG: Record<"bedrock" | "java", DownloadConfig> = {
     blockedTitle: "Fix all recipes before downloading",
   },
 } as const;
+
+const UNSUPPORTED_RECIPE_MESSAGE = "Recipe type is not available in this version";
+
+const getRecipeWarningContent = ({
+  isSupported,
+  errors,
+}: Pick<RecipeRow, "isSupported" | "errors">) => {
+  if (!isSupported) {
+    return UNSUPPORTED_RECIPE_MESSAGE;
+  }
+
+  if (errors) {
+    return (
+      <ul className="list-disc space-y-1 pl-4">
+        {errors.map((error) => (
+          <li key={error}>{error}</li>
+        ))}
+      </ul>
+    );
+  }
+
+  return undefined;
+};
+
+const SidebarTooltipContent = ({
+  title,
+  description,
+  warning,
+}: {
+  title: string;
+  description?: string;
+  warning?: ReactNode;
+}) => (
+  <div className="max-w-64 space-y-1 whitespace-normal">
+    <div className="font-medium">{title}</div>
+    {description && <div className="text-muted-foreground">{description}</div>}
+    {warning && <div className="text-amber-300">{warning}</div>}
+  </div>
+);
 
 const getRecipeDownloadTarget = (
   version: MinecraftVersion,
@@ -84,6 +135,122 @@ const getRecipeDownloadTarget = (
   return undefined;
 };
 
+const CollapsedRecipeButton = ({
+  row,
+  onSelect,
+}: {
+  row: RecipeRow;
+  onSelect: (index: number) => void;
+}) => {
+  const warningContent = getRecipeWarningContent(row);
+
+  return (
+    <Tooltip
+      content={
+        <SidebarTooltipContent
+          title={row.title}
+          description={row.detail}
+          warning={warningContent}
+        />
+      }
+    >
+      <button
+        type="button"
+        onClick={() => onSelect(row.index)}
+        className={cn(
+          "flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border transition-colors",
+          row.isSelected
+            ? "border-primary bg-primary/10"
+            : "hover:bg-accent active:bg-accent/80 border-transparent",
+          !row.isSupported && "opacity-60",
+          row.hasWarning && !row.isSelected && "border-amber-500/40",
+        )}
+      >
+        <ResourceIcon itemId={recipeTypeToItemId[row.recipe.recipeType]} className="h-6 w-6" />
+      </button>
+    </Tooltip>
+  );
+};
+
+const ExpandedRecipeRow = ({
+  row,
+  canDelete,
+  onSelect,
+  onDelete,
+  onDownload,
+}: {
+  row: RecipeRow;
+  canDelete: boolean;
+  onSelect: (index: number) => void;
+  onDelete: (index: number, event: { shiftKey: boolean }) => void;
+  onDownload: (recipe: SingleRecipeState, target: string) => void;
+}) => {
+  const warningContent = getRecipeWarningContent(row);
+
+  return (
+    <div
+      className={cn(
+        "group border-border flex shrink-0 overflow-hidden rounded-md border text-left transition-colors",
+        row.isSelected
+          ? "border-primary bg-primary/10 font-medium"
+          : "hover:bg-accent active:bg-accent/80",
+        row.hasWarning && !row.isSelected && "border-amber-500/40",
+      )}
+    >
+      <div
+        onClick={() => onSelect(row.index)}
+        className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 px-2 py-2"
+      >
+        <ResourceIcon
+          itemId={recipeTypeToItemId[row.recipe.recipeType]}
+          className="h-6 w-6 shrink-0"
+        />
+
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+          <span className="truncate text-sm" title={row.title}>
+            {row.title}
+          </span>
+          <span className="text-muted-foreground truncate text-xs" title={row.detail}>
+            {row.detail}
+          </span>
+        </div>
+
+        <span className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            className="text-muted-foreground hover:text-foreground cursor-pointer rounded transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+            disabled={!row.downloadTarget}
+            onClick={(event) => {
+              event.stopPropagation();
+              if (row.downloadTarget) {
+                onDownload(row.recipe, row.downloadTarget);
+              }
+            }}
+            title={`Download ${row.detail}`}
+          >
+            <DownloadIcon size={14} />
+          </button>
+
+          {canDelete && (
+            <button
+              type="button"
+              className="text-muted-foreground hover:text-destructive cursor-pointer rounded transition-colors"
+              onClick={(event) => {
+                event.stopPropagation();
+                onDelete(row.index, event);
+              }}
+            >
+              <Trash2Icon size={14} />
+            </button>
+          )}
+        </span>
+      </div>
+
+      {warningContent && <RecipeWarning content={warningContent} />}
+    </div>
+  );
+};
+
 export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: RecipeSidebarProps) => {
   const recipes = useRecipeStore((state) => state.recipes);
   const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
@@ -97,17 +264,35 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
   const toggleRecipeSidebar = useUIStore((state) => state.toggleRecipeSidebar);
 
+  const isBedrock = minecraftVersion === MinecraftVersion.Bedrock;
   const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
   const invalidRecipesMap = useMemo(() => {
-    const issues =
-      minecraftVersion === MinecraftVersion.Bedrock
-        ? validateBehaviorPackExport(recipes, { bedrockNamespace })
-        : validateDatapackExport(recipes, minecraftVersion, { bedrockNamespace });
+    const issues = isBedrock
+      ? validateBehaviorPackExport(recipes, { bedrockNamespace })
+      : validateDatapackExport(recipes, minecraftVersion, { bedrockNamespace });
     return new Map(issues.map((issue) => [issue.recipe.id, issue.errors]));
-  }, [recipes, minecraftVersion, bedrockNamespace]);
+  }, [bedrockNamespace, isBedrock, minecraftVersion, recipes]);
   const canDownloadPack = invalidRecipesMap.size === 0;
-  const downloadConfig =
-    DOWNLOAD_CONFIG[minecraftVersion === MinecraftVersion.Bedrock ? "bedrock" : "java"];
+  const downloadConfig = DOWNLOAD_CONFIG[isBedrock ? "bedrock" : "java"];
+  const recipeRows: RecipeRow[] = recipes.map((recipe, index) => {
+    const naming = resolvedNames.byId[recipe.id];
+    const errors = invalidRecipesMap.get(recipe.id);
+    const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
+    const title = naming?.sidebarTitle ?? "Recipe";
+    const detail = getRecipeExportDetail(naming, minecraftVersion);
+
+    return {
+      recipe,
+      index,
+      isSelected: selectedRecipeIndex === index,
+      isSupported,
+      hasWarning: !isSupported || !!errors,
+      errors,
+      title,
+      detail,
+      downloadTarget: getRecipeDownloadTarget(minecraftVersion, naming),
+    };
+  });
 
   const handleSelectRecipe = (index: number) => {
     selectRecipe(index);
@@ -126,11 +311,11 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   };
 
   const handleDownloadAll = async () => {
-    if (!canDownloadPack || !downloadConfig) {
+    if (!canDownloadPack) {
       return;
     }
 
-    if (minecraftVersion === MinecraftVersion.Bedrock) {
+    if (isBedrock) {
       await downloadBehaviorPack(recipes, minecraftVersion, { bedrockNamespace });
       return;
     }
@@ -141,85 +326,66 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     });
   };
 
+  const handleDownloadRecipe = (recipe: RecipeRow["recipe"], downloadTarget: string) => {
+    downloadRecipeJson(recipe, minecraftVersion, downloadTarget);
+  };
+
+  const invalidRecipeCountLabel = `${invalidRecipesMap.size} invalid ${invalidRecipesMap.size === 1 ? "recipe" : "recipes"}`;
+  const collapsedDownloadTooltip = canDownloadPack ? (
+    <SidebarTooltipContent title={downloadConfig.readyTitle} />
+  ) : (
+    <SidebarTooltipContent
+      title={downloadConfig.blockedTitle}
+      description={invalidRecipeCountLabel}
+    />
+  );
+
   if (collapsed) {
     return (
       <div className="relative flex h-full max-h-full min-h-0 w-full flex-col items-center gap-1 rounded-lg border py-2">
-        <button
-          type="button"
-          onClick={toggleRecipeSidebar}
-          className="hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors"
-          title="Expand sidebar"
-        >
-          <ChevronRightIcon size={16} />
-        </button>
+        <Tooltip content={<SidebarTooltipContent title="Expand sidebar" />}>
+          <button
+            type="button"
+            onClick={toggleRecipeSidebar}
+            className="hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors"
+          >
+            <ChevronRightIcon size={16} />
+          </button>
+        </Tooltip>
 
-        <button
-          onClick={createRecipe}
-          className="border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-dashed transition-colors"
-          title="New Recipe"
-        >
-          <PlusIcon size={16} />
-        </button>
+        <Tooltip content={<SidebarTooltipContent title="New Recipe" />}>
+          <button
+            type="button"
+            onClick={createRecipe}
+            className="border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-dashed transition-colors"
+          >
+            <PlusIcon size={16} />
+          </button>
+        </Tooltip>
 
         <div className="flex min-h-0 flex-1 flex-col items-center gap-1 overflow-y-auto py-1">
-          {recipes.map((recipe, index) => {
-            const isSelected = selectedRecipeIndex === index;
-            const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
-            const recipeErrors = invalidRecipesMap.get(recipe.id);
-            const hasWarning = !isSupported || !!recipeErrors;
-            const naming = resolvedNames.byId[recipe.id];
-            const detail = getRecipeExportDetail(naming, minecraftVersion);
-            const label = naming ? `${naming.sidebarTitle} (${detail})` : "Recipe";
-
-            return (
-              <Tooltip key={recipe.id} content={label}>
-                <button
-                  type="button"
-                  onClick={() => handleSelectRecipe(index)}
-                  className={cn(
-                    "flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border transition-colors",
-                    isSelected
-                      ? "border-primary bg-primary/10"
-                      : "hover:bg-accent active:bg-accent/80 border-transparent",
-                    !isSupported && "opacity-60",
-                    hasWarning && !isSelected && "border-amber-500/40",
-                  )}
-                >
-                  <ResourceIcon
-                    itemId={recipeTypeToItemId[recipe.recipeType]}
-                    className="h-6 w-6"
-                  />
-                </button>
-              </Tooltip>
-            );
-          })}
+          {recipeRows.map((row) => (
+            <CollapsedRecipeButton key={row.recipe.id} row={row} onSelect={handleSelectRecipe} />
+          ))}
         </div>
 
-        {downloadConfig && (
-          <div className="border-border mt-auto flex flex-col items-center gap-1 border-t pt-2">
-            {!canDownloadPack && (
-              <div
-                className="flex h-8 w-8 items-center justify-center"
-                title={`${invalidRecipesMap.size} invalid ${invalidRecipesMap.size === 1 ? "recipe" : "recipes"}`}
+        <div className="border-border mt-auto flex flex-col items-center gap-1 border-t pt-2">
+          <Tooltip content={collapsedDownloadTooltip}>
+            <span>
+              <button
+                type="button"
+                disabled={!canDownloadPack}
+                onClick={handleDownloadAll}
+                className={cn(
+                  "border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border transition-colors",
+                  !canDownloadPack && "cursor-not-allowed opacity-50",
+                )}
               >
-                <TriangleAlertIcon size={14} className="shrink-0 text-amber-500" />
-              </div>
-            )}
-
-            <button
-              type="button"
-              disabled={!canDownloadPack}
-              onClick={handleDownloadAll}
-              className={cn(
-                "border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border transition-colors",
-                !canDownloadPack && "cursor-not-allowed opacity-50",
-              )}
-              title={canDownloadPack ? downloadConfig.readyTitle : downloadConfig.blockedTitle}
-            >
-              <DownloadIcon size={16} />
-            </button>
-          </div>
-        )}
+                <DownloadIcon size={16} />
+              </button>
+            </span>
+          </Tooltip>
+        </div>
       </div>
     );
   }
@@ -249,112 +415,32 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto">
-        {recipes.map((recipe, index) => {
-          const isSelected = selectedRecipeIndex === index;
-          const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
-          const recipeErrors = invalidRecipesMap.get(recipe.id);
-          const hasWarning = !isSupported || !!recipeErrors;
-          const naming = resolvedNames.byId[recipe.id];
-          const sidebarTitle = naming?.sidebarTitle ?? "Recipe";
-          const detail = getRecipeExportDetail(naming, minecraftVersion);
-          const downloadTarget = getRecipeDownloadTarget(minecraftVersion, naming);
-
-          return (
-            <div
-              key={recipe.id}
-              className={cn(
-                "group border-border flex shrink-0 overflow-hidden rounded-md border text-left transition-colors",
-                isSelected
-                  ? "border-primary bg-primary/10 font-medium"
-                  : "hover:bg-accent active:bg-accent/80",
-                hasWarning && !isSelected && "border-amber-500/40",
-              )}
-            >
-              <div
-                onClick={() => handleSelectRecipe(index)}
-                className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 px-2 py-2"
-              >
-                <ResourceIcon
-                  itemId={recipeTypeToItemId[recipe.recipeType]}
-                  className="h-6 w-6 shrink-0"
-                />
-
-                <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-                  <span className="truncate text-sm" title={sidebarTitle}>
-                    {sidebarTitle}
-                  </span>
-                  <span className="text-muted-foreground truncate text-xs" title={detail}>
-                    {detail}
-                  </span>
-                </div>
-
-                <span className="flex shrink-0 items-center gap-2">
-                  <button
-                    type="button"
-                    className="text-muted-foreground hover:text-foreground cursor-pointer rounded transition-colors disabled:cursor-not-allowed disabled:opacity-40"
-                    disabled={!downloadTarget}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (downloadTarget) {
-                        downloadRecipeJson(recipe, minecraftVersion, downloadTarget);
-                      }
-                    }}
-                    title={`Download ${detail}`}
-                  >
-                    <DownloadIcon size={14} />
-                  </button>
-
-                  {recipes.length > 1 && (
-                    <button
-                      type="button"
-                      className="text-muted-foreground hover:text-destructive cursor-pointer rounded transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteRecipe(index, e);
-                      }}
-                    >
-                      <Trash2Icon size={14} />
-                    </button>
-                  )}
-                </span>
-              </div>
-
-              {!isSupported && (
-                <RecipeWarning content="Recipe type is not available in this version" />
-              )}
-
-              {isSupported && recipeErrors && (
-                <RecipeWarning
-                  content={
-                    <ul className="space-y-1">
-                      {recipeErrors.map((e) => (
-                        <li key={e}>{e}</li>
-                      ))}
-                    </ul>
-                  }
-                />
-              )}
-            </div>
-          );
-        })}
+        {recipeRows.map((row) => (
+          <ExpandedRecipeRow
+            key={row.recipe.id}
+            row={row}
+            canDelete={recipes.length > 1}
+            onSelect={handleSelectRecipe}
+            onDelete={handleDeleteRecipe}
+            onDownload={handleDownloadRecipe}
+          />
+        ))}
       </div>
 
-      {downloadConfig && (
-        <div className="border-border mt-auto flex shrink-0 flex-col gap-2 border-t pt-3">
-          <Tooltip content={downloadConfig.blockedTitle} placement="top" disabled={canDownloadPack}>
-            <span className={cn(!canDownloadPack && "inline-block w-full")}>
-              <button
-                type="button"
-                disabled={!canDownloadPack}
-                className="border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 w-full cursor-pointer rounded-md border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-                onClick={handleDownloadAll}
-              >
-                {downloadConfig.label}
-              </button>
-            </span>
-          </Tooltip>
-        </div>
-      )}
+      <div className="border-border mt-auto flex shrink-0 flex-col gap-2 border-t pt-3">
+        <Tooltip content={downloadConfig.blockedTitle} placement="top" disabled={canDownloadPack}>
+          <span className={cn(!canDownloadPack && "inline-block w-full")}>
+            <button
+              type="button"
+              disabled={!canDownloadPack}
+              className="border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 w-full cursor-pointer rounded-md border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+              onClick={handleDownloadAll}
+            >
+              {downloadConfig.label}
+            </button>
+          </span>
+        </Tooltip>
+      </div>
     </div>
   );
 });
