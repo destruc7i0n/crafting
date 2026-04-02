@@ -124,6 +124,14 @@ describe("recipe store", () => {
     });
   });
 
+  it("creates recipe state with independent nested settings objects", () => {
+    useRecipeStore.getState().createRecipe();
+    useRecipeStore.getState().setRecipeCraftingShapeless(true);
+
+    expect(useRecipeStore.getState().recipes[0]?.crafting.shapeless).toBe(false);
+    expect(useRecipeStore.getState().recipes[1]?.crafting.shapeless).toBe(true);
+  });
+
   it("clears only the selected recipe slots and preserves its other fields", () => {
     const firstRecipe = createRecipe("recipe_1");
     firstRecipe.slots = {
@@ -188,6 +196,73 @@ describe("recipe store", () => {
         priority: 3,
       },
       slots: {},
+    });
+  });
+
+  it("updates all matching slot items", () => {
+    const firstRecipe = createRecipe("recipe_1");
+    firstRecipe.slots = {
+      [SLOTS.crafting.slot1]: createItem("stone"),
+      [SLOTS.crafting.result]: createItem("granite"),
+    };
+
+    const secondRecipe = createRecipe("recipe_2");
+    secondRecipe.slots = {
+      [SLOTS.crafting.slot1]: createItem("stone"),
+      [SLOTS.crafting.result]: createItem("diorite"),
+    };
+
+    useRecipeStore.setState((state) => ({
+      ...state,
+      recipes: [firstRecipe, secondRecipe],
+      selectedRecipeIndex: 0,
+    }));
+
+    useRecipeStore.getState().syncCustomSlotItem(
+      (item) => item.type === "default_item" && item.id.id === "stone",
+      (item) => {
+        item.displayName = "smooth_stone";
+      },
+    );
+
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toMatchObject({
+      displayName: "smooth_stone",
+    });
+    expect(useRecipeStore.getState().recipes[1]?.slots[SLOTS.crafting.slot1]).toMatchObject({
+      displayName: "smooth_stone",
+    });
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.result]).toMatchObject({
+      displayName: "granite",
+    });
+  });
+
+  it("removes all matching slot items", () => {
+    const firstRecipe = createRecipe("recipe_1");
+    firstRecipe.slots = {
+      [SLOTS.crafting.slot1]: createItem("stone"),
+      [SLOTS.crafting.result]: createItem("granite"),
+    };
+
+    const secondRecipe = createRecipe("recipe_2");
+    secondRecipe.slots = {
+      [SLOTS.crafting.slot1]: createItem("stone"),
+      [SLOTS.crafting.result]: createItem("diorite"),
+    };
+
+    useRecipeStore.setState((state) => ({
+      ...state,
+      recipes: [firstRecipe, secondRecipe],
+      selectedRecipeIndex: 0,
+    }));
+
+    useRecipeStore
+      .getState()
+      .removeMatchingSlotItems((item) => item.type === "default_item" && item.id.id === "stone");
+
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
+    expect(useRecipeStore.getState().recipes[1]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.result]).toMatchObject({
+      displayName: "granite",
     });
   });
 });
