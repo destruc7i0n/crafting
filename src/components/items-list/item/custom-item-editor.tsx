@@ -6,7 +6,8 @@ import { NoTextureTexture } from "@/data/constants";
 import { getFullId, getRawId } from "@/data/models/identifier/utilities";
 import { CustomItem } from "@/data/models/types";
 import {
-  isValidJavaNamespacedIdentifier,
+  bedrockIdentifierHint,
+  isValidNamespacedIdentifier,
   javaNamespacedIdentifierHint,
 } from "@/lib/minecraft-identifier";
 import { cn } from "@/lib/utils";
@@ -34,7 +35,12 @@ export const CustomItemEditor = ({
   const [draftName, setDraftName] = useState(item.displayName);
   const [draftId, setDraftId] = useState(getRawId(item.id));
   const editFileInputRef = useRef<HTMLInputElement>(null);
-  const showDraftIdError = draftId.trim().length === 0 || !isValidJavaNamespacedIdentifier(draftId);
+  const showDraftIdError =
+    draftId.trim().length === 0 || !isValidNamespacedIdentifier(draftId, item._version);
+  const identifierHint =
+    item._version === "bedrock"
+      ? `Use namespace:name (${bedrockIdentifierHint})`
+      : javaNamespacedIdentifierHint;
 
   const commitChanges = () => {
     const updates: Parameters<typeof updateCustomItem>[1] = {};
@@ -148,7 +154,7 @@ export const CustomItemEditor = ({
             onChange={(event) => setDraftId(event.target.value)}
           />
           {showDraftIdError && (
-            <span className="text-destructive text-[10px]">{javaNamespacedIdentifierHint}</span>
+            <span className="text-destructive text-[10px]">{identifierHint}</span>
           )}
         </label>
       </div>

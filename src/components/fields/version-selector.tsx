@@ -4,11 +4,13 @@ import { MinecraftVersion } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
+import { useUIStore } from "@/stores/ui";
 
 export const VersionSelector = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const setMinecraftVersion = useSettingsStore((state) => state.setMinecraftVersion);
   const clearAllSlots = useRecipeStore((state) => state.clearAllSlots);
+  const setSelection = useUIStore((state) => state.setSelection);
 
   const handleVersionChange = (nextVersion: MinecraftVersion) => {
     const switchingCrossPlatform =
@@ -25,6 +27,7 @@ export const VersionSelector = () => {
       }
 
       clearAllSlots();
+      setSelection(undefined);
     }
 
     setMinecraftVersion(nextVersion);

@@ -3,7 +3,8 @@ import { useRef, useState } from "react";
 import { ArrowLeftIcon } from "lucide-react";
 
 import {
-  isValidJavaNamespacedIdentifier,
+  bedrockIdentifierHint,
+  isValidNamespacedIdentifier,
   javaNamespacedIdentifierHint,
 } from "@/lib/minecraft-identifier";
 import { cn } from "@/lib/utils";
@@ -41,7 +42,7 @@ export const AddItemForm = ({ onClose }: AddItemFormProps) => {
   };
 
   const handleAdd = () => {
-    if (!name.trim() || !isValidJavaNamespacedIdentifier(itemId)) return;
+    if (!name.trim() || !isValidNamespacedIdentifier(itemId, minecraftVersion)) return;
 
     addCustomItem({ name, rawId: itemId, texture, version: minecraftVersion });
     setName("");
@@ -54,8 +55,13 @@ export const AddItemForm = ({ onClose }: AddItemFormProps) => {
     }
   };
 
-  const showItemIdError = itemId.trim().length > 0 && !isValidJavaNamespacedIdentifier(itemId);
-  const canAdd = name.trim().length > 0 && isValidJavaNamespacedIdentifier(itemId);
+  const showItemIdError =
+    itemId.trim().length > 0 && !isValidNamespacedIdentifier(itemId, minecraftVersion);
+  const canAdd = name.trim().length > 0 && isValidNamespacedIdentifier(itemId, minecraftVersion);
+  const identifierHint =
+    minecraftVersion === "bedrock"
+      ? `Use namespace:name (${bedrockIdentifierHint})`
+      : javaNamespacedIdentifierHint;
 
   return (
     <div className="flex flex-1 flex-col gap-3">
@@ -98,7 +104,7 @@ export const AddItemForm = ({ onClose }: AddItemFormProps) => {
             )}
           />
           {showItemIdError && (
-            <span className="text-destructive text-[10px]">{javaNamespacedIdentifierHint}</span>
+            <span className="text-destructive text-[10px]">{identifierHint}</span>
           )}
         </label>
       </div>

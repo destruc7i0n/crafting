@@ -30,16 +30,13 @@ type CustomItemActions = {
   deleteCustomItem: (uid: string) => void;
 };
 
-const getCustomItemIdentifierVersion = (version: MinecraftVersion) =>
-  version === MinecraftVersion.Bedrock ? MinecraftVersion.V12111 : version;
-
 export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
   persist(
     immer((set, get) => ({
       customItems: [],
 
       addCustomItem: ({ name, rawId, texture, version }) => {
-        const id = parseMinecraftIdentifierInput(rawId, getCustomItemIdentifierVersion(version));
+        const id = parseMinecraftIdentifierInput(rawId, version);
 
         if (
           get().customItems.some((item) => identifierUniqueKey(item.id) === identifierUniqueKey(id))
@@ -77,10 +74,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
           }
 
           if (updates.rawId !== undefined) {
-            const newId = parseMinecraftIdentifierInput(
-              updates.rawId,
-              getCustomItemIdentifierVersion(item._version),
-            );
+            const newId = parseMinecraftIdentifierInput(updates.rawId, item._version);
             const duplicate = state.customItems.some(
               (i) => i.uid !== uid && identifierUniqueKey(i.id) === identifierUniqueKey(newId),
             );
