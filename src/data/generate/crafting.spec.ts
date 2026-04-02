@@ -3,6 +3,46 @@ import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
 import { MinecraftVersion, RecipeType } from "../types";
 import { generate } from "./crafting";
 
+const makeDefaultItem = (id: string, version: MinecraftVersion) => ({
+  type: "default_item" as const,
+  id: { id, namespace: "minecraft" },
+  displayName: id,
+  texture: "",
+  _version: version,
+});
+
+const makeTagItem = (id: string, version: MinecraftVersion) => ({
+  type: "tag_item" as const,
+  id: { id, namespace: "minecraft" },
+  displayName: id,
+  texture: "",
+  _version: version,
+  tagSource: "vanilla" as const,
+  values: [],
+});
+
+const makeShapedRecipeSlice = (
+  version: MinecraftVersion,
+  slots: Omit<SingleRecipeState["slots"], "crafting.result">,
+): SingleRecipeState => ({
+  ...recipeStateDefaults,
+  recipeType: RecipeType.Crafting,
+  group: "",
+  slots: {
+    ...slots,
+    "crafting.result": makeDefaultItem("cobblestone", version),
+  },
+  crafting: {
+    ...recipeStateDefaults.crafting,
+    shapeless: false,
+    keepWhitespace: false,
+  },
+  cooking: {
+    time: 0,
+    experience: 0,
+  },
+});
+
 describe("generate crafting", () => {
   describe("1.12", () => {
     describe("shapeless", () => {
@@ -282,11 +322,11 @@ describe("generate crafting", () => {
         };
         expect(generate(recipeSlice, MinecraftVersion.V112)).toEqual({
           type: "crafting_shaped",
-          pattern: ["#P ", "#i ", "#/ "],
+          pattern: ["#_ ", "#= ", "#/ "],
           key: {
             "#": { item: "minecraft:stone", data: 1 },
-            P: { item: "minecraft:paper", data: 1 },
-            i: { item: "minecraft:iron_ingot", data: 1 },
+            _: { item: "minecraft:paper", data: 1 },
+            "=": { item: "minecraft:iron_ingot", data: 1 },
             "/": { item: "minecraft:stick", data: 1 },
           },
           result: { item: "minecraft:cobblestone", count: 10 },
@@ -629,14 +669,82 @@ describe("generate crafting", () => {
         };
         expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shaped",
-          pattern: ["#P ", "#i ", "#/ "],
+          pattern: ["#_ ", "#= ", "#/ "],
           key: {
             "#": { item: "minecraft:stone" },
-            P: { item: "minecraft:paper" },
-            i: { item: "minecraft:iron_ingot" },
+            _: { item: "minecraft:paper" },
+            "=": { item: "minecraft:iron_ingot" },
             "/": { item: "minecraft:stick" },
           },
           result: { item: "minecraft:cobblestone", count: 10 },
+        });
+      });
+
+      it.each([
+        ["stick", "/"],
+        ["arrow", "/"],
+        ["smooth_stone_slab", "_"],
+        ["paper", "_"],
+        ["iron_ingot", "="],
+        ["gold_nugget", "."],
+        ["redstone", "."],
+        ["diamond", "o"],
+        ["ender_pearl", "o"],
+        ["dragon_egg", "o"],
+        ["string", "~"],
+        ["bow", ")"],
+        ["bucket", "u"],
+        ["glass_bottle", "u"],
+      ])("should use %s as %s in generic dinnerbone mappings", (itemId, keyName) => {
+        const recipeSlice = makeShapedRecipeSlice(MinecraftVersion.V114, {
+          "crafting.1": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.2": makeDefaultItem(itemId, MinecraftVersion.V114),
+        });
+
+        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: [`#${keyName}`],
+          key: {
+            "#": { item: "minecraft:stone" },
+            [keyName]: { item: `minecraft:${itemId}` },
+          },
+          result: { item: "minecraft:cobblestone" },
+        });
+      });
+
+      it("should fall back to normal key selection when dinnerbone mappings collide", () => {
+        const recipeSlice = makeShapedRecipeSlice(MinecraftVersion.V114, {
+          "crafting.1": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.2": makeDefaultItem("stick", MinecraftVersion.V114),
+          "crafting.3": makeDefaultItem("arrow", MinecraftVersion.V114),
+        });
+
+        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: ["#/A"],
+          key: {
+            "#": { item: "minecraft:stone" },
+            "/": { item: "minecraft:stick" },
+            A: { item: "minecraft:arrow" },
+          },
+          result: { item: "minecraft:cobblestone" },
+        });
+      });
+
+      it("should ignore dinnerbone mappings for tag items", () => {
+        const recipeSlice = makeShapedRecipeSlice(MinecraftVersion.V114, {
+          "crafting.1": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.2": makeTagItem("logs", MinecraftVersion.V114),
+        });
+
+        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: ["#L"],
+          key: {
+            "#": { item: "minecraft:stone" },
+            L: { tag: "minecraft:logs" },
+          },
+          result: { item: "minecraft:cobblestone" },
         });
       });
     });

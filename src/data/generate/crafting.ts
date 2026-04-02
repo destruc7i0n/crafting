@@ -87,25 +87,65 @@ function dinnerboneChallenge(item: IngredientItem): string | null {
     return null;
   }
 
-  const itemId = item.id.id;
+  const itemId = item.id.id.toLowerCase();
 
-  const isStick = itemId.includes("stick");
-  const isSlab = itemId.includes("slab");
-  const isIngot = itemId.includes("ingot");
-  const isNugget = itemId.includes("nugget");
-
-  if (isStick) {
+  if (
+    itemId.includes("stick") ||
+    itemId.includes("rod") ||
+    itemId.includes("torch") ||
+    itemId.includes("arrow") ||
+    itemId.includes("bone")
+  ) {
     return "/";
   }
-  if (isSlab) {
+
+  if (
+    itemId.includes("slab") ||
+    itemId.includes("carpet") ||
+    itemId.includes("paper") ||
+    itemId.includes("map")
+  ) {
     return "_";
   }
-  if (isIngot) {
-    return itemId[0].toLowerCase();
+
+  if (itemId.includes("ingot") || itemId.includes("brick")) {
+    return "=";
   }
-  if (isNugget) {
+
+  if (
+    itemId.includes("nugget") ||
+    itemId.includes("dust") ||
+    itemId.includes("powder") ||
+    itemId.includes("seed") ||
+    itemId.includes("redstone")
+  ) {
     return ".";
   }
+
+  if (
+    itemId.includes("diamond") ||
+    itemId.includes("emerald") ||
+    itemId.includes("quartz") ||
+    itemId.includes("shard") ||
+    itemId.includes("pearl") ||
+    itemId.includes("ball") ||
+    itemId.includes("egg")
+  ) {
+    return "o";
+  }
+
+  if (itemId.includes("string") || itemId.includes("vine")) {
+    return "~";
+  }
+
+  if (itemId.includes("bow")) {
+    return ")";
+  }
+
+  if (itemId.includes("bucket") || itemId.includes("bottle")) {
+    return "u";
+  }
+
   return null;
 }
 
