@@ -1,5 +1,6 @@
 import { getRawId } from "@/data/models/identifier/utilities";
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, RecipeSlotValue, SlotContext, createEmptySlotContext } from "@/stores/recipe";
+import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import { createRecipeFormatter } from "./format/recipe-formatter";
@@ -16,26 +17,34 @@ import {
 } from "./recipes/types";
 import { isVersionAtLeast } from "./version-utils";
 
-export const buildJava = (
-  state: SmithingInput,
-  formatter: RecipeFormatter,
-  version: MinecraftVersion,
-): SmithingRecipe | SmithingTrimRecipe | SmithingTransformRecipe => {
+export const buildJava = ({
+  state,
+  formatter,
+  version,
+  slotContext,
+}: {
+  state: SmithingInput;
+  formatter: RecipeFormatter;
+  version: MinecraftVersion;
+  slotContext: SlotContext;
+}): SmithingRecipe | SmithingTrimRecipe | SmithingTransformRecipe => {
   if (state.recipeType === RecipeType.Smithing) {
     return {
       type: formatter.recipeType("smithing") as "minecraft:smithing",
-      result: state.result ? formatter.objectResult(state.result.id) : {},
-      base: formatIngredient(state.base, formatter),
-      addition: formatIngredient(state.addition, formatter),
+      result: state.result
+        ? formatter.objectResult(getRequiredSlotIdentifier(state.result, slotContext))
+        : {},
+      base: formatIngredient({ item: state.base, formatter, slotContext }),
+      addition: formatIngredient({ item: state.addition, formatter, slotContext }),
     } satisfies SmithingRecipe;
   }
 
   if (state.recipeType === RecipeType.SmithingTrim) {
     return {
       type: formatter.recipeType("smithing_trim") as "minecraft:smithing_trim",
-      template: formatIngredient(state.template, formatter),
-      base: formatIngredient(state.base, formatter),
-      addition: formatIngredient(state.addition, formatter),
+      template: formatIngredient({ item: state.template, formatter, slotContext }),
+      base: formatIngredient({ item: state.base, formatter, slotContext }),
+      addition: formatIngredient({ item: state.addition, formatter, slotContext }),
       ...(isVersionAtLeast(version, MinecraftVersion.V1215) && state.trimPattern
         ? { pattern: state.trimPattern }
         : {}),
@@ -44,43 +53,51 @@ export const buildJava = (
 
   return {
     type: formatter.recipeType("smithing_transform") as "minecraft:smithing_transform",
-    template: formatIngredient(state.template, formatter),
-    base: formatIngredient(state.base, formatter),
-    addition: formatIngredient(state.addition, formatter),
-    result: state.result ? formatter.objectResult(state.result.id) : {},
+    template: formatIngredient({ item: state.template, formatter, slotContext }),
+    base: formatIngredient({ item: state.base, formatter, slotContext }),
+    addition: formatIngredient({ item: state.addition, formatter, slotContext }),
+    result: state.result
+      ? formatter.objectResult(getRequiredSlotIdentifier(state.result, slotContext))
+      : {},
   } satisfies SmithingTransformRecipe;
 };
 
 export const buildBedrock = (
   state: SmithingInput,
   formatter: RecipeFormatter,
+  slotContext: SlotContext,
 ): BedrockSmithingTrimBody | BedrockSmithingTransformBody | BedrockShapelessBody => {
   if (state.recipeType === RecipeType.SmithingTrim) {
     return {
-      template: formatIngredient(state.template, formatter),
-      base: formatIngredient(state.base, formatter),
-      addition: formatIngredient(state.addition, formatter),
+      template: formatIngredient({ item: state.template, formatter, slotContext }),
+      base: formatIngredient({ item: state.base, formatter, slotContext }),
+      addition: formatIngredient({ item: state.addition, formatter, slotContext }),
     } satisfies BedrockSmithingTrimBody;
   }
 
   if (state.recipeType === RecipeType.SmithingTransform) {
     return {
-      template: formatIngredientString(state.template),
-      base: formatIngredientString(state.base),
-      addition: formatIngredientString(state.addition),
-      result: state.result ? getRawId(state.result.id) : "",
+      template: formatIngredientString(state.template, slotContext),
+      base: formatIngredientString(state.base, slotContext),
+      addition: formatIngredientString(state.addition, slotContext),
+      result: state.result ? getRawId(getRequiredSlotIdentifier(state.result, slotContext)) : "",
     } satisfies BedrockSmithingTransformBody;
   }
 
   return {
     ingredients: [state.base, state.addition]
-      .filter((item): item is NonNullable<typeof item> => Boolean(item))
-      .map((item) => formatIngredient(item, formatter)),
-    result: state.result ? formatter.objectResult(state.result.id, state.result.count) : {},
+      .filter((item): item is RecipeSlotValue => Boolean(item))
+      .map((item) => formatIngredient({ item, formatter, slotContext })),
+    result: state.result
+      ? formatter.objectResult(
+          getRequiredSlotIdentifier(state.result, slotContext),
+          getSlotCount(state.result),
+        )
+      : {},
   } satisfies BedrockShapelessBody;
 };
 
-const extractInput = (state: SingleRecipeState): SmithingInput => ({
+const extractInput = (state: Recipe): SmithingInput => ({
   recipeType: state.recipeType as SmithingInput["recipeType"],
   template: state.slots[SLOTS.smithing.template],
   base: state.slots[SLOTS.smithing.base],
@@ -89,10 +106,7 @@ const extractInput = (state: SingleRecipeState): SmithingInput => ({
   trimPattern: state.smithingTrimPattern || undefined,
 });
 
-export const validateSmithing = (
-  state: SingleRecipeState,
-  version?: MinecraftVersion,
-): string[] => {
+export const validateSmithing = (state: Recipe, version?: MinecraftVersion): string[] => {
   const input = extractInput(state);
   const errors: string[] = [];
 
@@ -130,8 +144,9 @@ export const validateSmithing = (
 };
 
 export const generate = (
-  state: SingleRecipeState,
+  state: Recipe,
   version: MinecraftVersion,
+  slotContext = createEmptySlotContext(version),
 ):
   | SmithingRecipe
   | SmithingTrimRecipe
@@ -143,8 +158,8 @@ export const generate = (
   const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {
-    return buildBedrock(input, formatter);
+    return buildBedrock(input, formatter, slotContext);
   }
 
-  return buildJava(input, formatter, version);
+  return buildJava({ state: input, formatter, version, slotContext });
 };

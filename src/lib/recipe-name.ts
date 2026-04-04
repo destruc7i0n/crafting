@@ -1,9 +1,9 @@
 import { recipeTypeToName } from "@/data/constants";
 import { getRawId } from "@/data/models/identifier/utilities";
-import { IngredientItem } from "@/data/models/types";
 import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
 import { sanitizeBedrockIdentifierPart } from "@/lib/minecraft-identifier";
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, RecipeSlotValue, SlotContext } from "@/stores/recipe";
+import { getSlotDisplay, getSlotIdentifier } from "@/stores/recipe/slot-value";
 
 export interface NamingContext {
   bedrockNamespace: string;
@@ -31,7 +31,7 @@ export interface CurrentRecipeName {
 const FALLBACK_NAME = "recipe";
 
 type NameEntry = {
-  recipe: SingleRecipeState;
+  recipe: Recipe;
   fixedName?: string;
   possibleNames: string[];
   skipAssignment?: boolean;
@@ -94,10 +94,11 @@ const toNames = (...values: Array<string | undefined>) =>
     }),
   );
 
-const itemSlug = (item: IngredientItem | undefined) => {
-  if (!item) return undefined;
+const itemSlug = (slot: RecipeSlotValue | undefined, slotContext: SlotContext) => {
+  const identifier = getSlotIdentifier(slot, slotContext);
+  if (!identifier) return undefined;
 
-  const raw = getRawId(item.id);
+  const raw = getRawId(identifier);
   const base = raw.startsWith("minecraft:")
     ? raw.slice("minecraft:".length)
     : raw.replace(":", "_");
@@ -107,14 +108,14 @@ const itemSlug = (item: IngredientItem | undefined) => {
     return undefined;
   }
 
-  if (item.id.data === undefined || item.id.data === 0) {
+  if (identifier.data === undefined || identifier.data === 0) {
     return slug;
   }
 
-  return `${slug}_data_${item.id.data}`;
+  return `${slug}_data_${identifier.data}`;
 };
 
-const getResultItem = (recipe: SingleRecipeState) => {
+const getResultSlot = (recipe: Recipe) => {
   switch (recipe.recipeType) {
     case RecipeType.Crafting:
     case RecipeType.CraftingTransmute:
@@ -136,9 +137,9 @@ const getResultItem = (recipe: SingleRecipeState) => {
   }
 };
 
-const getSidebarBaseTitle = (recipe: SingleRecipeState) => {
-  const result = getResultItem(recipe);
-  const displayName = result?.displayName.trim();
+const getSidebarBaseTitle = (recipe: Recipe, slotContext: SlotContext) => {
+  const result = getResultSlot(recipe);
+  const displayName = getSlotDisplay(result, slotContext)?.label.trim();
 
   if (displayName) {
     return displayName;
@@ -147,11 +148,13 @@ const getSidebarBaseTitle = (recipe: SingleRecipeState) => {
   return `${recipeTypeToName[recipe.recipeType]} Recipe`;
 };
 
-const getCraftingNames = (recipe: SingleRecipeState) =>
-  toNames(itemSlug(recipe.slots[SLOTS.crafting.result]) ?? "crafting_recipe");
+const getCraftingNames = (recipe: Recipe, slotContext: SlotContext) =>
+  toNames(itemSlug(recipe.slots[SLOTS.crafting.result], slotContext) ?? "crafting_recipe");
 
-const getTransmuteNames = (recipe: SingleRecipeState) =>
-  toNames(itemSlug(recipe.slots[SLOTS.crafting.result]) ?? "crafting_transmute_recipe");
+const getTransmuteNames = (recipe: Recipe, slotContext: SlotContext) =>
+  toNames(
+    itemSlug(recipe.slots[SLOTS.crafting.result], slotContext) ?? "crafting_transmute_recipe",
+  );
 
 const buildCookingNames = (
   result: string | undefined,
@@ -179,9 +182,9 @@ const buildCookingNames = (
   return toNames(ensureName(base), ...extras);
 };
 
-const getCookingNames = (recipe: SingleRecipeState) => {
-  const result = itemSlug(recipe.slots[SLOTS.cooking.result]);
-  const ingredient = itemSlug(recipe.slots[SLOTS.cooking.ingredient]);
+const getCookingNames = (recipe: Recipe, slotContext: SlotContext) => {
+  const result = itemSlug(recipe.slots[SLOTS.cooking.result], slotContext);
+  const ingredient = itemSlug(recipe.slots[SLOTS.cooking.ingredient], slotContext);
 
   switch (recipe.recipeType) {
     case RecipeType.Smelting:
@@ -218,9 +221,9 @@ const getCookingNames = (recipe: SingleRecipeState) => {
   }
 };
 
-const getStonecuttingNames = (recipe: SingleRecipeState) => {
-  const result = itemSlug(recipe.slots[SLOTS.stonecutter.result]);
-  const ingredient = itemSlug(recipe.slots[SLOTS.stonecutter.ingredient]);
+const getStonecuttingNames = (recipe: Recipe, slotContext: SlotContext) => {
+  const result = itemSlug(recipe.slots[SLOTS.stonecutter.result], slotContext);
+  const ingredient = itemSlug(recipe.slots[SLOTS.stonecutter.ingredient], slotContext);
   let base = "stonecutting_recipe";
 
   if (result && ingredient) {
@@ -234,10 +237,10 @@ const getStonecuttingNames = (recipe: SingleRecipeState) => {
   return toNames(ensureName(base));
 };
 
-const getSmithingNames = (recipe: SingleRecipeState) => {
-  const result = itemSlug(recipe.slots[SLOTS.smithing.result]);
-  const template = itemSlug(recipe.slots[SLOTS.smithing.template]);
-  const baseItem = itemSlug(recipe.slots[SLOTS.smithing.base]);
+const getSmithingNames = (recipe: Recipe, slotContext: SlotContext) => {
+  const result = itemSlug(recipe.slots[SLOTS.smithing.result], slotContext);
+  const template = itemSlug(recipe.slots[SLOTS.smithing.template], slotContext);
+  const baseItem = itemSlug(recipe.slots[SLOTS.smithing.base], slotContext);
 
   if (recipe.recipeType === RecipeType.SmithingTrim) {
     return toNames(template ? `${template}_smithing_trim` : "smithing_trim");
@@ -254,53 +257,53 @@ const getSmithingNames = (recipe: SingleRecipeState) => {
   return toNames(base);
 };
 
-const getRecipeNameCandidates = (recipe: SingleRecipeState) => {
+const getRecipeNameCandidates = (recipe: Recipe, slotContext: SlotContext) => {
   switch (recipe.recipeType) {
     case RecipeType.Crafting:
-      return getCraftingNames(recipe);
+      return getCraftingNames(recipe, slotContext);
     case RecipeType.CraftingTransmute:
-      return getTransmuteNames(recipe);
+      return getTransmuteNames(recipe, slotContext);
     case RecipeType.Smelting:
     case RecipeType.Blasting:
     case RecipeType.Smoking:
     case RecipeType.CampfireCooking:
-      return getCookingNames(recipe);
+      return getCookingNames(recipe, slotContext);
     case RecipeType.Stonecutter:
-      return getStonecuttingNames(recipe);
+      return getStonecuttingNames(recipe, slotContext);
     case RecipeType.Smithing:
     case RecipeType.SmithingTransform:
     case RecipeType.SmithingTrim:
-      return getSmithingNames(recipe);
+      return getSmithingNames(recipe, slotContext);
     default:
       return [FALLBACK_NAME];
   }
 };
 
-export const getAutoRecipeName = (recipe: SingleRecipeState) =>
-  getRecipeNameCandidates(recipe)[0] ?? FALLBACK_NAME;
+export const getAutoRecipeName = (recipe: Recipe, slotContext: SlotContext) =>
+  getRecipeNameCandidates(recipe, slotContext)[0] ?? FALLBACK_NAME;
 
-const getManualJavaName = (recipe: SingleRecipeState) => {
+const getManualJavaName = (recipe: Recipe) => {
   const manualName = sanitizeRecipeName(recipe.name);
 
   return manualName || undefined;
 };
 
-const getSelectedJavaName = (recipe: SingleRecipeState) => {
+const getSelectedJavaName = (recipe: Recipe, slotContext: SlotContext) => {
   if (recipe.nameMode === "manual") {
     return getManualJavaName(recipe);
   }
 
-  return getAutoRecipeName(recipe);
+  return getAutoRecipeName(recipe, slotContext);
 };
 
-const getManualBedrockName = (recipe: SingleRecipeState) => {
+const getManualBedrockName = (recipe: Recipe) => {
   const manualIdentifierName = sanitizeRecipeName(recipe.bedrock.identifierName);
 
   return manualIdentifierName || undefined;
 };
 
-const getAutoBedrockName = (recipe: SingleRecipeState) =>
-  getSelectedJavaName(recipe) ?? getAutoRecipeName(recipe);
+const getAutoBedrockName = (recipe: Recipe, slotContext: SlotContext) =>
+  getSelectedJavaName(recipe, slotContext) ?? getAutoRecipeName(recipe, slotContext);
 
 const getBedrockIdentifier = (bedrockName: string | undefined, context: NamingContext) =>
   bedrockName ? `${context.bedrockNamespace}:${bedrockName}` : undefined;
@@ -345,18 +348,18 @@ const assignUniqueNames = (entries: NameEntry[]) => {
   return namesById;
 };
 
-const buildSidebarTitles = (recipes: SingleRecipeState[]) => {
+const buildSidebarTitles = (recipes: Recipe[], slotContext: SlotContext) => {
   const titleCounts = new Map<string, number>();
   const titleIndexes = new Map<string, number>();
   const labels: Record<string, string> = {};
 
   for (const recipe of recipes) {
-    const title = getSidebarBaseTitle(recipe);
+    const title = getSidebarBaseTitle(recipe, slotContext);
     titleCounts.set(title, (titleCounts.get(title) ?? 0) + 1);
   }
 
   for (const recipe of recipes) {
-    const title = getSidebarBaseTitle(recipe);
+    const title = getSidebarBaseTitle(recipe, slotContext);
     const occurrence = (titleIndexes.get(title) ?? 0) + 1;
     titleIndexes.set(title, occurrence);
 
@@ -367,22 +370,22 @@ const buildSidebarTitles = (recipes: SingleRecipeState[]) => {
   return labels;
 };
 
-const getJavaNameEntry = (recipe: SingleRecipeState): NameEntry => {
+const getJavaNameEntry = (recipe: Recipe, slotContext: SlotContext): NameEntry => {
   const manualName = getManualJavaName(recipe);
 
   return {
     recipe,
     fixedName: recipe.nameMode === "manual" ? manualName : undefined,
-    possibleNames: recipe.nameMode === "manual" ? [] : getRecipeNameCandidates(recipe),
+    possibleNames: recipe.nameMode === "manual" ? [] : getRecipeNameCandidates(recipe, slotContext),
     skipAssignment: recipe.nameMode === "manual" && !manualName,
   };
 };
 
-const getBedrockNameEntry = (recipe: SingleRecipeState): NameEntry => {
+const getBedrockNameEntry = (recipe: Recipe, slotContext: SlotContext): NameEntry => {
   const manualIdentifierName = getManualBedrockName(recipe);
   const manualJavaName = getManualJavaName(recipe);
-  const autoNames = getRecipeNameCandidates(recipe);
-  const autoBedrockName = getAutoBedrockName(recipe);
+  const autoNames = getRecipeNameCandidates(recipe, slotContext);
+  const autoBedrockName = getAutoBedrockName(recipe, slotContext);
 
   return {
     recipe,
@@ -396,12 +399,17 @@ const getBedrockNameEntry = (recipe: SingleRecipeState): NameEntry => {
 };
 
 export const resolveRecipeNames = (
-  recipes: SingleRecipeState[],
+  recipes: Recipe[],
   context: NamingContext,
+  slotContext: SlotContext,
 ): ResolvedRecipeNames => {
-  const sidebarTitles = buildSidebarTitles(recipes);
-  const javaAssignments = assignUniqueNames(recipes.map(getJavaNameEntry));
-  const bedrockAssignments = assignUniqueNames(recipes.map(getBedrockNameEntry));
+  const sidebarTitles = buildSidebarTitles(recipes, slotContext);
+  const javaAssignments = assignUniqueNames(
+    recipes.map((recipe) => getJavaNameEntry(recipe, slotContext)),
+  );
+  const bedrockAssignments = assignUniqueNames(
+    recipes.map((recipe) => getBedrockNameEntry(recipe, slotContext)),
+  );
 
   const byId: Record<string, RecipeNaming> = {};
 
@@ -410,7 +418,7 @@ export const resolveRecipeNames = (
     const bedrockName = bedrockAssignments[recipe.id];
 
     byId[recipe.id] = {
-      sidebarTitle: sidebarTitles[recipe.id] ?? getSidebarBaseTitle(recipe),
+      sidebarTitle: sidebarTitles[recipe.id] ?? getSidebarBaseTitle(recipe, slotContext),
       javaName,
       bedrockName,
       bedrockIdentifier: getBedrockIdentifier(bedrockName, context),
@@ -420,22 +428,28 @@ export const resolveRecipeNames = (
   return { byId };
 };
 
-export const getCurrentRecipeName = (
-  recipes: SingleRecipeState[],
-  selectedRecipeIndex: number,
-  context: NamingContext,
-): CurrentRecipeName | undefined => {
-  const recipe = recipes[selectedRecipeIndex];
+export const getCurrentRecipeName = ({
+  recipes,
+  selectedRecipeId,
+  context,
+  slotContext,
+}: {
+  recipes: Recipe[];
+  selectedRecipeId: string;
+  context: NamingContext;
+  slotContext: SlotContext;
+}): CurrentRecipeName | undefined => {
+  const recipe = recipes.find((currentRecipe) => currentRecipe.id === selectedRecipeId);
 
   if (!recipe) {
     return undefined;
   }
 
-  const resolvedNaming = resolveRecipeNames(recipes, context).byId[recipe.id];
+  const resolvedNaming = resolveRecipeNames(recipes, context, slotContext).byId[recipe.id];
 
   return {
-    autoName: getAutoRecipeName(recipe),
-    autoBedrockName: getAutoBedrockName(recipe),
+    autoName: getAutoRecipeName(recipe, slotContext),
+    autoBedrockName: getAutoBedrockName(recipe, slotContext),
     resolvedJavaName: resolvedNaming?.javaName,
     resolvedBedrockName: resolvedNaming?.bedrockName,
     resolvedBedrockIdentifier: resolvedNaming?.bedrockIdentifier,

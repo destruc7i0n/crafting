@@ -1,7 +1,12 @@
 import { getRawId } from "@/data/models/identifier/utilities";
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, RecipeSlotValue, SlotContext, createEmptySlotContext } from "@/stores/recipe";
+import {
+  getRequiredSlotIdentifier,
+  getSlotCount,
+  getSlotIdentifier,
+  isTagSlotValue,
+} from "@/stores/recipe/slot-value";
 
-import { IngredientItem } from "../models/types";
 import { MinecraftVersion, SLOTS } from "../types";
 import { createRecipeFormatter } from "./format/recipe-formatter";
 import { RecipeFormatter } from "./format/types";
@@ -22,18 +27,26 @@ const TWO_BY_TWO_DISABLED_INDICES = new Set([2, 5, 6, 7, 8]);
 // oxlint-disable-next-line typescript/no-misused-spread
 const PATTERN_CHARACTERS = ["#", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ", ..."abcdefghijklmnopqrstuvwxyz"];
 
-function getPattern(
-  grid: (IngredientItem | undefined)[],
-  reverseMap: Record<string, string>,
-  keepWhitespace: boolean,
-): string[] {
+function getPattern({
+  grid,
+  reverseMap,
+  slotContext,
+  keepWhitespace,
+}: {
+  grid: (RecipeSlotValue | undefined)[];
+  reverseMap: Record<string, string>;
+  slotContext: SlotContext;
+  keepWhitespace: boolean;
+}): string[] {
   const pattern: string[] = [];
 
   for (const [index, item] of grid.entries()) {
     const rowIndex = Math.floor(index / 3);
     pattern[rowIndex] = pattern[rowIndex] || "";
     if (item) {
-      pattern[rowIndex] += reverseMap[getRawId(item.id)];
+      const identifier = getSlotIdentifier(item, slotContext);
+      const reverseKey = identifier ? getRawId(identifier) : item.kind;
+      pattern[rowIndex] += reverseMap[reverseKey] ?? "#";
     } else {
       pattern[rowIndex] += " ";
     }
@@ -82,85 +95,94 @@ function getPattern(
   return pattern;
 }
 
-function dinnerboneChallenge(item: IngredientItem): string | null {
-  if (item.type === "tag_item") {
+function dinnerboneChallenge(itemId: string, isTag: boolean): string | null {
+  if (isTag) {
     return null;
   }
 
-  const itemId = item.id.id.toLowerCase();
+  const normalizedId = itemId.toLowerCase();
 
   if (
-    itemId.includes("stick") ||
-    itemId.includes("rod") ||
-    itemId.includes("torch") ||
-    itemId.includes("arrow") ||
-    itemId.includes("bone")
+    normalizedId.includes("stick") ||
+    normalizedId.includes("rod") ||
+    normalizedId.includes("torch") ||
+    normalizedId.includes("arrow") ||
+    normalizedId.includes("bone")
   ) {
     return "/";
   }
 
   if (
-    itemId.includes("slab") ||
-    itemId.includes("carpet") ||
-    itemId.includes("paper") ||
-    itemId.includes("map")
+    normalizedId.includes("slab") ||
+    normalizedId.includes("carpet") ||
+    normalizedId.includes("paper") ||
+    normalizedId.includes("map")
   ) {
     return "_";
   }
 
-  if (itemId.includes("ingot") || itemId.includes("brick")) {
+  if (normalizedId.includes("ingot") || normalizedId.includes("brick")) {
     return "=";
   }
 
   if (
-    itemId.includes("nugget") ||
-    itemId.includes("dust") ||
-    itemId.includes("powder") ||
-    itemId.includes("seed") ||
-    itemId.includes("redstone")
+    normalizedId.includes("nugget") ||
+    normalizedId.includes("dust") ||
+    normalizedId.includes("powder") ||
+    normalizedId.includes("seed") ||
+    normalizedId.includes("redstone")
   ) {
     return ".";
   }
 
   if (
-    itemId.includes("diamond") ||
-    itemId.includes("emerald") ||
-    itemId.includes("quartz") ||
-    itemId.includes("shard") ||
-    itemId.includes("pearl") ||
-    itemId.includes("ball") ||
-    itemId.includes("egg")
+    normalizedId.includes("diamond") ||
+    normalizedId.includes("emerald") ||
+    normalizedId.includes("quartz") ||
+    normalizedId.includes("shard") ||
+    normalizedId.includes("pearl") ||
+    normalizedId.includes("ball") ||
+    normalizedId.includes("egg")
   ) {
     return "o";
   }
 
-  if (itemId.includes("string") || itemId.includes("vine")) {
+  if (normalizedId.includes("string") || normalizedId.includes("vine")) {
     return "~";
   }
 
-  if (itemId.includes("bow")) {
+  if (normalizedId.includes("bow")) {
     return ")";
   }
 
-  if (itemId.includes("bucket") || itemId.includes("bottle")) {
+  if (normalizedId.includes("bucket") || normalizedId.includes("bottle")) {
     return "u";
   }
 
   return null;
 }
 
-function getKeyForGrid(grid: (IngredientItem | undefined)[]): {
-  key: Record<string, IngredientItem>;
+function getKeyForGrid(
+  grid: (RecipeSlotValue | undefined)[],
+  slotContext: SlotContext,
+): {
+  key: Record<string, RecipeSlotValue>;
   reverse: Record<string, string>;
 } {
-  const key: Record<string, IngredientItem> = {};
+  const key: Record<string, RecipeSlotValue> = {};
   const reverse: Record<string, string> = {};
 
   for (const item of grid) {
     if (!item) continue;
-    if (reverse[getRawId(item.id)]) continue;
+    const identifier = getSlotIdentifier(item, slotContext);
+    const reverseKey = identifier
+      ? getRawId(identifier)
+      : `${item.kind}:${item.kind === "custom_item" || item.kind === "custom_tag" ? item.uid : ""}`;
+    if (reverse[reverseKey]) continue;
 
-    const id = item.id.id;
+    const id = reverseKey.startsWith("minecraft:")
+      ? reverseKey.slice("minecraft:".length)
+      : reverseKey || item.kind;
 
     let keyName = "#";
     if (keyName in key) {
@@ -171,7 +193,7 @@ function getKeyForGrid(grid: (IngredientItem | undefined)[]): {
       const lower = firstChar.toLowerCase();
 
       const possibilities = [
-        dinnerboneChallenge(item),
+        dinnerboneChallenge(id, isTagSlotValue(item)),
         upper,
         lower,
         PATTERN_CHARACTERS[id.length % PATTERN_CHARACTERS.length],
@@ -193,38 +215,45 @@ function getKeyForGrid(grid: (IngredientItem | undefined)[]): {
     }
 
     key[keyName] = item;
-    reverse[getRawId(item.id)] = keyName;
+    reverse[reverseKey] = keyName;
   }
 
   return { key, reverse };
 }
 
-export const buildJava = (
-  state: CraftingInput,
-  formatter: RecipeFormatter,
-  version: MinecraftVersion,
-): ShapedCraftingRecipe | ShapelessCraftingRecipe => {
+export const buildJava = ({
+  state,
+  formatter,
+  version,
+  slotContext,
+}: {
+  state: CraftingInput;
+  formatter: RecipeFormatter;
+  version: MinecraftVersion;
+  slotContext: SlotContext;
+}): ShapedCraftingRecipe | ShapelessCraftingRecipe => {
   const grid = state.grid;
-  const populatedSlots = grid.filter((item): item is IngredientItem => Boolean(item));
+  const populatedSlots = grid.filter((item): item is RecipeSlotValue => Boolean(item));
 
   const group = state.group.length > 0 ? state.group : undefined;
   const category = isVersionAtLeast(version, MinecraftVersion.V119) ? state.category : undefined;
 
-  const { key, reverse } = getKeyForGrid(grid);
+  const { key, reverse } = getKeyForGrid(grid, slotContext);
 
-  const hasResult = state.result !== undefined;
-
+  const resultCount = getSlotCount(state.result);
   const getResult = () =>
-    hasResult ? formatter.objectResult(state.result!.id, state.result!.count) : {};
+    state.result
+      ? formatter.objectResult(getRequiredSlotIdentifier(state.result, slotContext), resultCount)
+      : {};
 
   if (state.shapeless) {
     return {
       type: formatter.recipeType("crafting_shapeless") as ShapelessCraftingRecipe["type"],
-      category,
+      ...(category ? { category } : {}),
       ...(isVersionAtLeast(version, MinecraftVersion.V261) && state.showNotification === false
         ? { show_notification: false }
         : {}),
-      ingredients: populatedSlots.map((item) => formatIngredient(item, formatter)),
+      ingredients: populatedSlots.map((item) => formatIngredient({ item, formatter, slotContext })),
       ...(group ? { group } : {}),
       result: getResult(),
     } satisfies ShapelessCraftingRecipe;
@@ -232,13 +261,21 @@ export const buildJava = (
 
   return {
     type: formatter.recipeType("crafting_shaped") as ShapedCraftingRecipe["type"],
-    category,
+    ...(category ? { category } : {}),
     ...(isVersionAtLeast(version, MinecraftVersion.V119) && state.showNotification === false
       ? { show_notification: false }
       : {}),
-    pattern: getPattern(grid, reverse, state.keepWhitespace),
+    pattern: getPattern({
+      grid,
+      reverseMap: reverse,
+      slotContext,
+      keepWhitespace: state.keepWhitespace,
+    }),
     key: Object.fromEntries(
-      Object.entries(key).map(([keyName, item]) => [keyName, formatIngredient(item, formatter)]),
+      Object.entries(key).map(([keyName, item]) => [
+        keyName,
+        formatIngredient({ item, formatter, slotContext }),
+      ]),
     ),
     ...(group ? { group } : {}),
     result: getResult(),
@@ -248,30 +285,41 @@ export const buildJava = (
 export const buildBedrock = (
   state: CraftingInput,
   formatter: RecipeFormatter,
+  slotContext: SlotContext,
 ): BedrockShapedBody | BedrockShapelessBody => {
   const grid = state.grid;
-  const populatedSlots = grid.filter((item): item is IngredientItem => Boolean(item));
-  const { key, reverse } = getKeyForGrid(grid);
-
-  const result = state.result ? formatter.objectResult(state.result.id, state.result.count) : {};
+  const populatedSlots = grid.filter((item): item is RecipeSlotValue => Boolean(item));
+  const { key, reverse } = getKeyForGrid(grid, slotContext);
+  const resultCount = getSlotCount(state.result);
+  const result = state.result
+    ? formatter.objectResult(getRequiredSlotIdentifier(state.result, slotContext), resultCount)
+    : {};
 
   if (state.shapeless) {
     return {
-      ingredients: populatedSlots.map((item) => formatIngredient(item, formatter)),
+      ingredients: populatedSlots.map((item) => formatIngredient({ item, formatter, slotContext })),
       result,
     } satisfies BedrockShapelessBody;
   }
 
   return {
-    pattern: getPattern(grid, reverse, state.keepWhitespace),
+    pattern: getPattern({
+      grid,
+      reverseMap: reverse,
+      slotContext,
+      keepWhitespace: state.keepWhitespace,
+    }),
     key: Object.fromEntries(
-      Object.entries(key).map(([keyName, item]) => [keyName, formatIngredient(item, formatter)]),
+      Object.entries(key).map(([keyName, item]) => [
+        keyName,
+        formatIngredient({ item, formatter, slotContext }),
+      ]),
     ) as BedrockShapedBody["key"],
     result,
   } satisfies BedrockShapedBody;
 };
 
-export const extractCraftingInput = (state: SingleRecipeState): CraftingInput => ({
+export const extractCraftingInput = (state: Recipe): CraftingInput => ({
   grid: [
     state.slots[SLOTS.crafting.slot1],
     state.slots[SLOTS.crafting.slot2],
@@ -298,7 +346,7 @@ export const extractCraftingInput = (state: SingleRecipeState): CraftingInput =>
   showNotification: state.showNotification,
 });
 
-export const validateCrafting = (state: SingleRecipeState): string[] => {
+export const validateCrafting = (state: Recipe): string[] => {
   const input = extractCraftingInput(state);
   const errors: string[] = [];
 
@@ -314,15 +362,16 @@ export const validateCrafting = (state: SingleRecipeState): string[] => {
 };
 
 export const generate = (
-  state: SingleRecipeState,
+  state: Recipe,
   version: MinecraftVersion,
+  slotContext = createEmptySlotContext(version),
 ): ShapedCraftingRecipe | ShapelessCraftingRecipe | BedrockShapedBody | BedrockShapelessBody => {
   const input = extractCraftingInput(state);
   const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {
-    return buildBedrock(input, formatter);
+    return buildBedrock(input, formatter, slotContext);
   }
 
-  return buildJava(input, formatter, version);
+  return buildJava({ state: input, formatter, version, slotContext });
 };

@@ -4,19 +4,18 @@ import { createRoot } from "react-dom/client";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { centerUnderPointer } from "@atlaskit/pragmatic-drag-and-drop/element/center-under-pointer";
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
-import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unhandled";
 import invariant from "tiny-invariant";
 
 import { getFullId, getRawId } from "@/data/models/identifier/utilities";
-import { cloneItem } from "@/data/models/item/utilities";
 import { IngredientItem } from "@/data/models/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useItemSelection } from "@/hooks/use-item-selection";
-import { ItemDraggableContainer, ItemDraggableData } from "@/lib/dnd";
+import { ItemDraggableData } from "@/lib/dnd";
 import { findFirstEmptyRecipeSlot } from "@/lib/recipe-slots";
 import { isSameIngredient } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
+import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 import { useUIStore } from "@/stores/ui";
 
 import { ItemTooltip } from "../tooltip/item-tooltip";
@@ -27,10 +26,9 @@ import { ItemPreview } from "./item-preview";
 type IngredientProps = {
   item: IngredientItem;
   showCount?: boolean;
-  container: ItemDraggableContainer;
 };
 
-export const Item = memo(({ item, container, showCount }: IngredientProps) => {
+export const Item = memo(({ item, showCount }: IngredientProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
   const dndCleanupRef = useRef<(() => void) | null>(null);
   const [dragging, setDragging] = useState(false);
@@ -38,9 +36,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
   const isTouchDevice = useIsTouchDevice();
   const selection = useItemSelection();
   const isSelectedFromIngredients =
-    container === "ingredients" &&
-    selection?.type === "ingredient" &&
-    isSameIngredient(selection.item, item);
+    selection?.type === "ingredient" && isSameIngredient(selection.item, item);
 
   const setupDraggable = useCallback(() => {
     if (dndCleanupRef.current) return;
@@ -50,12 +46,9 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
 
     dndCleanupRef.current = draggable({
       element: el,
-      getInitialData: () => ({ type: "item", item, container }) satisfies ItemDraggableData,
+      getInitialData: () => ({ type: "palette-item", item }) satisfies ItemDraggableData,
       getInitialDataForExternal: () => ({ "text/plain": getRawId(item.id) }),
       onDragStart: () => {
-        if (container === "preview") {
-          preventUnhandled.start();
-        }
         useUIStore.getState().setSelection(undefined);
         setDragging(true);
       },
@@ -78,7 +71,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
         });
       },
     });
-  }, [item, container]);
+  }, [item]);
 
   useEffect(() => {
     if (isTouchDevice) return;
@@ -97,21 +90,21 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
   }, [isTouchDevice, setupDraggable]);
 
   const handleDoubleClick = () => {
-    if (isTouchDevice || container !== "ingredients") return;
+    if (isTouchDevice) return;
 
     const recipeState = useRecipeStore.getState();
-    const currentRecipe = recipeState.recipes[recipeState.selectedRecipeIndex];
+    const currentRecipe = selectCurrentRecipe(recipeState);
     if (!currentRecipe) return;
 
     const slot = findFirstEmptyRecipeSlot(currentRecipe, item);
     if (!slot) return;
 
-    useRecipeStore.getState().setRecipeSlot(slot, cloneItem(item));
+    useRecipeStore.getState().setRecipeSlotFromIngredient(slot, item);
     useUIStore.getState().setSelection(undefined);
   };
 
   const handleClick = () => {
-    if (!isTouchDevice || container !== "ingredients") return;
+    if (!isTouchDevice) return;
     const { setSelection } = useUIStore.getState();
     if (selection?.type === "ingredient" && isSameIngredient(selection.item, item)) {
       setSelection(undefined);
@@ -121,9 +114,7 @@ export const Item = memo(({ item, container, showCount }: IngredientProps) => {
   };
 
   const isTagPreviewActive =
-    container === "preview" ||
-    (!isTouchDevice && isHovering) ||
-    (isTouchDevice && isSelectedFromIngredients);
+    (!isTouchDevice && isHovering) || (isTouchDevice && isSelectedFromIngredients);
 
   const preview =
     item.type === "tag_item" ? (

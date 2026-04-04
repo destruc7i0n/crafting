@@ -12,6 +12,7 @@ import { Tooltip } from "@/components/tooltip/tooltip";
 import { generate } from "@/data/generate";
 import { MinecraftVersion } from "@/data/types";
 import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
+import { useSlotContext } from "@/hooks/use-slot-context";
 import { downloadRecipeJson } from "@/lib/download/recipe";
 import { toJavaRecipeFileName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
@@ -31,6 +32,7 @@ export const ItemOutput = () => {
 
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const recipeState = useRecipeStore(selectCurrentRecipe);
+  const slotContext = useSlotContext();
   const naming = useCurrentRecipeName();
   let downloadTarget: string | undefined;
 
@@ -49,13 +51,15 @@ export const ItemOutput = () => {
 
     try {
       return {
-        recipe: generate(
-          recipeState,
-          minecraftVersion,
-          minecraftVersion === MinecraftVersion.Bedrock && naming
-            ? { bedrockIdentifier: naming.resolvedBedrockIdentifier }
-            : undefined,
-        ),
+        recipe: generate({
+          state: recipeState,
+          version: minecraftVersion,
+          slotContext,
+          options:
+            minecraftVersion === MinecraftVersion.Bedrock && naming
+              ? { bedrockIdentifier: naming.resolvedBedrockIdentifier }
+              : undefined,
+        }),
       };
     } catch (error) {
       return {
@@ -63,7 +67,7 @@ export const ItemOutput = () => {
         error: error instanceof Error ? error.message : "Failed to generate recipe",
       };
     }
-  }, [recipeState, minecraftVersion, naming]);
+  }, [recipeState, minecraftVersion, naming, slotContext]);
 
   const handleCopy = async () => {
     if (copied) return;
@@ -128,7 +132,12 @@ export const ItemOutput = () => {
             type="button"
             onClick={() => {
               if (downloadTarget) {
-                downloadRecipeJson(recipeState, minecraftVersion, downloadTarget);
+                downloadRecipeJson({
+                  recipe: recipeState,
+                  version: minecraftVersion,
+                  slotContext,
+                  target: downloadTarget,
+                });
               }
             }}
             disabled={!!generatedResult.error || !downloadTarget}

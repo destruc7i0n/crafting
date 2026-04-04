@@ -41,7 +41,7 @@ describe("custom item store", () => {
           },
         },
       ],
-      selectedRecipeIndex: 0,
+      selectedRecipeId: "recipe-1",
     }));
   });
 
@@ -62,7 +62,7 @@ describe("custom item store", () => {
     });
   });
 
-  it("syncs updated Bedrock ids back into recipe slots using Bedrock rules", () => {
+  it("does not rewrite recipe slots when a custom item id changes", () => {
     useCustomItemStore.getState().addCustomItem({
       name: "Custom Bedrock Item",
       rawId: "mod:custom_item",
@@ -72,7 +72,10 @@ describe("custom item store", () => {
 
     const customItem = useCustomItemStore.getState().customItems[0]!;
 
-    useRecipeStore.getState().setRecipeSlot(SLOTS.crafting.result, customItem);
+    useRecipeStore.getState().setRecipeSlot(SLOTS.crafting.result, {
+      kind: "custom_item",
+      uid: customItem.uid,
+    });
     useCustomItemStore.getState().updateCustomItem(customItem.uid, {
       rawId: "mod:item-name/path",
     });
@@ -84,10 +87,8 @@ describe("custom item store", () => {
       },
     });
     expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.result]).toMatchObject({
-      id: {
-        namespace: "mod",
-        id: "itemnamepath",
-      },
+      kind: "custom_item",
+      uid: customItem.uid,
     });
   });
 });

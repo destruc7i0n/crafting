@@ -3,20 +3,22 @@ import { generate } from "@/data/generate";
 import { Tag } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { NamingContext, resolveRecipeNames } from "@/lib/recipe-name";
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, SlotContext } from "@/stores/recipe";
 
 import { validateDatapackExport } from "../validate-datapack-export";
 
 interface DownloadDatapackOptions {
   tags: Tag[];
   context: NamingContext;
+  slotContext: SlotContext;
 }
 
 export const downloadDatapack = async (
-  recipes: SingleRecipeState[],
+  recipes: Recipe[],
   version: MinecraftVersion,
-  { tags, context }: DownloadDatapackOptions,
+  options: DownloadDatapackOptions,
 ) => {
+  const { tags, context, slotContext } = options;
   if (version === MinecraftVersion.Bedrock) {
     alert("Datapack export is only available for Java versions.");
     return;
@@ -27,9 +29,12 @@ export const downloadDatapack = async (
     return;
   }
 
-  const invalidRecipes = validateDatapackExport(recipes, version, context).map(
-    (recipe) => `${recipe.name}: ${recipe.errors.join(", ")}`,
-  );
+  const invalidRecipes = validateDatapackExport({
+    recipes,
+    version,
+    context,
+    slotContext,
+  }).map((recipe) => `${recipe.name}: ${recipe.errors.join(", ")}`);
 
   if (invalidRecipes.length > 0) {
     alert(
@@ -39,7 +44,7 @@ export const downloadDatapack = async (
   }
 
   const recipeFiles: { name: string; json: object }[] = [];
-  const resolvedNames = resolveRecipeNames(recipes, context).byId;
+  const resolvedNames = resolveRecipeNames(recipes, context, slotContext).byId;
 
   for (const recipe of recipes) {
     try {
@@ -49,7 +54,7 @@ export const downloadDatapack = async (
 
       recipeFiles.push({
         name: recipeName,
-        json: generate(recipe, version),
+        json: generate({ state: recipe, version, slotContext }),
       });
     } catch (error) {
       invalidRecipes.push(

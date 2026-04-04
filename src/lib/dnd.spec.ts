@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { isDropTargetData, isItemDraggableData, isItemPreviewDropTargetData } from "./dnd";
+import { isItemDraggableData, isRecipeSlotDropTargetData } from "./dnd";
 
 describe("dnd data guards", () => {
   it("recognizes item draggable data", () => {
     expect(
       isItemDraggableData({
-        type: "item",
+        type: "palette-item",
         item: {
           type: "default_item",
           id: { raw: "minecraft:stone", id: "stone", namespace: "minecraft" },
@@ -14,7 +14,6 @@ describe("dnd data guards", () => {
           texture: "",
           _version: "1.21",
         },
-        container: "ingredients",
       }),
     ).toBe(true);
   });
@@ -25,13 +24,14 @@ describe("dnd data guards", () => {
     expect(isItemDraggableData(null)).toBe(false);
   });
 
-  it("recognizes preview drop target data", () => {
-    expect(isItemPreviewDropTargetData({ type: "preview", slot: "crafting.1" })).toBe(true);
-    expect(isDropTargetData({ type: "preview", slot: "crafting.1" })).toBe(true);
+  it("recognizes recipe slot drop target data", () => {
+    expect(isRecipeSlotDropTargetData({ type: "recipe-slot-target", slot: "crafting.1" })).toBe(
+      true,
+    );
   });
 
   it("rejects unrelated drop target data", () => {
-    expect(isItemPreviewDropTargetData({ type: "preview" })).toBe(false);
-    expect(isDropTargetData({ type: "unknown" })).toBe(false);
+    expect(isRecipeSlotDropTargetData({ type: "recipe-slot-target" })).toBe(false);
+    expect(isRecipeSlotDropTargetData({ type: "unknown" })).toBe(false);
   });
 });

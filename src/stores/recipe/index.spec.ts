@@ -3,9 +3,9 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { IngredientItem } from "@/data/models/types";
 import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
 
-import { SingleRecipeState, useRecipeStore } from "./index";
+import { Recipe, RecipeSlotValue, useRecipeStore } from "./index";
 
-const createRecipe = (id: string): SingleRecipeState => ({
+const createRecipe = (id: string): Recipe => ({
   id,
   nameMode: "auto",
   name: "",
@@ -31,12 +31,19 @@ const createRecipe = (id: string): SingleRecipeState => ({
   },
 });
 
-const createItem = (id: string): IngredientItem => ({
+const createDefaultItem = (id: string, count?: number): IngredientItem => ({
   type: "default_item",
   id: { namespace: "minecraft", id },
   displayName: id,
   texture: `${id}.png`,
   _version: MinecraftVersion.V121,
+  ...(count !== undefined ? { count } : {}),
+});
+
+const createCustomSlotValue = (uid: string, count?: number): RecipeSlotValue => ({
+  kind: "custom_item",
+  uid,
+  ...(count !== undefined ? { count } : {}),
 });
 
 describe("recipe store", () => {
@@ -44,48 +51,48 @@ describe("recipe store", () => {
     useRecipeStore.setState((state) => ({
       ...state,
       recipes: [createRecipe("recipe_1")],
-      selectedRecipeIndex: 0,
+      selectedRecipeId: "recipe_1",
     }));
   });
 
-  it("defaults Exact position to unchecked", () => {
+  it("defaults keep whitespace to unchecked", () => {
     expect(useRecipeStore.getState().recipes[0]?.crafting.keepWhitespace).toBe(false);
   });
 
-  it("keeps the same logical recipe selected when deleting an earlier recipe", () => {
+  it("keeps the same selected recipe id when deleting an earlier recipe", () => {
     useRecipeStore.setState((state) => ({
       ...state,
       recipes: [createRecipe("recipe_1"), createRecipe("recipe_2"), createRecipe("recipe_3")],
-      selectedRecipeIndex: 2,
+      selectedRecipeId: "recipe_3",
     }));
 
-    useRecipeStore.getState().deleteRecipe(0);
+    useRecipeStore.getState().deleteRecipe("recipe_1");
 
-    expect(useRecipeStore.getState().selectedRecipeIndex).toBe(1);
+    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe_3");
   });
 
   it("keeps the current selection when deleting a later recipe", () => {
     useRecipeStore.setState((state) => ({
       ...state,
       recipes: [createRecipe("recipe_1"), createRecipe("recipe_2"), createRecipe("recipe_3")],
-      selectedRecipeIndex: 0,
+      selectedRecipeId: "recipe_1",
     }));
 
-    useRecipeStore.getState().deleteRecipe(2);
+    useRecipeStore.getState().deleteRecipe("recipe_3");
 
-    expect(useRecipeStore.getState().selectedRecipeIndex).toBe(0);
+    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe_1");
   });
 
   it("selects the next recipe when deleting the selected one", () => {
     useRecipeStore.setState((state) => ({
       ...state,
       recipes: [createRecipe("recipe_1"), createRecipe("recipe_2"), createRecipe("recipe_3")],
-      selectedRecipeIndex: 1,
+      selectedRecipeId: "recipe_2",
     }));
 
-    useRecipeStore.getState().deleteRecipe(1);
+    useRecipeStore.getState().deleteRecipe("recipe_2");
 
-    expect(useRecipeStore.getState().selectedRecipeIndex).toBe(1);
+    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe_3");
     expect(useRecipeStore.getState().recipes[1]?.id).toBe("recipe_3");
   });
 
@@ -93,27 +100,27 @@ describe("recipe store", () => {
     useRecipeStore.setState((state) => ({
       ...state,
       recipes: [createRecipe("recipe_1"), createRecipe("recipe_2"), createRecipe("recipe_3")],
-      selectedRecipeIndex: 2,
+      selectedRecipeId: "recipe_3",
     }));
 
-    useRecipeStore.getState().deleteRecipe(2);
+    useRecipeStore.getState().deleteRecipe("recipe_3");
 
-    expect(useRecipeStore.getState().selectedRecipeIndex).toBe(1);
+    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe_2");
     expect(useRecipeStore.getState().recipes[1]?.id).toBe("recipe_2");
   });
 
   it("keeps the final recipe when deleteRecipe is called with only one recipe left", () => {
-    useRecipeStore.getState().deleteRecipe(0);
+    useRecipeStore.getState().deleteRecipe("recipe_1");
 
-    expect(useRecipeStore.getState().selectedRecipeIndex).toBe(0);
+    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe_1");
     expect(useRecipeStore.getState().recipes).toHaveLength(1);
-    expect(useRecipeStore.getState().recipes[0]?.id).toBe("recipe_1");
   });
 
-  it("creates recipes with auto naming defaults", () => {
+  it("creates recipes with auto naming defaults and selects the new recipe", () => {
     useRecipeStore.getState().createRecipe();
 
-    expect(useRecipeStore.getState().recipes[1]).toMatchObject({
+    const { recipes, selectedRecipeId } = useRecipeStore.getState();
+    expect(recipes[1]).toMatchObject({
       nameMode: "auto",
       name: "",
       bedrock: {
@@ -122,6 +129,7 @@ describe("recipe store", () => {
         priority: 0,
       },
     });
+    expect(selectedRecipeId).toBe(recipes[1]?.id);
   });
 
   it("creates recipe state with independent nested settings objects", () => {
@@ -135,7 +143,7 @@ describe("recipe store", () => {
   it("clears only the selected recipe slots and preserves its other fields", () => {
     const firstRecipe = createRecipe("recipe_1");
     firstRecipe.slots = {
-      [SLOTS.crafting.slot1]: createItem("oak_log"),
+      [SLOTS.crafting.slot1]: { kind: "item", id: { namespace: "minecraft", id: "oak_log" } },
     };
 
     const secondRecipe = createRecipe("recipe_2");
@@ -158,22 +166,26 @@ describe("recipe store", () => {
       priority: 3,
     };
     secondRecipe.slots = {
-      [SLOTS.crafting.slot1]: createItem("stone"),
-      [SLOTS.crafting.result]: createItem("polished_andesite"),
+      [SLOTS.crafting.slot1]: { kind: "item", id: { namespace: "minecraft", id: "stone" } },
+      [SLOTS.crafting.result]: {
+        kind: "item",
+        id: { namespace: "minecraft", id: "polished_andesite" },
+      },
     };
 
     useRecipeStore.setState((state) => ({
       ...state,
       recipes: [firstRecipe, secondRecipe],
-      selectedRecipeIndex: 1,
+      selectedRecipeId: "recipe_2",
     }));
 
     useRecipeStore.getState().clearSelectedRecipeSlots();
 
     expect(useRecipeStore.getState().recipes[0]?.slots).toEqual({
-      [SLOTS.crafting.slot1]: expect.objectContaining({
-        displayName: "oak_log",
-      }),
+      [SLOTS.crafting.slot1]: {
+        kind: "item",
+        id: { namespace: "minecraft", id: "oak_log" },
+      },
     });
     expect(useRecipeStore.getState().recipes[1]).toMatchObject({
       id: "recipe_2",
@@ -199,70 +211,80 @@ describe("recipe store", () => {
     });
   });
 
-  it("updates all matching slot items", () => {
-    const firstRecipe = createRecipe("recipe_1");
-    firstRecipe.slots = {
-      [SLOTS.crafting.slot1]: createItem("stone"),
-      [SLOTS.crafting.result]: createItem("granite"),
-    };
+  it("stores canonical slot refs when setting an ingredient", () => {
+    useRecipeStore
+      .getState()
+      .setRecipeSlotFromIngredient(SLOTS.crafting.result, createDefaultItem("stone_button", 4));
 
-    const secondRecipe = createRecipe("recipe_2");
-    secondRecipe.slots = {
-      [SLOTS.crafting.slot1]: createItem("stone"),
-      [SLOTS.crafting.result]: createItem("diorite"),
-    };
-
-    useRecipeStore.setState((state) => ({
-      ...state,
-      recipes: [firstRecipe, secondRecipe],
-      selectedRecipeIndex: 0,
-    }));
-
-    useRecipeStore.getState().syncCustomSlotItem(
-      (item) => item.type === "default_item" && item.id.id === "stone",
-      (item) => {
-        item.displayName = "smooth_stone";
-      },
-    );
-
-    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toMatchObject({
-      displayName: "smooth_stone",
-    });
-    expect(useRecipeStore.getState().recipes[1]?.slots[SLOTS.crafting.slot1]).toMatchObject({
-      displayName: "smooth_stone",
-    });
-    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.result]).toMatchObject({
-      displayName: "granite",
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.result]).toEqual({
+      kind: "item",
+      id: { namespace: "minecraft", id: "stone_button" },
+      count: 4,
     });
   });
 
-  it("removes all matching slot items", () => {
+  it("updates counts only for item-like slot refs", () => {
+    useRecipeStore.setState((state) => ({
+      ...state,
+      recipes: [
+        {
+          ...createRecipe("recipe_1"),
+          slots: {
+            [SLOTS.crafting.result]: createCustomSlotValue("custom-1", 2),
+            [SLOTS.crafting.slot1]: {
+              kind: "vanilla_tag",
+              id: { namespace: "minecraft", id: "logs" },
+            },
+          },
+        },
+      ],
+      selectedRecipeId: "recipe_1",
+    }));
+
+    useRecipeStore.getState().setRecipeSlotCount(SLOTS.crafting.result, 5);
+    useRecipeStore.getState().setRecipeSlotCount(SLOTS.crafting.slot1, 9);
+
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.result]).toEqual({
+      kind: "custom_item",
+      uid: "custom-1",
+      count: 5,
+    });
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toEqual({
+      kind: "vanilla_tag",
+      id: { namespace: "minecraft", id: "logs" },
+    });
+  });
+
+  it("removes all matching slot refs", () => {
     const firstRecipe = createRecipe("recipe_1");
     firstRecipe.slots = {
-      [SLOTS.crafting.slot1]: createItem("stone"),
-      [SLOTS.crafting.result]: createItem("granite"),
+      [SLOTS.crafting.slot1]: { kind: "custom_item", uid: "custom-1" },
+      [SLOTS.crafting.result]: { kind: "item", id: { namespace: "minecraft", id: "granite" } },
     };
 
     const secondRecipe = createRecipe("recipe_2");
     secondRecipe.slots = {
-      [SLOTS.crafting.slot1]: createItem("stone"),
-      [SLOTS.crafting.result]: createItem("diorite"),
+      [SLOTS.crafting.slot1]: { kind: "custom_item", uid: "custom-1" },
+      [SLOTS.crafting.result]: { kind: "item", id: { namespace: "minecraft", id: "diorite" } },
     };
 
     useRecipeStore.setState((state) => ({
       ...state,
       recipes: [firstRecipe, secondRecipe],
-      selectedRecipeIndex: 0,
+      selectedRecipeId: "recipe_1",
     }));
 
     useRecipeStore
       .getState()
-      .removeMatchingSlotItems((item) => item.type === "default_item" && item.id.id === "stone");
+      .removeMatchingSlotValues(
+        (value) => value.kind === "custom_item" && value.uid === "custom-1",
+      );
 
     expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
     expect(useRecipeStore.getState().recipes[1]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
-    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.result]).toMatchObject({
-      displayName: "granite",
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.result]).toEqual({
+      kind: "item",
+      id: { namespace: "minecraft", id: "granite" },
     });
   });
 });

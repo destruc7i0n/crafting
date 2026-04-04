@@ -1,6 +1,7 @@
 import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, RecipeSlotValue } from "@/stores/recipe";
+import { isTagSlotValue } from "@/stores/recipe/slot-value";
 
 const autoPlaceSlotsByRecipeType: Record<RecipeType, RecipeSlot[]> = {
   [RecipeType.Crafting]: [
@@ -53,11 +54,13 @@ const disabledTwoByTwoSlots = new Set<RecipeSlot>([
 
 export const isResultSlot = (slot: RecipeSlot) => resultSlots.has(slot);
 
-export const canRecipeSlotAcceptIngredient = (slot: RecipeSlot, item: IngredientItem) => {
-  return item.type !== "tag_item" || !isResultSlot(slot);
-};
+export const canRecipeSlotAcceptIngredientItem = (slot: RecipeSlot, item: IngredientItem) =>
+  item.type !== "tag_item" || !isResultSlot(slot);
 
-export const isRecipeSlotDisabled = (recipe: SingleRecipeState, slot: RecipeSlot) => {
+export const canRecipeSlotAcceptSlotValue = (slot: RecipeSlot, value: RecipeSlotValue) =>
+  !isTagSlotValue(value) || !isResultSlot(slot);
+
+export const isRecipeSlotDisabled = (recipe: Recipe, slot: RecipeSlot) => {
   return (
     recipe.recipeType === RecipeType.Crafting &&
     recipe.crafting.twoByTwo &&
@@ -66,7 +69,7 @@ export const isRecipeSlotDisabled = (recipe: SingleRecipeState, slot: RecipeSlot
 };
 
 export const findFirstEmptyRecipeSlot = (
-  recipe: SingleRecipeState,
+  recipe: Recipe,
   item: IngredientItem,
 ): RecipeSlot | undefined => {
   const orderedSlots = autoPlaceSlotsByRecipeType[recipe.recipeType] ?? [];
@@ -80,7 +83,7 @@ export const findFirstEmptyRecipeSlot = (
       return false;
     }
 
-    return canRecipeSlotAcceptIngredient(slot, item);
+    return canRecipeSlotAcceptIngredientItem(slot, item);
   });
 };
 

@@ -76,7 +76,7 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
             >
               {rowItems.map((item) => (
                 <Slot key={identifierUniqueKey(item.id)}>
-                  <Item item={item} container="ingredients" />
+                  <Item item={item} />
                 </Slot>
               ))}
             </div>

@@ -1,43 +1,47 @@
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { RecipeSlotValue, createEmptySlotContext } from "@/stores/recipe";
+import { customItemSlot, customTagSlot, makeRecipe } from "@/test/recipe-fixtures";
 
 import { validateRecipe } from "./validate-recipe";
 
-const createItem = (raw: string, version = MinecraftVersion.V121) => ({
-  type: "default_item" as const,
+const createItem = (
+  raw: string,
+  _version = MinecraftVersion.V121,
+): Extract<RecipeSlotValue, { kind: "item" }> => ({
+  kind: "item",
   id: {
-    raw,
     id: raw.split(":").at(-1) ?? raw,
     namespace: raw.includes(":") ? raw.split(":")[0] : "minecraft",
   },
-  displayName: raw,
-  texture: "",
-  _version: version,
 });
 
-const createTagItem = (raw: string, version = MinecraftVersion.V121) => ({
-  type: "tag_item" as const,
+const createTagItem = (
+  raw: string,
+  _version = MinecraftVersion.V121,
+): Extract<RecipeSlotValue, { kind: "vanilla_tag" }> => ({
+  kind: "vanilla_tag",
   id: {
     id: raw.split(":").at(-1) ?? raw,
     namespace: raw.includes(":") ? raw.split(":")[0] : "minecraft",
   },
-  displayName: `#${raw}`,
-  texture: "",
-  tagSource: "vanilla" as const,
-  values: [],
-  _version: version,
 });
 
 const createRecipe = (
   recipeType: RecipeType,
-  slots: SingleRecipeState["slots"] = {},
-  overrides: Partial<SingleRecipeState> = {},
-): SingleRecipeState => ({
-  ...recipeStateDefaults,
-  recipeType,
-  slots,
-  ...overrides,
-});
+  slots: Record<string, RecipeSlotValue> = {},
+  overrides: Parameters<typeof makeRecipe>[0] = {},
+) =>
+  makeRecipe({
+    recipeType,
+    slots,
+    ...overrides,
+  });
+
+const validate = (
+  recipe: ReturnType<typeof createRecipe>,
+  version: MinecraftVersion,
+  slotContext = createEmptySlotContext(version),
+) => validateRecipe(recipe, version, slotContext);
 
 describe("validateRecipe", () => {
   it("does not require a file name for Java exports", () => {
@@ -53,7 +57,7 @@ describe("validateRecipe", () => {
       },
     );
 
-    expect(validateRecipe(recipe, MinecraftVersion.V121)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
       valid: true,
       errors: [],
     });
@@ -62,7 +66,7 @@ describe("validateRecipe", () => {
   it("requires a crafting ingredient and result", () => {
     const recipe = createRecipe(RecipeType.Crafting);
 
-    expect(validateRecipe(recipe, MinecraftVersion.V121)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
       valid: false,
       errors: ["Add at least one crafting ingredient", "Add a result item"],
     });
@@ -84,7 +88,7 @@ describe("validateRecipe", () => {
       },
     );
 
-    expect(validateRecipe(recipe, MinecraftVersion.V121)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
       valid: false,
       errors: ["Add at least one crafting ingredient"],
     });
@@ -95,7 +99,7 @@ describe("validateRecipe", () => {
       "cooking.ingredient": createItem("minecraft:iron_ore"),
     });
 
-    expect(validateRecipe(recipe, MinecraftVersion.V121)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
       valid: false,
       errors: ["Add a result item"],
     });
@@ -108,7 +112,7 @@ describe("validateRecipe", () => {
       "smithing.addition": createItem("minecraft:redstone"),
     });
 
-    expect(validateRecipe(recipe, MinecraftVersion.V121)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
       valid: true,
       errors: [],
     });
@@ -121,7 +125,7 @@ describe("validateRecipe", () => {
       "smithing.addition": createItem("minecraft:netherite_ingot"),
     });
 
-    expect(validateRecipe(recipe, MinecraftVersion.V121)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
       valid: false,
       errors: ["Add a result item"],
     });
@@ -133,7 +137,7 @@ describe("validateRecipe", () => {
       "stonecutter.result": createItem("minecraft:stone_slab", MinecraftVersion.V113),
     });
 
-    expect(validateRecipe(recipe, MinecraftVersion.V113)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V113)).toEqual({
       valid: false,
       errors: ["Recipe type is not available in Java 1.13"],
     });
@@ -142,7 +146,7 @@ describe("validateRecipe", () => {
   it("delegates transmute validation to its own module", () => {
     const recipe = createRecipe(RecipeType.CraftingTransmute);
 
-    expect(validateRecipe(recipe, MinecraftVersion.V12111)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V12111)).toEqual({
       valid: false,
       errors: [
         "Recipe type is not available in Java 1.21.11",
@@ -159,7 +163,7 @@ describe("validateRecipe", () => {
       "crafting.result": createTagItem("minecraft:planks"),
     });
 
-    expect(validateRecipe(recipe, MinecraftVersion.V121)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
       valid: false,
       errors: ["Result slots must contain items, not tags"],
     });
@@ -171,7 +175,7 @@ describe("validateRecipe", () => {
       "crafting.result": createItem("minecraft:stick", MinecraftVersion.V112),
     });
 
-    expect(validateRecipe(recipe, MinecraftVersion.V112)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V112)).toEqual({
       valid: false,
       errors: ["Item tags are not available in Java 1.12"],
     });
@@ -184,7 +188,7 @@ describe("validateRecipe", () => {
       "smithing.addition": createItem("minecraft:redstone"),
     });
 
-    expect(validateRecipe(recipe, MinecraftVersion.V1215)).toEqual({
+    expect(validate(recipe, MinecraftVersion.V1215)).toEqual({
       valid: false,
       errors: ["Add a trim pattern"],
     });
@@ -199,12 +203,59 @@ describe("validateRecipe", () => {
       },
     });
 
-    expect(validateRecipe(recipe, MinecraftVersion.Bedrock)).toEqual({
+    expect(validate(recipe, MinecraftVersion.Bedrock)).toEqual({
       valid: false,
       errors: [
         "Bedrock furnace recipes do not support tag ingredients",
         "Bedrock furnace recipes do not support result counts",
       ],
+    });
+  });
+
+  it("rejects missing custom item refs", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": customItemSlot("missing-item"),
+      "crafting.result": createItem("minecraft:stick"),
+    });
+
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
+      valid: false,
+      errors: ["Recipe references a missing custom item"],
+    });
+  });
+
+  it("rejects missing custom tag refs", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": customTagSlot("missing-tag"),
+      "crafting.result": createItem("minecraft:stick"),
+    });
+
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
+      valid: false,
+      errors: ["Recipe references a missing custom tag"],
+    });
+  });
+
+  it("accepts valid custom refs when the slot context can resolve them", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": customItemSlot("custom-1"),
+      "crafting.result": createItem("minecraft:stick"),
+    });
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
+    slotContext.customItemsByUid = {
+      "custom-1": {
+        type: "custom_item",
+        uid: "custom-1",
+        id: { namespace: "crafting", id: "custom_stick" },
+        displayName: "Custom Stick",
+        texture: "data:image/png;base64,abc",
+        _version: MinecraftVersion.V121,
+      },
+    };
+
+    expect(validate(recipe, MinecraftVersion.V121, slotContext)).toEqual({
+      valid: true,
+      errors: [],
     });
   });
 });

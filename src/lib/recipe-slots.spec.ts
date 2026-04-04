@@ -1,20 +1,21 @@
 import { describe, expect, it } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { Recipe } from "@/stores/recipe";
+import { toRecipeSlotValue } from "@/stores/recipe/slot-value";
+import { makeRecipe } from "@/test/recipe-fixtures";
 
 import {
   canEditRecipeSlotCount,
-  canRecipeSlotAcceptIngredient,
+  canRecipeSlotAcceptIngredientItem,
+  canRecipeSlotAcceptSlotValue,
   findFirstEmptyRecipeSlot,
   isRecipeSlotDisabled,
   isResultSlot,
 } from "./recipe-slots";
 
-const makeRecipe = (overrides: Partial<SingleRecipeState> = {}): SingleRecipeState => ({
-  ...recipeStateDefaults,
-  ...overrides,
-});
+const makeCanonicalRecipe = (overrides: Parameters<typeof makeRecipe>[0] = {}): Recipe =>
+  makeRecipe(overrides);
 
 const makeItem = (id = "stone") => ({
   type: "default_item" as const,
@@ -48,23 +49,30 @@ describe("isResultSlot", () => {
   });
 });
 
-describe("canRecipeSlotAcceptIngredient", () => {
+describe("recipe slot acceptance", () => {
   it("accepts items in result slots", () => {
-    expect(canRecipeSlotAcceptIngredient("crafting.result", makeItem())).toBe(true);
+    expect(canRecipeSlotAcceptIngredientItem("crafting.result", makeItem())).toBe(true);
+    expect(canRecipeSlotAcceptSlotValue("crafting.result", toRecipeSlotValue(makeItem()))).toBe(
+      true,
+    );
   });
 
   it("rejects tags in result slots", () => {
-    expect(canRecipeSlotAcceptIngredient("crafting.result", makeTagItem())).toBe(false);
+    expect(canRecipeSlotAcceptIngredientItem("crafting.result", makeTagItem())).toBe(false);
+    expect(canRecipeSlotAcceptSlotValue("crafting.result", toRecipeSlotValue(makeTagItem()))).toBe(
+      false,
+    );
   });
 
   it("accepts tags in ingredient slots", () => {
-    expect(canRecipeSlotAcceptIngredient("crafting.1", makeTagItem())).toBe(true);
+    expect(canRecipeSlotAcceptIngredientItem("crafting.1", makeTagItem())).toBe(true);
+    expect(canRecipeSlotAcceptSlotValue("crafting.1", toRecipeSlotValue(makeTagItem()))).toBe(true);
   });
 });
 
 describe("isRecipeSlotDisabled", () => {
   it("disables 2x2 slots when twoByTwo is enabled", () => {
-    const recipe = makeRecipe({
+    const recipe = makeCanonicalRecipe({
       crafting: { shapeless: false, keepWhitespace: false, twoByTwo: true },
     });
 
@@ -76,31 +84,31 @@ describe("isRecipeSlotDisabled", () => {
   });
 
   it("does not disable any slots when twoByTwo is off", () => {
-    const recipe = makeRecipe();
+    const recipe = makeCanonicalRecipe();
     expect(isRecipeSlotDisabled(recipe, "crafting.3")).toBe(false);
   });
 
   it("does not disable slots for non-crafting recipes", () => {
-    const recipe = makeRecipe({ recipeType: RecipeType.Smelting });
+    const recipe = makeCanonicalRecipe({ recipeType: RecipeType.Smelting });
     expect(isRecipeSlotDisabled(recipe, "crafting.3")).toBe(false);
   });
 });
 
 describe("findFirstEmptyRecipeSlot", () => {
   it("returns first empty crafting slot", () => {
-    const recipe = makeRecipe();
+    const recipe = makeCanonicalRecipe();
     expect(findFirstEmptyRecipeSlot(recipe, makeItem())).toBe("crafting.1");
   });
 
   it("skips occupied slots", () => {
-    const recipe = makeRecipe({
+    const recipe = makeCanonicalRecipe({
       slots: { "crafting.1": makeItem() },
     });
     expect(findFirstEmptyRecipeSlot(recipe, makeItem())).toBe("crafting.2");
   });
 
   it("skips disabled 2x2 slots", () => {
-    const recipe = makeRecipe({
+    const recipe = makeCanonicalRecipe({
       crafting: { shapeless: false, keepWhitespace: false, twoByTwo: true },
       slots: { "crafting.1": makeItem(), "crafting.2": makeItem() },
     });
@@ -108,7 +116,7 @@ describe("findFirstEmptyRecipeSlot", () => {
   });
 
   it("returns undefined when all slots are full", () => {
-    const recipe = makeRecipe({
+    const recipe = makeCanonicalRecipe({
       slots: Object.fromEntries(
         [
           "crafting.1",
@@ -128,7 +136,7 @@ describe("findFirstEmptyRecipeSlot", () => {
   });
 
   it("does not place tags in result slots", () => {
-    const recipe = makeRecipe({
+    const recipe = makeCanonicalRecipe({
       recipeType: RecipeType.Smelting,
       slots: { "cooking.ingredient": makeItem() },
     });
@@ -136,7 +144,7 @@ describe("findFirstEmptyRecipeSlot", () => {
   });
 
   it("returns first cooking slot for smelting", () => {
-    const recipe = makeRecipe({ recipeType: RecipeType.Smelting });
+    const recipe = makeCanonicalRecipe({ recipeType: RecipeType.Smelting });
     expect(findFirstEmptyRecipeSlot(recipe, makeItem())).toBe("cooking.ingredient");
   });
 });

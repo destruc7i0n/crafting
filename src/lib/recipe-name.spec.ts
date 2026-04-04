@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { RecipeSlotValue, createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { makeRecipe } from "@/test/recipe-fixtures";
 
 import {
   getAutoRecipeName,
@@ -15,29 +16,31 @@ import {
   toPreviewFileName,
 } from "./recipe-name";
 
-const createItem = (raw: string, displayName = raw, version = MinecraftVersion.V261) => ({
-  type: "default_item" as const,
+const createItem = (
+  raw: string,
+  _displayName = raw,
+  _version = MinecraftVersion.V261,
+): RecipeSlotValue => ({
+  kind: "item",
   id: {
-    raw,
     id: raw.split(":").at(-1) ?? raw,
     namespace: raw.includes(":") ? raw.split(":")[0] : "minecraft",
   },
-  displayName,
-  texture: "",
-  _version: version,
 });
 
 const createRecipe = (
   recipeType: RecipeType,
-  slots: SingleRecipeState["slots"],
-  overrides: Partial<SingleRecipeState> = {},
-): SingleRecipeState => ({
-  ...recipeStateDefaults,
-  id: overrides.id ?? `${recipeType}-${Math.random().toString(36).slice(2, 8)}`,
-  recipeType,
-  slots,
-  ...overrides,
-});
+  slots: Record<string, RecipeSlotValue>,
+  overrides: Parameters<typeof makeRecipe>[0] = {},
+) =>
+  makeRecipe({
+    id: overrides.id ?? `${recipeType}-${Math.random().toString(36).slice(2, 8)}`,
+    recipeType,
+    slots,
+    ...overrides,
+  });
+
+const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
 describe("sanitizeRecipeName", () => {
   it("normalizes to lowercase underscore names", () => {
@@ -121,7 +124,7 @@ describe("getAutoRecipeName", () => {
       "crafting.result": createItem("minecraft:red_bundle"),
     });
 
-    expect(getAutoRecipeName(recipe)).toBe("red_bundle");
+    expect(getAutoRecipeName(recipe, slotContext)).toBe("red_bundle");
   });
 
   it("uses smelting suffixes", () => {
@@ -130,7 +133,7 @@ describe("getAutoRecipeName", () => {
       "cooking.result": createItem("minecraft:dried_kelp"),
     });
 
-    expect(getAutoRecipeName(recipe)).toBe("dried_kelp_from_smelting");
+    expect(getAutoRecipeName(recipe, slotContext)).toBe("dried_kelp_from_smelting");
   });
 
   it("uses smoking suffixes", () => {
@@ -139,7 +142,7 @@ describe("getAutoRecipeName", () => {
       "cooking.result": createItem("minecraft:baked_potato"),
     });
 
-    expect(getAutoRecipeName(recipe)).toBe("baked_potato_from_smoking");
+    expect(getAutoRecipeName(recipe, slotContext)).toBe("baked_potato_from_smoking");
   });
 
   it("uses campfire suffixes", () => {
@@ -148,7 +151,7 @@ describe("getAutoRecipeName", () => {
       "cooking.result": createItem("minecraft:baked_potato"),
     });
 
-    expect(getAutoRecipeName(recipe)).toBe("baked_potato_from_campfire_cooking");
+    expect(getAutoRecipeName(recipe, slotContext)).toBe("baked_potato_from_campfire_cooking");
   });
 
   it("uses stonecutting result-first names", () => {
@@ -157,7 +160,7 @@ describe("getAutoRecipeName", () => {
       "stonecutter.result": createItem("minecraft:andesite_wall"),
     });
 
-    expect(getAutoRecipeName(recipe)).toBe("andesite_wall_from_andesite_stonecutting");
+    expect(getAutoRecipeName(recipe, slotContext)).toBe("andesite_wall_from_andesite_stonecutting");
   });
 
   it("uses smithing transform smithing names", () => {
@@ -168,7 +171,7 @@ describe("getAutoRecipeName", () => {
       "smithing.result": createItem("minecraft:netherite_pickaxe"),
     });
 
-    expect(getAutoRecipeName(recipe)).toBe("netherite_pickaxe_smithing");
+    expect(getAutoRecipeName(recipe, slotContext)).toBe("netherite_pickaxe_smithing");
   });
 
   it("uses smithing trim template-first names", () => {
@@ -182,7 +185,9 @@ describe("getAutoRecipeName", () => {
       { smithingTrimPattern: "minecraft:coast" },
     );
 
-    expect(getAutoRecipeName(recipe)).toBe("coast_armor_trim_smithing_template_smithing_trim");
+    expect(getAutoRecipeName(recipe, slotContext)).toBe(
+      "coast_armor_trim_smithing_template_smithing_trim",
+    );
   });
 
   it("keeps firework rocket crafting result-first naming", () => {
@@ -196,7 +201,7 @@ describe("getAutoRecipeName", () => {
       { crafting: { ...recipeStateDefaults.crafting, shapeless: true } },
     );
 
-    expect(getAutoRecipeName(recipe)).toBe("firework_rocket");
+    expect(getAutoRecipeName(recipe, slotContext)).toBe("firework_rocket");
   });
 });
 
@@ -207,10 +212,11 @@ describe("resolveRecipeNames", () => {
       "crafting.result": createItem("minecraft:iron_nugget", "Iron Nugget"),
     });
 
-    const resolved = resolveRecipeNames([recipe], { bedrockNamespace: "crafting" }).byId[recipe.id];
+    const resolved = resolveRecipeNames([recipe], { bedrockNamespace: "crafting" }, slotContext)
+      .byId[recipe.id];
 
     expect(resolved).toEqual({
-      sidebarTitle: "Iron Nugget",
+      sidebarTitle: "iron_nugget",
       javaName: "iron_nugget",
       bedrockName: "iron_nugget",
       bedrockIdentifier: "crafting:iron_nugget",
@@ -237,12 +243,16 @@ describe("resolveRecipeNames", () => {
       ),
     ];
 
-    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+    const resolved = resolveRecipeNames(
+      recipes,
+      { bedrockNamespace: "crafting" },
+      slotContext,
+    ).byId;
 
     expect(resolved.first?.javaName).toBe("stick");
     expect(resolved.second?.javaName).toBe("stick_2");
-    expect(resolved.first?.sidebarTitle).toBe("Stick");
-    expect(resolved.second?.sidebarTitle).toBe("Stick (2)");
+    expect(resolved.first?.sidebarTitle).toBe("stick");
+    expect(resolved.second?.sidebarTitle).toBe("stick (2)");
   });
 
   it("keeps resolved Java and Bedrock export details available for sidebar usage", () => {
@@ -251,9 +261,10 @@ describe("resolveRecipeNames", () => {
       "crafting.result": createItem("minecraft:stone_button", "Stone Button"),
     });
 
-    const resolved = resolveRecipeNames([recipe], { bedrockNamespace: "crafting" }).byId[recipe.id];
+    const resolved = resolveRecipeNames([recipe], { bedrockNamespace: "crafting" }, slotContext)
+      .byId[recipe.id];
 
-    expect(resolved?.sidebarTitle).toBe("Stone Button");
+    expect(resolved?.sidebarTitle).toBe("stone_button");
     expect(resolved?.javaName).toBe("stone_button");
     expect(resolved?.bedrockIdentifier).toBe("crafting:stone_button");
   });
@@ -278,7 +289,11 @@ describe("resolveRecipeNames", () => {
       ),
     ];
 
-    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+    const resolved = resolveRecipeNames(
+      recipes,
+      { bedrockNamespace: "crafting" },
+      slotContext,
+    ).byId;
 
     expect(resolved.manual?.javaName).toBe("custom_button");
     expect(resolved.auto?.javaName).toBe("custom_button_2");
@@ -307,7 +322,11 @@ describe("resolveRecipeNames", () => {
       ),
     ];
 
-    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+    const resolved = resolveRecipeNames(
+      recipes,
+      { bedrockNamespace: "crafting" },
+      slotContext,
+    ).byId;
 
     expect(resolved.manual?.bedrockIdentifier).toBe("crafting:shared_name");
     expect(resolved.auto?.bedrockIdentifier).toBe("crafting:shared_name_2");
@@ -333,7 +352,11 @@ describe("resolveRecipeNames", () => {
       ),
     ];
 
-    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+    const resolved = resolveRecipeNames(
+      recipes,
+      { bedrockNamespace: "crafting" },
+      slotContext,
+    ).byId;
 
     expect(resolved.manual?.javaName).toBeUndefined();
     expect(resolved.manual?.bedrockIdentifier).toBe("crafting:stick");
@@ -363,7 +386,11 @@ describe("resolveRecipeNames", () => {
       ),
     ];
 
-    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+    const resolved = resolveRecipeNames(
+      recipes,
+      { bedrockNamespace: "crafting" },
+      slotContext,
+    ).byId;
 
     expect(resolved.manual?.bedrockIdentifier).toBeUndefined();
     expect(resolved.auto?.bedrockIdentifier).toBe("crafting:stick");
@@ -389,7 +416,11 @@ describe("resolveRecipeNames", () => {
       ),
     ];
 
-    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+    const resolved = resolveRecipeNames(
+      recipes,
+      { bedrockNamespace: "crafting" },
+      slotContext,
+    ).byId;
 
     expect(resolved.manual?.javaName).toBe("stick_2");
     expect(resolved.auto?.javaName).toBe("stick");
@@ -418,7 +449,11 @@ describe("resolveRecipeNames", () => {
       ),
     ];
 
-    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+    const resolved = resolveRecipeNames(
+      recipes,
+      { bedrockNamespace: "crafting" },
+      slotContext,
+    ).byId;
 
     expect(resolved.manual?.bedrockIdentifier).toBe("crafting:stick_2");
     expect(resolved.auto?.bedrockIdentifier).toBe("crafting:stick");
@@ -444,7 +479,11 @@ describe("resolveRecipeNames", () => {
       ),
     ];
 
-    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+    const resolved = resolveRecipeNames(
+      recipes,
+      { bedrockNamespace: "crafting" },
+      slotContext,
+    ).byId;
 
     expect(resolved.first?.javaName).toBe("copper_ingot_from_smelting");
     expect(resolved.second?.javaName).toBe("copper_ingot_from_smelting_copper_ore");
@@ -470,7 +509,11 @@ describe("resolveRecipeNames", () => {
       ),
     ];
 
-    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting" }).byId;
+    const resolved = resolveRecipeNames(
+      recipes,
+      { bedrockNamespace: "crafting" },
+      slotContext,
+    ).byId;
 
     expect(resolved.smelting?.javaName).toBe("charcoal_from_smelting");
     expect(resolved.crafting?.javaName).toBe("charcoal");
@@ -511,7 +554,11 @@ describe("resolveRecipeNames", () => {
       ),
     ];
 
-    const resolved = resolveRecipeNames(recipes, { bedrockNamespace: "crafting_foo" }).byId;
+    const resolved = resolveRecipeNames(
+      recipes,
+      { bedrockNamespace: "crafting_foo" },
+      slotContext,
+    ).byId;
 
     expect(resolved.first?.bedrockIdentifier).toBe("crafting_foo:foo_bar");
     expect(resolved.third?.bedrockIdentifier).toMatch(/^crafting_foo:/);
@@ -539,7 +586,12 @@ describe("getPreviewBaseName", () => {
       ),
     ];
 
-    const naming = getCurrentRecipeName(recipes, 1, { bedrockNamespace: "crafting" });
+    const naming = getCurrentRecipeName({
+      recipes,
+      selectedRecipeId: "second",
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
 
     expect(naming).toBeDefined();
     expect(getPreviewBaseName(naming!, MinecraftVersion.V121)).toBe("stick_2");
@@ -559,7 +611,12 @@ describe("getPreviewBaseName", () => {
       },
     );
 
-    const naming = getCurrentRecipeName([recipe], 0, { bedrockNamespace: "crafting" });
+    const naming = getCurrentRecipeName({
+      recipes: [recipe],
+      selectedRecipeId: recipe.id,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
 
     expect(naming).toBeDefined();
     expect(getPreviewBaseName(naming!, MinecraftVersion.V121)).toBe("custom_java");
@@ -580,7 +637,12 @@ describe("getPreviewBaseName", () => {
       },
     );
 
-    const naming = getCurrentRecipeName([recipe], 0, { bedrockNamespace: "crafting" });
+    const naming = getCurrentRecipeName({
+      recipes: [recipe],
+      selectedRecipeId: recipe.id,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
 
     expect(naming).toBeDefined();
     expect(getPreviewBaseName(naming!, MinecraftVersion.V121)).toBe("stone_button");
@@ -609,7 +671,12 @@ describe("getCurrentRecipeName", () => {
       ),
     ];
 
-    const naming = getCurrentRecipeName(recipes, 1, { bedrockNamespace: "crafting" });
+    const naming = getCurrentRecipeName({
+      recipes,
+      selectedRecipeId: "second",
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
 
     expect(naming).toEqual({
       autoName: "stone_button",
@@ -626,7 +693,12 @@ describe("getCurrentRecipeName", () => {
       "crafting.result": createItem("minecraft:stone_button"),
     });
 
-    const naming = getCurrentRecipeName([recipe], 0, { bedrockNamespace: "custom_pack" });
+    const naming = getCurrentRecipeName({
+      recipes: [recipe],
+      selectedRecipeId: recipe.id,
+      context: { bedrockNamespace: "custom_pack" },
+      slotContext,
+    });
 
     expect(naming?.autoBedrockName).toBe("stone_button");
     expect(naming?.resolvedBedrockName).toBe("stone_button");
@@ -647,7 +719,12 @@ describe("getCurrentRecipeName", () => {
       },
     );
 
-    const naming = getCurrentRecipeName([recipe], 0, { bedrockNamespace: "crafting" });
+    const naming = getCurrentRecipeName({
+      recipes: [recipe],
+      selectedRecipeId: recipe.id,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
 
     expect(naming).toEqual({
       autoName: "stone_button",
@@ -668,8 +745,8 @@ describe("getCurrentRecipeName", () => {
       { id: "selected" },
     );
 
-    const first = getCurrentRecipeName(
-      [
+    const first = getCurrentRecipeName({
+      recipes: [
         selectedRecipe,
         createRecipe(
           RecipeType.Crafting,
@@ -680,12 +757,13 @@ describe("getCurrentRecipeName", () => {
           { id: "other-1" },
         ),
       ],
-      0,
-      { bedrockNamespace: "crafting" },
-    );
+      selectedRecipeId: selectedRecipe.id,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
 
-    const second = getCurrentRecipeName(
-      [
+    const second = getCurrentRecipeName({
+      recipes: [
         selectedRecipe,
         createRecipe(
           RecipeType.Crafting,
@@ -696,9 +774,10 @@ describe("getCurrentRecipeName", () => {
           { id: "other-2" },
         ),
       ],
-      0,
-      { bedrockNamespace: "crafting" },
-    );
+      selectedRecipeId: selectedRecipe.id,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
 
     expect(second).toEqual(first);
   });

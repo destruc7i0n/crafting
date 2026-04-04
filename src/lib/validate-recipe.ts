@@ -7,7 +7,8 @@ import { MinecraftVersion, RecipeType } from "@/data/types";
 import { getSupportedRecipeTypesForVersion } from "@/data/versions";
 import { isResultSlot } from "@/lib/recipe-slots";
 import { supportsItemTagsForVersion } from "@/lib/tags";
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, SlotContext } from "@/stores/recipe";
+import { hasMissingCustomRef, isTagSlotValue } from "@/stores/recipe/slot-value";
 
 export interface RecipeValidation {
   valid: boolean;
@@ -19,8 +20,9 @@ const getVersionLabel = (version: MinecraftVersion) => {
 };
 
 export const validateRecipe = (
-  recipe: SingleRecipeState,
+  recipe: Recipe,
   version: MinecraftVersion,
+  slotContext: SlotContext,
 ): RecipeValidation => {
   const errors: string[] = [];
 
@@ -28,15 +30,24 @@ export const validateRecipe = (
     errors.push(`Recipe type is not available in ${getVersionLabel(version)}`);
   }
 
-  const hasTagIngredient = Object.values(recipe.slots).some((item) => item?.type === "tag_item");
+  const hasTagIngredient = Object.values(recipe.slots).some((item) => isTagSlotValue(item));
   if (hasTagIngredient && !supportsItemTagsForVersion(version)) {
     errors.push(`Item tags are not available in ${getVersionLabel(version)}`);
   }
 
+  for (const value of Object.values(recipe.slots)) {
+    if (hasMissingCustomRef(value, slotContext)) {
+      errors.push(
+        value?.kind === "custom_item"
+          ? "Recipe references a missing custom item"
+          : "Recipe references a missing custom tag",
+      );
+    }
+  }
+
   const invalidTagResultSlots = Object.entries(recipe.slots)
     .filter(
-      ([slot, item]) =>
-        item?.type === "tag_item" && isResultSlot(slot as keyof typeof recipe.slots),
+      ([slot, item]) => isTagSlotValue(item) && isResultSlot(slot as keyof typeof recipe.slots),
     )
     .map(([slot]) => slot);
 

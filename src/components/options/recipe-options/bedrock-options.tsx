@@ -151,9 +151,7 @@ const NameField = () => {
 };
 
 const PriorityField = () => {
-  const priority = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.bedrock.priority ?? 0,
-  );
+  const priority = useRecipeStore((state) => selectCurrentRecipe(state)?.bedrock.priority ?? 0);
   const setRecipeBedrockPriority = useRecipeStore((state) => state.setRecipeBedrockPriority);
 
   return (

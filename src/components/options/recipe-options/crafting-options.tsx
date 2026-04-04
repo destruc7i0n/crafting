@@ -1,13 +1,13 @@
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
-import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
+import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
 import { CheckboxField } from "./shared";
 
 const selectCraftingShapeless = (state: ReturnType<typeof useRecipeStore.getState>) =>
-  state.recipes[state.selectedRecipeIndex]?.crafting.shapeless ?? false;
+  selectCurrentRecipe(state)?.crafting.shapeless ?? false;
 
 const ShapelessField = () => {
   const shapeless = useRecipeStore(selectCraftingShapeless);
@@ -25,7 +25,7 @@ const ShapelessField = () => {
 
 const TwoByTwoField = () => {
   const twoByTwo = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.crafting.twoByTwo === true,
+    (state) => selectCurrentRecipe(state)?.crafting.twoByTwo === true,
   );
   const setRecipeCraftingTwoByTwo = useRecipeStore((state) => state.setRecipeCraftingTwoByTwo);
 
@@ -40,7 +40,7 @@ const TwoByTwoField = () => {
 
 const ExactPositionField = () => {
   const keepWhitespace = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.crafting.keepWhitespace ?? false,
+    (state) => selectCurrentRecipe(state)?.crafting.keepWhitespace ?? false,
   );
   const setRecipeCraftingKeepWhitespace = useRecipeStore(
     (state) => state.setRecipeCraftingKeepWhitespace,

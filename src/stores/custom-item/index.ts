@@ -1,4 +1,3 @@
-import { current } from "immer";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -59,8 +58,6 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
       },
 
       updateCustomItem: (uid, updates) => {
-        let syncedItem: CustomItem | undefined;
-
         set((state) => {
           const item = state.customItems.find((i) => i.uid === uid);
           if (!item) return;
@@ -82,24 +79,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
               item.id = newId;
             }
           }
-
-          syncedItem = current(item);
         });
-
-        if (!syncedItem) {
-          return;
-        }
-
-        const nextSyncedItem = syncedItem;
-
-        useRecipeStore.getState().syncCustomSlotItem(
-          (slotItem) => slotItem.type === "custom_item" && slotItem.uid === nextSyncedItem.uid,
-          (slotItem) => {
-            slotItem.id = nextSyncedItem.id;
-            slotItem.displayName = nextSyncedItem.displayName;
-            slotItem.texture = nextSyncedItem.texture;
-          },
-        );
       },
 
       deleteCustomItem: (uid) => {
@@ -108,7 +88,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
         });
         useRecipeStore
           .getState()
-          .removeMatchingSlotItems((item) => item.type === "custom_item" && item.uid === uid);
+          .removeMatchingSlotValues((value) => value.kind === "custom_item" && value.uid === uid);
       },
     })),
     {

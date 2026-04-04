@@ -6,111 +6,57 @@ import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
 import { generateUid } from "@/lib/utils";
 
-export interface SingleRecipeState {
-  id: string;
-  nameMode: "auto" | "manual";
-  name: string;
-  recipeType: RecipeType;
-  group: string;
-  category: string;
-  showNotification: boolean;
-  smithingTrimPattern: string;
-  slots: Partial<Record<RecipeSlot, IngredientItem>>;
-  crafting: {
-    shapeless: boolean;
-    keepWhitespace: boolean;
-    twoByTwo: boolean;
-  };
-  cooking: {
-    time: number;
-    experience: number;
-  };
-  bedrock: {
-    identifierMode: "auto" | "manual";
-    identifierName: string;
-    priority: number;
-  };
-}
+import { toRecipeSlotValue } from "./slot-value";
+import { Recipe, RecipeSlotValue, RecipeState, recipeStateDefaults } from "./types";
 
-export const recipeStateDefaults: SingleRecipeState = {
-  id: "",
-  nameMode: "auto",
-  name: "",
-  recipeType: RecipeType.Crafting,
-  group: "",
-  category: "",
-  showNotification: true,
-  smithingTrimPattern: "",
-  slots: {},
-  crafting: {
-    shapeless: false,
-    keepWhitespace: false,
-    twoByTwo: false,
-  },
-  cooking: {
-    time: 0,
-    experience: 0,
-  },
-  bedrock: { identifierMode: "auto", identifierName: "", priority: 0 },
-};
-
-export type RecipeState = {
-  recipes: SingleRecipeState[];
-  selectedRecipeIndex: number;
-};
+export { recipeStateDefaults } from "./types";
+export type { Recipe, RecipeSlotValue, RecipeState, SlotContext, SlotDisplay } from "./types";
+export { createEmptySlotContext } from "./slot-value";
 
 type RecipeActions = {
-  selectRecipe: (index: number) => void;
+  selectRecipe: (id: string) => void;
   createRecipe: () => void;
-  deleteRecipe: (index: number) => void;
+  deleteRecipe: (id: string) => void;
   clearSelectedRecipeSlots: () => void;
 
-  setRecipeNameMode: (mode: SingleRecipeState["nameMode"]) => void;
+  setRecipeNameMode: (mode: Recipe["nameMode"]) => void;
   setRecipeName: (name: string) => void;
   setRecipeType: (type: RecipeType) => void;
   setRecipeGroup: (group: string) => void;
   setRecipeCategory: (category: string) => void;
   setRecipeShowNotification: (showNotification: boolean) => void;
   setRecipeSmithingTrimPattern: (pattern: string) => void;
-  setRecipeSlot: (slot: RecipeSlot, item?: IngredientItem) => void;
+  setRecipeSlot: (slot: RecipeSlot, value?: RecipeSlotValue) => void;
+  setRecipeSlotFromIngredient: (slot: RecipeSlot, item?: IngredientItem) => void;
   setRecipeSlotCount: (slot: RecipeSlot, count: number) => void;
   setRecipeCraftingShapeless: (shapeless: boolean) => void;
   setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => void;
   setRecipeCraftingTwoByTwo: (twoByTwo: boolean) => void;
   setRecipeCookingTime: (time: number) => void;
   setRecipeCookingExperience: (experience: number) => void;
-  setRecipeBedrockIdentifierMode: (mode: SingleRecipeState["bedrock"]["identifierMode"]) => void;
+  setRecipeBedrockIdentifierMode: (mode: Recipe["bedrock"]["identifierMode"]) => void;
   setRecipeBedrockIdentifierName: (identifierName: string) => void;
   setRecipeBedrockPriority: (priority: number) => void;
-  syncCustomSlotItem: (
-    match: (item: IngredientItem) => boolean,
-    update: (item: IngredientItem) => void,
-  ) => void;
-  removeMatchingSlotItems: (match: (item: IngredientItem) => boolean) => void;
+  removeMatchingSlotValues: (match: (value: RecipeSlotValue) => boolean) => void;
   clearAllSlots: () => void;
 };
 
-const createRecipeState = (): SingleRecipeState => ({
-  ...recipeStateDefaults,
-  id: generateUid("recipe"),
-  slots: {},
-  crafting: { ...recipeStateDefaults.crafting },
-  cooking: { ...recipeStateDefaults.cooking },
-  bedrock: { ...recipeStateDefaults.bedrock },
-});
-
 type ImmerState = RecipeState & RecipeActions;
 
-const getSelectedRecipe = (state: ImmerState): SingleRecipeState | undefined =>
-  state.recipes[state.selectedRecipeIndex];
+const createRecipeState = (): Recipe => ({
+  ...recipeStateDefaults,
+  id: generateUid("recipe"),
+});
 
-const clampSelectedRecipeIndex = (index: number, recipeCount: number) =>
-  Math.max(0, Math.min(index, recipeCount - 1));
+const getSelectedRecipe = (state: ImmerState) =>
+  state.recipes.find((recipe) => recipe.id === state.selectedRecipeId);
 
 export const useRecipeStore = create<ImmerState>()(
   persist(
     immer((set) => {
-      const updateSelectedRecipe = (update: (recipe: SingleRecipeState) => void) =>
+      const initialRecipe = createRecipeState();
+
+      const updateSelectedRecipe = (update: (recipe: Recipe) => void) =>
         set((state) => {
           const recipe = getSelectedRecipe(state);
           if (recipe) {
@@ -119,33 +65,41 @@ export const useRecipeStore = create<ImmerState>()(
         });
 
       return {
-        recipes: [createRecipeState()],
-        selectedRecipeIndex: 0,
+        recipes: [initialRecipe],
+        selectedRecipeId: initialRecipe.id,
 
-        selectRecipe: (index: number) => {
+        selectRecipe: (id) => {
           set((state) => {
-            state.selectedRecipeIndex = index;
+            if (state.recipes.some((recipe) => recipe.id === id)) {
+              state.selectedRecipeId = id;
+            }
           });
         },
         createRecipe: () => {
           set((state) => {
-            state.recipes.push(createRecipeState());
-            state.selectedRecipeIndex = state.recipes.length - 1;
+            const recipe = createRecipeState();
+            state.recipes.push(recipe);
+            state.selectedRecipeId = recipe.id;
           });
         },
-        deleteRecipe: (index: number) => {
+        deleteRecipe: (id) => {
           set((state) => {
             if (state.recipes.length <= 1) {
               return;
             }
 
-            const nextRecipeCount = state.recipes.length - 1;
-            state.selectedRecipeIndex =
-              index < state.selectedRecipeIndex
-                ? state.selectedRecipeIndex - 1
-                : clampSelectedRecipeIndex(state.selectedRecipeIndex, nextRecipeCount);
+            const index = state.recipes.findIndex((recipe) => recipe.id === id);
+            if (index < 0) {
+              return;
+            }
 
+            const isDeletingSelected = state.selectedRecipeId === id;
             state.recipes.splice(index, 1);
+
+            if (isDeletingSelected) {
+              const nextRecipe = state.recipes[Math.min(index, state.recipes.length - 1)];
+              state.selectedRecipeId = nextRecipe?.id ?? "";
+            }
           });
         },
         clearSelectedRecipeSlots: () => {
@@ -153,113 +107,109 @@ export const useRecipeStore = create<ImmerState>()(
             recipe.slots = {};
           });
         },
-        setRecipeNameMode: (mode: SingleRecipeState["nameMode"]) => {
+        setRecipeNameMode: (mode) => {
           updateSelectedRecipe((recipe) => {
             recipe.nameMode = mode;
           });
         },
-        setRecipeName: (name: string) => {
+        setRecipeName: (name) => {
           updateSelectedRecipe((recipe) => {
             recipe.name = name;
           });
         },
-        setRecipeType: (type: RecipeType) => {
+        setRecipeType: (type) => {
           updateSelectedRecipe((recipe) => {
             recipe.recipeType = type;
           });
         },
-        setRecipeGroup: (group: string) => {
+        setRecipeGroup: (group) => {
           updateSelectedRecipe((recipe) => {
             recipe.group = group;
           });
         },
-        setRecipeCategory: (category: string) => {
+        setRecipeCategory: (category) => {
           updateSelectedRecipe((recipe) => {
             recipe.category = category;
           });
         },
-        setRecipeShowNotification: (showNotification: boolean) => {
+        setRecipeShowNotification: (showNotification) => {
           updateSelectedRecipe((recipe) => {
             recipe.showNotification = showNotification;
           });
         },
-        setRecipeSmithingTrimPattern: (pattern: string) => {
+        setRecipeSmithingTrimPattern: (pattern) => {
           updateSelectedRecipe((recipe) => {
             recipe.smithingTrimPattern = pattern;
           });
         },
-        setRecipeSlot: (slot: RecipeSlot, item?: IngredientItem) => {
+        setRecipeSlot: (slot, value) => {
           updateSelectedRecipe((recipe) => {
-            recipe.slots[slot] = item;
+            recipe.slots[slot] = value;
           });
         },
-        setRecipeSlotCount: (slot: RecipeSlot, count: number) => {
-          set((state) => {
-            const recipe = getSelectedRecipe(state);
-            const item = recipe?.slots[slot];
-            if (!item || item.type === "tag_item") return;
-            item.count = count;
+        setRecipeSlotFromIngredient: (slot, item) => {
+          updateSelectedRecipe((recipe) => {
+            recipe.slots[slot] = item ? toRecipeSlotValue(item) : undefined;
           });
         },
-        setRecipeCraftingShapeless: (shapeless: boolean) => {
+        setRecipeSlotCount: (slot, count) => {
+          updateSelectedRecipe((recipe) => {
+            const value = recipe.slots[slot];
+            if (!value || (value.kind !== "item" && value.kind !== "custom_item")) {
+              return;
+            }
+
+            value.count = count;
+          });
+        },
+        setRecipeCraftingShapeless: (shapeless) => {
           updateSelectedRecipe((recipe) => {
             recipe.crafting.shapeless = shapeless;
           });
         },
-        setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => {
+        setRecipeCraftingKeepWhitespace: (keepWhitespace) => {
           updateSelectedRecipe((recipe) => {
             recipe.crafting.keepWhitespace = keepWhitespace;
           });
         },
-        setRecipeCraftingTwoByTwo: (twoByTwo: boolean) => {
+        setRecipeCraftingTwoByTwo: (twoByTwo) => {
           updateSelectedRecipe((recipe) => {
             recipe.crafting.twoByTwo = twoByTwo;
           });
         },
-        setRecipeCookingTime: (time: number) => {
+        setRecipeCookingTime: (time) => {
           updateSelectedRecipe((recipe) => {
             recipe.cooking.time = time;
           });
         },
-        setRecipeCookingExperience: (experience: number) => {
+        setRecipeCookingExperience: (experience) => {
           updateSelectedRecipe((recipe) => {
             recipe.cooking.experience = experience;
           });
         },
-        setRecipeBedrockIdentifierMode: (mode: SingleRecipeState["bedrock"]["identifierMode"]) => {
+        setRecipeBedrockIdentifierMode: (mode) => {
           updateSelectedRecipe((recipe) => {
             recipe.bedrock.identifierMode = mode;
           });
         },
-        setRecipeBedrockIdentifierName: (identifierName: string) => {
+        setRecipeBedrockIdentifierName: (identifierName) => {
           updateSelectedRecipe((recipe) => {
             recipe.bedrock.identifierName = identifierName;
           });
         },
-        setRecipeBedrockPriority: (priority: number) => {
+        setRecipeBedrockPriority: (priority) => {
           updateSelectedRecipe((recipe) => {
             recipe.bedrock.priority = priority;
           });
         },
-        syncCustomSlotItem: (match, update) => {
+        removeMatchingSlotValues: (match) => {
           set((state) => {
             for (const recipe of state.recipes) {
-              for (const slotItem of Object.values(recipe.slots)) {
-                if (slotItem && match(slotItem)) {
-                  update(slotItem);
-                }
-              }
-            }
-          });
-        },
-        removeMatchingSlotItems: (match) => {
-          set((state) => {
-            for (const recipe of state.recipes) {
-              for (const [slot, slotItem] of Object.entries(recipe.slots) as [
+              for (const [slot, slotValue] of Object.entries(recipe.slots) as [
                 RecipeSlot,
-                IngredientItem | undefined,
+                RecipeSlotValue | undefined,
               ][]) {
-                if (slotItem && match(slotItem)) {
+                if (slotValue && match(slotValue)) {
                   recipe.slots[slot] = undefined;
                 }
               }
@@ -280,25 +230,8 @@ export const useRecipeStore = create<ImmerState>()(
       version: 0,
       partialize: (state) => ({
         recipes: state.recipes,
-        selectedRecipeIndex: state.selectedRecipeIndex,
+        selectedRecipeId: state.selectedRecipeId,
       }),
-      onRehydrateStorage: () => (state) => {
-        if (!state) return;
-
-        if (!Array.isArray(state.recipes) || state.recipes.length === 0) {
-          state.recipes = [createRecipeState()];
-          state.selectedRecipeIndex = 0;
-          return;
-        }
-
-        const selectedRecipeIndex = Number.isInteger(state.selectedRecipeIndex)
-          ? state.selectedRecipeIndex
-          : 0;
-        state.selectedRecipeIndex = clampSelectedRecipeIndex(
-          selectedRecipeIndex,
-          state.recipes.length,
-        );
-      },
     },
   ),
 );

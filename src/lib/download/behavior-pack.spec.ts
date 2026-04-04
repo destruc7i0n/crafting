@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { makeRecipe } from "@/test/recipe-fixtures";
 
 const { createBehaviorPackBlob, downloadBlob, generate, getBehaviorPackRecipeFileName } =
   vi.hoisted(() => ({
@@ -50,16 +51,16 @@ const createItem = (raw: string, version = MinecraftVersion.Bedrock) => ({
 });
 
 const createCraftingRecipe = (
-  slots: SingleRecipeState["slots"],
-  overrides: Partial<SingleRecipeState> = {},
-): SingleRecipeState => ({
-  ...recipeStateDefaults,
-  id: overrides.id ?? `recipe-${(recipeId += 1)}`,
-  recipeType: RecipeType.Crafting,
-  slots,
-  crafting: { ...recipeStateDefaults.crafting, shapeless: true },
-  ...overrides,
-});
+  slots: Record<string, ReturnType<typeof createItem>>,
+  overrides: Parameters<typeof makeRecipe>[0] = {},
+) =>
+  makeRecipe({
+    id: overrides.id ?? `recipe-${(recipeId += 1)}`,
+    recipeType: RecipeType.Crafting,
+    slots,
+    crafting: { ...recipeStateDefaults.crafting, shapeless: true },
+    ...overrides,
+  });
 
 describe("downloadBehaviorPack", () => {
   beforeEach(() => {
@@ -71,9 +72,13 @@ describe("downloadBehaviorPack", () => {
     const recipe = createCraftingRecipe({
       "crafting.1": createItem("minecraft:stone"),
     });
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
-    await downloadBehaviorPack([recipe], MinecraftVersion.Bedrock, {
-      bedrockNamespace: "crafting",
+    await downloadBehaviorPack({
+      recipes: [recipe],
+      version: MinecraftVersion.Bedrock,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).toHaveBeenCalledWith(
@@ -103,9 +108,13 @@ describe("downloadBehaviorPack", () => {
         bedrock: { identifierMode: "manual", identifierName: "duplicate", priority: 0 },
       },
     );
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
-    await downloadBehaviorPack([firstRecipe, secondRecipe], MinecraftVersion.Bedrock, {
-      bedrockNamespace: "crafting",
+    await downloadBehaviorPack({
+      recipes: [firstRecipe, secondRecipe],
+      version: MinecraftVersion.Bedrock,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).toHaveBeenCalledWith(
@@ -125,9 +134,13 @@ describe("downloadBehaviorPack", () => {
         bedrock: { identifierMode: "manual", identifierName: "Bad-Id", priority: 0 },
       },
     );
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
-    await downloadBehaviorPack([recipe], MinecraftVersion.Bedrock, {
-      bedrockNamespace: "Crafting",
+    await downloadBehaviorPack({
+      recipes: [recipe],
+      version: MinecraftVersion.Bedrock,
+      context: { bedrockNamespace: "Crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).toHaveBeenCalledWith(
@@ -143,17 +156,26 @@ describe("downloadBehaviorPack", () => {
       "crafting.1": createItem("minecraft:stone"),
       "crafting.result": createItem("minecraft:stone_button"),
     });
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
     generate.mockReturnValue({ test: true });
     createBehaviorPackBlob.mockReturnValue(blob);
 
-    await downloadBehaviorPack([recipe], MinecraftVersion.Bedrock, {
-      bedrockNamespace: "crafting",
+    await downloadBehaviorPack({
+      recipes: [recipe],
+      version: MinecraftVersion.Bedrock,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).not.toHaveBeenCalled();
-    expect(generate).toHaveBeenCalledWith(recipe, MinecraftVersion.Bedrock, {
-      bedrockIdentifier: "crafting:stone_button",
+    expect(generate).toHaveBeenCalledWith({
+      state: recipe,
+      version: MinecraftVersion.Bedrock,
+      slotContext,
+      options: {
+        bedrockIdentifier: "crafting:stone_button",
+      },
     });
     expect(createBehaviorPackBlob).toHaveBeenCalledWith([
       { identifier: "crafting:stone_button", json: { test: true } },
@@ -166,13 +188,17 @@ describe("downloadBehaviorPack", () => {
       "crafting.1": createItem("minecraft:stone"),
       "crafting.result": createItem("minecraft:stone_button"),
     });
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
     generate.mockImplementation(() => {
       throw new Error("Boom");
     });
 
-    await downloadBehaviorPack([recipe], MinecraftVersion.Bedrock, {
-      bedrockNamespace: "crafting",
+    await downloadBehaviorPack({
+      recipes: [recipe],
+      version: MinecraftVersion.Bedrock,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).toHaveBeenCalledWith(
@@ -187,14 +213,18 @@ describe("downloadBehaviorPack", () => {
       "crafting.1": createItem("minecraft:stone"),
       "crafting.result": createItem("minecraft:stone_button"),
     });
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
     generate.mockReturnValue({ test: true });
     createBehaviorPackBlob.mockImplementation(() => {
       throw new Error("Zip failed");
     });
 
-    await downloadBehaviorPack([recipe], MinecraftVersion.Bedrock, {
-      bedrockNamespace: "crafting",
+    await downloadBehaviorPack({
+      recipes: [recipe],
+      version: MinecraftVersion.Bedrock,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).toHaveBeenCalledWith(

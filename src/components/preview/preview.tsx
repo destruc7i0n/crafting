@@ -12,7 +12,7 @@ import { useItemSelection } from "@/hooks/use-item-selection";
 import { getPreviewBaseName, toPreviewFileName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
-import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
+import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useUIStore } from "@/stores/ui";
@@ -26,9 +26,7 @@ export const Preview = memo(() => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
   const clearSelectedRecipeSlots = useRecipeStore((state) => state.clearSelectedRecipeSlots);
   const hasFilledSlots = useRecipeStore((state) =>
-    Object.values(state.recipes[state.selectedRecipeIndex]?.slots ?? {}).some(
-      (slotItem) => slotItem != null,
-    ),
+    Object.values(selectCurrentRecipe(state)?.slots ?? {}).some((slotItem) => slotItem != null),
   );
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const naming = useCurrentRecipeName();
@@ -117,7 +115,7 @@ export const Preview = memo(() => {
 
     clearSelectedRecipeSlots();
 
-    if (useUIStore.getState().selection?.type === "preview") {
+    if (useUIStore.getState().selection?.type === "slot") {
       useUIStore.getState().setSelection(undefined);
     }
   };
@@ -185,8 +183,8 @@ export const Preview = memo(() => {
         <div className="mt-3 flex flex-col gap-2">
           <div className="min-w-0 flex-1">
             <div className="border-border/70 border-t pt-3">
-              {selection.type === "preview" ? (
-                <ItemInfoBox item={selection.item} slot={selection.slot} />
+              {selection.type === "slot" ? (
+                <ItemInfoBox value={selection.value} slot={selection.slot} />
               ) : (
                 <ItemInfoBox item={selection.item} />
               )}

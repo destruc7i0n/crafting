@@ -1,26 +1,27 @@
 import { getBehaviorPackRecipeFileName } from "@/data/behavior-pack";
 import { MinecraftVersion } from "@/data/types";
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, SlotContext } from "@/stores/recipe";
 
 import { bedrockIdentifierHint, isValidBedrockNamespacedIdentifier } from "./minecraft-identifier";
 import { NamingContext, resolveRecipeNames, sanitizeRecipeName } from "./recipe-name";
 import { validateRecipe } from "./validate-recipe";
 
 export interface BehaviorPackRecipeIssue {
-  recipe: SingleRecipeState;
+  recipe: Recipe;
   name: string;
   errors: string[];
 }
 
 export const validateBehaviorPackExport = (
-  recipes: SingleRecipeState[],
+  recipes: Recipe[],
   context: NamingContext,
+  slotContext: SlotContext,
 ): BehaviorPackRecipeIssue[] => {
-  const resolvedNames = resolveRecipeNames(recipes, context).byId;
+  const resolvedNames = resolveRecipeNames(recipes, context, slotContext).byId;
   const issues = recipes.map((recipe) => ({
     recipe,
     name: resolvedNames[recipe.id]?.sidebarTitle ?? "Recipe",
-    errors: [...validateRecipe(recipe, MinecraftVersion.Bedrock).errors],
+    errors: [...validateRecipe(recipe, MinecraftVersion.Bedrock, slotContext).errors],
   }));
 
   const identifierToIndexes = new Map<string, number[]>();

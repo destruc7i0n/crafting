@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { makeRecipe } from "@/test/recipe-fixtures";
 
 const { createDatapackBlob, downloadBlob, generate } = vi.hoisted(() => ({
   createDatapackBlob: vi.fn(),
@@ -35,16 +36,16 @@ const createItem = (raw: string, version = MinecraftVersion.V121) => ({
 });
 
 const createCraftingRecipe = (
-  slots: SingleRecipeState["slots"],
-  overrides: Partial<SingleRecipeState> = {},
-): SingleRecipeState => ({
-  ...recipeStateDefaults,
-  id: overrides.id ?? `recipe-${(recipeId += 1)}`,
-  recipeType: RecipeType.Crafting,
-  slots,
-  crafting: { ...recipeStateDefaults.crafting, shapeless: true },
-  ...overrides,
-});
+  slots: Record<string, ReturnType<typeof createItem>>,
+  overrides: Parameters<typeof makeRecipe>[0] = {},
+) =>
+  makeRecipe({
+    id: overrides.id ?? `recipe-${(recipeId += 1)}`,
+    recipeType: RecipeType.Crafting,
+    slots,
+    crafting: { ...recipeStateDefaults.crafting, shapeless: true },
+    ...overrides,
+  });
 
 describe("downloadDatapack", () => {
   beforeEach(() => {
@@ -57,10 +58,12 @@ describe("downloadDatapack", () => {
       "crafting.1": createItem("minecraft:stone"),
       "crafting.result": createItem("minecraft:stone_button"),
     });
+    const slotContext = createEmptySlotContext(MinecraftVersion.V112);
 
     await downloadDatapack([recipe], MinecraftVersion.V112, {
       tags: [],
       context: { bedrockNamespace: "crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).toHaveBeenCalledWith(
@@ -75,10 +78,12 @@ describe("downloadDatapack", () => {
     const recipe = createCraftingRecipe({
       "crafting.1": createItem("minecraft:stone"),
     });
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
     await downloadDatapack([recipe], MinecraftVersion.V121, {
       tags: [],
       context: { bedrockNamespace: "crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).toHaveBeenCalledWith(
@@ -97,10 +102,12 @@ describe("downloadDatapack", () => {
       },
       { nameMode: "manual", name: "" },
     );
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
     await downloadDatapack([recipe], MinecraftVersion.V121, {
       tags: [],
       context: { bedrockNamespace: "crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).toHaveBeenCalledWith(
@@ -116,6 +123,7 @@ describe("downloadDatapack", () => {
       "crafting.1": createItem("minecraft:stone"),
       "crafting.result": createItem("minecraft:stone_button"),
     });
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
     generate.mockReturnValue({ test: true });
     createDatapackBlob.mockReturnValue(blob);
@@ -123,10 +131,15 @@ describe("downloadDatapack", () => {
     await downloadDatapack([recipe], MinecraftVersion.V121, {
       tags: [],
       context: { bedrockNamespace: "crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).not.toHaveBeenCalled();
-    expect(generate).toHaveBeenCalledWith(recipe, MinecraftVersion.V121);
+    expect(generate).toHaveBeenCalledWith({
+      state: recipe,
+      version: MinecraftVersion.V121,
+      slotContext,
+    });
     expect(createDatapackBlob).toHaveBeenCalledWith(
       MinecraftVersion.V121,
       [{ name: "stone_button", json: { test: true } }],
@@ -140,6 +153,7 @@ describe("downloadDatapack", () => {
       "crafting.1": createItem("minecraft:stone"),
       "crafting.result": createItem("minecraft:stone_button"),
     });
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
     generate.mockImplementation(() => {
       throw new Error("Boom");
@@ -148,6 +162,7 @@ describe("downloadDatapack", () => {
     await downloadDatapack([recipe], MinecraftVersion.V121, {
       tags: [],
       context: { bedrockNamespace: "crafting" },
+      slotContext,
     });
 
     expect(globalThis.alert).toHaveBeenCalledWith(

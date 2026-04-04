@@ -17,5 +17,5 @@ export const TagItem = ({ id }: TagItemProps) => {
     return null;
   }
 
-  return <Item item={item} container="ingredients" />;
+  return <Item item={item} />;
 };

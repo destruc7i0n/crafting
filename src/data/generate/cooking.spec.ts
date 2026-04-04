@@ -1,4 +1,5 @@
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { makeRecipe } from "@/test/recipe-fixtures";
 
 import { MinecraftVersion, RecipeType } from "../types";
 import { generate } from "./cooking";
@@ -6,7 +7,7 @@ import { generate } from "./cooking";
 describe("generate cooking", () => {
   describe("1.13", () => {
     it("should generate a smelting recipe", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Smelting,
         group: "",
@@ -40,7 +41,7 @@ describe("generate cooking", () => {
           time: 10,
           experience: 10,
         },
-      };
+      });
       expect(generate(recipeSlice, MinecraftVersion.V113)).toEqual({
         type: "smelting",
         ingredient: {
@@ -55,7 +56,7 @@ describe("generate cooking", () => {
 
   describe("1.14 - 1.20", () => {
     it("should generate a smelting recipe", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Smelting,
         group: "",
@@ -92,7 +93,7 @@ describe("generate cooking", () => {
           time: 10,
           experience: 10,
         },
-      };
+      });
       expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
         type: "minecraft:smelting",
         ingredient: {
@@ -105,7 +106,7 @@ describe("generate cooking", () => {
     });
 
     it("should generate a campfire cooking recipe", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.CampfireCooking,
         group: "",
@@ -142,7 +143,7 @@ describe("generate cooking", () => {
           time: 10,
           experience: 10,
         },
-      };
+      });
       expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
         type: "minecraft:campfire_cooking",
         ingredient: {
@@ -155,7 +156,7 @@ describe("generate cooking", () => {
     });
 
     it("should generate a smoking recipe", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Smoking,
         group: "",
@@ -189,7 +190,7 @@ describe("generate cooking", () => {
           time: 10,
           experience: 10,
         },
-      };
+      });
       expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
         type: "minecraft:smoking",
         ingredient: {
@@ -202,7 +203,7 @@ describe("generate cooking", () => {
     });
 
     it("should generate a blasting recipe", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Blasting,
         group: "",
@@ -239,7 +240,7 @@ describe("generate cooking", () => {
           time: 10,
           experience: 10,
         },
-      };
+      });
       expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
         type: "minecraft:blasting",
         ingredient: {
@@ -254,7 +255,7 @@ describe("generate cooking", () => {
 
   describe("1.21+ and bedrock", () => {
     it("should generate 1.21 cooking with object result", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Smelting,
         group: "",
@@ -278,7 +279,7 @@ describe("generate cooking", () => {
         },
         crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
         type: "minecraft:smelting",
@@ -290,7 +291,7 @@ describe("generate cooking", () => {
     });
 
     it("should generate bedrock furnace body", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Smelting,
         group: "",
@@ -314,7 +315,7 @@ describe("generate cooking", () => {
         },
         crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
         input: "minecraft:sand",
@@ -323,7 +324,7 @@ describe("generate cooking", () => {
     });
 
     it("should preserve legacy data on bedrock furnace input strings", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Smelting,
         group: "",
@@ -347,7 +348,7 @@ describe("generate cooking", () => {
         },
         crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
         input: "minecraft:wood:4",
@@ -356,7 +357,7 @@ describe("generate cooking", () => {
     });
 
     it("should emit category for supported cooking recipes", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Blasting,
         group: "",
@@ -381,7 +382,7 @@ describe("generate cooking", () => {
         },
         crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 100, experience: 0.5 },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.V119)).toEqual({
         type: "minecraft:blasting",
@@ -392,5 +393,26 @@ describe("generate cooking", () => {
         cookingtime: 100,
       });
     });
+  });
+
+  it("throws when a placed custom result ref cannot be resolved", () => {
+    const recipeSlice = makeRecipe({
+      recipeType: RecipeType.Smelting,
+      slots: {
+        "cooking.ingredient": {
+          type: "default_item",
+          id: { id: "stone", namespace: "minecraft" },
+          displayName: "stone",
+          texture: "",
+          _version: MinecraftVersion.V121,
+        },
+        "cooking.result": { kind: "custom_item", uid: "missing-result" },
+      },
+      cooking: { time: 10, experience: 0.5 },
+    });
+
+    expect(() =>
+      generate(recipeSlice, MinecraftVersion.V121, createEmptySlotContext(MinecraftVersion.V121)),
+    ).toThrow("Cannot generate output for unresolved custom_item reference");
   });
 });

@@ -13,7 +13,8 @@
   },
   "rules": {
     "no-nested-ternary": "error",
-    "max-params": ["error", { "max": 3 }]
+    "max-params": ["error", { "max": 3 }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
   },
   "options": {
     "denyWarnings": true,

@@ -5,18 +5,19 @@ import { recipeTypeToItemId } from "@/data/constants";
 import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
 import { getRecipeExportDetail } from "@/lib/recipe-name";
 import { useRecipeStore } from "@/stores/recipe";
+import { selectSelectedRecipeId } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useUIStore } from "@/stores/ui";
 
 export const MobileRecipeSwitcher = () => {
   const recipes = useRecipeStore((state) => state.recipes);
-  const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
+  const selectedRecipeId = useRecipeStore(selectSelectedRecipeId);
   const resolvedNames = useResolvedRecipeNames();
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
 
-  const currentRecipe = recipes[selectedRecipeIndex];
+  const currentRecipe = recipes.find((recipe) => recipe.id === selectedRecipeId);
 
   // the recipe store should always have a valid selected recipe
   if (!currentRecipe) return null;

@@ -2,11 +2,64 @@ import { useEffect } from "react";
 
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
-import { cloneItem } from "@/data/models/item/utilities";
+import { IngredientItem } from "@/data/models/types";
+import { RecipeSlot } from "@/data/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
-import { isDropTargetData, isItemDraggableData, isItemPreviewDropTargetData } from "@/lib/dnd";
-import { canRecipeSlotAcceptIngredient } from "@/lib/recipe-slots";
-import { useRecipeStore } from "@/stores/recipe";
+import { ItemDraggableData, isItemDraggableData, isRecipeSlotDropTargetData } from "@/lib/dnd";
+import {
+  canRecipeSlotAcceptIngredientItem,
+  canRecipeSlotAcceptSlotValue,
+} from "@/lib/recipe-slots";
+import { RecipeSlotValue, useRecipeStore } from "@/stores/recipe";
+import { cloneRecipeSlotValue } from "@/stores/recipe/slot-value";
+
+type ApplyRecipeDragDropArgs = {
+  sourceData: ItemDraggableData;
+  sourceSlot?: RecipeSlot;
+  destinationData?: unknown;
+  setRecipeSlot: (slot: RecipeSlot, value?: RecipeSlotValue) => void;
+  setRecipeSlotFromIngredient: (slot: RecipeSlot, item: IngredientItem) => void;
+};
+
+export const applyRecipeDragDrop = ({
+  sourceData,
+  sourceSlot,
+  destinationData,
+  setRecipeSlot,
+  setRecipeSlotFromIngredient,
+}: ApplyRecipeDragDropArgs) => {
+  if (!destinationData || !isRecipeSlotDropTargetData(destinationData)) {
+    if (sourceData.type === "recipe-slot" && sourceSlot) {
+      setRecipeSlot(sourceSlot, undefined);
+    }
+    return;
+  }
+
+  const { slot } = destinationData;
+
+  if (sourceData.type === "palette-item") {
+    if (!canRecipeSlotAcceptIngredientItem(slot, sourceData.item)) {
+      return;
+    }
+
+    setRecipeSlotFromIngredient(slot, sourceData.item);
+    return;
+  }
+
+  if (sourceSlot === slot) {
+    return;
+  }
+
+  const sourceValue = cloneRecipeSlotValue(sourceData.value);
+  if (!canRecipeSlotAcceptSlotValue(slot, sourceValue)) {
+    return;
+  }
+
+  setRecipeSlot(slot, sourceValue);
+  if (sourceSlot) {
+    setRecipeSlot(sourceSlot, undefined);
+  }
+};
 
 export const useDndMonitor = () => {
   const isTouchDevice = useIsTouchDevice();
@@ -24,29 +77,20 @@ export const useDndMonitor = () => {
         }
 
         const sourceDropTarget = location.initial.dropTargets[0];
-        if (sourceDropTarget && isItemPreviewDropTargetData(sourceDropTarget.data)) {
-          useRecipeStore.getState().setRecipeSlot(sourceDropTarget.data.slot, undefined);
-        }
-
+        const sourceSlot =
+          sourceDropTarget && isRecipeSlotDropTargetData(sourceDropTarget.data)
+            ? sourceDropTarget.data.slot
+            : undefined;
         const destination = location.current.dropTargets[0];
-        if (!destination) {
-          return;
-        }
+        const recipeStore = useRecipeStore.getState();
 
-        if (!isDropTargetData(destination.data)) {
-          return;
-        }
-
-        const dropTargetData = destination.data;
-        const { item } = source.data;
-
-        if (dropTargetData.type === "preview") {
-          if (!canRecipeSlotAcceptIngredient(dropTargetData.slot, item)) {
-            return;
-          }
-
-          useRecipeStore.getState().setRecipeSlot(dropTargetData.slot, cloneItem(item));
-        }
+        applyRecipeDragDrop({
+          sourceData: source.data,
+          sourceSlot,
+          destinationData: destination?.data,
+          setRecipeSlot: recipeStore.setRecipeSlot,
+          setRecipeSlotFromIngredient: recipeStore.setRecipeSlotFromIngredient,
+        });
       },
     });
   }, [isTouchDevice]);

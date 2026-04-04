@@ -4,6 +4,7 @@ import { ChevronDownIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
+import { selectCurrentRecipe, selectSelectedRecipeId } from "@/stores/recipe/selectors";
 
 import { AdvancedOptions } from "./recipe-options/advanced-options";
 import { BedrockOptions } from "./recipe-options/bedrock-options";
@@ -12,12 +13,12 @@ import { CraftingOptions } from "./recipe-options/crafting-options";
 import { DatapackOptions } from "./recipe-options/datapack-options";
 
 export const RecipeOptions = () => {
-  const hasRecipe = useRecipeStore((state) => state.recipes[state.selectedRecipeIndex] != null);
-  const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
+  const recipe = useRecipeStore(selectCurrentRecipe);
+  const selectedRecipeId = useRecipeStore(selectSelectedRecipeId);
   const [optionsOpen, setOptionsOpen] = useState(true);
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
-  if (!hasRecipe) {
+  if (!recipe) {
     return null;
   }
 
@@ -37,7 +38,7 @@ export const RecipeOptions = () => {
 
       {optionsOpen && (
         <div
-          key={selectedRecipeIndex} // remounts the subtree on recipe switch
+          key={selectedRecipeId} // remounts the subtree on recipe switch
           className="flex flex-col gap-3 border-t px-4 py-3"
         >
           <CraftingOptions />

@@ -2,9 +2,9 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
-import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
+import { identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Tag, TagValue } from "@/data/models/types";
-import { createEmptyTag, getCustomTagIdentifier, getTagLabel } from "@/lib/tags";
+import { createEmptyTag } from "@/lib/tags";
 import { useRecipeStore } from "@/stores/recipe";
 
 export interface TagState {
@@ -37,8 +37,6 @@ export const useTagStore = create<TagState & TagActions>()(
         return tag.uid;
       },
       updateTag: (uid, updates) => {
-        let nextIdentifier: ReturnType<typeof getCustomTagIdentifier> | undefined;
-
         set((state) => {
           const tag = state.tags.find((value) => value.uid === uid);
           if (!tag) {
@@ -48,23 +46,7 @@ export const useTagStore = create<TagState & TagActions>()(
           if (updates.id !== undefined) {
             tag.id = updates.id;
           }
-
-          nextIdentifier = getCustomTagIdentifier(tag);
         });
-
-        if (!nextIdentifier) {
-          return;
-        }
-
-        const identifier = nextIdentifier;
-
-        useRecipeStore.getState().syncCustomSlotItem(
-          (slotItem) => slotItem.type === "tag_item" && slotItem.uid === uid,
-          (slotItem) => {
-            slotItem.id = { ...identifier };
-            slotItem.displayName = getTagLabel(getRawId(identifier));
-          },
-        );
       },
       removeTag: (uid) => {
         set((state) => {
@@ -72,7 +54,7 @@ export const useTagStore = create<TagState & TagActions>()(
         });
         useRecipeStore
           .getState()
-          .removeMatchingSlotItems((item) => item.type === "tag_item" && item.uid === uid);
+          .removeMatchingSlotValues((value) => value.kind === "custom_tag" && value.uid === uid);
       },
 
       addValueToTag: (uid, value) => {

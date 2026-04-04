@@ -1,4 +1,5 @@
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, SlotContext, createEmptySlotContext } from "@/stores/recipe";
+import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
 
 import { MinecraftVersion, SLOTS } from "../types";
 import { createRecipeFormatter } from "./format/recipe-formatter";
@@ -7,13 +8,22 @@ import { formatIngredient } from "./ingredient";
 import { BedrockShapelessBody, StonecutterInput, StonecuttingRecipe } from "./recipes/types";
 import { isVersionAtLeast } from "./version-utils";
 
-export const buildJava = (
-  state: StonecutterInput,
-  formatter: RecipeFormatter,
-  version: MinecraftVersion,
-): StonecuttingRecipe => {
+export const buildJava = ({
+  state,
+  formatter,
+  version,
+  slotContext,
+}: {
+  state: StonecutterInput;
+  formatter: RecipeFormatter;
+  version: MinecraftVersion;
+  slotContext: SlotContext;
+}): StonecuttingRecipe => {
   const result = state.result
-    ? formatter.stonecutterResult(state.result.id, state.result.count)
+    ? formatter.stonecutterResult(
+        getRequiredSlotIdentifier(state.result, slotContext),
+        getSlotCount(state.result),
+      )
     : { result: {} };
 
   // group was removed from stonecutting in 26.1 (no recipe book)
@@ -25,7 +35,7 @@ export const buildJava = (
   return {
     type: formatter.recipeType("stonecutting") as "minecraft:stonecutting",
     ...(group ? { group } : {}),
-    ingredient: formatIngredient(state.ingredient, formatter),
+    ingredient: formatIngredient({ item: state.ingredient, formatter, slotContext }),
     ...result,
   } satisfies StonecuttingRecipe;
 };
@@ -33,22 +43,30 @@ export const buildJava = (
 export const buildBedrock = (
   state: StonecutterInput,
   formatter: RecipeFormatter,
+  slotContext: SlotContext,
 ): BedrockShapelessBody => {
-  const ingredients = state.ingredient ? [formatIngredient(state.ingredient, formatter)] : [];
+  const ingredients = state.ingredient
+    ? [formatIngredient({ item: state.ingredient, formatter, slotContext })]
+    : [];
 
   return {
     ingredients,
-    result: state.result ? formatter.objectResult(state.result.id, state.result.count) : {},
+    result: state.result
+      ? formatter.objectResult(
+          getRequiredSlotIdentifier(state.result, slotContext),
+          getSlotCount(state.result),
+        )
+      : {},
   } satisfies BedrockShapelessBody;
 };
 
-const extractInput = (state: SingleRecipeState): StonecutterInput => ({
+const extractInput = (state: Recipe): StonecutterInput => ({
   ingredient: state.slots[SLOTS.stonecutter.ingredient],
   result: state.slots[SLOTS.stonecutter.result],
   group: state.group,
 });
 
-export const validateStonecutter = (state: SingleRecipeState): string[] => {
+export const validateStonecutter = (state: Recipe): string[] => {
   const input = extractInput(state);
   const errors: string[] = [];
 
@@ -64,15 +82,16 @@ export const validateStonecutter = (state: SingleRecipeState): string[] => {
 };
 
 export const generate = (
-  state: SingleRecipeState,
+  state: Recipe,
   version: MinecraftVersion,
+  slotContext = createEmptySlotContext(version),
 ): StonecuttingRecipe | BedrockShapelessBody => {
   const input = extractInput(state);
   const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {
-    return buildBedrock(input, formatter);
+    return buildBedrock(input, formatter, slotContext);
   }
 
-  return buildJava(input, formatter, version);
+  return buildJava({ state: input, formatter, version, slotContext });
 };

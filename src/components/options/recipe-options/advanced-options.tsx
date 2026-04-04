@@ -5,7 +5,7 @@ import { isVersionAtLeast } from "@/data/generate/version-utils";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
-import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
+import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
@@ -29,7 +29,7 @@ const getCategoryOptions = (recipeType: RecipeType) => {
 };
 
 const GroupField = () => {
-  const group = useRecipeStore((state) => state.recipes[state.selectedRecipeIndex]?.group ?? "");
+  const group = useRecipeStore((state) => selectCurrentRecipe(state)?.group ?? "");
   const setRecipeGroup = useRecipeStore((state) => state.setRecipeGroup);
 
   return (
@@ -56,9 +56,7 @@ interface CategoryFieldProps {
 }
 
 const CategoryField = ({ categoryOptions }: CategoryFieldProps) => {
-  const category = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.category ?? "",
-  );
+  const category = useRecipeStore((state) => selectCurrentRecipe(state)?.category ?? "");
   const setRecipeCategory = useRecipeStore((state) => state.setRecipeCategory);
 
   return (
@@ -86,7 +84,7 @@ const CategoryField = ({ categoryOptions }: CategoryFieldProps) => {
 
 const SmithingPatternField = () => {
   const smithingTrimPattern = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.smithingTrimPattern ?? "",
+    (state) => selectCurrentRecipe(state)?.smithingTrimPattern ?? "",
   );
   const setRecipeSmithingTrimPattern = useRecipeStore(
     (state) => state.setRecipeSmithingTrimPattern,
@@ -114,7 +112,7 @@ const SmithingPatternField = () => {
 
 const ShowNotificationField = () => {
   const showNotification = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.showNotification ?? true,
+    (state) => selectCurrentRecipe(state)?.showNotification ?? true,
   );
   const setRecipeShowNotification = useRecipeStore((state) => state.setRecipeShowNotification);
 
@@ -138,7 +136,7 @@ export const AdvancedOptions = ({ open, onToggle }: AdvancedOptionsProps) => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const shapeless = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.crafting.shapeless ?? false,
+    (state) => selectCurrentRecipe(state)?.crafting.shapeless ?? false,
   );
 
   if (minecraftVersion === MinecraftVersion.Bedrock || recipeType === undefined) {

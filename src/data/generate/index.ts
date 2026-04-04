@@ -2,7 +2,7 @@ import {
   bedrockIdentifierHint,
   isValidBedrockNamespacedIdentifier,
 } from "@/lib/minecraft-identifier";
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, SlotContext, createEmptySlotContext } from "@/stores/recipe";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import { buildBedrock as buildBedrockCooking, buildJava as buildJavaCooking } from "./cooking";
@@ -36,7 +36,7 @@ export interface GenerateOptions {
   bedrockIdentifier?: string;
 }
 
-const extractCookingInput = (state: SingleRecipeState): CookingInput => ({
+const extractCookingInput = (state: Recipe): CookingInput => ({
   recipeType: state.recipeType as CookingInput["recipeType"],
   ingredient: state.slots[SLOTS.cooking.ingredient],
   result: state.slots[SLOTS.cooking.result],
@@ -46,13 +46,13 @@ const extractCookingInput = (state: SingleRecipeState): CookingInput => ({
   category: state.category || undefined,
 });
 
-const extractStonecutterInput = (state: SingleRecipeState): StonecutterInput => ({
+const extractStonecutterInput = (state: Recipe): StonecutterInput => ({
   ingredient: state.slots[SLOTS.stonecutter.ingredient],
   result: state.slots[SLOTS.stonecutter.result],
   group: state.group,
 });
 
-const extractSmithingInput = (state: SingleRecipeState): SmithingInput => ({
+const extractSmithingInput = (state: Recipe): SmithingInput => ({
   recipeType: state.recipeType as SmithingInput["recipeType"],
   template: state.slots[SLOTS.smithing.template],
   base: state.slots[SLOTS.smithing.base],
@@ -61,7 +61,7 @@ const extractSmithingInput = (state: SingleRecipeState): SmithingInput => ({
   trimPattern: state.smithingTrimPattern || undefined,
 });
 
-const extractTransmuteInput = (state: SingleRecipeState): TransmuteInput => ({
+const extractTransmuteInput = (state: Recipe): TransmuteInput => ({
   input: state.slots[SLOTS.crafting.slot1],
   material: state.slots[SLOTS.crafting.slot2],
   result: state.slots[SLOTS.crafting.result],
@@ -114,7 +114,7 @@ const BEDROCK_RECIPE_META: Partial<Record<RecipeType, BedrockRecipeMeta>> = {
   },
 };
 
-const getBedrockRecipeMeta = (state: SingleRecipeState): BedrockRecipeMeta => {
+const getBedrockRecipeMeta = (state: Recipe): BedrockRecipeMeta => {
   if (state.recipeType === RecipeType.Crafting) {
     return {
       wrapperKey: state.crafting.shapeless
@@ -130,60 +130,98 @@ const getBedrockRecipeMeta = (state: SingleRecipeState): BedrockRecipeMeta => {
   return meta;
 };
 
-const generateJavaInner = (
-  state: SingleRecipeState,
-  version: MinecraftVersion,
-  formatter: RecipeFormatter,
-): JavaRecipe => {
+const generateJavaInner = ({
+  state,
+  version,
+  formatter,
+  slotContext,
+}: {
+  state: Recipe;
+  version: MinecraftVersion;
+  formatter: RecipeFormatter;
+  slotContext: SlotContext;
+}): JavaRecipe => {
   switch (state.recipeType) {
     case RecipeType.Crafting:
-      return buildJavaCrafting(extractCraftingInput(state), formatter, version);
+      return buildJavaCrafting({
+        state: extractCraftingInput(state),
+        formatter,
+        version,
+        slotContext,
+      });
     case RecipeType.CraftingTransmute:
-      return buildJavaTransmute(extractTransmuteInput(state), formatter, version);
+      return buildJavaTransmute({
+        state: extractTransmuteInput(state),
+        formatter,
+        version,
+        slotContext,
+      });
     case RecipeType.Smelting:
     case RecipeType.Blasting:
     case RecipeType.Smoking:
     case RecipeType.CampfireCooking:
-      return buildJavaCooking(extractCookingInput(state), formatter, version);
+      return buildJavaCooking({
+        state: extractCookingInput(state),
+        formatter,
+        version,
+        slotContext,
+      });
     case RecipeType.Smithing:
     case RecipeType.SmithingTransform:
     case RecipeType.SmithingTrim:
-      return buildJavaSmithing(extractSmithingInput(state), formatter, version);
+      return buildJavaSmithing({
+        state: extractSmithingInput(state),
+        formatter,
+        version,
+        slotContext,
+      });
     case RecipeType.Stonecutter:
-      return buildJavaStonecutter(extractStonecutterInput(state), formatter, version);
+      return buildJavaStonecutter({
+        state: extractStonecutterInput(state),
+        formatter,
+        version,
+        slotContext,
+      });
     default:
       throw new Error(`Unsupported Java recipe type: ${state.recipeType as string}`);
   }
 };
 
 const generateBedrockInner = (
-  state: SingleRecipeState,
+  state: Recipe,
   formatter: RecipeFormatter,
+  slotContext: SlotContext,
 ): BedrockBody => {
   switch (state.recipeType) {
     case RecipeType.Crafting:
-      return buildBedrockCrafting(extractCraftingInput(state), formatter);
+      return buildBedrockCrafting(extractCraftingInput(state), formatter, slotContext);
     case RecipeType.Smelting:
     case RecipeType.Blasting:
     case RecipeType.Smoking:
     case RecipeType.CampfireCooking:
-      return buildBedrockCooking(extractCookingInput(state));
+      return buildBedrockCooking(extractCookingInput(state), slotContext);
     case RecipeType.Smithing:
     case RecipeType.SmithingTransform:
     case RecipeType.SmithingTrim:
-      return buildBedrockSmithing(extractSmithingInput(state), formatter);
+      return buildBedrockSmithing(extractSmithingInput(state), formatter, slotContext);
     case RecipeType.Stonecutter:
-      return buildBedrockStonecutter(extractStonecutterInput(state), formatter);
+      return buildBedrockStonecutter(extractStonecutterInput(state), formatter, slotContext);
     default:
       throw new Error(`Unsupported Bedrock recipe type: ${state.recipeType}`);
   }
 };
 
-export function generate(
-  state: SingleRecipeState,
-  version: MinecraftVersion,
-  options?: GenerateOptions,
-): GeneratedRecipe {
+export function generate({
+  state,
+  version,
+  slotContext = createEmptySlotContext(version),
+  options,
+}: {
+  state: Recipe;
+  version: MinecraftVersion;
+  slotContext?: SlotContext;
+  options?: GenerateOptions;
+}): GeneratedRecipe {
   const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {
@@ -199,7 +237,7 @@ export function generate(
       );
     }
 
-    const inner = generateBedrockInner(state, formatter);
+    const inner = generateBedrockInner(state, formatter, slotContext);
     const meta = getBedrockRecipeMeta(state);
 
     return wrapBedrockRecipe({
@@ -214,5 +252,5 @@ export function generate(
     });
   }
 
-  return generateJavaInner(state, version, formatter);
+  return generateJavaInner({ state, version, formatter, slotContext });
 }

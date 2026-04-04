@@ -1,38 +1,41 @@
 import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot } from "@/data/types";
+import { RecipeSlotValue } from "@/stores/recipe";
 
-export type ItemPreviewDropTargetData = {
-  type: "preview";
+export type RecipeSlotDropTargetData = {
+  type: "recipe-slot-target";
   slot: RecipeSlot;
 };
 
-export type DropTargetData = ItemPreviewDropTargetData;
-
-export type ItemDraggableContainer = "preview" | "ingredients";
-
-export type ItemDraggableData = {
-  type: "item";
+export type PaletteItemDraggableData = {
+  type: "palette-item";
   item: IngredientItem;
-  container: ItemDraggableContainer;
 };
+
+export type RecipeSlotDraggableData = {
+  type: "recipe-slot";
+  slot: RecipeSlot;
+  value: RecipeSlotValue;
+};
+
+export type ItemDraggableData = PaletteItemDraggableData | RecipeSlotDraggableData;
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
   return typeof value === "object" && value !== null;
 };
 
-export const isItemPreviewDropTargetData = (value: unknown): value is ItemPreviewDropTargetData => {
-  return isRecord(value) && value.type === "preview" && typeof value.slot === "string";
-};
-
-export const isDropTargetData = (value: unknown): value is DropTargetData => {
-  return isItemPreviewDropTargetData(value);
+export const isRecipeSlotDropTargetData = (value: unknown): value is RecipeSlotDropTargetData => {
+  return isRecord(value) && value.type === "recipe-slot-target" && typeof value.slot === "string";
 };
 
 export const isItemDraggableData = (value: unknown): value is ItemDraggableData => {
-  return (
-    isRecord(value) &&
-    value.type === "item" &&
-    "item" in value &&
-    (value.container === "preview" || value.container === "ingredients")
-  );
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  if (value.type === "palette-item") {
+    return "item" in value;
+  }
+
+  return value.type === "recipe-slot" && typeof value.slot === "string" && "value" in value;
 };

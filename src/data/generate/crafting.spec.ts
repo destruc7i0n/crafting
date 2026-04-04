@@ -1,4 +1,5 @@
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { makeRecipe } from "@/test/recipe-fixtures";
 
 import { MinecraftVersion, RecipeType } from "../types";
 import { generate } from "./crafting";
@@ -23,31 +24,31 @@ const makeTagItem = (id: string, version: MinecraftVersion) => ({
 
 const makeShapedRecipeSlice = (
   version: MinecraftVersion,
-  slots: Omit<SingleRecipeState["slots"], "crafting.result">,
-): SingleRecipeState => ({
-  ...recipeStateDefaults,
-  recipeType: RecipeType.Crafting,
-  group: "",
-  slots: {
-    ...slots,
-    "crafting.result": makeDefaultItem("cobblestone", version),
-  },
-  crafting: {
-    ...recipeStateDefaults.crafting,
-    shapeless: false,
-    keepWhitespace: false,
-  },
-  cooking: {
-    time: 0,
-    experience: 0,
-  },
-});
+  slots: Record<string, ReturnType<typeof makeDefaultItem> | ReturnType<typeof makeTagItem>>,
+) =>
+  makeRecipe({
+    recipeType: RecipeType.Crafting,
+    group: "",
+    slots: {
+      ...slots,
+      "crafting.result": makeDefaultItem("cobblestone", version),
+    },
+    crafting: {
+      ...recipeStateDefaults.crafting,
+      shapeless: false,
+      keepWhitespace: false,
+    },
+    cooking: {
+      time: 0,
+      experience: 0,
+    },
+  });
 
 describe("generate crafting", () => {
   describe("1.12", () => {
     describe("shapeless", () => {
       it("should generate a shapeless recipe", () => {
-        const recipeSlice: SingleRecipeState = {
+        const recipeSlice = makeRecipe({
           ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
@@ -97,7 +98,7 @@ describe("generate crafting", () => {
             time: 0,
             experience: 0,
           },
-        };
+        });
         expect(generate(recipeSlice, MinecraftVersion.V112)).toEqual({
           type: "crafting_shapeless",
           ingredients: [
@@ -111,7 +112,7 @@ describe("generate crafting", () => {
 
     describe("shaped", () => {
       it("should generate a shaped recipe without keeping whitespace", () => {
-        const recipeSlice: SingleRecipeState = {
+        const recipeSlice = makeRecipe({
           ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
@@ -209,7 +210,7 @@ describe("generate crafting", () => {
             time: 0,
             experience: 0,
           },
-        };
+        });
         expect(generate(recipeSlice, MinecraftVersion.V112)).toEqual({
           type: "crafting_shaped",
           pattern: ["##", "##", "##"],
@@ -221,7 +222,7 @@ describe("generate crafting", () => {
       });
 
       it("should generate a shaped recipe keeping whitespace", () => {
-        const recipeSlice: SingleRecipeState = {
+        const recipeSlice = makeRecipe({
           ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
@@ -319,7 +320,7 @@ describe("generate crafting", () => {
             time: 0,
             experience: 0,
           },
-        };
+        });
         expect(generate(recipeSlice, MinecraftVersion.V112)).toEqual({
           type: "crafting_shaped",
           pattern: ["#_ ", "#= ", "#/ "],
@@ -338,7 +339,7 @@ describe("generate crafting", () => {
   describe("1.14 - 1.20", () => {
     describe("shapeless", () => {
       it("should generate a shapeless recipe", () => {
-        const recipeSlice: SingleRecipeState = {
+        const recipeSlice = makeRecipe({
           ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
@@ -386,7 +387,7 @@ describe("generate crafting", () => {
             time: 0,
             experience: 0,
           },
-        };
+        });
         expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shapeless",
           ingredients: [{ item: "minecraft:stone" }, { item: "minecraft:stone" }],
@@ -397,7 +398,7 @@ describe("generate crafting", () => {
 
     describe("shaped", () => {
       it("should generate a shaped recipe without keeping whitespace", () => {
-        const recipeSlice: SingleRecipeState = {
+        const recipeSlice = makeRecipe({
           ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
@@ -489,7 +490,7 @@ describe("generate crafting", () => {
             time: 0,
             experience: 0,
           },
-        };
+        });
         expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shaped",
           pattern: ["##", "##", "##"],
@@ -501,7 +502,7 @@ describe("generate crafting", () => {
       });
 
       it("should preserve internal offsets when trimming whitespace", () => {
-        const recipeSlice: SingleRecipeState = {
+        const recipeSlice = makeRecipe({
           ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
@@ -560,7 +561,7 @@ describe("generate crafting", () => {
             time: 0,
             experience: 0,
           },
-        };
+        });
 
         expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shaped",
@@ -574,7 +575,7 @@ describe("generate crafting", () => {
       });
 
       it("should generate a shaped recipe keeping whitespace", () => {
-        const recipeSlice: SingleRecipeState = {
+        const recipeSlice = makeRecipe({
           ...recipeStateDefaults,
           recipeType: RecipeType.Crafting,
           group: "",
@@ -666,7 +667,7 @@ describe("generate crafting", () => {
             time: 0,
             experience: 0,
           },
-        };
+        });
         expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shaped",
           pattern: ["#_ ", "#= ", "#/ "],
@@ -752,7 +753,7 @@ describe("generate crafting", () => {
 
   describe("1.21+ and bedrock", () => {
     it("should generate 1.21 shapeless recipe with id result", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Crafting,
         group: "",
@@ -777,7 +778,7 @@ describe("generate crafting", () => {
         crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
         category: "misc",
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
         type: "minecraft:crafting_shapeless",
@@ -788,7 +789,7 @@ describe("generate crafting", () => {
     });
 
     it("should generate bedrock shaped recipe body", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Crafting,
         group: "",
@@ -820,7 +821,7 @@ describe("generate crafting", () => {
         },
         crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
         pattern: ["##"],
@@ -830,7 +831,7 @@ describe("generate crafting", () => {
     });
 
     it("should emit category and show_notification for supported shaped recipes", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Crafting,
         group: "",
@@ -859,7 +860,7 @@ describe("generate crafting", () => {
         },
         crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.V120)).toEqual({
         type: "minecraft:crafting_shaped",
@@ -872,7 +873,7 @@ describe("generate crafting", () => {
     });
 
     it("should emit show_notification for shaped recipes on 1.19", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Crafting,
         group: "",
@@ -895,7 +896,7 @@ describe("generate crafting", () => {
         },
         crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.V119)).toMatchObject({
         show_notification: false,
@@ -903,7 +904,7 @@ describe("generate crafting", () => {
     });
 
     it("should emit show_notification for shapeless recipes on 26.1", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Crafting,
         group: "",
@@ -926,7 +927,7 @@ describe("generate crafting", () => {
         },
         crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.V261)).toMatchObject({
         type: "minecraft:crafting_shapeless",
@@ -935,7 +936,7 @@ describe("generate crafting", () => {
     });
 
     it("should not emit show_notification for shapeless recipes before 26.1", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Crafting,
         group: "",
@@ -958,10 +959,29 @@ describe("generate crafting", () => {
         },
         crafting: { ...recipeStateDefaults.crafting, shapeless: true, keepWhitespace: false },
         cooking: { time: 0, experience: 0 },
-      };
+      });
 
       const result = generate(recipeSlice, MinecraftVersion.V121);
       expect(result).not.toHaveProperty("show_notification");
     });
+  });
+
+  it("throws when a placed custom result ref cannot be resolved", () => {
+    const recipeSlice = makeRecipe({
+      recipeType: RecipeType.Crafting,
+      slots: {
+        "crafting.1": makeDefaultItem("stone", MinecraftVersion.V121),
+        "crafting.result": { kind: "custom_item", uid: "missing-result" },
+      },
+      crafting: {
+        ...recipeStateDefaults.crafting,
+        shapeless: true,
+        keepWhitespace: false,
+      },
+    });
+
+    expect(() =>
+      generate(recipeSlice, MinecraftVersion.V121, createEmptySlotContext(MinecraftVersion.V121)),
+    ).toThrow("Cannot generate output for unresolved custom_item reference");
   });
 });

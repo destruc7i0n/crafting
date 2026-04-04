@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 
 import { RecipeSlot } from "@/data/types";
-import { useResolvedSlotItem } from "@/hooks/use-resolved-tag-item";
 import { canEditRecipeSlotCount } from "@/lib/recipe-slots";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeSlot, selectCurrentRecipeType } from "@/stores/recipe/selectors";
+import { canEditSlotCount, getSlotCount } from "@/stores/recipe/slot-value";
 
 import { ItemCount } from "./item-count";
 
@@ -14,8 +14,7 @@ type EditableItemCountProps = {
 
 export const EditableItemCount = ({ slot }: EditableItemCountProps) => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
-  const rawSlotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
-  const slotValue = useResolvedSlotItem(rawSlotValue);
+  const slotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
   const setRecipeSlotCount = useRecipeStore((state) => state.setRecipeSlotCount);
   const [editingCount, setEditingCount] = useState(false);
   const [countDraft, setCountDraft] = useState("1");
@@ -23,11 +22,11 @@ export const EditableItemCount = ({ slot }: EditableItemCountProps) => {
 
   const canEditCount = recipeType ? canEditRecipeSlotCount(recipeType, slot) : false;
 
-  if (!canEditCount || !slotValue || slotValue.type === "tag_item") {
+  if (!canEditCount || !canEditSlotCount(slotValue)) {
     return null;
   }
 
-  const count = slotValue.count ?? 1;
+  const count = getSlotCount(slotValue) ?? 1;
 
   const cancelCount = () => {
     cancelledRef.current = true;

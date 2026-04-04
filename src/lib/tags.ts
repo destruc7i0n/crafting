@@ -111,7 +111,7 @@ export const resolveTagValues = (
   return results;
 };
 
-const getFirstAvailableTexture = (
+export const getFirstAvailableTexture = (
   valueIds: string[],
   itemsById: Record<string, Item> | undefined,
 ): string => {

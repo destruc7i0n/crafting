@@ -1,5 +1,10 @@
 import { getFullId } from "@/data/models/identifier/utilities";
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, SlotContext, createEmptySlotContext } from "@/stores/recipe";
+import {
+  getRequiredSlotIdentifier,
+  getSlotCount,
+  isTagSlotValue,
+} from "@/stores/recipe/slot-value";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import { createRecipeFormatter } from "./format/recipe-formatter";
@@ -18,11 +23,17 @@ const recipeTypeToBaseCookingType: Record<
   [RecipeType.Smoking]: "smoking",
 };
 
-export const buildJava = (
-  state: CookingInput,
-  formatter: RecipeFormatter,
-  version: MinecraftVersion,
-): CookingRecipe => {
+export const buildJava = ({
+  state,
+  formatter,
+  version,
+  slotContext,
+}: {
+  state: CookingInput;
+  formatter: RecipeFormatter;
+  version: MinecraftVersion;
+  slotContext: SlotContext;
+}): CookingRecipe => {
   const group = state.group.length > 0 ? state.group : undefined;
   const category = isVersionAtLeast(version, MinecraftVersion.V119) ? state.category : undefined;
 
@@ -42,22 +53,33 @@ export const buildJava = (
     ...(group ? { group } : {}),
     experience: state.experience,
     cookingtime: state.time,
-    ingredient: formatIngredient(input, formatter),
-    result: output ? formatter.cookingResult(output.id, output.count) : {},
+    ingredient: formatIngredient({ item: input, formatter, slotContext }),
+    result: output
+      ? formatter.cookingResult(
+          getRequiredSlotIdentifier(output, slotContext),
+          getSlotCount(output),
+        )
+      : {},
   } satisfies CookingRecipe;
 };
 
-export const buildBedrock = (state: CookingInput): BedrockFurnaceBody => {
+export const buildBedrock = (state: CookingInput, slotContext: SlotContext): BedrockFurnaceBody => {
   const input = state.ingredient;
   const output = state.result;
 
   return {
-    input: input && input.type !== "tag_item" ? getFullId(input.id) : {},
-    output: output && output.type !== "tag_item" ? getFullId(output.id) : {},
+    input:
+      input && !isTagSlotValue(input)
+        ? getFullId(getRequiredSlotIdentifier(input, slotContext))
+        : {},
+    output:
+      output && !isTagSlotValue(output)
+        ? getFullId(getRequiredSlotIdentifier(output, slotContext))
+        : {},
   } satisfies BedrockFurnaceBody;
 };
 
-const extractInput = (state: SingleRecipeState): CookingInput => ({
+const extractInput = (state: Recipe): CookingInput => ({
   recipeType: state.recipeType as CookingInput["recipeType"],
   ingredient: state.slots[SLOTS.cooking.ingredient],
   result: state.slots[SLOTS.cooking.result],
@@ -67,7 +89,7 @@ const extractInput = (state: SingleRecipeState): CookingInput => ({
   category: state.category || undefined,
 });
 
-export const validateCooking = (state: SingleRecipeState, version?: MinecraftVersion): string[] => {
+export const validateCooking = (state: Recipe, version?: MinecraftVersion): string[] => {
   const input = extractInput(state);
   const errors: string[] = [];
 
@@ -80,11 +102,11 @@ export const validateCooking = (state: SingleRecipeState, version?: MinecraftVer
   }
 
   if (version === MinecraftVersion.Bedrock) {
-    if (input.ingredient?.type === "tag_item") {
+    if (isTagSlotValue(input.ingredient)) {
       errors.push("Bedrock furnace recipes do not support tag ingredients");
     }
 
-    if (input.result?.count !== undefined && input.result.count > 1) {
+    if ((getSlotCount(input.result) ?? 1) > 1) {
       errors.push("Bedrock furnace recipes do not support result counts");
     }
   }
@@ -93,15 +115,16 @@ export const validateCooking = (state: SingleRecipeState, version?: MinecraftVer
 };
 
 export const generate = (
-  state: SingleRecipeState,
+  state: Recipe,
   version: MinecraftVersion,
+  slotContext = createEmptySlotContext(version),
 ): CookingRecipe | BedrockFurnaceBody => {
   const input = extractInput(state);
 
   if (version === MinecraftVersion.Bedrock) {
-    return buildBedrock(input);
+    return buildBedrock(input, slotContext);
   }
 
   const formatter = createRecipeFormatter(version);
-  return buildJava(input, formatter, version);
+  return buildJava({ state: input, formatter, version, slotContext });
 };

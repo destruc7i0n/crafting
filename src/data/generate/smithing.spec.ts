@@ -1,4 +1,5 @@
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { makeRecipe } from "@/test/recipe-fixtures";
 
 import { MinecraftVersion, RecipeType } from "../types";
 import { generate } from "./smithing";
@@ -6,7 +7,7 @@ import { generate } from "./smithing";
 describe("generate smithing", () => {
   describe("1.16", () => {
     it("should generate a smithing recipe", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Smithing,
         group: "",
@@ -54,7 +55,7 @@ describe("generate smithing", () => {
           keepWhitespace: false,
           shapeless: false,
         },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.V116)).toEqual({
         type: "minecraft:smithing",
@@ -74,7 +75,7 @@ describe("generate smithing", () => {
   describe("1.19", () => {
     describe("smithing trim", () => {
       it("should generate a smithing trim recipe", () => {
-        const recipeSlice: SingleRecipeState = {
+        const recipeSlice = makeRecipe({
           ...recipeStateDefaults,
           recipeType: RecipeType.SmithingTrim,
           group: "",
@@ -122,7 +123,7 @@ describe("generate smithing", () => {
             keepWhitespace: false,
             shapeless: false,
           },
-        };
+        });
 
         expect(generate(recipeSlice, MinecraftVersion.V119)).toEqual({
           type: "minecraft:smithing_trim",
@@ -141,7 +142,7 @@ describe("generate smithing", () => {
 
     describe("smithing transform", () => {
       it("should generate a smithing transform recipe", () => {
-        const recipeSlice: SingleRecipeState = {
+        const recipeSlice = makeRecipe({
           ...recipeStateDefaults,
           recipeType: RecipeType.SmithingTransform,
           group: "",
@@ -200,7 +201,7 @@ describe("generate smithing", () => {
             keepWhitespace: false,
             shapeless: false,
           },
-        };
+        });
 
         expect(generate(recipeSlice, MinecraftVersion.V119)).toEqual({
           type: "minecraft:smithing_transform",
@@ -223,7 +224,7 @@ describe("generate smithing", () => {
 
   describe("1.21.5", () => {
     it("should generate a smithing trim recipe with a pattern", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.SmithingTrim,
         group: "",
@@ -274,7 +275,7 @@ describe("generate smithing", () => {
           keepWhitespace: false,
           shapeless: false,
         },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.V1215)).toEqual({
         type: "minecraft:smithing_trim",
@@ -288,7 +289,7 @@ describe("generate smithing", () => {
 
   describe("bedrock", () => {
     it("should generate bedrock smithing trim body with tags", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.SmithingTrim,
         group: "",
@@ -323,7 +324,7 @@ describe("generate smithing", () => {
         },
         cooking: { experience: 0, time: 0 },
         crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
         template: { tag: "minecraft:trim_templates" },
@@ -333,7 +334,7 @@ describe("generate smithing", () => {
     });
 
     it("should generate bedrock smithing trim body with regular items", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.SmithingTrim,
         group: "",
@@ -365,7 +366,7 @@ describe("generate smithing", () => {
         },
         cooking: { experience: 0, time: 0 },
         crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
         template: { item: "minecraft:netherite_upgrade_smithing_template" },
@@ -375,7 +376,7 @@ describe("generate smithing", () => {
     });
 
     it("should generate bedrock legacy smithing body", () => {
-      const recipeSlice: SingleRecipeState = {
+      const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Smithing,
         group: "",
@@ -407,12 +408,39 @@ describe("generate smithing", () => {
         },
         cooking: { experience: 0, time: 0 },
         crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
-      };
+      });
 
       expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
         ingredients: [{ item: "minecraft:diamond_sword" }, { item: "minecraft:netherite_ingot" }],
         result: { item: "minecraft:netherite_sword", count: 1 },
       });
     });
+  });
+
+  it("throws when a placed custom result ref cannot be resolved", () => {
+    const recipeSlice = makeRecipe({
+      recipeType: RecipeType.Smithing,
+      slots: {
+        "smithing.base": {
+          type: "default_item",
+          id: { id: "diamond_sword", namespace: "minecraft" },
+          displayName: "diamond_sword",
+          texture: "",
+          _version: MinecraftVersion.V121,
+        },
+        "smithing.addition": {
+          type: "default_item",
+          id: { id: "netherite_ingot", namespace: "minecraft" },
+          displayName: "netherite_ingot",
+          texture: "",
+          _version: MinecraftVersion.V121,
+        },
+        "smithing.result": { kind: "custom_item", uid: "missing-result" },
+      },
+    });
+
+    expect(() =>
+      generate(recipeSlice, MinecraftVersion.V121, createEmptySlotContext(MinecraftVersion.V121)),
+    ).toThrow("Cannot generate output for unresolved custom_item reference");
   });
 });

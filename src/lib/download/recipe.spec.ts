@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { makeRecipe } from "@/test/recipe-fixtures";
 
 const { downloadBlob, generate } = vi.hoisted(() => ({
   downloadBlob: vi.fn(),
@@ -33,16 +34,16 @@ const createItem = (raw: string, version = MinecraftVersion.V121) => ({
 });
 
 const createCraftingRecipe = (
-  slots: SingleRecipeState["slots"],
-  overrides: Partial<SingleRecipeState> = {},
-): SingleRecipeState => ({
-  ...recipeStateDefaults,
-  id: overrides.id ?? `recipe-${(recipeId += 1)}`,
-  recipeType: RecipeType.Crafting,
-  slots,
-  crafting: { ...recipeStateDefaults.crafting, shapeless: true },
-  ...overrides,
-});
+  slots: Record<string, ReturnType<typeof createItem>>,
+  overrides: Parameters<typeof makeRecipe>[0] = {},
+) =>
+  makeRecipe({
+    id: overrides.id ?? `recipe-${(recipeId += 1)}`,
+    recipeType: RecipeType.Crafting,
+    slots,
+    crafting: { ...recipeStateDefaults.crafting, shapeless: true },
+    ...overrides,
+  });
 
 describe("downloadRecipeJson", () => {
   beforeEach(() => {
@@ -58,8 +59,14 @@ describe("downloadRecipeJson", () => {
       },
       { nameMode: "manual", name: "" },
     );
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
-    downloadRecipeJson(recipe, MinecraftVersion.V121, "stone_button.json");
+    downloadRecipeJson({
+      recipe,
+      version: MinecraftVersion.V121,
+      slotContext,
+      target: "stone_button.json",
+    });
 
     expect(globalThis.alert).toHaveBeenCalledWith("Add a file name before downloading JSON.");
     expect(generate).not.toHaveBeenCalled();
@@ -71,12 +78,23 @@ describe("downloadRecipeJson", () => {
       "crafting.1": createItem("minecraft:stone"),
       "crafting.result": createItem("minecraft:stone_button"),
     });
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
     generate.mockReturnValue({ test: true });
 
-    downloadRecipeJson(recipe, MinecraftVersion.V121, "stone_button.json");
+    downloadRecipeJson({
+      recipe,
+      version: MinecraftVersion.V121,
+      slotContext,
+      target: "stone_button.json",
+    });
 
-    expect(generate).toHaveBeenCalledWith(recipe, MinecraftVersion.V121, undefined);
+    expect(generate).toHaveBeenCalledWith({
+      state: recipe,
+      version: MinecraftVersion.V121,
+      slotContext,
+      options: undefined,
+    });
     expect(downloadBlob).toHaveBeenCalledWith(expect.any(Blob), "stone_button.json");
   });
 
@@ -90,8 +108,14 @@ describe("downloadRecipeJson", () => {
         bedrock: { identifierMode: "manual", identifierName: "", priority: 0 },
       },
     );
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
-    downloadRecipeJson(recipe, MinecraftVersion.Bedrock, "crafting:stone_button");
+    downloadRecipeJson({
+      recipe,
+      version: MinecraftVersion.Bedrock,
+      slotContext,
+      target: "crafting:stone_button",
+    });
 
     expect(globalThis.alert).toHaveBeenCalledWith("Add a Bedrock name before downloading JSON.");
     expect(generate).not.toHaveBeenCalled();
@@ -108,13 +132,24 @@ describe("downloadRecipeJson", () => {
         bedrock: { identifierMode: "auto", identifierName: "", priority: 0 },
       },
     );
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
     generate.mockReturnValue({ test: true });
 
-    downloadRecipeJson(recipe, MinecraftVersion.Bedrock, "crafting:stone_button_2");
+    downloadRecipeJson({
+      recipe,
+      version: MinecraftVersion.Bedrock,
+      slotContext,
+      target: "crafting:stone_button_2",
+    });
 
-    expect(generate).toHaveBeenCalledWith(recipe, MinecraftVersion.Bedrock, {
-      bedrockIdentifier: "crafting:stone_button_2",
+    expect(generate).toHaveBeenCalledWith({
+      state: recipe,
+      version: MinecraftVersion.Bedrock,
+      slotContext,
+      options: {
+        bedrockIdentifier: "crafting:stone_button_2",
+      },
     });
     expect(downloadBlob).toHaveBeenCalledWith(expect.any(Blob), "crafting_stone_button_2.json");
   });

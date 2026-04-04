@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { makeRecipe } from "@/test/recipe-fixtures";
 
 import { validateDatapackExport } from "./validate-datapack-export";
 
@@ -20,21 +21,22 @@ const createItem = (raw: string, version = MinecraftVersion.V121) => ({
 });
 
 const createCraftingRecipe = (
-  slots: SingleRecipeState["slots"],
-  overrides: Partial<SingleRecipeState> = {},
-): SingleRecipeState => ({
-  ...recipeStateDefaults,
-  id: overrides.id ?? `recipe-${(recipeId += 1)}`,
-  recipeType: RecipeType.Crafting,
-  slots,
-  crafting: { ...recipeStateDefaults.crafting, shapeless: true },
-  ...overrides,
-});
+  slots: Record<string, ReturnType<typeof createItem>>,
+  overrides: Parameters<typeof makeRecipe>[0] = {},
+) =>
+  makeRecipe({
+    id: overrides.id ?? `recipe-${(recipeId += 1)}`,
+    recipeType: RecipeType.Crafting,
+    slots,
+    crafting: { ...recipeStateDefaults.crafting, shapeless: true },
+    ...overrides,
+  });
 
 describe("validateDatapackExport", () => {
   it("rewrites duplicate auto filenames before export", () => {
-    const issues = validateDatapackExport(
-      [
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
+    const issues = validateDatapackExport({
+      recipes: [
         createCraftingRecipe({
           "crafting.1": createItem("minecraft:stone"),
           "crafting.result": createItem("minecraft:stone_button"),
@@ -44,16 +46,18 @@ describe("validateDatapackExport", () => {
           "crafting.result": createItem("minecraft:stone_button"),
         }),
       ],
-      MinecraftVersion.V121,
-      { bedrockNamespace: "crafting" },
-    );
+      version: MinecraftVersion.V121,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
 
     expect(issues).toEqual([]);
   });
 
   it("flags blank manual file names before export", () => {
-    const issues = validateDatapackExport(
-      [
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
+    const issues = validateDatapackExport({
+      recipes: [
         createCraftingRecipe(
           {
             "crafting.1": createItem("minecraft:stone"),
@@ -62,9 +66,10 @@ describe("validateDatapackExport", () => {
           { nameMode: "manual", name: "" },
         ),
       ],
-      MinecraftVersion.V121,
-      { bedrockNamespace: "crafting" },
-    );
+      version: MinecraftVersion.V121,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
 
     expect(issues).toEqual([
       {
@@ -76,8 +81,9 @@ describe("validateDatapackExport", () => {
   });
 
   it("does not flag autos when only a similar manual suffix exists", () => {
-    const issues = validateDatapackExport(
-      [
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
+    const issues = validateDatapackExport({
+      recipes: [
         createCraftingRecipe(
           {
             "crafting.1": createItem("minecraft:stone"),
@@ -90,9 +96,10 @@ describe("validateDatapackExport", () => {
           "crafting.result": createItem("minecraft:stick"),
         }),
       ],
-      MinecraftVersion.V121,
-      { bedrockNamespace: "crafting" },
-    );
+      version: MinecraftVersion.V121,
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
 
     expect(issues).toEqual([]);
   });

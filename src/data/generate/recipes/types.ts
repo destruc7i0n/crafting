@@ -1,5 +1,5 @@
-import { IngredientItem } from "@/data/models/types";
 import { RecipeType } from "@/data/types";
+import { RecipeSlotValue } from "@/stores/recipe";
 
 export type EmptyObject = Record<string, never>;
 
@@ -200,8 +200,8 @@ export type BedrockRecipe =
 export type GeneratedRecipe = JavaRecipe | BedrockRecipe;
 
 export interface CraftingInput {
-  grid: (IngredientItem | undefined)[];
-  result: IngredientItem | undefined;
+  grid: (RecipeSlotValue | undefined)[];
+  result: RecipeSlotValue | undefined;
   shapeless: boolean;
   keepWhitespace: boolean;
   twoByTwo?: boolean;
@@ -216,8 +216,8 @@ export interface CookingInput {
     | RecipeType.Blasting
     | RecipeType.CampfireCooking
     | RecipeType.Smoking;
-  ingredient: IngredientItem | undefined;
-  result: IngredientItem | undefined;
+  ingredient: RecipeSlotValue | undefined;
+  result: RecipeSlotValue | undefined;
   time: number;
   experience: number;
   group: string;
@@ -225,25 +225,25 @@ export interface CookingInput {
 }
 
 export interface StonecutterInput {
-  ingredient: IngredientItem | undefined;
-  result: IngredientItem | undefined;
+  ingredient: RecipeSlotValue | undefined;
+  result: RecipeSlotValue | undefined;
   group: string;
 }
 
 export interface TransmuteInput {
-  input: IngredientItem | undefined;
-  material: IngredientItem | undefined;
-  result: IngredientItem | undefined;
+  input: RecipeSlotValue | undefined;
+  material: RecipeSlotValue | undefined;
+  result: RecipeSlotValue | undefined;
   group: string;
   category?: string;
 }
 
 export interface SmithingInput {
   recipeType: RecipeType.Smithing | RecipeType.SmithingTrim | RecipeType.SmithingTransform;
-  template: IngredientItem | undefined;
-  base: IngredientItem | undefined;
-  addition: IngredientItem | undefined;
-  result: IngredientItem | undefined;
+  template: RecipeSlotValue | undefined;
+  base: RecipeSlotValue | undefined;
+  addition: RecipeSlotValue | undefined;
+  result: RecipeSlotValue | undefined;
   trimPattern?: string;
 }
 

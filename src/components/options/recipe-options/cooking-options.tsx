@@ -1,6 +1,6 @@
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { useRecipeStore } from "@/stores/recipe";
-import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
+import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
@@ -14,9 +14,7 @@ const cookingRecipeTypes = [
 ] as const;
 
 const ExperienceField = () => {
-  const experience = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.cooking.experience ?? 0,
-  );
+  const experience = useRecipeStore((state) => selectCurrentRecipe(state)?.cooking.experience ?? 0);
   const setRecipeCookingExperience = useRecipeStore((state) => state.setRecipeCookingExperience);
 
   return (
@@ -34,9 +32,7 @@ const ExperienceField = () => {
 };
 
 const CookingTimeField = () => {
-  const cookingTime = useRecipeStore(
-    (state) => state.recipes[state.selectedRecipeIndex]?.cooking.time ?? 0,
-  );
+  const cookingTime = useRecipeStore((state) => selectCurrentRecipe(state)?.cooking.time ?? 0);
   const setRecipeCookingTime = useRecipeStore((state) => state.setRecipeCookingTime);
 
   return (

@@ -150,7 +150,7 @@ export const TagsSection = ({
 
           {tagItem && (
             <Slot className="shrink-0">
-              <IngredientItem item={tagItem} container="ingredients" />
+              <IngredientItem item={tagItem} />
             </Slot>
           )}
 
@@ -234,7 +234,7 @@ export const TagsSection = ({
                   </>
                 }
               >
-                <IngredientItem item={tagItem} container="ingredients" />
+                <IngredientItem item={tagItem} />
               </IngredientCard>
             );
           })}
@@ -251,7 +251,7 @@ export const TagsSection = ({
         <div className="grid grid-cols-[repeat(auto-fill,36px)] content-start">
           {filteredVanillaTagItems.map((tagItem) => (
             <Slot key={identifierUniqueKey(tagItem.id)}>
-              <IngredientItem item={tagItem} container="ingredients" />
+              <IngredientItem item={tagItem} />
             </Slot>
           ))}
         </div>

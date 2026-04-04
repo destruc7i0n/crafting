@@ -7,13 +7,19 @@ import {
   isValidBedrockNamespacedIdentifier,
 } from "@/lib/minecraft-identifier";
 import { sanitizeRecipeName } from "@/lib/recipe-name";
-import { SingleRecipeState } from "@/stores/recipe";
+import { Recipe, SlotContext } from "@/stores/recipe";
 
-export const downloadRecipeJson = (
-  recipe: SingleRecipeState,
-  version: MinecraftVersion,
-  target: string,
-) => {
+export const downloadRecipeJson = ({
+  recipe,
+  version,
+  slotContext,
+  target,
+}: {
+  recipe: Recipe;
+  version: MinecraftVersion;
+  slotContext: SlotContext;
+  target: string;
+}) => {
   let fileName = target;
   let generationContext: { bedrockIdentifier: string } | undefined;
 
@@ -41,7 +47,13 @@ export const downloadRecipeJson = (
   }
 
   try {
-    const json = JSON.stringify(generate(recipe, version, generationContext), null, 2);
+    const generatedRecipe = generate({
+      state: recipe,
+      version,
+      slotContext,
+      options: generationContext,
+    });
+    const json = JSON.stringify(generatedRecipe, null, 2);
     const blob = new Blob([json], { type: "application/json;charset=utf-8" });
 
     downloadBlob(blob, fileName);

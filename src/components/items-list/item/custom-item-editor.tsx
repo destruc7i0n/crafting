@@ -90,7 +90,7 @@ export const CustomItemEditor = ({
           </button>
         }
       >
-        <Item item={item} container="ingredients" />
+        <Item item={item} />
       </IngredientCard>
     );
   }
@@ -107,7 +107,7 @@ export const CustomItemEditor = ({
         </button>
 
         <Slot className="shrink-0">
-          <Item item={item} container="ingredients" />
+          <Item item={item} />
         </Slot>
 
         <div className="min-w-0 flex-1">

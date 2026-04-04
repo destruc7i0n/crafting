@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { SingleRecipeState, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { makeRecipe } from "@/test/recipe-fixtures";
 
 import { validateBehaviorPackExport } from "./validate-behavior-pack-export";
 
@@ -20,19 +21,20 @@ const createItem = (raw: string, version = MinecraftVersion.Bedrock) => ({
 });
 
 const createCraftingRecipe = (
-  slots: SingleRecipeState["slots"],
-  overrides: Partial<SingleRecipeState> = {},
-): SingleRecipeState => ({
-  ...recipeStateDefaults,
-  id: overrides.id ?? `recipe-${(recipeId += 1)}`,
-  recipeType: RecipeType.Crafting,
-  slots,
-  crafting: { ...recipeStateDefaults.crafting, shapeless: true },
-  ...overrides,
-});
+  slots: Record<string, ReturnType<typeof createItem>>,
+  overrides: Parameters<typeof makeRecipe>[0] = {},
+) =>
+  makeRecipe({
+    id: overrides.id ?? `recipe-${(recipeId += 1)}`,
+    recipeType: RecipeType.Crafting,
+    slots,
+    crafting: { ...recipeStateDefaults.crafting, shapeless: true },
+    ...overrides,
+  });
 
 describe("validateBehaviorPackExport", () => {
   it("flags blank manual Bedrock names", () => {
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
     const issues = validateBehaviorPackExport(
       [
         createCraftingRecipe(
@@ -46,6 +48,7 @@ describe("validateBehaviorPackExport", () => {
         ),
       ],
       { bedrockNamespace: "crafting" },
+      slotContext,
     );
 
     expect(issues).toEqual([
@@ -58,6 +61,7 @@ describe("validateBehaviorPackExport", () => {
   });
 
   it("rewrites duplicate auto identifiers before export", () => {
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
     const issues = validateBehaviorPackExport(
       [
         createCraftingRecipe({
@@ -70,12 +74,14 @@ describe("validateBehaviorPackExport", () => {
         }),
       ],
       { bedrockNamespace: "crafting" },
+      slotContext,
     );
 
     expect(issues).toEqual([]);
   });
 
   it("flags invalid Bedrock identifier syntax", () => {
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
     const issues = validateBehaviorPackExport(
       [
         createCraftingRecipe(
@@ -89,6 +95,7 @@ describe("validateBehaviorPackExport", () => {
         ),
       ],
       { bedrockNamespace: "Crafting" },
+      slotContext,
     );
 
     expect(issues).toEqual([
@@ -101,6 +108,7 @@ describe("validateBehaviorPackExport", () => {
   });
 
   it("keeps distinct manual Bedrock names valid in one namespace", () => {
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
     const issues = validateBehaviorPackExport(
       [
         createCraftingRecipe(
@@ -123,12 +131,14 @@ describe("validateBehaviorPackExport", () => {
         ),
       ],
       { bedrockNamespace: "crafting_foo" },
+      slotContext,
     );
 
     expect(issues).toEqual([]);
   });
 
   it("does not flag autos when only a similar manual Bedrock suffix exists", () => {
+    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
     const issues = validateBehaviorPackExport(
       [
         createCraftingRecipe(
@@ -146,6 +156,7 @@ describe("validateBehaviorPackExport", () => {
         }),
       ],
       { bedrockNamespace: "crafting" },
+      slotContext,
     );
 
     expect(issues).toEqual([]);

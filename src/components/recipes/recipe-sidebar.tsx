@@ -17,6 +17,7 @@ import { recipeTypeToItemId } from "@/data/constants";
 import { MinecraftVersion } from "@/data/types";
 import { getSupportedRecipeTypesForVersion } from "@/data/versions";
 import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
+import { useSlotContext } from "@/hooks/use-slot-context";
 import { confirmAction } from "@/lib/confirm";
 import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
@@ -25,7 +26,8 @@ import { getRecipeExportDetail, toJavaRecipeFileName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
 import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
 import { validateDatapackExport } from "@/lib/validate-datapack-export";
-import { SingleRecipeState, useRecipeStore } from "@/stores/recipe";
+import { Recipe, useRecipeStore } from "@/stores/recipe";
+import { selectSelectedRecipeId } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectBedrockNamespace, selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useTagStore } from "@/stores/tag";
@@ -53,8 +55,7 @@ interface DownloadConfig {
 }
 
 interface RecipeRow {
-  recipe: SingleRecipeState;
-  index: number;
+  recipe: Recipe;
   isSelected: boolean;
   isSupported: boolean;
   hasWarning: boolean;
@@ -140,7 +141,7 @@ const CollapsedRecipeButton = ({
   onSelect,
 }: {
   row: RecipeRow;
-  onSelect: (index: number) => void;
+  onSelect: (id: string) => void;
 }) => {
   const warningContent = getRecipeWarningContent(row);
 
@@ -156,7 +157,7 @@ const CollapsedRecipeButton = ({
     >
       <button
         type="button"
-        onClick={() => onSelect(row.index)}
+        onClick={() => onSelect(row.recipe.id)}
         className={cn(
           "flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border transition-colors",
           row.isSelected
@@ -181,9 +182,9 @@ const ExpandedRecipeRow = ({
 }: {
   row: RecipeRow;
   canDelete: boolean;
-  onSelect: (index: number) => void;
-  onDelete: (index: number, event: { shiftKey: boolean }) => void;
-  onDownload: (recipe: SingleRecipeState, target: string) => void;
+  onSelect: (id: string) => void;
+  onDelete: (id: string, event: { shiftKey: boolean }) => void;
+  onDownload: (recipe: Recipe, target: string) => void;
 }) => {
   const warningContent = getRecipeWarningContent(row);
 
@@ -198,7 +199,7 @@ const ExpandedRecipeRow = ({
       )}
     >
       <div
-        onClick={() => onSelect(row.index)}
+        onClick={() => onSelect(row.recipe.id)}
         className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 px-2 py-2"
       >
         <ResourceIcon
@@ -237,7 +238,7 @@ const ExpandedRecipeRow = ({
               className="text-muted-foreground hover:text-destructive cursor-pointer rounded transition-colors"
               onClick={(event) => {
                 event.stopPropagation();
-                onDelete(row.index, event);
+                onDelete(row.recipe.id, event);
               }}
             >
               <Trash2Icon size={14} />
@@ -253,13 +254,14 @@ const ExpandedRecipeRow = ({
 
 export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: RecipeSidebarProps) => {
   const recipes = useRecipeStore((state) => state.recipes);
-  const selectedRecipeIndex = useRecipeStore((state) => state.selectedRecipeIndex);
+  const selectedRecipeId = useRecipeStore(selectSelectedRecipeId);
   const createRecipe = useRecipeStore((state) => state.createRecipe);
   const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
   const selectRecipe = useRecipeStore((state) => state.selectRecipe);
 
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const bedrockNamespace = useSettingsStore(selectBedrockNamespace);
+  const slotContext = useSlotContext();
   const resolvedNames = useResolvedRecipeNames();
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
   const toggleRecipeSidebar = useUIStore((state) => state.toggleRecipeSidebar);
@@ -268,13 +270,18 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
   const invalidRecipesMap = useMemo(() => {
     const issues = isBedrock
-      ? validateBehaviorPackExport(recipes, { bedrockNamespace })
-      : validateDatapackExport(recipes, minecraftVersion, { bedrockNamespace });
-    return new Map(issues.map((issue) => [issue.recipe.id, issue.errors]));
-  }, [bedrockNamespace, isBedrock, minecraftVersion, recipes]);
+      ? validateBehaviorPackExport(recipes, { bedrockNamespace }, slotContext)
+      : validateDatapackExport({
+          recipes,
+          version: minecraftVersion,
+          context: { bedrockNamespace },
+          slotContext,
+        });
+    return new Map(issues.map((issue) => [issue.recipe.id, issue.errors] as const));
+  }, [bedrockNamespace, isBedrock, minecraftVersion, recipes, slotContext]);
   const canDownloadPack = invalidRecipesMap.size === 0;
   const downloadConfig = DOWNLOAD_CONFIG[isBedrock ? "bedrock" : "java"];
-  const recipeRows: RecipeRow[] = recipes.map((recipe, index) => {
+  const recipeRows: RecipeRow[] = recipes.map((recipe) => {
     const naming = resolvedNames.byId[recipe.id];
     const errors = invalidRecipesMap.get(recipe.id);
     const isSupported = supportedRecipeTypes.includes(recipe.recipeType);
@@ -283,8 +290,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
     return {
       recipe,
-      index,
-      isSelected: selectedRecipeIndex === index,
+      isSelected: selectedRecipeId === recipe.id,
       isSupported,
       hasWarning: !isSupported || !!errors,
       errors,
@@ -294,20 +300,20 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     };
   });
 
-  const handleSelectRecipe = (index: number) => {
-    selectRecipe(index);
+  const handleSelectRecipe = (id: string) => {
+    selectRecipe(id);
 
     if (mobile) {
       setMobileRecipeSidebarOpen(false);
     }
   };
 
-  const handleDeleteRecipe = (index: number, event?: { shiftKey: boolean }) => {
+  const handleDeleteRecipe = (id: string, event?: { shiftKey: boolean }) => {
     if (!confirmAction("Are you sure you want to delete this recipe?", event)) {
       return;
     }
 
-    deleteRecipe(index);
+    deleteRecipe(id);
   };
 
   const handleDownloadAll = async () => {
@@ -316,18 +322,29 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     }
 
     if (isBedrock) {
-      await downloadBehaviorPack(recipes, minecraftVersion, { bedrockNamespace });
+      await downloadBehaviorPack({
+        recipes,
+        version: minecraftVersion,
+        context: { bedrockNamespace },
+        slotContext,
+      });
       return;
     }
 
     await downloadDatapack(recipes, minecraftVersion, {
       tags: useTagStore.getState().tags,
       context: { bedrockNamespace },
+      slotContext,
     });
   };
 
   const handleDownloadRecipe = (recipe: RecipeRow["recipe"], downloadTarget: string) => {
-    downloadRecipeJson(recipe, minecraftVersion, downloadTarget);
+    downloadRecipeJson({
+      recipe,
+      version: minecraftVersion,
+      slotContext,
+      target: downloadTarget,
+    });
   };
 
   const invalidRecipeCountLabel = `${invalidRecipesMap.size} invalid ${invalidRecipesMap.size === 1 ? "recipe" : "recipes"}`;

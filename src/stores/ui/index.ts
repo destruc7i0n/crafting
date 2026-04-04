@@ -3,10 +3,11 @@ import { persist } from "zustand/middleware";
 
 import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot } from "@/data/types";
+import { RecipeSlotValue } from "@/stores/recipe";
 
 export type Selection =
   | { type: "ingredient"; item: IngredientItem }
-  | { type: "preview"; item: IngredientItem; slot: RecipeSlot };
+  | { type: "slot"; value: RecipeSlotValue; slot: RecipeSlot };
 
 export interface UIState {
   isMobileRecipeSidebarOpen: boolean;
