@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import { useCustomItemStore } from "@/stores/custom-item";
-import { SlotContext } from "@/stores/recipe";
+import { SlotContext } from "@/stores/recipe/types";
 import { useTagStore } from "@/stores/tag";
 
 import { useResourcesForVersion } from "./use-resources-for-version";

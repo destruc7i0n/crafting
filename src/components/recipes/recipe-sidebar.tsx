@@ -13,9 +13,7 @@ import {
 import { Disclosure } from "@/components/disclosure/disclosure";
 import { ResourceIcon } from "@/components/item/resource-icon";
 import { Tooltip } from "@/components/tooltip/tooltip";
-import { recipeTypeToItemId } from "@/data/constants";
 import { MinecraftVersion } from "@/data/types";
-import { getSupportedRecipeTypesForVersion } from "@/data/versions";
 import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
 import { useSlotContext } from "@/hooks/use-slot-context";
 import { confirmAction } from "@/lib/confirm";
@@ -26,8 +24,10 @@ import { getRecipeExportDetail, toJavaRecipeFileName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
 import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
 import { validateDatapackExport } from "@/lib/validate-datapack-export";
-import { Recipe, useRecipeStore } from "@/stores/recipe";
+import { getRecipeTypeIconItemId, getSupportedRecipeTypesForVersion } from "@/recipes/definitions";
+import { useRecipeStore } from "@/stores/recipe";
 import { selectSelectedRecipeId } from "@/stores/recipe/selectors";
+import { Recipe } from "@/stores/recipe/types";
 import { useSettingsStore } from "@/stores/settings";
 import { selectBedrockNamespace, selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useTagStore } from "@/stores/tag";
@@ -167,7 +167,7 @@ const CollapsedRecipeButton = ({
           row.hasWarning && !row.isSelected && "border-amber-500/40",
         )}
       >
-        <ResourceIcon itemId={recipeTypeToItemId[row.recipe.recipeType]} className="h-6 w-6" />
+        <ResourceIcon itemId={getRecipeTypeIconItemId(row.recipe.recipeType)} className="h-6 w-6" />
       </button>
     </Tooltip>
   );
@@ -203,7 +203,7 @@ const ExpandedRecipeRow = ({
         className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 px-2 py-2"
       >
         <ResourceIcon
-          itemId={recipeTypeToItemId[row.recipe.recipeType]}
+          itemId={getRecipeTypeIconItemId(row.recipe.recipeType)}
           className="h-6 w-6 shrink-0"
         />
 

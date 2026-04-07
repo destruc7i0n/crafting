@@ -7,7 +7,7 @@ import {
   isValidBedrockNamespacedIdentifier,
 } from "@/lib/minecraft-identifier";
 import { sanitizeRecipeName } from "@/lib/recipe-name";
-import { Recipe, SlotContext } from "@/stores/recipe";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 export const downloadRecipeJson = ({
   recipe,

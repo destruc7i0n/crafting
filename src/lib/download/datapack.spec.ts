@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext } from "@/stores/recipe/slot-value";
+import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
 const { createDatapackBlob, downloadBlob, generate } = vi.hoisted(() => ({

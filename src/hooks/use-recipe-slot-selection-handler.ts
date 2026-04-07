@@ -4,8 +4,9 @@ import {
   canRecipeSlotAcceptIngredientItem,
   canRecipeSlotAcceptSlotValue,
 } from "@/lib/recipe-slots";
-import { RecipeSlotValue, useRecipeStore } from "@/stores/recipe";
+import { useRecipeStore } from "@/stores/recipe";
 import { cloneRecipeSlotValue } from "@/stores/recipe/slot-value";
+import { RecipeSlotValue } from "@/stores/recipe/types";
 import { useUIStore } from "@/stores/ui";
 
 export const useRecipeSlotSelectionHandler = (

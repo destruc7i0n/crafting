@@ -1,5 +1,5 @@
 import { RecipeType } from "@/data/types";
-import { RecipeSlotValue } from "@/stores/recipe";
+import { RecipeSlotValue } from "@/stores/recipe/types";
 
 export type EmptyObject = Record<string, never>;
 

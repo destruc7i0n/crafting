@@ -1,9 +1,8 @@
-import { recipeTypeToName } from "@/data/constants";
-import { getRawId } from "@/data/models/identifier/utilities";
-import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
+import { MinecraftVersion } from "@/data/types";
 import { sanitizeBedrockIdentifierPart } from "@/lib/minecraft-identifier";
-import { Recipe, RecipeSlotValue, SlotContext } from "@/stores/recipe";
-import { getSlotDisplay, getSlotIdentifier } from "@/stores/recipe/slot-value";
+import { getRecipeDefinition } from "@/recipes/definitions";
+import { getSlotDisplay } from "@/stores/recipe/slot-value";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 export interface NamingContext {
   bedrockNamespace: string;
@@ -82,202 +81,25 @@ const ensureName = (value: string | undefined) => {
   return sanitized || FALLBACK_NAME;
 };
 
-const toNames = (...values: Array<string | undefined>) =>
-  unique(
-    values.flatMap((value) => {
-      if (!value) {
-        return [];
-      }
-
-      const name = sanitizeRecipeName(value);
-      return name ? [name] : [];
-    }),
-  );
-
-const itemSlug = (slot: RecipeSlotValue | undefined, slotContext: SlotContext) => {
-  const identifier = getSlotIdentifier(slot, slotContext);
-  if (!identifier) return undefined;
-
-  const raw = getRawId(identifier);
-  const base = raw.startsWith("minecraft:")
-    ? raw.slice("minecraft:".length)
-    : raw.replace(":", "_");
-  const slug = sanitizeRecipeName(base.replace(/[:/.-]+/g, "_"));
-
-  if (!slug) {
-    return undefined;
-  }
-
-  if (identifier.data === undefined || identifier.data === 0) {
-    return slug;
-  }
-
-  return `${slug}_data_${identifier.data}`;
-};
-
-const getResultSlot = (recipe: Recipe) => {
-  switch (recipe.recipeType) {
-    case RecipeType.Crafting:
-    case RecipeType.CraftingTransmute:
-      return recipe.slots[SLOTS.crafting.result];
-    case RecipeType.Smelting:
-    case RecipeType.Blasting:
-    case RecipeType.Smoking:
-    case RecipeType.CampfireCooking:
-      return recipe.slots[SLOTS.cooking.result];
-    case RecipeType.Stonecutter:
-      return recipe.slots[SLOTS.stonecutter.result];
-    case RecipeType.Smithing:
-    case RecipeType.SmithingTransform:
-      return recipe.slots[SLOTS.smithing.result];
-    case RecipeType.SmithingTrim:
-      return undefined;
-    default:
-      return undefined;
-  }
+const getResultSlotValue = (recipe: Recipe) => {
+  const resultSlot = getRecipeDefinition(recipe.recipeType).naming.resultSlot;
+  return resultSlot ? recipe.slots[resultSlot] : undefined;
 };
 
 const getSidebarBaseTitle = (recipe: Recipe, slotContext: SlotContext) => {
-  const result = getResultSlot(recipe);
+  const definition = getRecipeDefinition(recipe.recipeType);
+  const result = getResultSlotValue(recipe);
   const displayName = getSlotDisplay(result, slotContext)?.label.trim();
 
   if (displayName) {
     return displayName;
   }
 
-  return `${recipeTypeToName[recipe.recipeType]} Recipe`;
+  return definition.naming.sidebarFallbackLabel;
 };
 
-const getCraftingNames = (recipe: Recipe, slotContext: SlotContext) =>
-  toNames(itemSlug(recipe.slots[SLOTS.crafting.result], slotContext) ?? "crafting_recipe");
-
-const getTransmuteNames = (recipe: Recipe, slotContext: SlotContext) =>
-  toNames(
-    itemSlug(recipe.slots[SLOTS.crafting.result], slotContext) ?? "crafting_transmute_recipe",
-  );
-
-const buildCookingNames = (
-  result: string | undefined,
-  ingredient: string | undefined,
-  {
-    fallback,
-    resultSuffix,
-    ingredientSuffix,
-    extras = [],
-  }: {
-    fallback: string;
-    resultSuffix: string;
-    ingredientSuffix: string;
-    extras?: Array<string | undefined>;
-  },
-) => {
-  let base = fallback;
-
-  if (result) {
-    base = `${result}${resultSuffix}`;
-  } else if (ingredient) {
-    base = `${ingredient}${ingredientSuffix}`;
-  }
-
-  return toNames(ensureName(base), ...extras);
-};
-
-const getCookingNames = (recipe: Recipe, slotContext: SlotContext) => {
-  const result = itemSlug(recipe.slots[SLOTS.cooking.result], slotContext);
-  const ingredient = itemSlug(recipe.slots[SLOTS.cooking.ingredient], slotContext);
-
-  switch (recipe.recipeType) {
-    case RecipeType.Smelting:
-      return buildCookingNames(result, ingredient, {
-        fallback: "smelting",
-        resultSuffix: "_from_smelting",
-        ingredientSuffix: "_smelting",
-        extras: [
-          result && ingredient ? `${result}_from_smelting_${ingredient}` : undefined,
-          result,
-        ],
-      });
-    case RecipeType.Blasting:
-      return buildCookingNames(result, ingredient, {
-        fallback: "blasting",
-        resultSuffix: "_from_blasting",
-        ingredientSuffix: "_blasting",
-        extras: [result && ingredient ? `${result}_from_blasting_${ingredient}` : undefined],
-      });
-    case RecipeType.Smoking:
-      return buildCookingNames(result, ingredient, {
-        fallback: "smoking",
-        resultSuffix: "_from_smoking",
-        ingredientSuffix: "_smoking",
-      });
-    case RecipeType.CampfireCooking:
-      return buildCookingNames(result, ingredient, {
-        fallback: "campfire_cooking",
-        resultSuffix: "_from_campfire_cooking",
-        ingredientSuffix: "_campfire_cooking",
-      });
-    default:
-      return [FALLBACK_NAME];
-  }
-};
-
-const getStonecuttingNames = (recipe: Recipe, slotContext: SlotContext) => {
-  const result = itemSlug(recipe.slots[SLOTS.stonecutter.result], slotContext);
-  const ingredient = itemSlug(recipe.slots[SLOTS.stonecutter.ingredient], slotContext);
-  let base = "stonecutting_recipe";
-
-  if (result && ingredient) {
-    base = `${result}_from_${ingredient}_stonecutting`;
-  } else if (result) {
-    base = `${result}_stonecutting`;
-  } else if (ingredient) {
-    base = `${ingredient}_stonecutting`;
-  }
-
-  return toNames(ensureName(base));
-};
-
-const getSmithingNames = (recipe: Recipe, slotContext: SlotContext) => {
-  const result = itemSlug(recipe.slots[SLOTS.smithing.result], slotContext);
-  const template = itemSlug(recipe.slots[SLOTS.smithing.template], slotContext);
-  const baseItem = itemSlug(recipe.slots[SLOTS.smithing.base], slotContext);
-
-  if (recipe.recipeType === RecipeType.SmithingTrim) {
-    return toNames(template ? `${template}_smithing_trim` : "smithing_trim");
-  }
-
-  let base = "smithing_recipe";
-
-  if (result) {
-    base = `${result}_smithing`;
-  } else if (baseItem) {
-    base = `${baseItem}_smithing`;
-  }
-
-  return toNames(base);
-};
-
-const getRecipeNameCandidates = (recipe: Recipe, slotContext: SlotContext) => {
-  switch (recipe.recipeType) {
-    case RecipeType.Crafting:
-      return getCraftingNames(recipe, slotContext);
-    case RecipeType.CraftingTransmute:
-      return getTransmuteNames(recipe, slotContext);
-    case RecipeType.Smelting:
-    case RecipeType.Blasting:
-    case RecipeType.Smoking:
-    case RecipeType.CampfireCooking:
-      return getCookingNames(recipe, slotContext);
-    case RecipeType.Stonecutter:
-      return getStonecuttingNames(recipe, slotContext);
-    case RecipeType.Smithing:
-    case RecipeType.SmithingTransform:
-    case RecipeType.SmithingTrim:
-      return getSmithingNames(recipe, slotContext);
-    default:
-      return [FALLBACK_NAME];
-  }
-};
+const getRecipeNameCandidates = (recipe: Recipe, slotContext: SlotContext) =>
+  getRecipeDefinition(recipe.recipeType).naming.getAutoNames(recipe, slotContext);
 
 export const getAutoRecipeName = (recipe: Recipe, slotContext: SlotContext) =>
   getRecipeNameCandidates(recipe, slotContext)[0] ?? FALLBACK_NAME;

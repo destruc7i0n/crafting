@@ -3,7 +3,7 @@ import { generate } from "@/data/generate";
 import { Tag } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { NamingContext, resolveRecipeNames } from "@/lib/recipe-name";
-import { Recipe, SlotContext } from "@/stores/recipe";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import { validateDatapackExport } from "../validate-datapack-export";
 

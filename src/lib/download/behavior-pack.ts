@@ -3,7 +3,7 @@ import { downloadBlob } from "@/data/datapack";
 import { generate } from "@/data/generate";
 import { MinecraftVersion } from "@/data/types";
 import { NamingContext, resolveRecipeNames } from "@/lib/recipe-name";
-import { Recipe, SlotContext } from "@/stores/recipe";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import { validateBehaviorPackExport } from "../validate-behavior-pack-export";
 

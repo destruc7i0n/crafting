@@ -3,7 +3,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { IngredientItem } from "@/data/models/types";
 import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
 
-import { Recipe, RecipeSlotValue, useRecipeStore } from "./index";
+import { useRecipeStore } from "./index";
+import { Recipe, RecipeSlotValue } from "./types";
 
 const createRecipe = (id: string): Recipe => ({
   id,

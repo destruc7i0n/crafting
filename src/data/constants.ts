@@ -3,7 +3,7 @@ import {
   versions as minecraftTextureVersions,
 } from "minecraft-textures";
 
-import { MinecraftVersion, RecipeType } from "./types";
+import { MinecraftVersion } from "./types";
 
 type Assert<T extends true> = T;
 type IsExact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
@@ -42,78 +42,3 @@ export const NoTextureTexture =
 export const defaultMinecraftVersions = [MinecraftVersion.Bedrock, ...javaMinecraftVersions];
 
 export const latestMinecraftVersion = latestMinecraftTexturesVersion as MinecraftVersion;
-
-export const recipeTypeToJavaType: Record<RecipeType, string> = {
-  [RecipeType.Crafting]: "minecraft:crafting_shaped",
-  [RecipeType.CraftingTransmute]: "minecraft:crafting_transmute",
-  [RecipeType.Smelting]: "minecraft:smelting",
-  [RecipeType.CampfireCooking]: "minecraft:campfire_cooking",
-  [RecipeType.Blasting]: "minecraft:blasting",
-  [RecipeType.Smoking]: "minecraft:smoking",
-  [RecipeType.Stonecutter]: "minecraft:stonecutting",
-  [RecipeType.Smithing]: "minecraft:smithing",
-  [RecipeType.SmithingTrim]: "minecraft:smithing_trim",
-  [RecipeType.SmithingTransform]: "minecraft:smithing_transform",
-};
-
-export const recipeTypeToName: Record<RecipeType, string> = {
-  [RecipeType.Crafting]: "Crafting",
-  [RecipeType.CraftingTransmute]: "Crafting Transmute",
-  [RecipeType.Smelting]: "Smelting",
-  [RecipeType.CampfireCooking]: "Campfire Cooking",
-  [RecipeType.Blasting]: "Blasting",
-  [RecipeType.Smoking]: "Smoking",
-  [RecipeType.Stonecutter]: "Stonecutting",
-  [RecipeType.Smithing]: "Smithing",
-  [RecipeType.SmithingTrim]: "Smithing Trim",
-  [RecipeType.SmithingTransform]: "Smithing Transform",
-};
-
-export const recipeTypeToItemId: Record<RecipeType, string> = {
-  [RecipeType.Crafting]: "minecraft:crafting_table",
-  [RecipeType.CraftingTransmute]: "minecraft:crafting_table",
-  [RecipeType.Smelting]: "minecraft:furnace",
-  [RecipeType.CampfireCooking]: "minecraft:campfire",
-  [RecipeType.Blasting]: "minecraft:blast_furnace",
-  [RecipeType.Smoking]: "minecraft:smoker",
-  [RecipeType.Stonecutter]: "minecraft:stonecutter",
-  [RecipeType.Smithing]: "minecraft:smithing_table",
-  [RecipeType.SmithingTrim]: "minecraft:smithing_table",
-  [RecipeType.SmithingTransform]: "minecraft:smithing_table",
-};
-
-// 1.12:
-// [
-//   "crafting_shaped",
-//   "crafting_shapeless"
-// ]
-
-// 1.13:
-// [
-//   "crafting_shaped",
-//   "crafting_shapeless",
-//   "smelting"
-// ]
-
-// 1.14:
-// [
-//   "minecraft:blasting",
-//   "minecraft:campfire_cooking",
-//   "minecraft:crafting_shaped",
-//   "minecraft:crafting_shapeless",
-//   "minecraft:smelting",
-//   "minecraft:smoking",
-//   "minecraft:stonecutting"
-// ]
-
-// 1.16:
-// [
-//   "minecraft:blasting",
-//   "minecraft:campfire_cooking",
-//   "minecraft:crafting_shaped",
-//   "minecraft:crafting_shapeless",
-//   "minecraft:smelting",
-//   "minecraft:smithing",
-//   "minecraft:smoking",
-//   "minecraft:stonecutting"
-// ]

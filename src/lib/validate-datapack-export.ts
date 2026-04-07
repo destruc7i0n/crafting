@@ -1,5 +1,5 @@
 import { MinecraftVersion } from "@/data/types";
-import { Recipe, SlotContext } from "@/stores/recipe";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import {
   NamingContext,

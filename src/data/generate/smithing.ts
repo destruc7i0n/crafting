@@ -1,6 +1,7 @@
 import { getRawId } from "@/data/models/identifier/utilities";
-import { Recipe, RecipeSlotValue, SlotContext, createEmptySlotContext } from "@/stores/recipe";
+import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
+import { Recipe, RecipeSlotValue, SlotContext } from "@/stores/recipe/types";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import { createRecipeFormatter } from "./format/recipe-formatter";
@@ -97,7 +98,7 @@ export const buildBedrock = (
   } satisfies BedrockShapelessBody;
 };
 
-const extractInput = (state: Recipe): SmithingInput => ({
+export const extractSmithingInput = (state: Recipe): SmithingInput => ({
   recipeType: state.recipeType as SmithingInput["recipeType"],
   template: state.slots[SLOTS.smithing.template],
   base: state.slots[SLOTS.smithing.base],
@@ -107,7 +108,7 @@ const extractInput = (state: Recipe): SmithingInput => ({
 });
 
 export const validateSmithing = (state: Recipe, version?: MinecraftVersion): string[] => {
-  const input = extractInput(state);
+  const input = extractSmithingInput(state);
   const errors: string[] = [];
 
   if (
@@ -154,7 +155,7 @@ export const generate = (
   | BedrockSmithingTrimBody
   | BedrockSmithingTransformBody
   | BedrockShapelessBody => {
-  const input = extractInput(state);
+  const input = extractSmithingInput(state);
   const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {

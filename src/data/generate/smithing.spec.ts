@@ -1,4 +1,5 @@
-import { createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext } from "@/stores/recipe/slot-value";
+import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
 import { MinecraftVersion, RecipeType } from "../types";

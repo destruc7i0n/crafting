@@ -1,9 +1,9 @@
 import { ChevronRightIcon } from "lucide-react";
 
 import { ResourceIcon } from "@/components/item/resource-icon";
-import { recipeTypeToItemId } from "@/data/constants";
 import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
 import { getRecipeExportDetail } from "@/lib/recipe-name";
+import { getRecipeTypeIconItemId } from "@/recipes/definitions";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectSelectedRecipeId } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
@@ -33,7 +33,7 @@ export const MobileRecipeSwitcher = () => {
       className="bg-card text-foreground hover:bg-accent active:bg-accent/80 flex w-full cursor-pointer items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors lg:hidden"
     >
       <ResourceIcon
-        itemId={recipeTypeToItemId[currentRecipe.recipeType]}
+        itemId={getRecipeTypeIconItemId(currentRecipe.recipeType)}
         className="h-8 w-8 shrink-0"
       />
 

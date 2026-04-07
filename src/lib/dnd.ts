@@ -1,6 +1,6 @@
 import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot } from "@/data/types";
-import { RecipeSlotValue } from "@/stores/recipe";
+import { RecipeSlotValue } from "@/stores/recipe/types";
 
 export type RecipeSlotDropTargetData = {
   type: "recipe-slot-target";

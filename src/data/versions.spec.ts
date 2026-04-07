@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 
+import { getSupportedRecipeTypesForVersion } from "@/recipes/definitions";
+
 import { MinecraftVersion, RecipeType } from "./types";
-import { coerceRecipeTypeForVersion, getSupportedRecipeTypesForVersion } from "./versions";
+import { coerceRecipeTypeForVersion } from "./versions";
 
 describe("getSupportedRecipeTypesForVersion", () => {
   it("1.12 only supports crafting", () => {

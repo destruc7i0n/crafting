@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { RecipeSlotValue, createEmptySlotContext, recipeStateDefaults } from "@/stores/recipe";
+import { createEmptySlotContext } from "@/stores/recipe/slot-value";
+import { RecipeSlotValue, recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
 import {

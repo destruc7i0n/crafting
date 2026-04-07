@@ -1,6 +1,6 @@
 import { getBehaviorPackRecipeFileName } from "@/data/behavior-pack";
 import { MinecraftVersion } from "@/data/types";
-import { Recipe, SlotContext } from "@/stores/recipe";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import { bedrockIdentifierHint, isValidBedrockNamespacedIdentifier } from "./minecraft-identifier";
 import { NamingContext, resolveRecipeNames, sanitizeRecipeName } from "./recipe-name";

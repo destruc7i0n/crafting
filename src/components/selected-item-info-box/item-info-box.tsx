@@ -5,8 +5,9 @@ import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot } from "@/data/types";
 import { useSlotContext } from "@/hooks/use-slot-context";
 import { getTagLabel } from "@/lib/tags";
-import { RecipeSlotValue, useRecipeStore } from "@/stores/recipe";
+import { useRecipeStore } from "@/stores/recipe";
 import { getSlotDisplay, getSlotIdentifier, isTagSlotValue } from "@/stores/recipe/slot-value";
+import { RecipeSlotValue } from "@/stores/recipe/types";
 import { useUIStore } from "@/stores/ui";
 
 type ItemInfoBoxProps =

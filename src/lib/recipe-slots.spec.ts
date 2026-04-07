@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { Recipe } from "@/stores/recipe";
 import { toRecipeSlotValue } from "@/stores/recipe/slot-value";
+import { Recipe } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
 import {
@@ -113,6 +113,19 @@ describe("findFirstEmptyRecipeSlot", () => {
       slots: { "crafting.1": makeItem(), "crafting.2": makeItem() },
     });
     expect(findFirstEmptyRecipeSlot(recipe, makeItem())).toBe("crafting.4");
+  });
+
+  it("uses the 2x2 layout order before falling through to the result slot", () => {
+    const recipe = makeCanonicalRecipe({
+      crafting: { shapeless: false, keepWhitespace: false, twoByTwo: true },
+      slots: {
+        "crafting.1": makeItem(),
+        "crafting.2": makeItem(),
+        "crafting.4": makeItem(),
+        "crafting.5": makeItem(),
+      },
+    });
+    expect(findFirstEmptyRecipeSlot(recipe, makeItem())).toBe("crafting.result");
   });
 
   it("returns undefined when all slots are full", () => {

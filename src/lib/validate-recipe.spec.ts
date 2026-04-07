@@ -1,5 +1,6 @@
 import { MinecraftVersion, RecipeType } from "@/data/types";
-import { RecipeSlotValue, createEmptySlotContext } from "@/stores/recipe";
+import { createEmptySlotContext } from "@/stores/recipe/slot-value";
+import { RecipeSlotValue } from "@/stores/recipe/types";
 import { customItemSlot, customTagSlot, makeRecipe } from "@/test/recipe-fixtures";
 
 import { validateRecipe } from "./validate-recipe";

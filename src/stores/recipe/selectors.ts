@@ -1,6 +1,6 @@
 import { RecipeSlot } from "@/data/types";
 
-import { RecipeState } from "./index";
+import { RecipeState } from "./types";
 
 export const selectSelectedRecipeId = (state: RecipeState) => state.selectedRecipeId;
 

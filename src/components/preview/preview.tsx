@@ -11,6 +11,7 @@ import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useItemSelection } from "@/hooks/use-item-selection";
 import { getPreviewBaseName, toPreviewFileName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
+import { getRecipeDefinition, PreviewKind } from "@/recipes/definitions";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
@@ -34,34 +35,14 @@ export const Preview = memo(() => {
   const selection = useItemSelection();
   const previewRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  let preview: ReactNode = null;
-
-  switch (recipeType) {
-    case RecipeType.Crafting: {
-      preview = <CraftingGridPreview />;
-      break;
-    }
-    case RecipeType.Smelting:
-    case RecipeType.Blasting:
-    case RecipeType.Smoking:
-    case RecipeType.CampfireCooking: {
-      preview = <FurnacePreview />;
-      break;
-    }
-    case RecipeType.Smithing:
-    case RecipeType.SmithingTransform:
-    case RecipeType.SmithingTrim: {
-      preview = <SmithingPreview />;
-      break;
-    }
-    case RecipeType.Stonecutter: {
-      preview = <StonecutterPreview />;
-      break;
-    }
-    default: {
-      preview = null;
-    }
-  }
+  const previewByKind: Record<PreviewKind, ReactNode> = {
+    crafting: <CraftingGridPreview />,
+    furnace: <FurnacePreview />,
+    smithing: <SmithingPreview />,
+    stonecutter: <StonecutterPreview />,
+  };
+  const previewKind = recipeType ? getRecipeDefinition(recipeType).previewKind : undefined;
+  const preview = previewKind ? previewByKind[previewKind] : null;
 
   if (!preview) {
     return null;

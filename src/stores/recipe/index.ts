@@ -9,10 +9,6 @@ import { generateUid } from "@/lib/utils";
 import { toRecipeSlotValue } from "./slot-value";
 import { Recipe, RecipeSlotValue, RecipeState, recipeStateDefaults } from "./types";
 
-export { recipeStateDefaults } from "./types";
-export type { Recipe, RecipeSlotValue, RecipeState, SlotContext, SlotDisplay } from "./types";
-export { createEmptySlotContext } from "./slot-value";
-
 type RecipeActions = {
   selectRecipe: (id: string) => void;
   createRecipe: () => void;

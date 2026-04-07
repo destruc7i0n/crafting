@@ -20,8 +20,8 @@ import {
   resolveTagValues,
 } from "@/lib/tags";
 import { useCustomItemStore } from "@/stores/custom-item";
-import { RecipeSlotValue } from "@/stores/recipe";
 import { isTagSlotValue } from "@/stores/recipe/slot-value";
+import { RecipeSlotValue } from "@/stores/recipe/types";
 import { useTagStore } from "@/stores/tag";
 import { useUIStore } from "@/stores/ui";
 

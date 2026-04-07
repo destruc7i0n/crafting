@@ -1,9 +1,12 @@
 import { useLayoutEffect, useRef } from "react";
 
 import { ResourceIcon } from "@/components/item/resource-icon";
-import { recipeTypeToItemId, recipeTypeToName } from "@/data/constants";
-import { getSupportedRecipeTypesForVersion } from "@/data/versions";
 import { cn } from "@/lib/utils";
+import {
+  getRecipeTypeIconItemId,
+  getRecipeTypeLabel,
+  getSupportedRecipeTypesForVersion,
+} from "@/recipes/definitions";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
@@ -42,12 +45,12 @@ export const RecipeTypeSelector = () => {
             )}
           >
             <ResourceIcon
-              itemId={recipeTypeToItemId[type]!}
-              alt={recipeTypeToName[type]}
+              itemId={getRecipeTypeIconItemId(type)}
+              alt={getRecipeTypeLabel(type)}
               className="pointer-events-none h-6 w-6"
               draggable={false}
             />
-            <span className="text-sm font-medium">{recipeTypeToName[type]}</span>
+            <span className="text-sm font-medium">{getRecipeTypeLabel(type)}</span>
           </button>
         );
       })}

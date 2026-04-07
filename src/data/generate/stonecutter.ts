@@ -1,5 +1,6 @@
-import { Recipe, SlotContext, createEmptySlotContext } from "@/stores/recipe";
+import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import { MinecraftVersion, SLOTS } from "../types";
 import { createRecipeFormatter } from "./format/recipe-formatter";
@@ -60,14 +61,14 @@ export const buildBedrock = (
   } satisfies BedrockShapelessBody;
 };
 
-const extractInput = (state: Recipe): StonecutterInput => ({
+export const extractStonecutterInput = (state: Recipe): StonecutterInput => ({
   ingredient: state.slots[SLOTS.stonecutter.ingredient],
   result: state.slots[SLOTS.stonecutter.result],
   group: state.group,
 });
 
 export const validateStonecutter = (state: Recipe): string[] => {
-  const input = extractInput(state);
+  const input = extractStonecutterInput(state);
   const errors: string[] = [];
 
   if (!input.ingredient) {
@@ -86,7 +87,7 @@ export const generate = (
   version: MinecraftVersion,
   slotContext = createEmptySlotContext(version),
 ): StonecuttingRecipe | BedrockShapelessBody => {
-  const input = extractInput(state);
+  const input = extractStonecutterInput(state);
   const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {

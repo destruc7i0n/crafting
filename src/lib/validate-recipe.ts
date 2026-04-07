@@ -1,14 +1,9 @@
-import { validateCooking } from "@/data/generate/cooking";
-import { validateCrafting } from "@/data/generate/crafting";
-import { validateSmithing } from "@/data/generate/smithing";
-import { validateStonecutter } from "@/data/generate/stonecutter";
-import { validateTransmute } from "@/data/generate/transmute";
-import { MinecraftVersion, RecipeType } from "@/data/types";
-import { getSupportedRecipeTypesForVersion } from "@/data/versions";
+import { MinecraftVersion } from "@/data/types";
 import { isResultSlot } from "@/lib/recipe-slots";
 import { supportsItemTagsForVersion } from "@/lib/tags";
-import { Recipe, SlotContext } from "@/stores/recipe";
+import { getRecipeDefinition, getSupportedRecipeTypesForVersion } from "@/recipes/definitions";
 import { hasMissingCustomRef, isTagSlotValue } from "@/stores/recipe/slot-value";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 export interface RecipeValidation {
   valid: boolean;
@@ -19,11 +14,11 @@ const getVersionLabel = (version: MinecraftVersion) => {
   return version === MinecraftVersion.Bedrock ? "Bedrock" : `Java ${version}`;
 };
 
-export const validateRecipe = (
+const validateCommonRecipeRules = (
   recipe: Recipe,
   version: MinecraftVersion,
   slotContext: SlotContext,
-): RecipeValidation => {
+): string[] => {
   const errors: string[] = [];
 
   if (!getSupportedRecipeTypesForVersion(version).includes(recipe.recipeType)) {
@@ -55,28 +50,19 @@ export const validateRecipe = (
     errors.push("Result slots must contain items, not tags");
   }
 
-  switch (recipe.recipeType) {
-    case RecipeType.Crafting:
-      errors.push(...validateCrafting(recipe));
-      break;
-    case RecipeType.CraftingTransmute:
-      errors.push(...validateTransmute(recipe));
-      break;
-    case RecipeType.Smelting:
-    case RecipeType.Blasting:
-    case RecipeType.CampfireCooking:
-    case RecipeType.Smoking:
-      errors.push(...validateCooking(recipe, version));
-      break;
-    case RecipeType.Stonecutter:
-      errors.push(...validateStonecutter(recipe));
-      break;
-    case RecipeType.Smithing:
-    case RecipeType.SmithingTrim:
-    case RecipeType.SmithingTransform:
-      errors.push(...validateSmithing(recipe, version));
-      break;
-  }
+  return errors;
+};
+
+export const validateRecipe = (
+  recipe: Recipe,
+  version: MinecraftVersion,
+  slotContext: SlotContext,
+): RecipeValidation => {
+  const definition = getRecipeDefinition(recipe.recipeType);
+  const errors = [
+    ...validateCommonRecipeRules(recipe, version, slotContext),
+    ...definition.validate(recipe, version, slotContext),
+  ];
 
   return {
     valid: errors.length === 0,

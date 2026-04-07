@@ -1,10 +1,11 @@
 import { getFullId } from "@/data/models/identifier/utilities";
-import { Recipe, SlotContext, createEmptySlotContext } from "@/stores/recipe";
+import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import {
   getRequiredSlotIdentifier,
   getSlotCount,
   isTagSlotValue,
 } from "@/stores/recipe/slot-value";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import { MinecraftVersion, RecipeType, SLOTS } from "../types";
 import { createRecipeFormatter } from "./format/recipe-formatter";
@@ -79,7 +80,7 @@ export const buildBedrock = (state: CookingInput, slotContext: SlotContext): Bed
   } satisfies BedrockFurnaceBody;
 };
 
-const extractInput = (state: Recipe): CookingInput => ({
+export const extractCookingInput = (state: Recipe): CookingInput => ({
   recipeType: state.recipeType as CookingInput["recipeType"],
   ingredient: state.slots[SLOTS.cooking.ingredient],
   result: state.slots[SLOTS.cooking.result],
@@ -90,7 +91,7 @@ const extractInput = (state: Recipe): CookingInput => ({
 });
 
 export const validateCooking = (state: Recipe, version?: MinecraftVersion): string[] => {
-  const input = extractInput(state);
+  const input = extractCookingInput(state);
   const errors: string[] = [];
 
   if (!input.ingredient) {
@@ -119,7 +120,7 @@ export const generate = (
   version: MinecraftVersion,
   slotContext = createEmptySlotContext(version),
 ): CookingRecipe | BedrockFurnaceBody => {
-  const input = extractInput(state);
+  const input = extractCookingInput(state);
 
   if (version === MinecraftVersion.Bedrock) {
     return buildBedrock(input, slotContext);

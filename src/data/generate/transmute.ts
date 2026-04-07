@@ -1,5 +1,6 @@
-import { Recipe, SlotContext, createEmptySlotContext } from "@/stores/recipe";
+import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import { MinecraftVersion, SLOTS } from "../types";
 import { RecipeFormatter } from "./format/types";
@@ -24,6 +25,14 @@ export const validateTransmute = (state: Recipe): string[] => {
 
   return errors;
 };
+
+export const extractTransmuteInput = (state: Recipe): TransmuteInput => ({
+  input: state.slots[SLOTS.crafting.slot1],
+  material: state.slots[SLOTS.crafting.slot2],
+  result: state.slots[SLOTS.crafting.result],
+  group: state.group,
+  category: state.category || undefined,
+});
 
 export const buildJava = ({
   state,
@@ -67,13 +76,7 @@ export const generate = ({
   slotContext?: SlotContext;
 }) => {
   return buildJava({
-    state: {
-      input: state.slots[SLOTS.crafting.slot1],
-      material: state.slots[SLOTS.crafting.slot2],
-      result: state.slots[SLOTS.crafting.result],
-      group: state.group,
-      category: state.category || undefined,
-    },
+    state: extractTransmuteInput(state),
     formatter,
     version,
     slotContext,

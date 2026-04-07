@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { MinecraftVersion } from "@/data/types";
-import { RecipeSlotValue } from "@/stores/recipe";
+import { RecipeSlotValue } from "@/stores/recipe/types";
 
 import { createRecipeFormatter } from "./format/recipe-formatter";
 import { formatIngredient, formatIngredientString } from "./ingredient";

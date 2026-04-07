@@ -1,8 +1,9 @@
 import { getRawId } from "@/data/models/identifier/utilities";
 import { MinecraftVersion } from "@/data/types";
 import { toTagRef } from "@/lib/tags";
-import { RecipeSlotValue, SlotContext, createEmptySlotContext } from "@/stores/recipe";
+import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { getRequiredSlotIdentifier, isTagSlotValue } from "@/stores/recipe/slot-value";
+import { RecipeSlotValue, SlotContext } from "@/stores/recipe/types";
 
 import { RecipeFormatter } from "./format/types";
 import { EmptyObject, IngredientRef } from "./recipes/types";

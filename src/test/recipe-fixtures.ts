@@ -1,7 +1,7 @@
 import { IngredientItem, MinecraftIdentifier } from "@/data/models/types";
 import { RecipeSlot } from "@/data/types";
-import { Recipe, RecipeSlotValue, recipeStateDefaults } from "@/stores/recipe";
 import { cloneRecipeSlotValue, toRecipeSlotValue } from "@/stores/recipe/slot-value";
+import { Recipe, RecipeSlotValue, recipeStateDefaults } from "@/stores/recipe/types";
 
 type TestSlotInput = IngredientItem | RecipeSlotValue;
 

@@ -1,4 +1,4 @@
-import { recipeStateDefaults } from "@/stores/recipe";
+import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
 import { MinecraftVersion, RecipeType } from "../types";
