@@ -153,4 +153,10 @@ const fetchBedrockMappings = async () => {
   );
 };
 
-await fetchBedrockMappings();
+console.time("generate:bedrock");
+
+try {
+  await fetchBedrockMappings();
+} finally {
+  console.timeEnd("generate:bedrock");
+}

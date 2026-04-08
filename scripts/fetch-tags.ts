@@ -160,7 +160,13 @@ const fetchBedrockTags = async () => {
   await Bun.write(path.join(outputDir, "bedrock.json"), `${JSON.stringify(tags, null, 2)}\n`);
 };
 
-await generateVersionedTagFiles();
-await fetchBedrockTags();
+console.time("generate:tags");
 
-console.log(`Generated vanilla item tags in ${path.relative(repoRoot, outputDir)}`);
+try {
+  await generateVersionedTagFiles();
+  await fetchBedrockTags();
+
+  console.log(`Generated vanilla item tags in ${path.relative(repoRoot, outputDir)}`);
+} finally {
+  console.timeEnd("generate:tags");
+}
