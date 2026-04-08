@@ -1,7 +1,7 @@
+import { MinecraftVersion, RecipeType } from "@/data/types";
 import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
-import { MinecraftVersion, RecipeType } from "../types";
 import { generate } from "./index";
 
 describe("generate orchestrator", () => {

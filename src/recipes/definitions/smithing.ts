@@ -1,13 +1,13 @@
-import { BedrockFormatVersion } from "@/data/generate/recipes/types";
+import { MinecraftVersion, RecipeSlot, RecipeType, SLOTS } from "@/data/types";
 import {
   buildBedrock as buildBedrockSmithing,
   buildJava as buildJavaSmithing,
   extractSmithingInput,
   validateSmithing,
-} from "@/data/generate/smithing";
-import { MinecraftVersion, RecipeSlot, RecipeType, SLOTS } from "@/data/types";
+} from "@/recipes/generate/smithing";
+import { BedrockFormatVersion } from "@/recipes/generate/types";
 
-import { getSmithingAutoNames } from "./naming";
+import { getSmithingAutoNames } from "./auto-naming";
 import { RecipeDefinition } from "./types";
 
 const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";

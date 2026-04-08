@@ -1,9 +1,36 @@
+import { MinecraftVersion, RecipeType } from "@/data/types";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
-import { MinecraftVersion, RecipeType } from "../types";
-import { generate } from "./stonecutter";
+import { createRecipeFormatter } from "./format/recipe-formatter";
+import { buildBedrock, buildJava, extractStonecutterInput } from "./stonecutter";
+
+type TestRecipe = ReturnType<typeof makeRecipe>;
+
+const buildJavaRecipe = (
+  recipe: TestRecipe,
+  version: MinecraftVersion,
+  slotContext = createEmptySlotContext(version),
+) => {
+  const formatter = createRecipeFormatter(version);
+
+  return buildJava({
+    state: extractStonecutterInput(recipe),
+    formatter,
+    version,
+    slotContext,
+  });
+};
+
+const buildBedrockRecipe = (
+  recipe: TestRecipe,
+  slotContext = createEmptySlotContext(MinecraftVersion.Bedrock),
+) => {
+  const formatter = createRecipeFormatter(MinecraftVersion.Bedrock);
+
+  return buildBedrock(extractStonecutterInput(recipe), formatter, slotContext);
+};
 
 describe("generate stonecutting", () => {
   describe("1.14", () => {
@@ -44,7 +71,7 @@ describe("generate stonecutting", () => {
         },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
         type: "minecraft:stonecutting",
         ingredient: {
           item: "minecraft:stone",
@@ -83,7 +110,7 @@ describe("generate stonecutting", () => {
         crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V121)).toEqual({
         type: "minecraft:stonecutting",
         ingredient: { item: "minecraft:stone" },
         result: { id: "minecraft:stone_bricks", count: 2 },
@@ -117,7 +144,7 @@ describe("generate stonecutting", () => {
         crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+      expect(buildBedrockRecipe(recipeSlice)).toEqual({
         ingredients: [{ item: "minecraft:stone" }],
         result: { item: "minecraft:stone_bricks", count: 1 },
       });
@@ -151,13 +178,15 @@ describe("generate stonecutting", () => {
       });
 
     it("includes group before 26.1", () => {
-      expect(generate(makeSlice(MinecraftVersion.V121), MinecraftVersion.V121)).toMatchObject({
+      expect(
+        buildJavaRecipe(makeSlice(MinecraftVersion.V121), MinecraftVersion.V121),
+      ).toMatchObject({
         group: "stone_variants",
       });
     });
 
     it("omits group on 26.1+ (no recipe book)", () => {
-      const result = generate(makeSlice(MinecraftVersion.V261), MinecraftVersion.V261);
+      const result = buildJavaRecipe(makeSlice(MinecraftVersion.V261), MinecraftVersion.V261);
       expect(result).not.toHaveProperty("group");
     });
   });
@@ -178,7 +207,11 @@ describe("generate stonecutting", () => {
     });
 
     expect(() =>
-      generate(recipeSlice, MinecraftVersion.V121, createEmptySlotContext(MinecraftVersion.V121)),
+      buildJavaRecipe(
+        recipeSlice,
+        MinecraftVersion.V121,
+        createEmptySlotContext(MinecraftVersion.V121),
+      ),
     ).toThrow("Cannot generate output for unresolved custom_item reference");
   });
 });

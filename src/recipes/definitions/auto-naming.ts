@@ -1,6 +1,7 @@
 import { getRawId } from "@/data/models/identifier/utilities";
 import { RecipeType, SLOTS } from "@/data/types";
 import { sanitizeBedrockIdentifierPart } from "@/lib/minecraft-identifier";
+import { uniqueNonEmpty } from "@/recipes/utils";
 import { getSlotIdentifier } from "@/stores/recipe/slot-value";
 import { Recipe, RecipeSlotValue, SlotContext } from "@/stores/recipe/types";
 
@@ -13,17 +14,8 @@ const ensureName = (value: string | undefined) => {
   return sanitized || FALLBACK_NAME;
 };
 
-const unique = (values: string[]) => {
-  const seen = new Set<string>();
-  return values.filter((value) => {
-    if (!value || seen.has(value)) return false;
-    seen.add(value);
-    return true;
-  });
-};
-
 const toNames = (...values: Array<string | undefined>) =>
-  unique(
+  uniqueNonEmpty(
     values.flatMap((value) => {
       if (!value) {
         return [];

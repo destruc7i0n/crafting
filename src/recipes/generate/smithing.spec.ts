@@ -1,9 +1,36 @@
+import { MinecraftVersion, RecipeType } from "@/data/types";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
-import { MinecraftVersion, RecipeType } from "../types";
-import { generate } from "./smithing";
+import { createRecipeFormatter } from "./format/recipe-formatter";
+import { buildBedrock, buildJava, extractSmithingInput } from "./smithing";
+
+type TestRecipe = ReturnType<typeof makeRecipe>;
+
+const buildJavaRecipe = (
+  recipe: TestRecipe,
+  version: MinecraftVersion,
+  slotContext = createEmptySlotContext(version),
+) => {
+  const formatter = createRecipeFormatter(version);
+
+  return buildJava({
+    state: extractSmithingInput(recipe),
+    formatter,
+    version,
+    slotContext,
+  });
+};
+
+const buildBedrockRecipe = (
+  recipe: TestRecipe,
+  slotContext = createEmptySlotContext(MinecraftVersion.Bedrock),
+) => {
+  const formatter = createRecipeFormatter(MinecraftVersion.Bedrock);
+
+  return buildBedrock(extractSmithingInput(recipe), formatter, slotContext);
+};
 
 describe("generate smithing", () => {
   describe("1.16", () => {
@@ -58,7 +85,7 @@ describe("generate smithing", () => {
         },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.V116)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V116)).toEqual({
         type: "minecraft:smithing",
         base: {
           item: "minecraft:diamond_sword",
@@ -126,7 +153,7 @@ describe("generate smithing", () => {
           },
         });
 
-        expect(generate(recipeSlice, MinecraftVersion.V119)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V119)).toEqual({
           type: "minecraft:smithing_trim",
           template: {
             item: "minecraft:netherite_upgrade_smithing_template",
@@ -204,7 +231,7 @@ describe("generate smithing", () => {
           },
         });
 
-        expect(generate(recipeSlice, MinecraftVersion.V119)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V119)).toEqual({
           type: "minecraft:smithing_transform",
           template: {
             item: "minecraft:netherite_upgrade_smithing_template",
@@ -278,7 +305,7 @@ describe("generate smithing", () => {
         },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.V1215)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V1215)).toEqual({
         type: "minecraft:smithing_trim",
         template: "minecraft:bolt_armor_trim_smithing_template",
         base: "#minecraft:trimmable_armor",
@@ -327,7 +354,7 @@ describe("generate smithing", () => {
         crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+      expect(buildBedrockRecipe(recipeSlice)).toEqual({
         template: { tag: "minecraft:trim_templates" },
         base: { tag: "minecraft:trimmable_armors" },
         addition: { tag: "minecraft:trim_materials" },
@@ -369,7 +396,7 @@ describe("generate smithing", () => {
         crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+      expect(buildBedrockRecipe(recipeSlice)).toEqual({
         template: { item: "minecraft:netherite_upgrade_smithing_template" },
         base: { item: "minecraft:diamond_boots" },
         addition: { item: "minecraft:quartz" },
@@ -411,7 +438,7 @@ describe("generate smithing", () => {
         crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+      expect(buildBedrockRecipe(recipeSlice)).toEqual({
         ingredients: [{ item: "minecraft:diamond_sword" }, { item: "minecraft:netherite_ingot" }],
         result: { item: "minecraft:netherite_sword", count: 1 },
       });
@@ -441,7 +468,11 @@ describe("generate smithing", () => {
     });
 
     expect(() =>
-      generate(recipeSlice, MinecraftVersion.V121, createEmptySlotContext(MinecraftVersion.V121)),
+      buildJavaRecipe(
+        recipeSlice,
+        MinecraftVersion.V121,
+        createEmptySlotContext(MinecraftVersion.V121),
+      ),
     ).toThrow("Cannot generate output for unresolved custom_item reference");
   });
 });

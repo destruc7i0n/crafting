@@ -1,9 +1,9 @@
 import { ChevronDownIcon } from "lucide-react";
 
 import { Select } from "@/components/ui/select";
-import { isVersionAtLeast } from "@/data/generate/version-utils";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { cn } from "@/lib/utils";
+import { isVersionAtLeast } from "@/recipes/versioning";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";

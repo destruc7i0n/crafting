@@ -2,8 +2,8 @@ import { ChevronRightIcon } from "lucide-react";
 
 import { ResourceIcon } from "@/components/item/resource-icon";
 import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
-import { getRecipeExportDetail } from "@/lib/recipe-name";
 import { getRecipeTypeIconItemId } from "@/recipes/definitions";
+import { getRecipeExportDetail } from "@/recipes/naming";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectSelectedRecipeId } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";

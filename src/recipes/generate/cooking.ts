@@ -1,5 +1,5 @@
 import { getFullId } from "@/data/models/identifier/utilities";
-import { createEmptySlotContext } from "@/stores/recipe/slot-value";
+import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
 import {
   getRequiredSlotIdentifier,
   getSlotCount,
@@ -7,12 +7,10 @@ import {
 } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 
-import { MinecraftVersion, RecipeType, SLOTS } from "../types";
-import { createRecipeFormatter } from "./format/recipe-formatter";
+import { isVersionAtLeast } from "../versioning";
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
-import { BedrockFurnaceBody, CookingInput, CookingRecipe } from "./recipes/types";
-import { isVersionAtLeast } from "./version-utils";
+import { BedrockFurnaceBody, CookingInput, CookingRecipe } from "./types";
 
 const recipeTypeToBaseCookingType: Record<
   RecipeType.Smelting | RecipeType.Blasting | RecipeType.CampfireCooking | RecipeType.Smoking,
@@ -113,19 +111,4 @@ export const validateCooking = (state: Recipe, version?: MinecraftVersion): stri
   }
 
   return errors;
-};
-
-export const generate = (
-  state: Recipe,
-  version: MinecraftVersion,
-  slotContext = createEmptySlotContext(version),
-): CookingRecipe | BedrockFurnaceBody => {
-  const input = extractCookingInput(state);
-
-  if (version === MinecraftVersion.Bedrock) {
-    return buildBedrock(input, slotContext);
-  }
-
-  const formatter = createRecipeFormatter(version);
-  return buildJava({ state: input, formatter, version, slotContext });
 };

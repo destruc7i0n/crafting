@@ -9,13 +9,13 @@ import {
 } from "lucide-react";
 
 import { Tooltip } from "@/components/tooltip/tooltip";
-import { generate } from "@/data/generate";
 import { MinecraftVersion } from "@/data/types";
 import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
 import { useSlotContext } from "@/hooks/use-slot-context";
 import { downloadRecipeJson } from "@/lib/download/recipe";
-import { toJavaRecipeFileName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
+import { generate } from "@/recipes/generate";
+import { toJavaRecipeFileName } from "@/recipes/naming";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";

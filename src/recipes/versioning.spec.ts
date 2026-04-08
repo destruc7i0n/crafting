@@ -1,6 +1,6 @@
 import { MinecraftVersion } from "@/data/types";
 
-import { compareMinecraftVersions, isVersionAtLeast } from "./version-utils";
+import { compareMinecraftVersions, isVersionAtLeast } from "./versioning";
 
 describe("compareMinecraftVersions", () => {
   it("compares versions with different lengths", () => {

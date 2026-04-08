@@ -1,5 +1,5 @@
-import { isVersionAtLeast } from "@/data/generate/version-utils";
 import { MinecraftVersion, RecipeSlot, RecipeType } from "@/data/types";
+import { isVersionAtLeast } from "@/recipes/versioning";
 
 import {
   blastingDefinition,
@@ -76,3 +76,16 @@ export const getSupportedRecipeTypesForVersion = (version: MinecraftVersion): Re
   recipeDefinitionValues
     .filter((definition) => isRecipeTypeSupported(definition, version))
     .map((definition) => definition.type);
+
+export const coerceRecipeTypeForVersion = (
+  recipeType: RecipeType | undefined,
+  version: MinecraftVersion,
+): RecipeType => {
+  const supportedRecipeTypes = getSupportedRecipeTypesForVersion(version);
+
+  if (recipeType && supportedRecipeTypes.includes(recipeType)) {
+    return recipeType;
+  }
+
+  return supportedRecipeTypes[0] ?? RecipeType.Crafting;
+};

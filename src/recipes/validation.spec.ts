@@ -3,7 +3,7 @@ import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";
 import { customItemSlot, customTagSlot, makeRecipe } from "@/test/recipe-fixtures";
 
-import { validateRecipe } from "./validate-recipe";
+import { validateRecipe } from "./validation";
 
 const createItem = (
   raw: string,

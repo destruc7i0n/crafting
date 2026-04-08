@@ -15,7 +15,7 @@ import {
   sanitizeRecipeName,
   toJavaRecipeFileName,
   toPreviewFileName,
-} from "./recipe-name";
+} from "./naming";
 
 const createItem = (
   raw: string,

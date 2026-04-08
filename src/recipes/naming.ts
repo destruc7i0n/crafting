@@ -1,6 +1,7 @@
 import { MinecraftVersion } from "@/data/types";
 import { sanitizeBedrockIdentifierPart } from "@/lib/minecraft-identifier";
 import { getRecipeDefinition } from "@/recipes/definitions";
+import { uniqueNonEmpty } from "@/recipes/utils";
 import { getSlotDisplay } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 
@@ -34,15 +35,6 @@ type NameEntry = {
   fixedName?: string;
   possibleNames: string[];
   skipAssignment?: boolean;
-};
-
-const unique = (values: string[]) => {
-  const seen = new Set<string>();
-  return values.filter((value) => {
-    if (!value || seen.has(value)) return false;
-    seen.add(value);
-    return true;
-  });
 };
 
 export const sanitizeRecipeName = (value: string) => sanitizeBedrockIdentifierPart(value);
@@ -148,7 +140,7 @@ const assignUniqueNames = (entries: NameEntry[]) => {
       continue;
     }
 
-    const possibleNames = unique(
+    const possibleNames = uniqueNonEmpty(
       entry.possibleNames.length > 0 ? entry.possibleNames : [FALLBACK_NAME],
     );
     let selectedName = possibleNames.find((name) => !usedNames.has(name));
@@ -215,7 +207,7 @@ const getBedrockNameEntry = (recipe: Recipe, slotContext: SlotContext): NameEntr
     possibleNames:
       recipe.bedrock.identifierMode === "manual"
         ? []
-        : unique([autoBedrockName, ...(!manualJavaName ? autoNames.slice(1) : [])]),
+        : uniqueNonEmpty([autoBedrockName, ...(!manualJavaName ? autoNames.slice(1) : [])]),
     skipAssignment: recipe.bedrock.identifierMode === "manual" && !manualIdentifierName,
   };
 };

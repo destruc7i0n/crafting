@@ -1,9 +1,10 @@
+import { MinecraftVersion, RecipeType } from "@/data/types";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
-import { MinecraftVersion, RecipeType } from "../types";
-import { generate } from "./crafting";
+import { buildBedrock, buildJava, extractCraftingInput } from "./crafting";
+import { createRecipeFormatter } from "./format/recipe-formatter";
 
 const makeDefaultItem = (id: string, version: MinecraftVersion) => ({
   type: "default_item" as const,
@@ -44,6 +45,32 @@ const makeShapedRecipeSlice = (
       experience: 0,
     },
   });
+
+type TestRecipe = ReturnType<typeof makeRecipe>;
+
+const buildJavaRecipe = (
+  recipe: TestRecipe,
+  version: MinecraftVersion,
+  slotContext = createEmptySlotContext(version),
+) => {
+  const formatter = createRecipeFormatter(version);
+
+  return buildJava({
+    state: extractCraftingInput(recipe),
+    formatter,
+    version,
+    slotContext,
+  });
+};
+
+const buildBedrockRecipe = (
+  recipe: TestRecipe,
+  slotContext = createEmptySlotContext(MinecraftVersion.Bedrock),
+) => {
+  const formatter = createRecipeFormatter(MinecraftVersion.Bedrock);
+
+  return buildBedrock(extractCraftingInput(recipe), formatter, slotContext);
+};
 
 describe("generate crafting", () => {
   describe("1.12", () => {
@@ -100,7 +127,7 @@ describe("generate crafting", () => {
             experience: 0,
           },
         });
-        expect(generate(recipeSlice, MinecraftVersion.V112)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V112)).toEqual({
           type: "crafting_shapeless",
           ingredients: [
             { item: "minecraft:stone", data: 1 },
@@ -212,7 +239,7 @@ describe("generate crafting", () => {
             experience: 0,
           },
         });
-        expect(generate(recipeSlice, MinecraftVersion.V112)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V112)).toEqual({
           type: "crafting_shaped",
           pattern: ["##", "##", "##"],
           key: {
@@ -322,7 +349,7 @@ describe("generate crafting", () => {
             experience: 0,
           },
         });
-        expect(generate(recipeSlice, MinecraftVersion.V112)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V112)).toEqual({
           type: "crafting_shaped",
           pattern: ["#_ ", "#= ", "#/ "],
           key: {
@@ -389,7 +416,7 @@ describe("generate crafting", () => {
             experience: 0,
           },
         });
-        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shapeless",
           ingredients: [{ item: "minecraft:stone" }, { item: "minecraft:stone" }],
           result: { item: "minecraft:cobblestone", count: 10 },
@@ -492,7 +519,7 @@ describe("generate crafting", () => {
             experience: 0,
           },
         });
-        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shaped",
           pattern: ["##", "##", "##"],
           key: {
@@ -564,7 +591,7 @@ describe("generate crafting", () => {
           },
         });
 
-        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shaped",
           pattern: ["# ", "# ", " _"],
           key: {
@@ -669,7 +696,7 @@ describe("generate crafting", () => {
             experience: 0,
           },
         });
-        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shaped",
           pattern: ["#_ ", "#= ", "#/ "],
           key: {
@@ -703,7 +730,7 @@ describe("generate crafting", () => {
           "crafting.2": makeDefaultItem(itemId, MinecraftVersion.V114),
         });
 
-        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shaped",
           pattern: [`#${keyName}`],
           key: {
@@ -721,7 +748,7 @@ describe("generate crafting", () => {
           "crafting.3": makeDefaultItem("arrow", MinecraftVersion.V114),
         });
 
-        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shaped",
           pattern: ["#/A"],
           key: {
@@ -739,7 +766,7 @@ describe("generate crafting", () => {
           "crafting.2": makeTagItem("logs", MinecraftVersion.V114),
         });
 
-        expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
           type: "minecraft:crafting_shaped",
           pattern: ["#L"],
           key: {
@@ -781,7 +808,7 @@ describe("generate crafting", () => {
         category: "misc",
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V121)).toEqual({
         type: "minecraft:crafting_shapeless",
         category: "misc",
         ingredients: [{ item: "minecraft:stone" }],
@@ -824,7 +851,7 @@ describe("generate crafting", () => {
         cooking: { time: 0, experience: 0 },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+      expect(buildBedrockRecipe(recipeSlice)).toEqual({
         pattern: ["##"],
         key: { "#": { item: "minecraft:planks" } },
         result: { item: "minecraft:stick", count: 4 },
@@ -863,7 +890,7 @@ describe("generate crafting", () => {
         cooking: { time: 0, experience: 0 },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.V120)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V120)).toEqual({
         type: "minecraft:crafting_shaped",
         category: "building",
         show_notification: false,
@@ -899,7 +926,7 @@ describe("generate crafting", () => {
         cooking: { time: 0, experience: 0 },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.V119)).toMatchObject({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V119)).toMatchObject({
         show_notification: false,
       });
     });
@@ -930,7 +957,7 @@ describe("generate crafting", () => {
         cooking: { time: 0, experience: 0 },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.V261)).toMatchObject({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V261)).toMatchObject({
         type: "minecraft:crafting_shapeless",
         show_notification: false,
       });
@@ -962,7 +989,7 @@ describe("generate crafting", () => {
         cooking: { time: 0, experience: 0 },
       });
 
-      const result = generate(recipeSlice, MinecraftVersion.V121);
+      const result = buildJavaRecipe(recipeSlice, MinecraftVersion.V121);
       expect(result).not.toHaveProperty("show_notification");
     });
   });
@@ -982,7 +1009,11 @@ describe("generate crafting", () => {
     });
 
     expect(() =>
-      generate(recipeSlice, MinecraftVersion.V121, createEmptySlotContext(MinecraftVersion.V121)),
+      buildJavaRecipe(
+        recipeSlice,
+        MinecraftVersion.V121,
+        createEmptySlotContext(MinecraftVersion.V121),
+      ),
     ).toThrow("Cannot generate output for unresolved custom_item reference");
   });
 });

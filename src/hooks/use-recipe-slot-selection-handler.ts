@@ -1,9 +1,6 @@
 import { RecipeSlot } from "@/data/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
-import {
-  canRecipeSlotAcceptIngredientItem,
-  canRecipeSlotAcceptSlotValue,
-} from "@/lib/recipe-slots";
+import { canRecipeSlotAcceptIngredientItem, canRecipeSlotAcceptSlotValue } from "@/recipes/slots";
 import { useRecipeStore } from "@/stores/recipe";
 import { cloneRecipeSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";

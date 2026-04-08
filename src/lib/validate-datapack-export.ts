@@ -1,13 +1,12 @@
 import { MinecraftVersion } from "@/data/types";
-import { Recipe, SlotContext } from "@/stores/recipe/types";
-
 import {
   NamingContext,
   resolveRecipeNames,
   sanitizeRecipeName,
   toJavaRecipeFileName,
-} from "./recipe-name";
-import { validateRecipe } from "./validate-recipe";
+} from "@/recipes/naming";
+import { validateRecipe } from "@/recipes/validation";
+import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 export interface DatapackRecipeIssue {
   recipe: Recipe;

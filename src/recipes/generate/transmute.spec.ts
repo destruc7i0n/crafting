@@ -1,6 +1,6 @@
+import { MinecraftVersion } from "@/data/types";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 
-import { MinecraftVersion } from "../types";
 import { createRecipeFormatter } from "./format/recipe-formatter";
 import { buildJava } from "./transmute";
 

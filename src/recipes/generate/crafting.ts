@@ -1,5 +1,5 @@
 import { getRawId } from "@/data/models/identifier/utilities";
-import { createEmptySlotContext } from "@/stores/recipe/slot-value";
+import { MinecraftVersion, SLOTS } from "@/data/types";
 import {
   getRequiredSlotIdentifier,
   getSlotCount,
@@ -8,8 +8,7 @@ import {
 } from "@/stores/recipe/slot-value";
 import { Recipe, RecipeSlotValue, SlotContext } from "@/stores/recipe/types";
 
-import { MinecraftVersion, SLOTS } from "../types";
-import { createRecipeFormatter } from "./format/recipe-formatter";
+import { isVersionAtLeast } from "../versioning";
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import {
@@ -18,8 +17,7 @@ import {
   CraftingInput,
   ShapedCraftingRecipe,
   ShapelessCraftingRecipe,
-} from "./recipes/types";
-import { isVersionAtLeast } from "./version-utils";
+} from "./types";
 
 // Indices into the 3x3 crafting grid that are disabled in 2x2 mode:
 // slots 2 (col 3), 5 (col 3, row 2), 6–8 (entire row 3)
@@ -360,19 +358,4 @@ export const validateCrafting = (state: Recipe): string[] => {
   }
 
   return errors;
-};
-
-export const generate = (
-  state: Recipe,
-  version: MinecraftVersion,
-  slotContext = createEmptySlotContext(version),
-): ShapedCraftingRecipe | ShapelessCraftingRecipe | BedrockShapedBody | BedrockShapelessBody => {
-  const input = extractCraftingInput(state);
-  const formatter = createRecipeFormatter(version);
-
-  if (version === MinecraftVersion.Bedrock) {
-    return buildBedrock(input, formatter, slotContext);
-  }
-
-  return buildJava({ state: input, formatter, version, slotContext });
 };

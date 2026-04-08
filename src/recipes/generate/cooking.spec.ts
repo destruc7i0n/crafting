@@ -1,9 +1,32 @@
+import { MinecraftVersion, RecipeType } from "@/data/types";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
-import { MinecraftVersion, RecipeType } from "../types";
-import { generate } from "./cooking";
+import { buildBedrock, buildJava, extractCookingInput } from "./cooking";
+import { createRecipeFormatter } from "./format/recipe-formatter";
+
+type TestRecipe = ReturnType<typeof makeRecipe>;
+
+const buildJavaRecipe = (
+  recipe: TestRecipe,
+  version: MinecraftVersion,
+  slotContext = createEmptySlotContext(version),
+) => {
+  const formatter = createRecipeFormatter(version);
+
+  return buildJava({
+    state: extractCookingInput(recipe),
+    formatter,
+    version,
+    slotContext,
+  });
+};
+
+const buildBedrockRecipe = (
+  recipe: TestRecipe,
+  slotContext = createEmptySlotContext(MinecraftVersion.Bedrock),
+) => buildBedrock(extractCookingInput(recipe), slotContext);
 
 describe("generate cooking", () => {
   describe("1.13", () => {
@@ -43,7 +66,7 @@ describe("generate cooking", () => {
           experience: 10,
         },
       });
-      expect(generate(recipeSlice, MinecraftVersion.V113)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V113)).toEqual({
         type: "smelting",
         ingredient: {
           item: "minecraft:stone",
@@ -95,7 +118,7 @@ describe("generate cooking", () => {
           experience: 10,
         },
       });
-      expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
         type: "minecraft:smelting",
         ingredient: {
           item: "minecraft:porkchop",
@@ -145,7 +168,7 @@ describe("generate cooking", () => {
           experience: 10,
         },
       });
-      expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
         type: "minecraft:campfire_cooking",
         ingredient: {
           item: "minecraft:potato",
@@ -192,7 +215,7 @@ describe("generate cooking", () => {
           experience: 10,
         },
       });
-      expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
         type: "minecraft:smoking",
         ingredient: {
           item: "minecraft:beef",
@@ -242,7 +265,7 @@ describe("generate cooking", () => {
           experience: 10,
         },
       });
-      expect(generate(recipeSlice, MinecraftVersion.V114)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
         type: "minecraft:blasting",
         ingredient: {
           item: "minecraft:iron_ore",
@@ -282,7 +305,7 @@ describe("generate cooking", () => {
         cooking: { time: 0, experience: 0 },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.V121)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V121)).toEqual({
         type: "minecraft:smelting",
         ingredient: { item: "minecraft:iron_ore" },
         result: { id: "minecraft:iron_ingot", count: 2 },
@@ -318,7 +341,7 @@ describe("generate cooking", () => {
         cooking: { time: 0, experience: 0 },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+      expect(buildBedrockRecipe(recipeSlice)).toEqual({
         input: "minecraft:sand",
         output: "minecraft:glass",
       });
@@ -351,7 +374,7 @@ describe("generate cooking", () => {
         cooking: { time: 0, experience: 0 },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.Bedrock)).toEqual({
+      expect(buildBedrockRecipe(recipeSlice)).toEqual({
         input: "minecraft:wood:4",
         output: "minecraft:charcoal",
       });
@@ -385,7 +408,7 @@ describe("generate cooking", () => {
         cooking: { time: 100, experience: 0.5 },
       });
 
-      expect(generate(recipeSlice, MinecraftVersion.V119)).toEqual({
+      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V119)).toEqual({
         type: "minecraft:blasting",
         category: "blocks",
         ingredient: { item: "minecraft:iron_ore" },
@@ -413,7 +436,11 @@ describe("generate cooking", () => {
     });
 
     expect(() =>
-      generate(recipeSlice, MinecraftVersion.V121, createEmptySlotContext(MinecraftVersion.V121)),
+      buildJavaRecipe(
+        recipeSlice,
+        MinecraftVersion.V121,
+        createEmptySlotContext(MinecraftVersion.V121),
+      ),
     ).toThrow("Cannot generate output for unresolved custom_item reference");
   });
 });

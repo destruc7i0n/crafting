@@ -4,7 +4,7 @@ import {
   BedrockTag,
   BedrockWrapperKey,
   BedrockFormatVersion,
-} from "../recipes/types";
+} from "../types";
 
 export interface BedrockWrapperOptions {
   identifier: string;

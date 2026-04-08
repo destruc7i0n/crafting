@@ -6,6 +6,7 @@ import { IngredientItem } from "@/data/models/types";
 import { RecipeSlot, RecipeType } from "@/data/types";
 import { generateUid } from "@/lib/utils";
 
+import { selectCurrentRecipe } from "./selectors";
 import { toRecipeSlotValue } from "./slot-value";
 import { Recipe, RecipeSlotValue, RecipeState, recipeStateDefaults } from "./types";
 
@@ -44,9 +45,6 @@ const createRecipeState = (): Recipe => ({
   id: generateUid("recipe"),
 });
 
-const getSelectedRecipe = (state: ImmerState) =>
-  state.recipes.find((recipe) => recipe.id === state.selectedRecipeId);
-
 export const useRecipeStore = create<ImmerState>()(
   persist(
     immer((set) => {
@@ -54,7 +52,7 @@ export const useRecipeStore = create<ImmerState>()(
 
       const updateSelectedRecipe = (update: (recipe: Recipe) => void) =>
         set((state) => {
-          const recipe = getSelectedRecipe(state);
+          const recipe = selectCurrentRecipe(state);
           if (recipe) {
             update(recipe);
           }

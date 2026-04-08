@@ -1,10 +1,10 @@
 import { getBehaviorPackRecipeFileName } from "@/data/behavior-pack";
 import { MinecraftVersion } from "@/data/types";
+import { NamingContext, resolveRecipeNames, sanitizeRecipeName } from "@/recipes/naming";
+import { validateRecipe } from "@/recipes/validation";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import { bedrockIdentifierHint, isValidBedrockNamespacedIdentifier } from "./minecraft-identifier";
-import { NamingContext, resolveRecipeNames, sanitizeRecipeName } from "./recipe-name";
-import { validateRecipe } from "./validate-recipe";
 
 export interface BehaviorPackRecipeIssue {
   recipe: Recipe;

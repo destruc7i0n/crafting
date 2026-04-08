@@ -7,7 +7,7 @@ import {
   V112Ingredient,
   V113Ingredient,
   V1212Ingredient,
-} from "../recipes/types";
+} from "../types";
 
 export type FormatIngredient =
   | V112Ingredient

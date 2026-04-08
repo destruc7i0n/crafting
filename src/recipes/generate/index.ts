@@ -1,3 +1,4 @@
+import { MinecraftVersion } from "@/data/types";
 import {
   bedrockIdentifierHint,
   isValidBedrockNamespacedIdentifier,
@@ -6,9 +7,8 @@ import { getRecipeDefinition } from "@/recipes/definitions";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 
-import { MinecraftVersion } from "../types";
 import { createRecipeFormatter } from "./format/recipe-formatter";
-import { GeneratedRecipe } from "./recipes/types";
+import { GeneratedRecipe } from "./types";
 import { wrapBedrockRecipe } from "./wrapper/bedrock";
 
 export interface GenerateOptions {

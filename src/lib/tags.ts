@@ -1,5 +1,4 @@
 import { NoTextureTexture } from "@/data/constants";
-import { isVersionAtLeast } from "@/data/generate/version-utils";
 import {
   getRawId,
   identifierUniqueKey,
@@ -8,6 +7,7 @@ import {
 import { IngredientItem, Item, Tag, TagItem, TagValue } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { generateUid } from "@/lib/utils";
+import { isVersionAtLeast } from "@/recipes/versioning";
 
 const DEFAULT_TAG_NAME = "custom_tag";
 const DEFAULT_TAG_NAMESPACE = "crafting";

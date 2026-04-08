@@ -1,13 +1,13 @@
+import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
 import {
   buildBedrock as buildBedrockCooking,
   buildJava as buildJavaCooking,
   extractCookingInput,
   validateCooking,
-} from "@/data/generate/cooking";
-import { BedrockFormatVersion, BedrockTag } from "@/data/generate/recipes/types";
-import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
+} from "@/recipes/generate/cooking";
+import { BedrockFormatVersion, BedrockTag } from "@/recipes/generate/types";
 
-import { getCookingAutoNames } from "./naming";
+import { getCookingAutoNames } from "./auto-naming";
 import { RecipeDefinition } from "./types";
 
 const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";

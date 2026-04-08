@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import { useSlotContext } from "@/hooks/use-slot-context";
-import { resolveRecipeNames } from "@/lib/recipe-name";
+import { resolveRecipeNames } from "@/recipes/naming";
 import { useRecipeStore } from "@/stores/recipe";
 import { useSettingsStore } from "@/stores/settings";
 import { selectBedrockNamespace } from "@/stores/settings/selectors";

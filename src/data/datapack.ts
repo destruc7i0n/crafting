@@ -1,8 +1,9 @@
 import { strToU8, zipSync } from "fflate";
 
+import { isVersionAtLeast } from "@/recipes/versioning";
+
 import { javaMinecraftVersions } from "./constants";
 import { generateTag } from "./generate/tag";
-import { isVersionAtLeast } from "./generate/version-utils";
 import { parseStringToMinecraftIdentifier } from "./models/identifier/utilities";
 import { Tag } from "./models/types";
 import { MinecraftVersion } from "./types";

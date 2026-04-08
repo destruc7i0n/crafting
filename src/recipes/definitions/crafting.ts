@@ -1,19 +1,19 @@
+import { MinecraftVersion, RecipeSlot, RecipeType, SLOTS } from "@/data/types";
 import {
   buildBedrock as buildBedrockCrafting,
   buildJava as buildJavaCrafting,
   extractCraftingInput,
   validateCrafting,
-} from "@/data/generate/crafting";
-import { BedrockFormatVersion, BedrockRecipeMeta } from "@/data/generate/recipes/types";
+} from "@/recipes/generate/crafting";
 import {
   buildJava as buildJavaTransmute,
   extractTransmuteInput,
   validateTransmute,
-} from "@/data/generate/transmute";
-import { MinecraftVersion, RecipeSlot, RecipeType, SLOTS } from "@/data/types";
+} from "@/recipes/generate/transmute";
+import { BedrockFormatVersion, BedrockRecipeMeta } from "@/recipes/generate/types";
 import { Recipe } from "@/stores/recipe/types";
 
-import { getCraftingAutoNames, getTransmuteAutoNames } from "./naming";
+import { getCraftingAutoNames, getTransmuteAutoNames } from "./auto-naming";
 import { RecipeDefinition } from "./types";
 
 const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";

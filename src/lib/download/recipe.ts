@@ -1,12 +1,12 @@
 import { getBehaviorPackRecipeFileName } from "@/data/behavior-pack";
 import { downloadBlob } from "@/data/datapack";
-import { generate } from "@/data/generate";
 import { MinecraftVersion } from "@/data/types";
 import {
   bedrockIdentifierHint,
   isValidBedrockNamespacedIdentifier,
 } from "@/lib/minecraft-identifier";
-import { sanitizeRecipeName } from "@/lib/recipe-name";
+import { generate } from "@/recipes/generate";
+import { sanitizeRecipeName } from "@/recipes/naming";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 export const downloadRecipeJson = ({

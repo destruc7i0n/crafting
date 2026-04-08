@@ -6,7 +6,7 @@ import { getRequiredSlotIdentifier, isTagSlotValue } from "@/stores/recipe/slot-
 import { RecipeSlotValue, SlotContext } from "@/stores/recipe/types";
 
 import { RecipeFormatter } from "./format/types";
-import { EmptyObject, IngredientRef } from "./recipes/types";
+import { EmptyObject, IngredientRef } from "./types";
 
 export function formatIngredient({
   item,

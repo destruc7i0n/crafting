@@ -4,11 +4,8 @@ import { RecipeSlot } from "@/data/types";
 import { useItemSelection } from "@/hooks/use-item-selection";
 import { useRecipeSlotSelectionHandler } from "@/hooks/use-recipe-slot-selection-handler";
 import { isItemDraggableData, RecipeSlotDropTargetData } from "@/lib/dnd";
-import {
-  canRecipeSlotAcceptIngredientItem,
-  canRecipeSlotAcceptSlotValue,
-} from "@/lib/recipe-slots";
 import { cn } from "@/lib/utils";
+import { canRecipeSlotAcceptIngredientItem, canRecipeSlotAcceptSlotValue } from "@/recipes/slots";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
 

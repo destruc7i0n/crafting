@@ -2,8 +2,8 @@ import { getRawId } from "@/data/models/identifier/utilities";
 import { MinecraftVersion } from "@/data/types";
 import { toTagRef } from "@/lib/tags";
 
-import { ObjectResultRef } from "../recipes/types";
-import { compareMinecraftVersions, isVersionAtLeast } from "../version-utils";
+import { compareMinecraftVersions, isVersionAtLeast } from "../../versioning";
+import { ObjectResultRef } from "../types";
 import { RecipeFormatter } from "./types";
 
 type FormatterRange = {

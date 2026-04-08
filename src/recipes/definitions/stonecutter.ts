@@ -1,13 +1,13 @@
-import { BedrockFormatVersion } from "@/data/generate/recipes/types";
+import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
 import {
   buildBedrock as buildBedrockStonecutter,
   buildJava as buildJavaStonecutter,
   extractStonecutterInput,
   validateStonecutter,
-} from "@/data/generate/stonecutter";
-import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
+} from "@/recipes/generate/stonecutter";
+import { BedrockFormatVersion } from "@/recipes/generate/types";
 
-import { getStonecuttingAutoNames } from "./naming";
+import { getStonecuttingAutoNames } from "./auto-naming";
 import { RecipeDefinition } from "./types";
 
 const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";

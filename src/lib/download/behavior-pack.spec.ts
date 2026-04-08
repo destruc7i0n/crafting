@@ -31,7 +31,7 @@ vi.mock("@/data/datapack", () => ({
   downloadBlob,
 }));
 
-vi.mock("@/data/generate", () => ({
+vi.mock("@/recipes/generate", () => ({
   generate,
 }));
 

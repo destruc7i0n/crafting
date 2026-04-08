@@ -2,8 +2,8 @@ import { PencilIcon, RotateCcwIcon } from "lucide-react";
 
 import { MinecraftVersion } from "@/data/types";
 import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
-import { getCommittedRecipeName, toJavaRecipeFileName } from "@/lib/recipe-name";
 import { cn } from "@/lib/utils";
+import { getCommittedRecipeName, toJavaRecipeFileName } from "@/recipes/naming";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
