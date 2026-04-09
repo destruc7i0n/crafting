@@ -203,4 +203,39 @@ describe("generate orchestrator", () => {
       }),
     ).toThrow("Bedrock recipes must use a valid identifier");
   });
+
+  it('throws when recipe type "smithing_trim" is unavailable in Java 1.18', () => {
+    const state = makeRecipe({
+      ...recipeStateDefaults,
+      recipeType: RecipeType.SmithingTrim,
+      group: "",
+      slots: {},
+      crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
+      cooking: { time: 0, experience: 0 },
+    });
+
+    expect(() => generate({ state, version: MinecraftVersion.V118 })).toThrow(
+      'Recipe type "smithing_trim" is not available in Java 1.18',
+    );
+  });
+
+  it('throws when recipe type "smithing" is unavailable in Bedrock', () => {
+    const state = makeRecipe({
+      ...recipeStateDefaults,
+      recipeType: RecipeType.Smithing,
+      group: "",
+      slots: {},
+      crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
+      cooking: { time: 0, experience: 0 },
+      bedrock: { identifierMode: "auto", identifierName: "", priority: 0 },
+    });
+
+    expect(() =>
+      generate({
+        state,
+        version: MinecraftVersion.Bedrock,
+        options: { bedrockIdentifier: "crafting:test" },
+      }),
+    ).toThrow('Recipe type "smithing" is not available in Bedrock');
+  });
 });

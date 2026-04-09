@@ -8,7 +8,7 @@ import {
 import { BedrockFormatVersion, BedrockTag } from "@/recipes/generate/types";
 
 import { getCookingAutoNames } from "./auto-naming";
-import { RecipeDefinition } from "./types";
+import { BedrockSupportedRecipeDefinition, RecipeDefinitionSlots } from "./types";
 
 const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";
 
@@ -17,7 +17,7 @@ const cookingSlots = {
   resultSlots: [SLOTS.cooking.result],
   canEditCount: () => false,
   isDisabled: () => false,
-} satisfies RecipeDefinition["slots"];
+} satisfies RecipeDefinitionSlots;
 
 const createCookingDefinition = ({
   type,
@@ -31,13 +31,13 @@ const createCookingDefinition = ({
   iconItemId: string;
   minVersion: MinecraftVersion;
   bedrockTags: BedrockTag[];
-}): RecipeDefinition => ({
+}): BedrockSupportedRecipeDefinition => ({
   type,
   family: "cooking",
   label,
   iconItemId,
   previewKind: "furnace",
-  availability: { minVersion, bedrock: true },
+  availability: { minVersion },
   slots: cookingSlots,
   naming: {
     resultSlot: SLOTS.cooking.result,

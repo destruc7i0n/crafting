@@ -14,14 +14,15 @@ import {
   smithingTrimDefinition,
 } from "./smithing";
 import { stonecutterDefinition } from "./stonecutter";
-import { RecipeDefinition } from "./types";
+import { BedrockSupportedRecipeDefinition, RecipeDefinition } from "./types";
 
 export type {
+  BedrockSupportedRecipeDefinition,
   BedrockGenerateArgs,
   GenerateArgs,
+  JavaOnlyRecipeDefinition,
   PreviewKind,
   RecipeDefinition,
-  RecipeTypeAvailability,
 } from "./types";
 
 export const recipeDefinitions = {
@@ -49,13 +50,27 @@ export const getRecipeTypeLabel = (type: RecipeType) => getRecipeDefinition(type
 
 export const getRecipeTypeIconItemId = (type: RecipeType) => getRecipeDefinition(type).iconItemId;
 
-export const isRecipeTypeSupported = (definition: RecipeDefinition, version: MinecraftVersion) => {
+const supportsBedrock = (
+  definition: RecipeDefinition,
+): definition is BedrockSupportedRecipeDefinition =>
+  typeof definition.generateBedrock === "function" &&
+  typeof definition.getBedrockMeta === "function";
+
+export function isRecipeTypeSupported(
+  definition: RecipeDefinition,
+  version: MinecraftVersion.Bedrock,
+): definition is BedrockSupportedRecipeDefinition;
+export function isRecipeTypeSupported(
+  definition: RecipeDefinition,
+  version: MinecraftVersion,
+): boolean;
+export function isRecipeTypeSupported(definition: RecipeDefinition, version: MinecraftVersion) {
   if (definition.availability.enabled === false) {
     return false;
   }
 
   if (version === MinecraftVersion.Bedrock) {
-    return definition.availability.bedrock;
+    return supportsBedrock(definition);
   }
 
   if (!isVersionAtLeast(version, definition.availability.minVersion)) {
@@ -70,7 +85,7 @@ export const isRecipeTypeSupported = (definition: RecipeDefinition, version: Min
   }
 
   return true;
-};
+}
 
 export const getSupportedRecipeTypesForVersion = (version: MinecraftVersion): RecipeType[] =>
   recipeDefinitionValues

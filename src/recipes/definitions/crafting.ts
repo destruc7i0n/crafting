@@ -14,7 +14,7 @@ import { BedrockFormatVersion, BedrockRecipeMeta } from "@/recipes/generate/type
 import { Recipe } from "@/stores/recipe/types";
 
 import { getCraftingAutoNames, getTransmuteAutoNames } from "./auto-naming";
-import { RecipeDefinition } from "./types";
+import { BedrockSupportedRecipeDefinition, JavaOnlyRecipeDefinition } from "./types";
 
 const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";
 
@@ -63,13 +63,13 @@ const getCraftingBedrockMeta = (recipe: Recipe): BedrockRecipeMeta => ({
   formatVersion: BEDROCK_FORMAT_VERSION,
 });
 
-export const craftingDefinition: RecipeDefinition = {
+export const craftingDefinition: BedrockSupportedRecipeDefinition = {
   type: RecipeType.Crafting,
   family: "crafting",
   label: "Crafting",
   iconItemId: "minecraft:crafting_table",
   previewKind: "crafting",
-  availability: { minVersion: MinecraftVersion.V112, bedrock: true },
+  availability: { minVersion: MinecraftVersion.V112 },
   slots: {
     getAutoPlace: (recipe) =>
       recipe.crafting.twoByTwo ? twoByTwoCraftingAutoPlace : fullCraftingAutoPlace,
@@ -95,14 +95,13 @@ export const craftingDefinition: RecipeDefinition = {
   getBedrockMeta: getCraftingBedrockMeta,
 };
 
-export const craftingTransmuteDefinition: RecipeDefinition = {
+export const craftingTransmuteDefinition: JavaOnlyRecipeDefinition = {
   type: RecipeType.CraftingTransmute,
   family: "crafting",
   label: "Crafting Transmute",
   iconItemId: "minecraft:crafting_table",
   availability: {
     minVersion: MinecraftVersion.V1212,
-    bedrock: false,
     enabled: false,
   },
   slots: {

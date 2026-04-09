@@ -25,6 +25,7 @@ if (latestVersion !== versions.at(-1)) {
   throw new Error("minecraft-textures latestVersion did not match the final versions entry");
 }
 
+// misode/mcmeta does not provide 1.13 item tags
 const versionsWithoutVanillaTags = new Set(["1.12", "1.13"]);
 const versionsWithVanillaTags = versions.filter(
   (version) => !versionsWithoutVanillaTags.has(version),

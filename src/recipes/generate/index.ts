@@ -3,7 +3,7 @@ import {
   bedrockIdentifierHint,
   isValidBedrockNamespacedIdentifier,
 } from "@/lib/minecraft-identifier";
-import { getRecipeDefinition } from "@/recipes/definitions";
+import { getRecipeDefinition, isRecipeTypeSupported } from "@/recipes/definitions";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 
@@ -27,7 +27,6 @@ export function generate({
   options?: GenerateOptions;
 }): GeneratedRecipe {
   const definition = getRecipeDefinition(state.recipeType);
-  const formatter = createRecipeFormatter(version);
 
   if (version === MinecraftVersion.Bedrock) {
     const identifier = options?.bedrockIdentifier?.trim();
@@ -36,16 +35,17 @@ export function generate({
       throw new Error("Bedrock recipes must have an identifier");
     }
 
+    if (!isRecipeTypeSupported(definition, version)) {
+      throw new Error(`Recipe type "${state.recipeType}" is not available in Bedrock`);
+    }
+
     if (!isValidBedrockNamespacedIdentifier(identifier)) {
       throw new Error(
         `Bedrock recipes must use a valid identifier (namespace:name; ${bedrockIdentifierHint})`,
       );
     }
 
-    if (!definition.generateBedrock || !definition.getBedrockMeta) {
-      throw new Error(`Unsupported Bedrock recipe type: ${state.recipeType}`);
-    }
-
+    const formatter = createRecipeFormatter(version);
     const inner = definition.generateBedrock({ recipe: state, formatter, slotContext });
     const meta = definition.getBedrockMeta(state);
 
@@ -61,5 +61,10 @@ export function generate({
     });
   }
 
+  if (!isRecipeTypeSupported(definition, version)) {
+    throw new Error(`Recipe type "${state.recipeType}" is not available in Java ${version}`);
+  }
+
+  const formatter = createRecipeFormatter(version);
   return definition.generateJava({ recipe: state, version, formatter, slotContext });
 }

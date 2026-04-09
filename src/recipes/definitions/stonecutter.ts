@@ -8,17 +8,17 @@ import {
 import { BedrockFormatVersion } from "@/recipes/generate/types";
 
 import { getStonecuttingAutoNames } from "./auto-naming";
-import { RecipeDefinition } from "./types";
+import { BedrockSupportedRecipeDefinition } from "./types";
 
 const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";
 
-export const stonecutterDefinition: RecipeDefinition = {
+export const stonecutterDefinition: BedrockSupportedRecipeDefinition = {
   type: RecipeType.Stonecutter,
   family: "stonecutter",
   label: "Stonecutting",
   iconItemId: "minecraft:stonecutter",
   previewKind: "stonecutter",
-  availability: { minVersion: MinecraftVersion.V114, bedrock: true },
+  availability: { minVersion: MinecraftVersion.V114 },
   slots: {
     getAutoPlace: () => [SLOTS.stonecutter.ingredient, SLOTS.stonecutter.result],
     resultSlots: [SLOTS.stonecutter.result],

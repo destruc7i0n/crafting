@@ -4,7 +4,9 @@ import { MinecraftVersion, RecipeType } from "@/data/types";
 
 import {
   coerceRecipeTypeForVersion,
+  getRecipeDefinition,
   getSupportedRecipeTypesForVersion,
+  isRecipeTypeSupported,
   recipeDefinitions,
   recipeResultSlots,
 } from ".";
@@ -27,6 +29,15 @@ describe("recipe definitions", () => {
     expect(getSupportedRecipeTypesForVersion(MinecraftVersion.V12111)).not.toContain(
       RecipeType.CraftingTransmute,
     );
+  });
+
+  it("derives Bedrock support from recipe handlers", () => {
+    expect(
+      isRecipeTypeSupported(getRecipeDefinition(RecipeType.Smithing), MinecraftVersion.Bedrock),
+    ).toBe(false);
+    expect(
+      isRecipeTypeSupported(getRecipeDefinition(RecipeType.Crafting), MinecraftVersion.Bedrock),
+    ).toBe(true);
   });
 
   it("returns the same type when the version supports it", () => {

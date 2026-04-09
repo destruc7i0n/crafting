@@ -5,13 +5,6 @@ import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 export type PreviewKind = "crafting" | "furnace" | "smithing" | "stonecutter";
 
-export interface RecipeTypeAvailability {
-  minVersion: MinecraftVersion;
-  maxVersion?: MinecraftVersion;
-  bedrock: boolean;
-  enabled?: boolean;
-}
-
 export interface GenerateArgs {
   recipe: Recipe;
   version: MinecraftVersion;
@@ -25,26 +18,44 @@ export interface BedrockGenerateArgs {
   slotContext: SlotContext;
 }
 
-export interface RecipeDefinition {
+export interface RecipeDefinitionSlots {
+  getAutoPlace(recipe: Recipe): RecipeSlot[];
+  resultSlots: RecipeSlot[];
+  canEditCount(slot: RecipeSlot): boolean;
+  isDisabled(recipe: Recipe, slot: RecipeSlot): boolean;
+}
+
+export interface RecipeDefinitionNaming {
+  resultSlot?: RecipeSlot;
+  sidebarFallbackLabel: string;
+  getAutoNames(recipe: Recipe, ctx: SlotContext): string[];
+}
+
+export interface BaseRecipeDefinition {
   type: RecipeType;
   family: "crafting" | "cooking" | "smithing" | "stonecutter";
   label: string;
   iconItemId: string;
   previewKind?: PreviewKind;
-  availability: RecipeTypeAvailability;
-  slots: {
-    getAutoPlace(recipe: Recipe): RecipeSlot[];
-    resultSlots: RecipeSlot[];
-    canEditCount(slot: RecipeSlot): boolean;
-    isDisabled(recipe: Recipe, slot: RecipeSlot): boolean;
+  availability: {
+    minVersion: MinecraftVersion;
+    maxVersion?: MinecraftVersion;
+    enabled?: boolean;
   };
-  naming: {
-    resultSlot?: RecipeSlot;
-    sidebarFallbackLabel: string;
-    getAutoNames(recipe: Recipe, ctx: SlotContext): string[];
-  };
+  slots: RecipeDefinitionSlots;
+  naming: RecipeDefinitionNaming;
   validate(recipe: Recipe, version: MinecraftVersion, ctx: SlotContext): string[];
   generateJava(args: GenerateArgs): JavaRecipe;
-  generateBedrock?(args: BedrockGenerateArgs): BedrockBody;
-  getBedrockMeta?(recipe: Recipe): BedrockRecipeMeta;
 }
+
+export interface JavaOnlyRecipeDefinition extends BaseRecipeDefinition {
+  generateBedrock?: never;
+  getBedrockMeta?: never;
+}
+
+export interface BedrockSupportedRecipeDefinition extends BaseRecipeDefinition {
+  generateBedrock(args: BedrockGenerateArgs): BedrockBody;
+  getBedrockMeta(recipe: Recipe): BedrockRecipeMeta;
+}
+
+export type RecipeDefinition = JavaOnlyRecipeDefinition | BedrockSupportedRecipeDefinition;

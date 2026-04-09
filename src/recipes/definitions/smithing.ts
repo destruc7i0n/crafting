@@ -8,39 +8,35 @@ import {
 import { BedrockFormatVersion } from "@/recipes/generate/types";
 
 import { getSmithingAutoNames } from "./auto-naming";
-import { RecipeDefinition } from "./types";
+import {
+  BaseRecipeDefinition,
+  BedrockSupportedRecipeDefinition,
+  JavaOnlyRecipeDefinition,
+} from "./types";
 
 const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";
 
 const canEditResultCount = (editable: boolean) => (slot: RecipeSlot) =>
   editable && slot === SLOTS.smithing.result;
 
-const createSmithingDefinition = ({
+const createCommonSmithingDefinition = ({
   type,
   label,
-  availability,
   autoPlace,
   resultSlot,
   editableResultCount,
-  bedrockWrapperKey,
 }: {
   type: RecipeType.Smithing | RecipeType.SmithingTrim | RecipeType.SmithingTransform;
   label: string;
-  availability: RecipeDefinition["availability"];
   autoPlace: RecipeSlot[];
   resultSlot?: RecipeSlot;
   editableResultCount: boolean;
-  bedrockWrapperKey:
-    | "minecraft:recipe_shapeless"
-    | "minecraft:recipe_smithing_trim"
-    | "minecraft:recipe_smithing_transform";
-}): RecipeDefinition => ({
+}): Omit<BaseRecipeDefinition, "availability"> => ({
   type,
   family: "smithing",
   label,
   iconItemId: "minecraft:smithing_table",
   previewKind: "smithing",
-  availability,
   slots: {
     getAutoPlace: () => autoPlace,
     resultSlots: [SLOTS.smithing.result],
@@ -60,6 +56,31 @@ const createSmithingDefinition = ({
       version,
       slotContext,
     }),
+});
+
+const createJavaOnlySmithingDefinition = ({
+  availability,
+  ...args
+}: Parameters<typeof createCommonSmithingDefinition>[0] & {
+  availability: BaseRecipeDefinition["availability"];
+}): JavaOnlyRecipeDefinition => ({
+  ...createCommonSmithingDefinition(args),
+  availability,
+});
+
+const createBedrockSupportedSmithingDefinition = ({
+  availability,
+  bedrockWrapperKey,
+  ...args
+}: Parameters<typeof createCommonSmithingDefinition>[0] & {
+  availability: BaseRecipeDefinition["availability"];
+  bedrockWrapperKey:
+    | "minecraft:recipe_shapeless"
+    | "minecraft:recipe_smithing_trim"
+    | "minecraft:recipe_smithing_transform";
+}): BedrockSupportedRecipeDefinition => ({
+  ...createCommonSmithingDefinition(args),
+  availability,
   generateBedrock: ({ recipe, formatter, slotContext }) =>
     buildBedrockSmithing(extractSmithingInput(recipe), formatter, slotContext),
   getBedrockMeta: () => ({
@@ -69,13 +90,12 @@ const createSmithingDefinition = ({
   }),
 });
 
-export const smithingDefinition = createSmithingDefinition({
+export const smithingDefinition = createJavaOnlySmithingDefinition({
   type: RecipeType.Smithing,
   label: "Smithing",
   availability: {
     minVersion: MinecraftVersion.V116,
     maxVersion: MinecraftVersion.V118,
-    bedrock: false,
   },
   autoPlace: [
     SLOTS.smithing.template,
@@ -85,22 +105,21 @@ export const smithingDefinition = createSmithingDefinition({
   ],
   resultSlot: SLOTS.smithing.result,
   editableResultCount: false,
-  bedrockWrapperKey: "minecraft:recipe_shapeless",
 });
 
-export const smithingTrimDefinition = createSmithingDefinition({
+export const smithingTrimDefinition = createBedrockSupportedSmithingDefinition({
   type: RecipeType.SmithingTrim,
   label: "Smithing Trim",
-  availability: { minVersion: MinecraftVersion.V119, bedrock: true },
+  availability: { minVersion: MinecraftVersion.V119 },
   autoPlace: [SLOTS.smithing.template, SLOTS.smithing.base, SLOTS.smithing.addition],
   editableResultCount: false,
   bedrockWrapperKey: "minecraft:recipe_smithing_trim",
 });
 
-export const smithingTransformDefinition = createSmithingDefinition({
+export const smithingTransformDefinition = createBedrockSupportedSmithingDefinition({
   type: RecipeType.SmithingTransform,
   label: "Smithing Transform",
-  availability: { minVersion: MinecraftVersion.V119, bedrock: true },
+  availability: { minVersion: MinecraftVersion.V119 },
   autoPlace: [
     SLOTS.smithing.template,
     SLOTS.smithing.base,
