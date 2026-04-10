@@ -2,7 +2,10 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
-import { identifierUniqueKey } from "@/data/models/identifier/utilities";
+import {
+  identifierUniqueKey,
+  parseStringToMinecraftIdentifier,
+} from "@/data/models/identifier/utilities";
 import { Tag, TagValue } from "@/data/models/types";
 import { createEmptyTag } from "@/lib/tags";
 import { useRecipeStore } from "@/stores/recipe";
@@ -44,7 +47,25 @@ export const useTagStore = create<TagState & TagActions>()(
           }
 
           if (updates.id !== undefined) {
+            // keep parent tag refs in sync when a referenced tag id changes
+            const oldIdentifier = parseStringToMinecraftIdentifier(tag.id);
+            const newIdentifier = parseStringToMinecraftIdentifier(updates.id);
+            const oldKey = identifierUniqueKey(oldIdentifier);
+            const newKey = identifierUniqueKey(newIdentifier);
+
             tag.id = updates.id;
+
+            if (oldKey === newKey) {
+              return;
+            }
+
+            for (const currentTag of state.tags) {
+              for (const value of currentTag.values) {
+                if (value.type === "tag" && identifierUniqueKey(value.id) === oldKey) {
+                  value.id = newIdentifier;
+                }
+              }
+            }
           }
         });
       },
