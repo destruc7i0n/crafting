@@ -100,7 +100,7 @@ describe("generate smithing", () => {
     });
   });
 
-  describe("1.19", () => {
+  describe("1.20", () => {
     describe("smithing trim", () => {
       it("should generate a smithing trim recipe", () => {
         const recipeSlice = makeRecipe({
@@ -117,7 +117,7 @@ describe("generate smithing", () => {
               displayName: "netherite_upgrade_smithing_template",
               texture: "",
               count: 1,
-              _version: MinecraftVersion.V119,
+              _version: MinecraftVersion.V120,
             },
             "smithing.base": {
               type: "default_item",
@@ -128,7 +128,7 @@ describe("generate smithing", () => {
               displayName: "diamond_sword",
               texture: "",
               count: 1,
-              _version: MinecraftVersion.V119,
+              _version: MinecraftVersion.V120,
             },
             "smithing.addition": {
               type: "default_item",
@@ -139,7 +139,7 @@ describe("generate smithing", () => {
               displayName: "netherite_ingot",
               texture: "",
               count: 1,
-              _version: MinecraftVersion.V119,
+              _version: MinecraftVersion.V120,
             },
           },
           cooking: {
@@ -153,7 +153,7 @@ describe("generate smithing", () => {
           },
         });
 
-        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V119)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V120)).toEqual({
           type: "minecraft:smithing_trim",
           template: {
             item: "minecraft:netherite_upgrade_smithing_template",
@@ -184,7 +184,7 @@ describe("generate smithing", () => {
               displayName: "netherite_upgrade_smithing_template",
               texture: "",
               count: 1,
-              _version: MinecraftVersion.V119,
+              _version: MinecraftVersion.V120,
             },
             "smithing.base": {
               type: "default_item",
@@ -195,7 +195,7 @@ describe("generate smithing", () => {
               displayName: "diamond_sword",
               texture: "",
               count: 1,
-              _version: MinecraftVersion.V119,
+              _version: MinecraftVersion.V120,
             },
             "smithing.addition": {
               type: "default_item",
@@ -206,7 +206,7 @@ describe("generate smithing", () => {
               displayName: "netherite_ingot",
               texture: "",
               count: 1,
-              _version: MinecraftVersion.V119,
+              _version: MinecraftVersion.V120,
             },
             "smithing.result": {
               type: "default_item",
@@ -217,7 +217,7 @@ describe("generate smithing", () => {
               displayName: "netherite_sword",
               texture: "",
               count: 1,
-              _version: MinecraftVersion.V119,
+              _version: MinecraftVersion.V120,
             },
           },
           cooking: {
@@ -231,7 +231,7 @@ describe("generate smithing", () => {
           },
         });
 
-        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V119)).toEqual({
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V120)).toEqual({
           type: "minecraft:smithing_transform",
           template: {
             item: "minecraft:netherite_upgrade_smithing_template",
@@ -403,7 +403,7 @@ describe("generate smithing", () => {
       });
     });
 
-    it("should generate bedrock legacy smithing body", () => {
+    it("should generate bedrock old smithing body", () => {
       const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Smithing,

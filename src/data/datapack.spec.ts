@@ -4,7 +4,7 @@ import { createDatapackBlob } from "./datapack";
 import { MinecraftVersion } from "./types";
 
 describe("createDatapackBlob", () => {
-  it("uses legacy recipe paths and pack_format before 1.21", async () => {
+  it("uses old recipe paths and pack_format before 1.21", async () => {
     const blob = createDatapackBlob(
       MinecraftVersion.V120,
       [{ name: "example", json: { type: "minecraft:crafting_shapeless" } }],

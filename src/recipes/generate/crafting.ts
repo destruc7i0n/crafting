@@ -235,6 +235,7 @@ export const buildJava = ({
   const populatedSlots = grid.filter((item): item is RecipeSlotValue => Boolean(item));
 
   const group = state.group.length > 0 ? state.group : undefined;
+  // V119 = 1.19.4
   const category = isVersionAtLeast(version, MinecraftVersion.V119) ? state.category : undefined;
 
   const { key, reverse } = getKeyForGrid(grid, slotContext);

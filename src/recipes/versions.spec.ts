@@ -27,28 +27,35 @@ describe("getSupportedRecipeTypesForVersion", () => {
     expect(types).not.toContain(RecipeType.Smithing);
   });
 
-  it("1.15 does not yet have legacy smithing", () => {
+  it("1.15 does not yet have old smithing", () => {
     expect(getSupportedRecipeTypesForVersion(MinecraftVersion.V115)).not.toContain(
       RecipeType.Smithing,
     );
   });
 
-  it("1.17 has legacy smithing", () => {
+  it("1.17 has old smithing", () => {
     expect(getSupportedRecipeTypesForVersion(MinecraftVersion.V117)).toContain(RecipeType.Smithing);
   });
 
-  it("1.16 adds legacy smithing", () => {
+  it("1.16 adds old smithing", () => {
     const types = getSupportedRecipeTypesForVersion(MinecraftVersion.V116);
     expect(types).toContain(RecipeType.Smithing);
     expect(types).not.toContain(RecipeType.SmithingTransform);
   });
 
-  it("1.18 still has legacy smithing", () => {
+  it("1.18 still has old smithing", () => {
     expect(getSupportedRecipeTypesForVersion(MinecraftVersion.V118)).toContain(RecipeType.Smithing);
   });
 
-  it("1.19 replaces legacy smithing with transform/trim", () => {
+  it("1.19 still has old smithing", () => {
     const types = getSupportedRecipeTypesForVersion(MinecraftVersion.V119);
+    expect(types).toContain(RecipeType.Smithing);
+    expect(types).not.toContain(RecipeType.SmithingTransform);
+    expect(types).not.toContain(RecipeType.SmithingTrim);
+  });
+
+  it("1.20 replaces old smithing with transform/trim", () => {
+    const types = getSupportedRecipeTypesForVersion(MinecraftVersion.V120);
     expect(types).not.toContain(RecipeType.Smithing);
     expect(types).toContain(RecipeType.SmithingTransform);
     expect(types).toContain(RecipeType.SmithingTrim);

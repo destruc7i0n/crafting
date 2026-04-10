@@ -347,7 +347,7 @@ describe("generate cooking", () => {
       });
     });
 
-    it("should preserve legacy data on bedrock furnace input strings", () => {
+    it("should preserve old data on bedrock furnace input strings", () => {
       const recipeSlice = makeRecipe({
         ...recipeStateDefaults,
         recipeType: RecipeType.Smelting,

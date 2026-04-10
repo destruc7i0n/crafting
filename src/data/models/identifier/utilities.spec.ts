@@ -35,7 +35,7 @@ describe("parseStringToMinecraftIdentifier", () => {
     expect(id.id).toBe("stone");
   });
 
-  it("parses legacy namespace:id:data format", () => {
+  it("parses old namespace:id:data format", () => {
     const id = parseStringToMinecraftIdentifier("minecraft:stone:1");
     expect(id.namespace).toBe("minecraft");
     expect(id.id).toBe("stone");

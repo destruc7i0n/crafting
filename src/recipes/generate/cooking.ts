@@ -34,6 +34,7 @@ export const buildJava = ({
   slotContext: SlotContext;
 }): CookingRecipe => {
   const group = state.group.length > 0 ? state.group : undefined;
+  // V119 = 1.19.4
   const category = isVersionAtLeast(version, MinecraftVersion.V119) ? state.category : undefined;
 
   const input = state.ingredient;

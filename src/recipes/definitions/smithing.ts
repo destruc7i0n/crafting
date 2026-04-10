@@ -95,7 +95,8 @@ export const smithingDefinition = createJavaOnlySmithingDefinition({
   label: "Smithing",
   availability: {
     minVersion: MinecraftVersion.V116,
-    maxVersion: MinecraftVersion.V118,
+    // V119 = 1.19.4, which still uses old smithing
+    maxVersion: MinecraftVersion.V119,
   },
   autoPlace: [
     SLOTS.smithing.template,
@@ -110,7 +111,7 @@ export const smithingDefinition = createJavaOnlySmithingDefinition({
 export const smithingTrimDefinition = createBedrockSupportedSmithingDefinition({
   type: RecipeType.SmithingTrim,
   label: "Smithing Trim",
-  availability: { minVersion: MinecraftVersion.V119 },
+  availability: { minVersion: MinecraftVersion.V120 },
   autoPlace: [SLOTS.smithing.template, SLOTS.smithing.base, SLOTS.smithing.addition],
   editableResultCount: false,
   bedrockWrapperKey: "minecraft:recipe_smithing_trim",
@@ -119,7 +120,7 @@ export const smithingTrimDefinition = createBedrockSupportedSmithingDefinition({
 export const smithingTransformDefinition = createBedrockSupportedSmithingDefinition({
   type: RecipeType.SmithingTransform,
   label: "Smithing Transform",
-  availability: { minVersion: MinecraftVersion.V119 },
+  availability: { minVersion: MinecraftVersion.V120 },
   autoPlace: [
     SLOTS.smithing.template,
     SLOTS.smithing.base,
