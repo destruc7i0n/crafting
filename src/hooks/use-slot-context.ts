@@ -6,6 +6,9 @@ import { useTagStore } from "@/stores/tag";
 
 import { useResourcesForVersion } from "./use-resources-for-version";
 
+const toByUidMap = <T extends { uid: string }>(values: T[]): Record<string, T> =>
+  Object.fromEntries(values.map((value) => [value.uid, value]));
+
 export const useSlotContext = (): SlotContext => {
   const { resources, version } = useResourcesForVersion();
   const customItems = useCustomItemStore((state) => state.customItems);
@@ -15,8 +18,8 @@ export const useSlotContext = (): SlotContext => {
     () => ({
       version,
       resources,
-      customItemsByUid: Object.fromEntries(customItems.map((item) => [item.uid, item])),
-      tagsByUid: Object.fromEntries(tags.map((tag) => [tag.uid, tag])),
+      customItemsByUid: toByUidMap(customItems),
+      tagsByUid: toByUidMap(tags),
       allTags: tags,
       vanillaTags: resources?.vanillaTags ?? {},
     }),

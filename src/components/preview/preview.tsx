@@ -9,6 +9,7 @@ import { RecipeType } from "@/data/types";
 import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useItemSelection } from "@/hooks/use-item-selection";
+import { clearSelectedRecipeAndSlotSelection } from "@/lib/editor-actions";
 import { cn } from "@/lib/utils";
 import { getRecipeDefinition, PreviewKind } from "@/recipes/definitions";
 import { getPreviewBaseName, toPreviewFileName } from "@/recipes/naming";
@@ -16,7 +17,6 @@ import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
-import { useUIStore } from "@/stores/ui";
 
 import { CraftingGridPreview } from "./crafting-grid";
 import { FurnacePreview } from "./furnace";
@@ -25,7 +25,6 @@ import { StonecutterPreview } from "./stonecutter";
 
 export const Preview = memo(() => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
-  const clearSelectedRecipeSlots = useRecipeStore((state) => state.clearSelectedRecipeSlots);
   const hasFilledSlots = useRecipeStore((state) =>
     Object.values(selectCurrentRecipe(state)?.slots ?? {}).some((slotItem) => slotItem != null),
   );
@@ -94,11 +93,7 @@ export const Preview = memo(() => {
       return;
     }
 
-    clearSelectedRecipeSlots();
-
-    if (useUIStore.getState().selection?.type === "slot") {
-      useUIStore.getState().setSelection(undefined);
-    }
+    clearSelectedRecipeAndSlotSelection();
   };
 
   return (

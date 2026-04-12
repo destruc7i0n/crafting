@@ -12,6 +12,7 @@ import {
 import { Item } from "@/data/models/types";
 import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
+import { deleteTagAndClearRecipeRefs } from "@/lib/editor-actions";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
 import { useTagStore } from "@/stores/tag";
 import { supportsVanillaTagList } from "@/versioning";
@@ -47,7 +48,6 @@ export const TagsSection = ({
 }: TagsSectionProps) => {
   const { resources, version } = useResourcesForVersion();
   const tags = useTagStore((state) => state.tags);
-  const removeTag = useTagStore((state) => state.removeTag);
 
   const vanillaTags = resources?.vanillaTags ?? EMPTY_TAGS;
   const items = resources?.items ?? EMPTY_ITEMS;
@@ -100,7 +100,7 @@ export const TagsSection = ({
   ]);
 
   const handleDeleteTag = (tagUid: string) => {
-    removeTag(tagUid);
+    deleteTagAndClearRecipeRefs(tagUid);
     if (expandedTagUid === tagUid) {
       setExpandedTagUid(null);
     }

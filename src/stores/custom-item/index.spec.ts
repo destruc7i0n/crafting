@@ -92,4 +92,28 @@ describe("custom item store", () => {
       uid: customItem.uid,
     });
   });
+
+  it("does not clear recipe refs when deleting a custom item directly from the store", () => {
+    useCustomItemStore.getState().addCustomItem({
+      name: "Custom Bedrock Item",
+      rawId: "mod:custom_item",
+      texture: "",
+      version: MinecraftVersion.Bedrock,
+    });
+
+    const customItem = useCustomItemStore.getState().customItems[0]!;
+
+    useRecipeStore.getState().setRecipeSlot(SLOTS.crafting.result, {
+      kind: "custom_item",
+      uid: customItem.uid,
+    });
+
+    useCustomItemStore.getState().deleteCustomItem(customItem.uid);
+
+    expect(useCustomItemStore.getState().customItems).toHaveLength(0);
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.result]).toEqual({
+      kind: "custom_item",
+      uid: customItem.uid,
+    });
+  });
 });

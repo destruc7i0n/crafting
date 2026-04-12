@@ -20,9 +20,11 @@ import {
 } from "@/lib/tags";
 import { RecipeSlot } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
+import { selectCustomItemByUid } from "@/stores/custom-item/selectors";
 import { isTagSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";
 import { useTagStore } from "@/stores/tag";
+import { selectTagByUid } from "@/stores/tag/selectors";
 import { useUIStore } from "@/stores/ui";
 
 import { ItemTooltip } from "../tooltip/item-tooltip";
@@ -200,9 +202,7 @@ const VanillaRecipeSlotItem = memo(({ value, ...props }: VanillaRecipeSlotItemPr
 VanillaRecipeSlotItem.displayName = "VanillaRecipeSlotItem";
 
 const CustomItemRecipeSlotItem = memo(({ value, ...props }: CustomItemRecipeSlotItemProps) => {
-  const item = useCustomItemStore((state) =>
-    state.customItems.find((candidate) => candidate.uid === value.uid),
-  );
+  const item = useCustomItemStore(selectCustomItemByUid(value.uid));
 
   return (
     <RecipeSlotItemBase
@@ -220,7 +220,7 @@ CustomItemRecipeSlotItem.displayName = "CustomItemRecipeSlotItem";
 const CustomTagRecipeSlotItem = memo(({ value, ...props }: CustomTagRecipeSlotItemProps) => {
   const { resources } = useResourcesForVersion();
   const tags = useTagStore((state) => state.tags);
-  const tag = tags.find((candidate) => candidate.uid === value.uid);
+  const tag = useTagStore(selectTagByUid(value.uid));
 
   if (!tag) {
     return (

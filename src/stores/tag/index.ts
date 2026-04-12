@@ -8,7 +8,6 @@ import {
 } from "@/data/models/identifier/utilities";
 import { Tag, TagValue } from "@/data/models/types";
 import { createEmptyTag } from "@/lib/tags";
-import { useRecipeStore } from "@/stores/recipe";
 
 export interface TagState {
   tags: Tag[];
@@ -73,9 +72,6 @@ export const useTagStore = create<TagState & TagActions>()(
         set((state) => {
           state.tags = state.tags.filter((tag) => tag.uid !== uid);
         });
-        useRecipeStore
-          .getState()
-          .removeMatchingSlotValues((value) => value.kind === "custom_tag" && value.uid === uid);
       },
 
       addValueToTag: (uid, value) => {

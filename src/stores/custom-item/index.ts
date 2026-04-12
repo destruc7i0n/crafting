@@ -8,7 +8,6 @@ import { CustomItem } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { parseMinecraftIdentifierInput } from "@/lib/minecraft-identifier";
 import { generateUid } from "@/lib/utils";
-import { useRecipeStore } from "@/stores/recipe";
 
 export interface CustomItemState {
   customItems: CustomItem[];
@@ -86,9 +85,6 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
         set((state) => {
           state.customItems = state.customItems.filter((item) => item.uid !== uid);
         });
-        useRecipeStore
-          .getState()
-          .removeMatchingSlotValues((value) => value.kind === "custom_item" && value.uid === uid);
       },
     })),
     {

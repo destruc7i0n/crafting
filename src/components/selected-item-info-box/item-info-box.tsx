@@ -3,9 +3,9 @@ import { Trash2Icon, XIcon } from "lucide-react";
 import { getFullId } from "@/data/models/identifier/utilities";
 import { IngredientItem } from "@/data/models/types";
 import { useSlotContext } from "@/hooks/use-slot-context";
+import { clearRecipeSlotAndSelection } from "@/lib/editor-actions";
 import { getTagLabel } from "@/lib/tags";
 import { RecipeSlot } from "@/recipes/slots";
-import { useRecipeStore } from "@/stores/recipe";
 import { getSlotDisplay, getSlotIdentifier, isTagSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";
 import { useUIStore } from "@/stores/ui";
@@ -73,10 +73,7 @@ export const ItemInfoBox = (props: ItemInfoBoxProps) => {
           <button
             type="button"
             className="text-muted-foreground hover:text-destructive flex cursor-pointer items-center gap-1 px-1 py-0.5 text-xs transition-colors sm:px-2 sm:py-1"
-            onClick={() => {
-              useRecipeStore.getState().setRecipeSlot(props.slot, undefined);
-              useUIStore.getState().setSelection(undefined);
-            }}
+            onClick={() => clearRecipeSlotAndSelection(props.slot)}
             aria-label="Remove item from slot"
           >
             <Trash2Icon size={14} />

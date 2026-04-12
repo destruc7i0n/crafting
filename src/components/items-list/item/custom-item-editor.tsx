@@ -5,6 +5,7 @@ import { ArrowLeftIcon, Trash2Icon } from "lucide-react";
 import { NoTextureTexture } from "@/data/constants";
 import { getFullId, getRawId } from "@/data/models/identifier/utilities";
 import { CustomItem } from "@/data/models/types";
+import { deleteCustomItemAndClearRecipeRefs } from "@/lib/editor-actions";
 import {
   bedrockIdentifierHint,
   isValidNamespacedIdentifier,
@@ -30,7 +31,6 @@ export const CustomItemEditor = ({
   className?: string;
 }) => {
   const updateCustomItem = useCustomItemStore((state) => state.updateCustomItem);
-  const deleteCustomItem = useCustomItemStore((state) => state.deleteCustomItem);
 
   const [draftName, setDraftName] = useState(item.displayName);
   const [draftId, setDraftId] = useState(getRawId(item.id));
@@ -83,7 +83,7 @@ export const CustomItemEditor = ({
           <button
             type="button"
             className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive cursor-pointer rounded p-1 transition-colors"
-            onClick={() => deleteCustomItem(item.uid)}
+            onClick={() => deleteCustomItemAndClearRecipeRefs(item.uid)}
           >
             <Trash2Icon size={14} />
             <span className="sr-only">Delete item</span>
@@ -119,7 +119,7 @@ export const CustomItemEditor = ({
           type="button"
           className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive cursor-pointer rounded p-1 transition-colors"
           onClick={() => {
-            deleteCustomItem(item.uid);
+            deleteCustomItemAndClearRecipeRefs(item.uid);
             onToggle();
           }}
         >
