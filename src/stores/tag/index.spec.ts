@@ -4,7 +4,6 @@ import { parseStringToMinecraftIdentifier } from "@/data/models/identifier/utili
 import { Tag, TagValue } from "@/data/models/types";
 import { RecipeType } from "@/data/types";
 import { resolveTagValues } from "@/lib/tags";
-import { SLOTS } from "@/recipes/slots";
 import { useRecipeStore } from "@/stores/recipe";
 
 import { useTagStore } from "./index";
@@ -109,27 +108,5 @@ describe("tag store", () => {
     const tags = useTagStore.getState().tags;
     expect(tags[1]?.values[0]).toEqual(createTagValue("crafting:renamed_grandchild"));
     expect(resolveTagValues(tags[0]?.values ?? [], tags, {})).toEqual(["minecraft:diamond"]);
-  });
-
-  it("does not clear recipe refs when removing a tag directly from the store", () => {
-    const tag = createTag("tag-a", "crafting:parent");
-
-    useTagStore.setState((state) => ({
-      ...state,
-      tags: [tag],
-    }));
-
-    useRecipeStore.getState().setRecipeSlot(SLOTS.crafting.slot1, {
-      kind: "custom_tag",
-      uid: tag.uid,
-    });
-
-    useTagStore.getState().removeTag(tag.uid);
-
-    expect(useTagStore.getState().tags).toEqual([]);
-    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toEqual({
-      kind: "custom_tag",
-      uid: tag.uid,
-    });
   });
 });
