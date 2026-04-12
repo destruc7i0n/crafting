@@ -17,7 +17,7 @@ describe("createDatapackBlob", () => {
     expect(packMcmeta).toEqual({
       pack: {
         description: "Generated with TheDestruc7i0n's Crafting Generator",
-        pack_format: 15,
+        pack_format: 41,
       },
     });
     expect("data/crafting/recipes/example.json" in files).toBe(true);

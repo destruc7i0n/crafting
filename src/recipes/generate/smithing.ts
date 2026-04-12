@@ -2,8 +2,8 @@ import { getRawId } from "@/data/models/identifier/utilities";
 import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
 import { Recipe, RecipeSlotValue, SlotContext } from "@/stores/recipe/types";
+import { supportsSmithingTrimPattern } from "@/versioning";
 
-import { isVersionAtLeast } from "../versioning";
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient, formatIngredientString } from "./ingredient";
 import {
@@ -44,7 +44,7 @@ export const buildJava = ({
       template: formatIngredient({ item: state.template, formatter, slotContext }),
       base: formatIngredient({ item: state.base, formatter, slotContext }),
       addition: formatIngredient({ item: state.addition, formatter, slotContext }),
-      ...(isVersionAtLeast(version, MinecraftVersion.V1215) && state.trimPattern
+      ...(supportsSmithingTrimPattern(version) && state.trimPattern
         ? { pattern: state.trimPattern }
         : {}),
     } satisfies SmithingTrimRecipe;
@@ -132,7 +132,7 @@ export const validateSmithing = (state: Recipe, version?: MinecraftVersion): str
 
   if (
     version &&
-    isVersionAtLeast(version, MinecraftVersion.V1215) &&
+    supportsSmithingTrimPattern(version) &&
     input.recipeType === RecipeType.SmithingTrim &&
     !input.trimPattern
   ) {

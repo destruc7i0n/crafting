@@ -1,9 +1,9 @@
-import { MinecraftVersion, SLOTS } from "@/data/types";
+import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
+import { supportsRecipeCategory } from "@/versioning";
 
-import { isVersionAtLeast } from "../versioning";
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import { CraftingTransmuteRecipe, TransmuteInput } from "./types";
@@ -52,7 +52,7 @@ export const buildJava = ({
 
   return {
     type: "minecraft:crafting_transmute",
-    ...(isVersionAtLeast(version, MinecraftVersion.V119) && state.category
+    ...(supportsRecipeCategory(version, RecipeType.CraftingTransmute) && state.category
       ? { category: state.category }
       : {}),
     ...(group ? { group } : {}),

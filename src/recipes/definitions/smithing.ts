@@ -1,4 +1,4 @@
-import { MinecraftVersion, RecipeSlot, RecipeType, SLOTS } from "@/data/types";
+import { RecipeSlot, RecipeType, SLOTS } from "@/data/types";
 import {
   buildBedrock as buildBedrockSmithing,
   buildJava as buildJavaSmithing,
@@ -6,6 +6,7 @@ import {
   validateSmithing,
 } from "@/recipes/generate/smithing";
 import { BedrockFormatVersion } from "@/recipes/generate/types";
+import { recipeTypeAvailability } from "@/versioning";
 
 import { getSmithingAutoNames } from "./auto-naming";
 import {
@@ -93,11 +94,7 @@ const createBedrockSupportedSmithingDefinition = ({
 export const smithingDefinition = createJavaOnlySmithingDefinition({
   type: RecipeType.Smithing,
   label: "Smithing",
-  availability: {
-    minVersion: MinecraftVersion.V116,
-    // V119 = 1.19.4, which still uses old smithing
-    maxVersion: MinecraftVersion.V119,
-  },
+  availability: recipeTypeAvailability[RecipeType.Smithing],
   autoPlace: [
     SLOTS.smithing.template,
     SLOTS.smithing.base,
@@ -111,7 +108,7 @@ export const smithingDefinition = createJavaOnlySmithingDefinition({
 export const smithingTrimDefinition = createBedrockSupportedSmithingDefinition({
   type: RecipeType.SmithingTrim,
   label: "Smithing Trim",
-  availability: { minVersion: MinecraftVersion.V120 },
+  availability: recipeTypeAvailability[RecipeType.SmithingTrim],
   autoPlace: [SLOTS.smithing.template, SLOTS.smithing.base, SLOTS.smithing.addition],
   editableResultCount: false,
   bedrockWrapperKey: "minecraft:recipe_smithing_trim",
@@ -120,7 +117,7 @@ export const smithingTrimDefinition = createBedrockSupportedSmithingDefinition({
 export const smithingTransformDefinition = createBedrockSupportedSmithingDefinition({
   type: RecipeType.SmithingTransform,
   label: "Smithing Transform",
-  availability: { minVersion: MinecraftVersion.V120 },
+  availability: recipeTypeAvailability[RecipeType.SmithingTransform],
   autoPlace: [
     SLOTS.smithing.template,
     SLOTS.smithing.base,

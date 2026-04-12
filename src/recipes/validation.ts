@@ -1,9 +1,9 @@
 import { MinecraftVersion } from "@/data/types";
-import { supportsItemTagsForVersion } from "@/lib/tags";
 import { getRecipeDefinition, getSupportedRecipeTypesForVersion } from "@/recipes/definitions";
 import { isResultSlot } from "@/recipes/slots";
 import { hasMissingCustomRef, isTagSlotValue } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
+import { supportsItemTags } from "@/versioning";
 
 export interface RecipeValidation {
   valid: boolean;
@@ -26,7 +26,7 @@ const validateCommonRecipeRules = (
   }
 
   const hasTagIngredient = Object.values(recipe.slots).some((item) => isTagSlotValue(item));
-  if (hasTagIngredient && !supportsItemTagsForVersion(version)) {
+  if (hasTagIngredient && !supportsItemTags(version)) {
     errors.push(`Item tags are not available in ${getVersionLabel(version)}`);
   }
 

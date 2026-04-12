@@ -6,8 +6,8 @@ import {
   isTagSlotValue,
 } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
+import { supportsRecipeCategory } from "@/versioning";
 
-import { isVersionAtLeast } from "../versioning";
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import { BedrockFurnaceBody, CookingInput, CookingRecipe } from "./types";
@@ -34,8 +34,7 @@ export const buildJava = ({
   slotContext: SlotContext;
 }): CookingRecipe => {
   const group = state.group.length > 0 ? state.group : undefined;
-  // V119 = 1.19.4
-  const category = isVersionAtLeast(version, MinecraftVersion.V119) ? state.category : undefined;
+  const category = supportsRecipeCategory(version, state.recipeType) ? state.category : undefined;
 
   const input = state.ingredient;
   const output = state.result;
@@ -49,7 +48,7 @@ export const buildJava = ({
 
   return {
     type: formatter.recipeType(baseType) as CookingRecipe["type"],
-    category,
+    ...(category ? { category } : {}),
     ...(group ? { group } : {}),
     experience: state.experience,
     cookingtime: state.time,

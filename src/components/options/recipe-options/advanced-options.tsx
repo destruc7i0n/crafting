@@ -3,30 +3,18 @@ import { ChevronDownIcon } from "lucide-react";
 import { Select } from "@/components/ui/select";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { cn } from "@/lib/utils";
-import { isVersionAtLeast } from "@/recipes/versioning";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
+import {
+  getRecipeCategoryOptions,
+  supportsRecipeCategory,
+  supportsShowNotification,
+  supportsSmithingTrimPattern,
+} from "@/versioning";
 
 import { CheckboxField, Field, InputControl } from "./shared";
-
-const getCategoryOptions = (recipeType: RecipeType) => {
-  switch (recipeType) {
-    case RecipeType.Crafting:
-    case RecipeType.CraftingTransmute:
-      return ["equipment", "building", "misc", "redstone"];
-    case RecipeType.Smelting:
-      return ["food", "blocks", "misc"];
-    case RecipeType.Blasting:
-      return ["blocks", "misc"];
-    case RecipeType.CampfireCooking:
-    case RecipeType.Smoking:
-      return ["food"];
-    default:
-      return undefined;
-  }
-};
 
 const GroupField = () => {
   const group = useRecipeStore((state) => selectCurrentRecipe(state)?.group ?? "");
@@ -143,16 +131,11 @@ export const AdvancedOptions = ({ open, onToggle }: AdvancedOptionsProps) => {
     return null;
   }
 
-  const categoryOptions = getCategoryOptions(recipeType);
-  const supportsCategory =
-    isVersionAtLeast(minecraftVersion, MinecraftVersion.V119) && categoryOptions !== undefined;
-  const supportsSmithingTrimPattern =
-    recipeType === RecipeType.SmithingTrim &&
-    isVersionAtLeast(minecraftVersion, MinecraftVersion.V1215);
-  const supportsShowNotification =
-    recipeType === RecipeType.Crafting &&
-    !shapeless &&
-    isVersionAtLeast(minecraftVersion, MinecraftVersion.V120);
+  const categoryOptions = getRecipeCategoryOptions(recipeType);
+  const showCategory = supportsRecipeCategory(minecraftVersion, recipeType);
+  const showSmithingTrimPattern =
+    recipeType === RecipeType.SmithingTrim && supportsSmithingTrimPattern(minecraftVersion);
+  const showNotification = supportsShowNotification(minecraftVersion, recipeType, shapeless);
 
   return (
     <div className="flex flex-col gap-2 pt-1">
@@ -170,9 +153,9 @@ export const AdvancedOptions = ({ open, onToggle }: AdvancedOptionsProps) => {
       {open && (
         <div className="grid gap-3 sm:grid-cols-2">
           <GroupField />
-          {supportsCategory && <CategoryField categoryOptions={categoryOptions!} />}
-          {supportsSmithingTrimPattern && <SmithingPatternField />}
-          {supportsShowNotification && <ShowNotificationField />}
+          {showCategory && <CategoryField categoryOptions={categoryOptions!} />}
+          {showSmithingTrimPattern && <SmithingPatternField />}
+          {showNotification && <ShowNotificationField />}
         </div>
       )}
     </div>

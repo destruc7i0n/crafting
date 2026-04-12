@@ -1,8 +1,8 @@
 import { getRawId } from "@/data/models/identifier/utilities";
 import { MinecraftVersion } from "@/data/types";
 import { toTagRef } from "@/lib/tags";
+import { compareMinecraftVersions, isVersionAtLeast } from "@/versioning";
 
-import { compareMinecraftVersions, isVersionAtLeast } from "../../versioning";
 import { ObjectResultRef } from "../types";
 import { RecipeFormatter } from "./types";
 

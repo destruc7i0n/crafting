@@ -1,5 +1,5 @@
 import { MinecraftVersion, RecipeSlot, RecipeType } from "@/data/types";
-import { isVersionAtLeast } from "@/recipes/versioning";
+import { isVersionAtLeast } from "@/versioning";
 
 import {
   blastingDefinition,

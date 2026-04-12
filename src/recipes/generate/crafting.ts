@@ -1,5 +1,5 @@
 import { getRawId } from "@/data/models/identifier/utilities";
-import { MinecraftVersion, SLOTS } from "@/data/types";
+import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
 import {
   getRequiredSlotIdentifier,
   getSlotCount,
@@ -7,8 +7,8 @@ import {
   isTagSlotValue,
 } from "@/stores/recipe/slot-value";
 import { Recipe, RecipeSlotValue, SlotContext } from "@/stores/recipe/types";
+import { supportsRecipeCategory, supportsShowNotification } from "@/versioning";
 
-import { isVersionAtLeast } from "../versioning";
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import {
@@ -235,8 +235,9 @@ export const buildJava = ({
   const populatedSlots = grid.filter((item): item is RecipeSlotValue => Boolean(item));
 
   const group = state.group.length > 0 ? state.group : undefined;
-  // V119 = 1.19.4
-  const category = isVersionAtLeast(version, MinecraftVersion.V119) ? state.category : undefined;
+  const category = supportsRecipeCategory(version, RecipeType.Crafting)
+    ? state.category
+    : undefined;
 
   const { key, reverse } = getKeyForGrid(grid, slotContext);
 
@@ -250,7 +251,8 @@ export const buildJava = ({
     return {
       type: formatter.recipeType("crafting_shapeless") as ShapelessCraftingRecipe["type"],
       ...(category ? { category } : {}),
-      ...(isVersionAtLeast(version, MinecraftVersion.V261) && state.showNotification === false
+      ...(supportsShowNotification(version, RecipeType.Crafting, true) &&
+      state.showNotification === false
         ? { show_notification: false }
         : {}),
       ingredients: populatedSlots.map((item) => formatIngredient({ item, formatter, slotContext })),
@@ -262,7 +264,8 @@ export const buildJava = ({
   return {
     type: formatter.recipeType("crafting_shaped") as ShapedCraftingRecipe["type"],
     ...(category ? { category } : {}),
-    ...(isVersionAtLeast(version, MinecraftVersion.V119) && state.showNotification === false
+    ...(supportsShowNotification(version, RecipeType.Crafting, false) &&
+    state.showNotification === false
       ? { show_notification: false }
       : {}),
     pattern: getPattern({

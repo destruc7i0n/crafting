@@ -1,8 +1,7 @@
 import { strToU8, zipSync } from "fflate";
 
-import { isVersionAtLeast } from "@/recipes/versioning";
+import { getJavaPackMetadata } from "@/versioning";
 
-import { javaMinecraftVersions } from "./constants";
 import { generateTag } from "./generate/tag";
 import { parseStringToMinecraftIdentifier } from "./models/identifier/utilities";
 import { Tag } from "./models/types";
@@ -13,40 +12,12 @@ export interface DatapackRecipeFile {
   json: object;
 }
 
-type JavaPackFormatVersion = Exclude<(typeof javaMinecraftVersions)[number], MinecraftVersion.V112>;
-type PackFormatVersion = number | [number, number];
-
-const packFormatByVersion = {
-  [MinecraftVersion.V113]: 4,
-  [MinecraftVersion.V114]: 4,
-  [MinecraftVersion.V115]: 5,
-  [MinecraftVersion.V116]: 6,
-  [MinecraftVersion.V117]: 7,
-  [MinecraftVersion.V118]: 8,
-  [MinecraftVersion.V119]: 10,
-  [MinecraftVersion.V120]: 15,
-  [MinecraftVersion.V121]: 48,
-  [MinecraftVersion.V1212]: 57,
-  [MinecraftVersion.V1214]: 61,
-  [MinecraftVersion.V1215]: 71,
-  [MinecraftVersion.V1216]: 80,
-  [MinecraftVersion.V1217]: 81,
-  // 1.21.9+: pack format uses major.minor - [major, minor] tuple
-  [MinecraftVersion.V1219]: [88, 0],
-  [MinecraftVersion.V12111]: [94, 1],
-  [MinecraftVersion.V261]: [101, 1],
-} satisfies Record<JavaPackFormatVersion, PackFormatVersion>;
-
 type PackMetadata =
   | { pack_format: number }
-  | { min_format: PackFormatVersion; max_format: PackFormatVersion };
+  | { min_format: number | [number, number]; max_format: number | [number, number] };
 
 const getPackMetadata = (version: MinecraftVersion): PackMetadata => {
-  const packFormat = packFormatByVersion[version as JavaPackFormatVersion];
-
-  if (packFormat === undefined) {
-    throw new Error(`Datapacks are not supported for ${version}`);
-  }
+  const { packFormat } = getJavaPackMetadata(version);
 
   if (Array.isArray(packFormat)) {
     return { min_format: packFormat, max_format: packFormat };
@@ -73,6 +44,7 @@ export const createDatapackBlob = (
   tags: Tag[],
 ): Blob => {
   const files: Record<string, Uint8Array> = {};
+  const { recipeDir, tagDir } = getJavaPackMetadata(version);
 
   files["pack.mcmeta"] = strToU8(
     JSON.stringify(
@@ -87,15 +59,11 @@ export const createDatapackBlob = (
     ),
   );
 
-  const recipeDir = isVersionAtLeast(version, MinecraftVersion.V121) ? "recipe" : "recipes";
-
   for (const recipeFile of recipeFiles) {
     files[`data/crafting/${recipeDir}/${recipeFile.name}.json`] = strToU8(
       JSON.stringify(recipeFile.json, null, 2),
     );
   }
-
-  const tagDir = isVersionAtLeast(version, MinecraftVersion.V121) ? "tags/item" : "tags/items";
 
   for (const tag of generateTagFiles(tags)) {
     files[`data/${tag.namespace}/${tagDir}/${tag.id}.json`] = strToU8(

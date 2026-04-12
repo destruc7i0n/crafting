@@ -1,8 +1,8 @@
 import { MinecraftVersion, SLOTS } from "@/data/types";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
+import { isVersionAtLeast } from "@/versioning";
 
-import { isVersionAtLeast } from "../versioning";
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
 import { BedrockShapelessBody, StonecutterInput, StonecuttingRecipe } from "./types";

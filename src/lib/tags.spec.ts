@@ -3,44 +3,7 @@ import { describe, expect, it } from "vitest";
 import { Tag, TagValue } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 
-import {
-  createEmptyTag,
-  createTagItem,
-  isSameIngredient,
-  resolveTagValues,
-  supportsCustomTagsForVersion,
-  supportsItemTagsForVersion,
-} from "./tags";
-
-describe("supportsItemTagsForVersion", () => {
-  it("returns false for 1.12", () => {
-    expect(supportsItemTagsForVersion(MinecraftVersion.V112)).toBe(false);
-  });
-
-  it("returns true for 1.13+", () => {
-    expect(supportsItemTagsForVersion(MinecraftVersion.V113)).toBe(true);
-    expect(supportsItemTagsForVersion(MinecraftVersion.V121)).toBe(true);
-  });
-
-  it("returns true for Bedrock", () => {
-    expect(supportsItemTagsForVersion(MinecraftVersion.Bedrock)).toBe(true);
-  });
-});
-
-describe("supportsCustomTagsForVersion", () => {
-  it("returns false for 1.12", () => {
-    expect(supportsCustomTagsForVersion(MinecraftVersion.V112)).toBe(false);
-  });
-
-  it("returns true for 1.13+", () => {
-    expect(supportsCustomTagsForVersion(MinecraftVersion.V113)).toBe(true);
-    expect(supportsCustomTagsForVersion(MinecraftVersion.V121)).toBe(true);
-  });
-
-  it("returns false for Bedrock", () => {
-    expect(supportsCustomTagsForVersion(MinecraftVersion.Bedrock)).toBe(false);
-  });
-});
+import { createEmptyTag, createTagItem, isSameIngredient, resolveTagValues } from "./tags";
 
 describe("resolveTagValues", () => {
   const makeItemValue = (id: string): TagValue => ({

@@ -1,4 +1,4 @@
-import { MinecraftVersion, RecipeSlot, RecipeType, SLOTS } from "@/data/types";
+import { RecipeSlot, RecipeType, SLOTS } from "@/data/types";
 import {
   buildBedrock as buildBedrockCrafting,
   buildJava as buildJavaCrafting,
@@ -12,6 +12,7 @@ import {
 } from "@/recipes/generate/transmute";
 import { BedrockFormatVersion, BedrockRecipeMeta } from "@/recipes/generate/types";
 import { Recipe } from "@/stores/recipe/types";
+import { recipeTypeAvailability } from "@/versioning";
 
 import { getCraftingAutoNames, getTransmuteAutoNames } from "./auto-naming";
 import { BedrockSupportedRecipeDefinition, JavaOnlyRecipeDefinition } from "./types";
@@ -69,7 +70,7 @@ export const craftingDefinition: BedrockSupportedRecipeDefinition = {
   label: "Crafting",
   iconItemId: "minecraft:crafting_table",
   previewKind: "crafting",
-  availability: { minVersion: MinecraftVersion.V112 },
+  availability: recipeTypeAvailability[RecipeType.Crafting],
   slots: {
     getAutoPlace: (recipe) =>
       recipe.crafting.twoByTwo ? twoByTwoCraftingAutoPlace : fullCraftingAutoPlace,
@@ -100,10 +101,7 @@ export const craftingTransmuteDefinition: JavaOnlyRecipeDefinition = {
   family: "crafting",
   label: "Crafting Transmute",
   iconItemId: "minecraft:crafting_table",
-  availability: {
-    minVersion: MinecraftVersion.V1212,
-    enabled: false,
-  },
+  availability: recipeTypeAvailability[RecipeType.CraftingTransmute],
   slots: {
     getAutoPlace: () => [SLOTS.crafting.slot1, SLOTS.crafting.slot2, SLOTS.crafting.result],
     resultSlots: craftingResultSlots,

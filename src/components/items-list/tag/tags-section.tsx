@@ -14,6 +14,7 @@ import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
 import { useTagStore } from "@/stores/tag";
+import { supportsVanillaTagList } from "@/versioning";
 
 import { Item as IngredientItem } from "../../item/item";
 import { Slot } from "../../slot/slot";
@@ -52,6 +53,7 @@ export const TagsSection = ({
   const items = resources?.items ?? EMPTY_ITEMS;
   const itemsById = resources?.itemsById;
   const tagsByUid = useMemo(() => Object.fromEntries(tags.map((tag) => [tag.uid, tag])), [tags]);
+  const showVanillaTagList = supportsVanillaTagList(version);
 
   const customTagItems = useMemo(
     () =>
@@ -241,21 +243,23 @@ export const TagsSection = ({
         </div>
       )}
 
-      {supportsCustomTags && filteredCustomTags.length > 0 && (
+      {showVanillaTagList && supportsCustomTags && filteredCustomTags.length > 0 && (
         <span className="text-muted-foreground hidden text-xs font-medium lg:block">
           Vanilla Tags
         </span>
       )}
 
-      <InventoryGridContainer>
-        <div className="grid grid-cols-[repeat(auto-fill,36px)] content-start">
-          {filteredVanillaTagItems.map((tagItem) => (
-            <Slot key={identifierUniqueKey(tagItem.id)}>
-              <IngredientItem item={tagItem} />
-            </Slot>
-          ))}
-        </div>
-      </InventoryGridContainer>
+      {showVanillaTagList && (
+        <InventoryGridContainer>
+          <div className="grid grid-cols-[repeat(auto-fill,36px)] content-start">
+            {filteredVanillaTagItems.map((tagItem) => (
+              <Slot key={identifierUniqueKey(tagItem.id)}>
+                <IngredientItem item={tagItem} />
+              </Slot>
+            ))}
+          </div>
+        </InventoryGridContainer>
+      )}
     </div>
   );
 };

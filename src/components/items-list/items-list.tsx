@@ -4,9 +4,9 @@ import { PlusIcon } from "lucide-react";
 
 import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
-import { supportsCustomTagsForVersion, supportsItemTagsForVersion } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/stores/ui";
+import { supportsCustomTags, supportsItemTags } from "@/versioning";
 
 import { ItemsSection } from "./item/items-section";
 import { TagsSection } from "./tag/tags-section";
@@ -15,8 +15,8 @@ export const ItemsList = () => {
   const { resources, version } = useResourcesForVersion();
 
   const resourceItems = resources?.items;
-  const supportsTags = supportsItemTagsForVersion(version);
-  const supportsCustomTags = supportsCustomTagsForVersion(version);
+  const supportsTags = supportsItemTags(version);
+  const canCreateTags = supportsCustomTags(version);
 
   const [search, setSearch] = useState("");
   const deferredSearch = useDeferredValue(search);
@@ -28,7 +28,7 @@ export const ItemsList = () => {
   const setSelection = useUIStore((state) => state.setSelection);
 
   const tab: "items" | "tags" = !supportsTags && activeTab === "tags" ? "items" : activeTab;
-  const showCreateButton = tab === "items" || supportsCustomTags;
+  const showCreateButton = tab === "items" || canCreateTags;
   const isCreating = (tab === "items" && showAddItemForm) || (tab === "tags" && showAddTagForm);
 
   const handleCreateAction = () => {
@@ -150,7 +150,7 @@ export const ItemsList = () => {
             setExpandedTagUid={setExpandedTagUid}
             showAddTagForm={showAddTagForm}
             onCloseAddTagForm={() => setShowAddTagForm(false)}
-            supportsCustomTags={supportsCustomTags}
+            supportsCustomTags={canCreateTags}
           />
         ) : (
           <ItemsSection

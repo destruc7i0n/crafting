@@ -1,4 +1,4 @@
-import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
+import { RecipeType, SLOTS } from "@/data/types";
 import {
   buildBedrock as buildBedrockCooking,
   buildJava as buildJavaCooking,
@@ -6,6 +6,7 @@ import {
   validateCooking,
 } from "@/recipes/generate/cooking";
 import { BedrockFormatVersion, BedrockTag } from "@/recipes/generate/types";
+import { recipeTypeAvailability, RecipeTypeAvailability } from "@/versioning";
 
 import { getCookingAutoNames } from "./auto-naming";
 import { BedrockSupportedRecipeDefinition, RecipeDefinitionSlots } from "./types";
@@ -23,13 +24,13 @@ const createCookingDefinition = ({
   type,
   label,
   iconItemId,
-  minVersion,
+  availability,
   bedrockTags,
 }: {
   type: RecipeType.Smelting | RecipeType.Blasting | RecipeType.CampfireCooking | RecipeType.Smoking;
   label: string;
   iconItemId: string;
-  minVersion: MinecraftVersion;
+  availability: RecipeTypeAvailability;
   bedrockTags: BedrockTag[];
 }): BedrockSupportedRecipeDefinition => ({
   type,
@@ -37,7 +38,7 @@ const createCookingDefinition = ({
   label,
   iconItemId,
   previewKind: "furnace",
-  availability: { minVersion },
+  availability,
   slots: cookingSlots,
   naming: {
     resultSlot: SLOTS.cooking.result,
@@ -65,7 +66,7 @@ export const smeltingDefinition = createCookingDefinition({
   type: RecipeType.Smelting,
   label: "Smelting",
   iconItemId: "minecraft:furnace",
-  minVersion: MinecraftVersion.V113,
+  availability: recipeTypeAvailability[RecipeType.Smelting],
   bedrockTags: ["furnace"],
 });
 
@@ -73,7 +74,7 @@ export const blastingDefinition = createCookingDefinition({
   type: RecipeType.Blasting,
   label: "Blasting",
   iconItemId: "minecraft:blast_furnace",
-  minVersion: MinecraftVersion.V114,
+  availability: recipeTypeAvailability[RecipeType.Blasting],
   bedrockTags: ["blast_furnace"],
 });
 
@@ -81,7 +82,7 @@ export const campfireCookingDefinition = createCookingDefinition({
   type: RecipeType.CampfireCooking,
   label: "Campfire Cooking",
   iconItemId: "minecraft:campfire",
-  minVersion: MinecraftVersion.V114,
+  availability: recipeTypeAvailability[RecipeType.CampfireCooking],
   bedrockTags: ["campfire", "soul_campfire"],
 });
 
@@ -89,6 +90,6 @@ export const smokingDefinition = createCookingDefinition({
   type: RecipeType.Smoking,
   label: "Smoking",
   iconItemId: "minecraft:smoker",
-  minVersion: MinecraftVersion.V114,
+  availability: recipeTypeAvailability[RecipeType.Smoking],
   bedrockTags: ["smoker"],
 });

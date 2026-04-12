@@ -7,7 +7,6 @@ import {
 import { IngredientItem, Item, Tag, TagItem, TagValue } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { generateUid } from "@/lib/utils";
-import { isVersionAtLeast } from "@/recipes/versioning";
 
 const DEFAULT_TAG_NAME = "custom_tag";
 const DEFAULT_TAG_NAMESPACE = "crafting";
@@ -58,12 +57,6 @@ export const resolveTagGraph = (graph: TagGraph): TagGraph => {
 
   return Object.fromEntries(sortedNodeIds.map((nodeId) => [nodeId, dfs(nodeId)]));
 };
-
-export const supportsItemTagsForVersion = (version: MinecraftVersion) =>
-  version === MinecraftVersion.Bedrock || isVersionAtLeast(version, MinecraftVersion.V113);
-
-export const supportsCustomTagsForVersion = (version: MinecraftVersion) =>
-  isVersionAtLeast(version, MinecraftVersion.V113);
 
 export const createEmptyTag = (existingTags: Tag[]): Tag => {
   const existingNumbers = existingTags
