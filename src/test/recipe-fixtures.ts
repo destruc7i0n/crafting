@@ -1,5 +1,5 @@
 import { IngredientItem, MinecraftIdentifier } from "@/data/models/types";
-import { RecipeSlot } from "@/data/types";
+import { RecipeSlot } from "@/recipes/slots";
 import { cloneRecipeSlotValue, toRecipeSlotValue } from "@/stores/recipe/slot-value";
 import { Recipe, RecipeSlotValue, recipeStateDefaults } from "@/stores/recipe/types";
 

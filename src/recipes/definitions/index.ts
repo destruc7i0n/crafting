@@ -1,4 +1,5 @@
-import { MinecraftVersion, RecipeSlot, RecipeType } from "@/data/types";
+import { MinecraftVersion, RecipeType } from "@/data/types";
+import { RecipeSlot } from "@/recipes/slots";
 import { isVersionAtLeast } from "@/versioning";
 
 import {

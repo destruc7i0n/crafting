@@ -5,11 +5,13 @@ import { createBehaviorPackBlob } from "./behavior-pack";
 
 describe("createBehaviorPackBlob", () => {
   beforeEach(() => {
+    let callCount = 0;
+
     vi.stubGlobal("crypto", {
-      randomUUID: vi
-        .fn()
-        .mockReturnValueOnce("11111111-1111-1111-1111-111111111111")
-        .mockReturnValueOnce("22222222-2222-2222-2222-222222222222"),
+      randomUUID: () =>
+        (callCount += 1) === 1
+          ? "11111111-1111-1111-1111-111111111111"
+          : "22222222-2222-2222-2222-222222222222",
     });
   });
 

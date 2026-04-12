@@ -3,10 +3,13 @@ import { useEffect } from "react";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
 import { IngredientItem } from "@/data/models/types";
-import { RecipeSlot } from "@/data/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { ItemDraggableData, isItemDraggableData, isRecipeSlotDropTargetData } from "@/lib/dnd";
-import { canRecipeSlotAcceptIngredientItem, canRecipeSlotAcceptSlotValue } from "@/recipes/slots";
+import { RecipeSlot } from "@/recipes/slots";
+import {
+  canRecipeSlotAcceptIngredientItem,
+  canRecipeSlotAcceptSlotValue,
+} from "@/recipes/slots/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { cloneRecipeSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";

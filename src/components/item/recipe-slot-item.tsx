@@ -10,7 +10,6 @@ import invariant from "tiny-invariant";
 import { NoTextureTexture } from "@/data/constants";
 import { getFullId, getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { MinecraftIdentifier } from "@/data/models/types";
-import { RecipeSlot } from "@/data/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import {
@@ -19,6 +18,7 @@ import {
   getTagLabel,
   resolveTagValues,
 } from "@/lib/tags";
+import { RecipeSlot } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { isTagSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";

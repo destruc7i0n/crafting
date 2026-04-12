@@ -5,12 +5,16 @@ import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
+import type { GeneratedRecipe } from "@/recipes/generate/types";
+
 const { createBehaviorPackBlob, downloadBlob, generate, getBehaviorPackRecipeFileName } =
   vi.hoisted(() => ({
-    createBehaviorPackBlob: vi.fn(),
-    downloadBlob: vi.fn(),
-    generate: vi.fn(),
-    getBehaviorPackRecipeFileName: vi.fn((identifier: string) => {
+    createBehaviorPackBlob: vi.fn<typeof import("@/data/behavior-pack").createBehaviorPackBlob>(),
+    downloadBlob: vi.fn<typeof import("@/data/datapack").downloadBlob>(),
+    generate: vi.fn<typeof import("@/recipes/generate").generate>(),
+    getBehaviorPackRecipeFileName: vi.fn<
+      typeof import("@/data/behavior-pack").getBehaviorPackRecipeFileName
+    >((identifier: string) => {
       const sanitized =
         identifier
           .trim()
@@ -38,6 +42,16 @@ vi.mock("@/recipes/generate", () => ({
 import { downloadBehaviorPack } from "./behavior-pack";
 
 let recipeId = 0;
+
+const generatedRecipe = {
+  format_version: "1.20.10",
+  "minecraft:recipe_shapeless": {
+    description: { identifier: "crafting:stone_button" },
+    tags: ["crafting_table"],
+    ingredients: [],
+    result: {},
+  },
+} satisfies GeneratedRecipe;
 
 const createItem = (raw: string, version = MinecraftVersion.Bedrock) => ({
   type: "default_item" as const,
@@ -159,7 +173,7 @@ describe("downloadBehaviorPack", () => {
     });
     const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
-    generate.mockReturnValue({ test: true });
+    generate.mockReturnValue(generatedRecipe);
     createBehaviorPackBlob.mockReturnValue(blob);
 
     await downloadBehaviorPack({
@@ -179,7 +193,7 @@ describe("downloadBehaviorPack", () => {
       },
     });
     expect(createBehaviorPackBlob).toHaveBeenCalledWith([
-      { identifier: "crafting:stone_button", json: { test: true } },
+      { identifier: "crafting:stone_button", json: generatedRecipe },
     ]);
     expect(downloadBlob).toHaveBeenCalledWith(blob, "behavior_pack.mcpack");
   });
@@ -216,7 +230,7 @@ describe("downloadBehaviorPack", () => {
     });
     const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
-    generate.mockReturnValue({ test: true });
+    generate.mockReturnValue(generatedRecipe);
     createBehaviorPackBlob.mockImplementation(() => {
       throw new Error("Zip failed");
     });

@@ -3,8 +3,9 @@ import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 import { IngredientItem } from "@/data/models/types";
-import { RecipeSlot, RecipeType } from "@/data/types";
+import { RecipeType } from "@/data/types";
 import { generateUid } from "@/lib/utils";
+import { RecipeSlot } from "@/recipes/slots";
 
 import { selectCurrentRecipe } from "./selectors";
 import { toRecipeSlotValue } from "./slot-value";

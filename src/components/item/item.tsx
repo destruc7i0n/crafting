@@ -13,7 +13,7 @@ import { useItemSelection } from "@/hooks/use-item-selection";
 import { ItemDraggableData } from "@/lib/dnd";
 import { isSameIngredient } from "@/lib/tags";
 import { cn } from "@/lib/utils";
-import { findFirstEmptyRecipeSlot } from "@/recipes/slots";
+import { findFirstEmptyRecipeSlot } from "@/recipes/slots/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 import { useUIStore } from "@/stores/ui";

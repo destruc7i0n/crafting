@@ -1,4 +1,5 @@
-import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
+import { MinecraftVersion, RecipeType } from "@/data/types";
+import { SLOTS } from "@/recipes/slots";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";

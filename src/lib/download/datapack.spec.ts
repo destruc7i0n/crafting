@@ -5,10 +5,12 @@ import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
+import type { GeneratedRecipe } from "@/recipes/generate/types";
+
 const { createDatapackBlob, downloadBlob, generate } = vi.hoisted(() => ({
-  createDatapackBlob: vi.fn(),
-  downloadBlob: vi.fn(),
-  generate: vi.fn(),
+  createDatapackBlob: vi.fn<typeof import("@/data/datapack").createDatapackBlob>(),
+  downloadBlob: vi.fn<typeof import("@/data/datapack").downloadBlob>(),
+  generate: vi.fn<typeof import("@/recipes/generate").generate>(),
 }));
 
 vi.mock("@/data/datapack", () => ({
@@ -23,6 +25,12 @@ vi.mock("@/recipes/generate", () => ({
 import { downloadDatapack } from "./datapack";
 
 let recipeId = 0;
+
+const generatedRecipe = {
+  type: "minecraft:crafting_shapeless",
+  ingredients: [],
+  result: {},
+} satisfies GeneratedRecipe;
 
 const createItem = (raw: string, version = MinecraftVersion.V121) => ({
   type: "default_item" as const,
@@ -126,7 +134,7 @@ describe("downloadDatapack", () => {
     });
     const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
-    generate.mockReturnValue({ test: true });
+    generate.mockReturnValue(generatedRecipe);
     createDatapackBlob.mockReturnValue(blob);
 
     await downloadDatapack([recipe], MinecraftVersion.V121, {
@@ -143,7 +151,7 @@ describe("downloadDatapack", () => {
     });
     expect(createDatapackBlob).toHaveBeenCalledWith(
       MinecraftVersion.V121,
-      [{ name: "stone_button", json: { test: true } }],
+      [{ name: "stone_button", json: generatedRecipe }],
       [],
     );
     expect(downloadBlob).toHaveBeenCalledWith(blob, "datapack.zip");

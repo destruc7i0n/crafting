@@ -1,4 +1,4 @@
-import { RecipeSlot, RecipeType, SLOTS } from "@/data/types";
+import { RecipeType } from "@/data/types";
 import {
   buildBedrock as buildBedrockCrafting,
   buildJava as buildJavaCrafting,
@@ -11,6 +11,7 @@ import {
   validateTransmute,
 } from "@/recipes/generate/transmute";
 import { BedrockFormatVersion, BedrockRecipeMeta } from "@/recipes/generate/types";
+import { RecipeSlot, SLOTS } from "@/recipes/slots";
 import { Recipe } from "@/stores/recipe/types";
 import { recipeTypeAvailability } from "@/versioning";
 

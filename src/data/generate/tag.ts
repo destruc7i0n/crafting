@@ -2,7 +2,11 @@ import { getRawId } from "@/data/models/identifier/utilities";
 import { toTagRef } from "@/lib/tags";
 
 import { Tag } from "../models/types";
-import { OutputTag } from "../types";
+
+interface OutputTag {
+  replace: boolean;
+  values: string[];
+}
 
 export function generateTag(tag: Tag): OutputTag {
   return {

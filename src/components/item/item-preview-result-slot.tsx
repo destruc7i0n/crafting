@@ -1,5 +1,5 @@
-import { RecipeSlot } from "@/data/types";
 import { cn } from "@/lib/utils";
+import { RecipeSlot } from "@/recipes/slots";
 
 import { SlotProps } from "../slot/slot";
 import { EditableItemCount } from "./editable-item-count";

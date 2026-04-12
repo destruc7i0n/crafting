@@ -1,8 +1,10 @@
 import { IngredientItem } from "@/data/models/types";
-import { RecipeSlot, RecipeType } from "@/data/types";
+import { RecipeType } from "@/data/types";
 import { getRecipeDefinition, recipeResultSlots } from "@/recipes/definitions";
 import { isTagSlotValue } from "@/stores/recipe/slot-value";
 import { Recipe, RecipeSlotValue } from "@/stores/recipe/types";
+
+import { RecipeSlot } from "./index";
 
 const resultSlots = new Set<RecipeSlot>(recipeResultSlots);
 

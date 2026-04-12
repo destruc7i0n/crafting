@@ -1,8 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { MinecraftVersion, RecipeSlot } from "@/data/types";
+import { MinecraftVersion } from "@/data/types";
+import { RecipeSlot } from "@/recipes/slots";
 
 import { applyRecipeDragDrop } from "./use-dnd-monitor";
+
+type SetRecipeSlot = Parameters<typeof applyRecipeDragDrop>[0]["setRecipeSlot"];
+type SetRecipeSlotFromIngredient = Parameters<
+  typeof applyRecipeDragDrop
+>[0]["setRecipeSlotFromIngredient"];
 
 const makePaletteItem = () => ({
   type: "palette-item" as const,
@@ -26,8 +32,8 @@ const makeRecipeSlotItem = (slot: RecipeSlot = "crafting.1") => ({
 
 describe("applyRecipeDragDrop", () => {
   it("removes a dragged recipe-slot item when dropped outside all slots", () => {
-    const setRecipeSlot = vi.fn();
-    const setRecipeSlotFromIngredient = vi.fn();
+    const setRecipeSlot = vi.fn<SetRecipeSlot>();
+    const setRecipeSlotFromIngredient = vi.fn<SetRecipeSlotFromIngredient>();
 
     applyRecipeDragDrop({
       sourceData: makeRecipeSlotItem(),
@@ -42,8 +48,8 @@ describe("applyRecipeDragDrop", () => {
   });
 
   it("moves a dragged recipe-slot item to a valid empty slot", () => {
-    const setRecipeSlot = vi.fn();
-    const setRecipeSlotFromIngredient = vi.fn();
+    const setRecipeSlot = vi.fn<SetRecipeSlot>();
+    const setRecipeSlotFromIngredient = vi.fn<SetRecipeSlotFromIngredient>();
 
     applyRecipeDragDrop({
       sourceData: makeRecipeSlotItem(),
@@ -61,8 +67,8 @@ describe("applyRecipeDragDrop", () => {
   });
 
   it("treats same-slot drops as a no-op", () => {
-    const setRecipeSlot = vi.fn();
-    const setRecipeSlotFromIngredient = vi.fn();
+    const setRecipeSlot = vi.fn<SetRecipeSlot>();
+    const setRecipeSlotFromIngredient = vi.fn<SetRecipeSlotFromIngredient>();
 
     applyRecipeDragDrop({
       sourceData: makeRecipeSlotItem("crafting.1"),
@@ -77,8 +83,8 @@ describe("applyRecipeDragDrop", () => {
   });
 
   it("places palette items only on valid recipe slots", () => {
-    const setRecipeSlot = vi.fn();
-    const setRecipeSlotFromIngredient = vi.fn();
+    const setRecipeSlot = vi.fn<SetRecipeSlot>();
+    const setRecipeSlotFromIngredient = vi.fn<SetRecipeSlotFromIngredient>();
 
     applyRecipeDragDrop({
       sourceData: makePaletteItem(),

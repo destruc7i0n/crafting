@@ -1,4 +1,4 @@
-import { RecipeType, SLOTS } from "@/data/types";
+import { RecipeType } from "@/data/types";
 import {
   buildBedrock as buildBedrockCooking,
   buildJava as buildJavaCooking,
@@ -6,6 +6,7 @@ import {
   validateCooking,
 } from "@/recipes/generate/cooking";
 import { BedrockFormatVersion, BedrockTag } from "@/recipes/generate/types";
+import { SLOTS } from "@/recipes/slots";
 import { recipeTypeAvailability, RecipeTypeAvailability } from "@/versioning";
 
 import { getCookingAutoNames } from "./auto-naming";

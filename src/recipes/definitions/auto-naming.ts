@@ -1,6 +1,7 @@
 import { getRawId } from "@/data/models/identifier/utilities";
-import { RecipeType, SLOTS } from "@/data/types";
+import { RecipeType } from "@/data/types";
 import { sanitizeBedrockIdentifierPart } from "@/lib/minecraft-identifier";
+import { SLOTS } from "@/recipes/slots";
 import { uniqueNonEmpty } from "@/recipes/utils";
 import { getSlotIdentifier } from "@/stores/recipe/slot-value";
 import { Recipe, RecipeSlotValue, SlotContext } from "@/stores/recipe/types";

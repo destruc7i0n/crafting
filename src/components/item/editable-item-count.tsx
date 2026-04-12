@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
-import { RecipeSlot } from "@/data/types";
-import { canEditRecipeSlotCount } from "@/recipes/slots";
+import { RecipeSlot } from "@/recipes/slots";
+import { canEditRecipeSlotCount } from "@/recipes/slots/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeSlot, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { canEditSlotCount, getSlotCount } from "@/stores/recipe/slot-value";

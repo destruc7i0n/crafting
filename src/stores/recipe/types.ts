@@ -1,5 +1,6 @@
 import { CustomItem, MinecraftIdentifier, Tag } from "@/data/models/types";
-import { MinecraftVersion, RecipeSlot, RecipeType } from "@/data/types";
+import { MinecraftVersion, RecipeType } from "@/data/types";
+import { RecipeSlot } from "@/recipes/slots";
 import { VersionResourceData } from "@/stores/resources";
 
 interface RecipeFields {

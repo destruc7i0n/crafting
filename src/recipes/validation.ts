@@ -1,6 +1,6 @@
 import { MinecraftVersion } from "@/data/types";
 import { getRecipeDefinition, getSupportedRecipeTypesForVersion } from "@/recipes/definitions";
-import { isResultSlot } from "@/recipes/slots";
+import { isResultSlot } from "@/recipes/slots/utils";
 import { hasMissingCustomRef, isTagSlotValue } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 import { supportsItemTags } from "@/versioning";

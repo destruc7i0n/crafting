@@ -1,6 +1,7 @@
-import { MinecraftVersion, RecipeSlot, RecipeType } from "@/data/types";
+import { MinecraftVersion, RecipeType } from "@/data/types";
 import { RecipeFormatter } from "@/recipes/generate/format/types";
 import { BedrockBody, BedrockRecipeMeta, JavaRecipe } from "@/recipes/generate/types";
+import { RecipeSlot } from "@/recipes/slots";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 export type PreviewKind = "crafting" | "furnace" | "smithing" | "stonecutter";

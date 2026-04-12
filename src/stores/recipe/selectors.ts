@@ -1,4 +1,4 @@
-import { RecipeSlot } from "@/data/types";
+import { RecipeSlot } from "@/recipes/slots";
 
 import { RecipeState } from "./types";
 

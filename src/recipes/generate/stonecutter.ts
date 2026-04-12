@@ -1,4 +1,5 @@
-import { MinecraftVersion, SLOTS } from "@/data/types";
+import { MinecraftVersion } from "@/data/types";
+import { SLOTS } from "@/recipes/slots";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 import { isVersionAtLeast } from "@/versioning";

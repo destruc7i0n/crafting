@@ -12,7 +12,7 @@ import {
   findFirstEmptyRecipeSlot,
   isRecipeSlotDisabled,
   isResultSlot,
-} from "./slots";
+} from "./utils";
 
 const makeCanonicalRecipe = (overrides: Parameters<typeof makeRecipe>[0] = {}): Recipe =>
   makeRecipe(overrides);

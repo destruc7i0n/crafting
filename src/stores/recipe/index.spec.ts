@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { IngredientItem } from "@/data/models/types";
-import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
+import { MinecraftVersion, RecipeType } from "@/data/types";
+import { SLOTS } from "@/recipes/slots";
 
 import { useRecipeStore } from "./index";
 import { Recipe, RecipeSlotValue } from "./types";

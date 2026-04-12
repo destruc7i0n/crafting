@@ -2,9 +2,9 @@ import { Trash2Icon, XIcon } from "lucide-react";
 
 import { getFullId } from "@/data/models/identifier/utilities";
 import { IngredientItem } from "@/data/models/types";
-import { RecipeSlot } from "@/data/types";
 import { useSlotContext } from "@/hooks/use-slot-context";
 import { getTagLabel } from "@/lib/tags";
+import { RecipeSlot } from "@/recipes/slots";
 import { useRecipeStore } from "@/stores/recipe";
 import { getSlotDisplay, getSlotIdentifier, isTagSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";

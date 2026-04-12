@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { IngredientItem } from "@/data/models/types";
-import { RecipeSlot } from "@/data/types";
+import { RecipeSlot } from "@/recipes/slots";
 import { RecipeSlotValue } from "@/stores/recipe/types";
 
 export type Selection =

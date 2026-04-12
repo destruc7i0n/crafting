@@ -1,5 +1,6 @@
 import { getRawId } from "@/data/models/identifier/utilities";
-import { MinecraftVersion, RecipeType, SLOTS } from "@/data/types";
+import { MinecraftVersion, RecipeType } from "@/data/types";
+import { SLOTS } from "@/recipes/slots";
 import {
   getRequiredSlotIdentifier,
   getSlotCount,

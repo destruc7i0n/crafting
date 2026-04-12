@@ -1,4 +1,4 @@
-import { RecipeSlot, RecipeType, SLOTS } from "@/data/types";
+import { RecipeType } from "@/data/types";
 import {
   buildBedrock as buildBedrockSmithing,
   buildJava as buildJavaSmithing,
@@ -6,6 +6,7 @@ import {
   validateSmithing,
 } from "@/recipes/generate/smithing";
 import { BedrockFormatVersion } from "@/recipes/generate/types";
+import { RecipeSlot, SLOTS } from "@/recipes/slots";
 import { recipeTypeAvailability } from "@/versioning";
 
 import { getSmithingAutoNames } from "./auto-naming";

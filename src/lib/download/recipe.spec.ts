@@ -5,9 +5,11 @@ import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { recipeStateDefaults } from "@/stores/recipe/types";
 import { makeRecipe } from "@/test/recipe-fixtures";
 
+import type { GeneratedRecipe } from "@/recipes/generate/types";
+
 const { downloadBlob, generate } = vi.hoisted(() => ({
-  downloadBlob: vi.fn(),
-  generate: vi.fn(),
+  downloadBlob: vi.fn<typeof import("@/data/datapack").downloadBlob>(),
+  generate: vi.fn<typeof import("@/recipes/generate").generate>(),
 }));
 
 vi.mock("@/data/datapack", () => ({
@@ -21,6 +23,12 @@ vi.mock("@/recipes/generate", () => ({
 import { downloadRecipeJson } from "./recipe";
 
 let recipeId = 0;
+
+const generatedRecipe = {
+  type: "minecraft:crafting_shapeless",
+  ingredients: [],
+  result: {},
+} satisfies GeneratedRecipe;
 
 const createItem = (raw: string, version = MinecraftVersion.V121) => ({
   type: "default_item" as const,
@@ -81,7 +89,7 @@ describe("downloadRecipeJson", () => {
     });
     const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
-    generate.mockReturnValue({ test: true });
+    generate.mockReturnValue(generatedRecipe);
 
     downloadRecipeJson({
       recipe,
@@ -135,7 +143,7 @@ describe("downloadRecipeJson", () => {
     );
     const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
-    generate.mockReturnValue({ test: true });
+    generate.mockReturnValue(generatedRecipe);
 
     downloadRecipeJson({
       recipe,

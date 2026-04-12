@@ -1,4 +1,4 @@
-import { RecipeType, SLOTS } from "@/data/types";
+import { RecipeType } from "@/data/types";
 import {
   buildBedrock as buildBedrockStonecutter,
   buildJava as buildJavaStonecutter,
@@ -6,6 +6,7 @@ import {
   validateStonecutter,
 } from "@/recipes/generate/stonecutter";
 import { BedrockFormatVersion } from "@/recipes/generate/types";
+import { SLOTS } from "@/recipes/slots";
 import { recipeTypeAvailability } from "@/versioning";
 
 import { getStonecuttingAutoNames } from "./auto-naming";
