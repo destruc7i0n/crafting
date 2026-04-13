@@ -1,12 +1,61 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
+import { IngredientItem } from "@/data/models/types";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { SLOTS } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { useRecipeStore } from "@/stores/recipe";
 import { useTagStore } from "@/stores/tag";
+import { useUIStore } from "@/stores/ui";
 
-import { deleteCustomItemAndClearRecipeRefs, deleteTagAndClearRecipeRefs } from "./editor-actions";
+import {
+  createRecipeAndClearInteraction,
+  deleteCustomItemAndClearRecipeRefs,
+  deleteRecipeAndClearInteraction,
+  deleteTagAndClearRecipeRefs,
+  selectRecipeAndClearInteraction,
+} from "./editor-actions";
+
+const createRecipe = (id: string) => ({
+  id,
+  nameMode: "auto" as const,
+  name: "",
+  recipeType: RecipeType.Crafting,
+  group: "",
+  category: "",
+  showNotification: true,
+  smithingTrimPattern: "",
+  slots: {},
+  crafting: {
+    shapeless: false,
+    keepWhitespace: false,
+    twoByTwo: false,
+  },
+  cooking: {
+    time: 0,
+    experience: 0,
+  },
+  bedrock: {
+    identifierMode: "auto" as const,
+    identifierName: "",
+    priority: 0,
+  },
+});
+
+const ingredientItem: IngredientItem = {
+  type: "default_item",
+  id: { namespace: "minecraft", id: "stone" },
+  displayName: "Stone",
+  texture: "stone.png",
+  _version: MinecraftVersion.V121,
+};
+
+const setIngredientInteractionState = () => {
+  useUIStore.setState({
+    selection: { type: "ingredient", item: ingredientItem },
+    lastPlacedSlot: SLOTS.crafting.slot1,
+  });
+};
 
 describe("editor actions", () => {
   beforeEach(() => {
@@ -22,60 +71,16 @@ describe("editor actions", () => {
 
     useRecipeStore.setState((state) => ({
       ...state,
-      recipes: [
-        {
-          id: "recipe-1",
-          nameMode: "auto",
-          name: "",
-          recipeType: RecipeType.Crafting,
-          group: "",
-          category: "",
-          showNotification: true,
-          smithingTrimPattern: "",
-          slots: {},
-          crafting: {
-            shapeless: false,
-            keepWhitespace: false,
-            twoByTwo: false,
-          },
-          cooking: {
-            time: 0,
-            experience: 0,
-          },
-          bedrock: {
-            identifierMode: "auto",
-            identifierName: "",
-            priority: 0,
-          },
-        },
-        {
-          id: "recipe-2",
-          nameMode: "auto",
-          name: "",
-          recipeType: RecipeType.Crafting,
-          group: "",
-          category: "",
-          showNotification: true,
-          smithingTrimPattern: "",
-          slots: {},
-          crafting: {
-            shapeless: false,
-            keepWhitespace: false,
-            twoByTwo: false,
-          },
-          cooking: {
-            time: 0,
-            experience: 0,
-          },
-          bedrock: {
-            identifierMode: "auto",
-            identifierName: "",
-            priority: 0,
-          },
-        },
-      ],
+      recipes: [createRecipe("recipe-1"), createRecipe("recipe-2")],
       selectedRecipeId: "recipe-1",
     }));
+
+    useUIStore.setState({
+      isMobileRecipeSidebarOpen: false,
+      isRecipeSidebarExpanded: true,
+      selection: undefined,
+      lastPlacedSlot: undefined,
+    });
   });
 
   it("deletes a custom item and clears matching recipe refs in all recipes", () => {
@@ -140,5 +145,84 @@ describe("editor actions", () => {
     expect(useTagStore.getState().tags).toEqual([]);
     expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
     expect(useRecipeStore.getState().recipes[1]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
+  });
+
+  it("clears interaction state when switching to a different recipe", () => {
+    setIngredientInteractionState();
+
+    selectRecipeAndClearInteraction("recipe-2");
+
+    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe-2");
+    expect(useUIStore.getState().selection).toBeUndefined();
+    expect(useUIStore.getState().lastPlacedSlot).toBeUndefined();
+  });
+
+  it("preserves interaction state when selecting the active recipe", () => {
+    setIngredientInteractionState();
+
+    selectRecipeAndClearInteraction("recipe-1");
+
+    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe-1");
+    expect(useUIStore.getState().selection).toEqual({
+      type: "ingredient",
+      item: ingredientItem,
+    });
+    expect(useUIStore.getState().lastPlacedSlot).toBe(SLOTS.crafting.slot1);
+  });
+
+  it("clears interaction state and selects the new recipe when creating a recipe", () => {
+    setIngredientInteractionState();
+
+    createRecipeAndClearInteraction();
+
+    const recipeState = useRecipeStore.getState();
+    expect(recipeState.recipes).toHaveLength(3);
+    expect(recipeState.selectedRecipeId).toBe(recipeState.recipes[2]?.id);
+    expect(useUIStore.getState().selection).toBeUndefined();
+    expect(useUIStore.getState().lastPlacedSlot).toBeUndefined();
+  });
+
+  it("clears interaction state when deleting the selected recipe", () => {
+    setIngredientInteractionState();
+
+    deleteRecipeAndClearInteraction("recipe-1");
+
+    expect(useRecipeStore.getState().recipes).toHaveLength(1);
+    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe-2");
+    expect(useUIStore.getState().selection).toBeUndefined();
+    expect(useUIStore.getState().lastPlacedSlot).toBeUndefined();
+  });
+
+  it("preserves interaction state when deleting a non-selected recipe", () => {
+    setIngredientInteractionState();
+
+    deleteRecipeAndClearInteraction("recipe-2");
+
+    expect(useRecipeStore.getState().recipes).toHaveLength(1);
+    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe-1");
+    expect(useUIStore.getState().selection).toEqual({
+      type: "ingredient",
+      item: ingredientItem,
+    });
+    expect(useUIStore.getState().lastPlacedSlot).toBe(SLOTS.crafting.slot1);
+  });
+
+  it("preserves interaction state when deleting the final remaining recipe", () => {
+    useRecipeStore.setState((state) => ({
+      ...state,
+      recipes: [createRecipe("recipe-1")],
+      selectedRecipeId: "recipe-1",
+    }));
+    setIngredientInteractionState();
+
+    deleteRecipeAndClearInteraction("recipe-1");
+
+    expect(useRecipeStore.getState().recipes).toHaveLength(1);
+    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe-1");
+    expect(useUIStore.getState().selection).toEqual({
+      type: "ingredient",
+      item: ingredientItem,
+    });
+    expect(useUIStore.getState().lastPlacedSlot).toBe(SLOTS.crafting.slot1);
   });
 });

@@ -22,7 +22,7 @@ const Layout = memo(({ children }: LayoutProps) => {
 
   const handleMobileTrayToggle = () => {
     if (isMobileTrayExpanded) {
-      useUIStore.getState().setSelection(undefined);
+      useUIStore.getState().clearInteractionState();
     }
 
     setMobileTrayExpanded(!isMobileTrayExpanded);

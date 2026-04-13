@@ -5,6 +5,7 @@ import {
   canRecipeSlotAcceptSlotValue,
 } from "@/recipes/slots/utils";
 import { useRecipeStore } from "@/stores/recipe";
+import { selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
 import { cloneRecipeSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";
 import { useUIStore } from "@/stores/ui";
@@ -17,21 +18,36 @@ export const useRecipeSlotSelectionHandler = (
   const setRecipeSlot = useRecipeStore((state) => state.setRecipeSlot);
   const setRecipeSlotFromIngredient = useRecipeStore((state) => state.setRecipeSlotFromIngredient);
 
-  return (_: React.MouseEvent) => {
+  return () => {
     if (!isTouchDevice) return;
 
-    const { selection, setSelection } = useUIStore.getState();
+    const { selection, lastPlacedSlot, selectIngredient, selectSlot, clearInteractionState } =
+      useUIStore.getState();
 
     // tap same selected recipe slot -> deselect
     if (selection?.type === "slot" && selection.slot === slot) {
-      setSelection(undefined);
+      clearInteractionState();
       return;
     }
 
     if (selection?.type === "ingredient") {
       if (!canRecipeSlotAcceptIngredientItem(slot, selection.item)) return;
+
+      const currentSlotValue =
+        lastPlacedSlot === slot
+          ? selectCurrentRecipeSlot(slot)(useRecipeStore.getState())
+          : undefined;
+
+      if (currentSlotValue) {
+        // tap same preview slot after placing -> select placed item
+        selectSlot(slot, cloneRecipeSlotValue(currentSlotValue));
+        return;
+      }
+
       setRecipeSlotFromIngredient(slot, selection.item);
-      setSelection({ type: "ingredient", item: selection.item });
+      selectIngredient(selection.item, {
+        lastPlacedSlot: slot,
+      });
       return;
     }
 
@@ -46,12 +62,12 @@ export const useRecipeSlotSelectionHandler = (
         setRecipeSlot(slot, cloneRecipeSlotValue(selection.value));
         setRecipeSlot(selection.slot, undefined);
       }
-      setSelection({ type: "slot", value: cloneRecipeSlotValue(selection.value), slot });
+      selectSlot(slot, cloneRecipeSlotValue(selection.value));
       return;
     }
 
     if (rawSlotValue) {
-      setSelection({ type: "slot", value: cloneRecipeSlotValue(rawSlotValue), slot });
+      selectSlot(slot, cloneRecipeSlotValue(rawSlotValue));
     }
   };
 };

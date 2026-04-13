@@ -20,6 +20,11 @@ import { confirmAction } from "@/lib/confirm";
 import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
 import { downloadRecipeJson } from "@/lib/download/recipe";
+import {
+  createRecipeAndClearInteraction,
+  deleteRecipeAndClearInteraction,
+  selectRecipeAndClearInteraction,
+} from "@/lib/editor-actions";
 import { cn } from "@/lib/utils";
 import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
 import { validateDatapackExport } from "@/lib/validate-datapack-export";
@@ -256,9 +261,6 @@ const ExpandedRecipeRow = ({
 export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: RecipeSidebarProps) => {
   const recipes = useRecipeStore((state) => state.recipes);
   const selectedRecipeId = useRecipeStore(selectSelectedRecipeId);
-  const createRecipe = useRecipeStore((state) => state.createRecipe);
-  const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
-  const selectRecipe = useRecipeStore((state) => state.selectRecipe);
 
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const bedrockNamespace = useSettingsStore(selectBedrockNamespace);
@@ -302,7 +304,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   });
 
   const handleSelectRecipe = (id: string) => {
-    selectRecipe(id);
+    selectRecipeAndClearInteraction(id);
 
     if (mobile) {
       setMobileRecipeSidebarOpen(false);
@@ -314,7 +316,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
       return;
     }
 
-    deleteRecipe(id);
+    deleteRecipeAndClearInteraction(id);
   };
 
   const handleDownloadAll = async () => {
@@ -374,7 +376,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         <Tooltip content={<SidebarTooltipContent title="New Recipe" />}>
           <button
             type="button"
-            onClick={createRecipe}
+            onClick={createRecipeAndClearInteraction}
             className="border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-dashed transition-colors"
           >
             <PlusIcon size={16} />
@@ -413,7 +415,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
       <div className="flex shrink-0 items-center justify-between gap-2">
         <button
           type="button"
-          onClick={createRecipe}
+          onClick={createRecipeAndClearInteraction}
           className={cn(
             "border-border bg-background text-foreground hover:bg-accent active:bg-accent/80 flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm font-medium transition-colors",
           )}

@@ -93,7 +93,7 @@ const RecipeSlotItemBase = memo(
         }),
         onDragStart: () => {
           preventUnhandled.start();
-          useUIStore.getState().setSelection(undefined);
+          useUIStore.getState().clearInteractionState();
           setDragging(true);
         },
         onDrop: () => setDragging(false),

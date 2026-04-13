@@ -49,7 +49,7 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
       getInitialData: () => ({ type: "palette-item", item }) satisfies ItemDraggableData,
       getInitialDataForExternal: () => ({ "text/plain": getRawId(item.id) }),
       onDragStart: () => {
-        useUIStore.getState().setSelection(undefined);
+        useUIStore.getState().clearInteractionState();
         setDragging(true);
       },
       onDrop: () => setDragging(false),
@@ -100,16 +100,16 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
     if (!slot) return;
 
     useRecipeStore.getState().setRecipeSlotFromIngredient(slot, item);
-    useUIStore.getState().setSelection(undefined);
+    useUIStore.getState().clearInteractionState();
   };
 
   const handleClick = () => {
     if (!isTouchDevice) return;
-    const { setSelection } = useUIStore.getState();
+    const { selectIngredient, clearInteractionState } = useUIStore.getState();
     if (selection?.type === "ingredient" && isSameIngredient(selection.item, item)) {
-      setSelection(undefined);
+      clearInteractionState();
     } else {
-      setSelection({ type: "ingredient", item });
+      selectIngredient(item);
     }
   };
 

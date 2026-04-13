@@ -55,7 +55,7 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
       }}
       onClick={(event) => {
         props.onClick?.(event);
-        handleClick(event);
+        handleClick();
       }}
     >
       {slotValue && <RecipeSlotItem slot={slot} value={slotValue} />}

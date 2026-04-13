@@ -25,7 +25,7 @@ export const ItemsList = () => {
 
   const [showAddItemForm, setShowAddItemForm] = useState(false);
   const [showAddTagForm, setShowAddTagForm] = useState(false);
-  const setSelection = useUIStore((state) => state.setSelection);
+  const clearInteractionState = useUIStore((state) => state.clearInteractionState);
 
   const tab: "items" | "tags" = !supportsTags && activeTab === "tags" ? "items" : activeTab;
   const showCreateButton = tab === "items" || canCreateTags;
@@ -44,7 +44,7 @@ export const ItemsList = () => {
   };
 
   const handleTabChange = (nextTab: "items" | "tags") => {
-    setSelection(undefined);
+    clearInteractionState();
     setActiveTab(nextTab);
     setShowAddItemForm(false);
     setShowAddTagForm(false);

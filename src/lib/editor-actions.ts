@@ -20,13 +20,40 @@ export const deleteTagAndClearRecipeRefs = (uid: string) => {
 
 export const clearSelectedRecipeAndSlotSelection = () => {
   useRecipeStore.getState().clearSelectedRecipeSlots();
+  useUIStore.getState().clearInteractionState();
+};
 
-  if (useUIStore.getState().selection?.type === "slot") {
-    useUIStore.getState().setSelection(undefined);
+export const selectRecipeAndClearInteraction = (id: string) => {
+  const recipeState = useRecipeStore.getState();
+  const shouldClearInteraction = id !== recipeState.selectedRecipeId;
+
+  if (shouldClearInteraction) {
+    useUIStore.getState().clearInteractionState();
   }
+
+  recipeState.selectRecipe(id);
+};
+
+export const createRecipeAndClearInteraction = () => {
+  const recipeState = useRecipeStore.getState();
+
+  useUIStore.getState().clearInteractionState();
+  recipeState.createRecipe();
+};
+
+export const deleteRecipeAndClearInteraction = (id: string) => {
+  const recipeState = useRecipeStore.getState();
+  const shouldClearInteraction =
+    recipeState.selectedRecipeId === id && recipeState.recipes.length > 1;
+
+  if (shouldClearInteraction) {
+    useUIStore.getState().clearInteractionState();
+  }
+
+  recipeState.deleteRecipe(id);
 };
 
 export const clearRecipeSlotAndSelection = (slot: RecipeSlot) => {
   useRecipeStore.getState().setRecipeSlot(slot, undefined);
-  useUIStore.getState().setSelection(undefined);
+  useUIStore.getState().clearInteractionState();
 };

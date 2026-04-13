@@ -10,7 +10,7 @@ export const VersionSelector = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const setMinecraftVersion = useSettingsStore((state) => state.setMinecraftVersion);
   const clearAllSlots = useRecipeStore((state) => state.clearAllSlots);
-  const setSelection = useUIStore((state) => state.setSelection);
+  const clearInteractionState = useUIStore((state) => state.clearInteractionState);
 
   const handleVersionChange = (nextVersion: MinecraftVersion) => {
     const switchingCrossPlatform =
@@ -27,7 +27,7 @@ export const VersionSelector = () => {
       }
 
       clearAllSlots();
-      setSelection(undefined);
+      clearInteractionState();
     }
 
     setMinecraftVersion(nextVersion);
