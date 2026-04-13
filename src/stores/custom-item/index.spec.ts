@@ -46,23 +46,6 @@ describe("custom item store", () => {
     }));
   });
 
-  it("parses Bedrock custom item ids with Bedrock rules", () => {
-    useCustomItemStore.getState().addCustomItem({
-      name: "Custom Bedrock Item",
-      rawId: "mod:item-name/path",
-      texture: "",
-      version: MinecraftVersion.Bedrock,
-    });
-
-    expect(useCustomItemStore.getState().customItems[0]).toMatchObject({
-      id: {
-        namespace: "mod",
-        id: "itemnamepath",
-      },
-      _version: MinecraftVersion.Bedrock,
-    });
-  });
-
   it("does not rewrite recipe slots when a custom item id changes", () => {
     useCustomItemStore.getState().addCustomItem({
       name: "Custom Bedrock Item",

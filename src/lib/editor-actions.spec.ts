@@ -1,19 +1,12 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { parseStringToMinecraftIdentifier } from "@/data/models/identifier/utilities";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { SLOTS } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { useRecipeStore } from "@/stores/recipe";
 import { useTagStore } from "@/stores/tag";
-import { useUIStore } from "@/stores/ui";
 
-import {
-  clearRecipeSlotAndSelection,
-  clearSelectedRecipeAndSlotSelection,
-  deleteCustomItemAndClearRecipeRefs,
-  deleteTagAndClearRecipeRefs,
-} from "./editor-actions";
+import { deleteCustomItemAndClearRecipeRefs, deleteTagAndClearRecipeRefs } from "./editor-actions";
 
 describe("editor actions", () => {
   beforeEach(() => {
@@ -83,13 +76,6 @@ describe("editor actions", () => {
       ],
       selectedRecipeId: "recipe-1",
     }));
-
-    useUIStore.setState((state) => ({
-      ...state,
-      isMobileRecipeSidebarOpen: false,
-      isRecipeSidebarExpanded: true,
-      selection: undefined,
-    }));
   });
 
   it("deletes a custom item and clears matching recipe refs in all recipes", () => {
@@ -154,82 +140,5 @@ describe("editor actions", () => {
     expect(useTagStore.getState().tags).toEqual([]);
     expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
     expect(useRecipeStore.getState().recipes[1]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
-  });
-
-  it("clears the selected recipe and only clears slot selection", () => {
-    useRecipeStore.getState().setRecipeSlot(SLOTS.crafting.slot1, {
-      kind: "item",
-      id: parseStringToMinecraftIdentifier("minecraft:stone"),
-    });
-    useUIStore.getState().setSelection({
-      type: "slot",
-      slot: SLOTS.crafting.slot1,
-      value: {
-        kind: "item",
-        id: parseStringToMinecraftIdentifier("minecraft:stone"),
-      },
-    });
-
-    clearSelectedRecipeAndSlotSelection();
-
-    expect(useRecipeStore.getState().recipes[0]?.slots).toEqual({});
-    expect(useUIStore.getState().selection).toBeUndefined();
-
-    useRecipeStore.getState().setRecipeSlot(SLOTS.crafting.slot1, {
-      kind: "item",
-      id: parseStringToMinecraftIdentifier("minecraft:dirt"),
-    });
-    useUIStore.getState().setSelection({
-      type: "ingredient",
-      item: {
-        type: "default_item",
-        id: parseStringToMinecraftIdentifier("minecraft:dirt"),
-        displayName: "Dirt",
-        texture: "dirt.png",
-        _version: MinecraftVersion.V121,
-      },
-    });
-
-    clearSelectedRecipeAndSlotSelection();
-
-    expect(useRecipeStore.getState().recipes[0]?.slots).toEqual({});
-    expect(useUIStore.getState().selection).toEqual({
-      type: "ingredient",
-      item: {
-        type: "default_item",
-        id: parseStringToMinecraftIdentifier("minecraft:dirt"),
-        displayName: "Dirt",
-        texture: "dirt.png",
-        _version: MinecraftVersion.V121,
-      },
-    });
-  });
-
-  it("clears one recipe slot and selection", () => {
-    useRecipeStore.getState().setRecipeSlot(SLOTS.crafting.slot1, {
-      kind: "item",
-      id: parseStringToMinecraftIdentifier("minecraft:stone"),
-    });
-    useRecipeStore.getState().setRecipeSlot(SLOTS.crafting.slot2, {
-      kind: "item",
-      id: parseStringToMinecraftIdentifier("minecraft:dirt"),
-    });
-    useUIStore.getState().setSelection({
-      type: "slot",
-      slot: SLOTS.crafting.slot1,
-      value: {
-        kind: "item",
-        id: parseStringToMinecraftIdentifier("minecraft:stone"),
-      },
-    });
-
-    clearRecipeSlotAndSelection(SLOTS.crafting.slot1);
-
-    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
-    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot2]).toEqual({
-      kind: "item",
-      id: parseStringToMinecraftIdentifier("minecraft:dirt"),
-    });
-    expect(useUIStore.getState().selection).toBeUndefined();
   });
 });

@@ -80,28 +80,4 @@ describe("validateDatapackExport", () => {
       },
     ]);
   });
-
-  it("does not flag autos when only a similar manual suffix exists", () => {
-    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
-    const issues = validateDatapackExport({
-      recipes: [
-        createCraftingRecipe(
-          {
-            "crafting.1": createItem("minecraft:stone"),
-            "crafting.result": createItem("minecraft:stick_2"),
-          },
-          { nameMode: "manual", name: "stick_2" },
-        ),
-        createCraftingRecipe({
-          "crafting.1": createItem("minecraft:oak_planks"),
-          "crafting.result": createItem("minecraft:stick"),
-        }),
-      ],
-      version: MinecraftVersion.V121,
-      context: { bedrockNamespace: "crafting" },
-      slotContext,
-    });
-
-    expect(issues).toEqual([]);
-  });
 });

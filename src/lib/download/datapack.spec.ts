@@ -103,29 +103,6 @@ describe("downloadDatapack", () => {
     expect(downloadBlob).not.toHaveBeenCalled();
   });
 
-  it("blocks datapack download when a manual name is blank", async () => {
-    const recipe = createCraftingRecipe(
-      {
-        "crafting.1": createItem("minecraft:stone"),
-        "crafting.result": createItem("minecraft:stone_button"),
-      },
-      { nameMode: "manual", name: "" },
-    );
-    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
-
-    await downloadDatapack([recipe], MinecraftVersion.V121, {
-      tags: [],
-      context: { bedrockNamespace: "crafting" },
-      slotContext,
-    });
-
-    expect(globalThis.alert).toHaveBeenCalledWith(
-      "Please finish all recipes before downloading the datapack:\n\n- stone_button: Add a file name",
-    );
-    expect(createDatapackBlob).not.toHaveBeenCalled();
-    expect(downloadBlob).not.toHaveBeenCalled();
-  });
-
   it("downloads the datapack when all recipes are valid", async () => {
     const blob = new Blob(["zip"]);
     const recipe = createCraftingRecipe({

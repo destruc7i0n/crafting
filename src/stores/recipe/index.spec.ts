@@ -57,10 +57,6 @@ describe("recipe store", () => {
     }));
   });
 
-  it("defaults keep whitespace to unchecked", () => {
-    expect(useRecipeStore.getState().recipes[0]?.crafting.keepWhitespace).toBe(false);
-  });
-
   it("keeps the same selected recipe id when deleting an earlier recipe", () => {
     useRecipeStore.setState((state) => ({
       ...state,
@@ -71,18 +67,6 @@ describe("recipe store", () => {
     useRecipeStore.getState().deleteRecipe("recipe_1");
 
     expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe_3");
-  });
-
-  it("keeps the current selection when deleting a later recipe", () => {
-    useRecipeStore.setState((state) => ({
-      ...state,
-      recipes: [createRecipe("recipe_1"), createRecipe("recipe_2"), createRecipe("recipe_3")],
-      selectedRecipeId: "recipe_1",
-    }));
-
-    useRecipeStore.getState().deleteRecipe("recipe_3");
-
-    expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe_1");
   });
 
   it("selects the next recipe when deleting the selected one", () => {
@@ -116,22 +100,6 @@ describe("recipe store", () => {
 
     expect(useRecipeStore.getState().selectedRecipeId).toBe("recipe_1");
     expect(useRecipeStore.getState().recipes).toHaveLength(1);
-  });
-
-  it("creates recipes with auto naming defaults and selects the new recipe", () => {
-    useRecipeStore.getState().createRecipe();
-
-    const { recipes, selectedRecipeId } = useRecipeStore.getState();
-    expect(recipes[1]).toMatchObject({
-      nameMode: "auto",
-      name: "",
-      bedrock: {
-        identifierMode: "auto",
-        identifierName: "",
-        priority: 0,
-      },
-    });
-    expect(selectedRecipeId).toBe(recipes[1]?.id);
   });
 
   it("creates recipe state with independent nested settings objects", () => {

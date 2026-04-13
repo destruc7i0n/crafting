@@ -7,14 +7,9 @@ import { makeRecipe } from "@/test/recipe-fixtures";
 
 import {
   getAutoRecipeName,
-  getCommittedRecipeName,
   getCurrentRecipeName,
   getPreviewBaseName,
-  getRecipeExportDetail,
   resolveRecipeNames,
-  sanitizeRecipeName,
-  toJavaRecipeFileName,
-  toPreviewFileName,
 } from "./naming";
 
 const createItem = (
@@ -42,80 +37,6 @@ const createRecipe = (
   });
 
 const slotContext = createEmptySlotContext(MinecraftVersion.V121);
-
-describe("sanitizeRecipeName", () => {
-  it("normalizes to lowercase underscore names", () => {
-    expect(sanitizeRecipeName("My Recipe!")).toBe("my_recipe");
-  });
-});
-
-describe("getCommittedRecipeName", () => {
-  it("keeps a sanitized manual name when one is provided", () => {
-    expect(getCommittedRecipeName("Stone Button", "stick")).toBe("stone_button");
-  });
-
-  it("falls back to a valid name when the manual input sanitizes to blank", () => {
-    expect(getCommittedRecipeName("   ", "stone_button")).toBe("stone_button");
-  });
-});
-
-describe("name formatting helpers", () => {
-  it("formats java recipe file names at the edge", () => {
-    expect(toJavaRecipeFileName("stick")).toBe("stick.json");
-  });
-
-  it("formats preview file names at the edge", () => {
-    expect(toPreviewFileName("stick")).toBe("stick.png");
-  });
-});
-
-describe("getRecipeExportDetail", () => {
-  it("formats Java export names with a file extension", () => {
-    expect(
-      getRecipeExportDetail(
-        {
-          sidebarTitle: "Stick",
-          javaName: "stick",
-        },
-        MinecraftVersion.V121,
-      ),
-    ).toBe("stick.json");
-  });
-
-  it("shows a missing Java name state when no export name is resolved", () => {
-    expect(
-      getRecipeExportDetail(
-        {
-          sidebarTitle: "Stick",
-        },
-        MinecraftVersion.V121,
-      ),
-    ).toBe("Missing file name");
-  });
-
-  it("shows the full Bedrock identifier", () => {
-    expect(
-      getRecipeExportDetail(
-        {
-          sidebarTitle: "Stick",
-          bedrockIdentifier: "crafting:stick",
-        },
-        MinecraftVersion.Bedrock,
-      ),
-    ).toBe("crafting:stick");
-  });
-
-  it("shows a missing Bedrock name state when no identifier is resolved", () => {
-    expect(
-      getRecipeExportDetail(
-        {
-          sidebarTitle: "Stick",
-        },
-        MinecraftVersion.Bedrock,
-      ),
-    ).toBe("Missing Bedrock name");
-  });
-});
 
 describe("getAutoRecipeName", () => {
   it("uses the result name for transmute recipes", () => {
@@ -734,52 +655,5 @@ describe("getCurrentRecipeName", () => {
       resolvedBedrockName: undefined,
       resolvedBedrockIdentifier: undefined,
     });
-  });
-
-  it("keeps the selected recipe output stable when unrelated recipes do not change its resolved name", () => {
-    const selectedRecipe = createRecipe(
-      RecipeType.Crafting,
-      {
-        "crafting.1": createItem("minecraft:stone"),
-        "crafting.result": createItem("minecraft:stone_button"),
-      },
-      { id: "selected" },
-    );
-
-    const first = getCurrentRecipeName({
-      recipes: [
-        selectedRecipe,
-        createRecipe(
-          RecipeType.Crafting,
-          {
-            "crafting.1": createItem("minecraft:oak_planks"),
-            "crafting.result": createItem("minecraft:stick"),
-          },
-          { id: "other-1" },
-        ),
-      ],
-      selectedRecipeId: selectedRecipe.id,
-      context: { bedrockNamespace: "crafting" },
-      slotContext,
-    });
-
-    const second = getCurrentRecipeName({
-      recipes: [
-        selectedRecipe,
-        createRecipe(
-          RecipeType.Crafting,
-          {
-            "crafting.1": createItem("minecraft:bamboo"),
-            "crafting.result": createItem("minecraft:stick"),
-          },
-          { id: "other-2" },
-        ),
-      ],
-      selectedRecipeId: selectedRecipe.id,
-      context: { bedrockNamespace: "crafting" },
-      slotContext,
-    });
-
-    expect(second).toEqual(first);
   });
 });

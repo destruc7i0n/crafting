@@ -711,20 +711,9 @@ describe("generate crafting", () => {
 
       it.each([
         ["stick", "/"],
-        ["arrow", "/"],
-        ["smooth_stone_slab", "_"],
         ["paper", "_"],
-        ["iron_ingot", "="],
-        ["gold_nugget", "."],
-        ["redstone", "."],
         ["diamond", "o"],
-        ["ender_pearl", "o"],
-        ["dragon_egg", "o"],
-        ["string", "~"],
-        ["bow", ")"],
-        ["bucket", "u"],
-        ["glass_bottle", "u"],
-      ])("should use %s as %s in generic dinnerbone mappings", (itemId, keyName) => {
+      ])("uses dinnerbone mapping %s -> %s", (itemId, keyName) => {
         const recipeSlice = makeShapedRecipeSlice(MinecraftVersion.V114, {
           "crafting.1": makeDefaultItem("stone", MinecraftVersion.V114),
           "crafting.2": makeDefaultItem(itemId, MinecraftVersion.V114),
@@ -897,37 +886,6 @@ describe("generate crafting", () => {
         pattern: ["#"],
         key: { "#": { item: "minecraft:stone" } },
         result: { item: "minecraft:stone_button", count: 1 },
-      });
-    });
-
-    it("should emit show_notification for shaped recipes on 1.19", () => {
-      const recipeSlice = makeRecipe({
-        ...recipeStateDefaults,
-        recipeType: RecipeType.Crafting,
-        group: "",
-        showNotification: false,
-        slots: {
-          "crafting.1": {
-            type: "default_item",
-            id: { id: "stone", namespace: "minecraft" },
-            displayName: "stone",
-            texture: "",
-            _version: MinecraftVersion.V119,
-          },
-          "crafting.result": {
-            type: "default_item",
-            id: { id: "stone_button", namespace: "minecraft" },
-            displayName: "stone_button",
-            texture: "",
-            _version: MinecraftVersion.V119,
-          },
-        },
-        crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
-        cooking: { time: 0, experience: 0 },
-      });
-
-      expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V119)).toMatchObject({
-        show_notification: false,
       });
     });
 

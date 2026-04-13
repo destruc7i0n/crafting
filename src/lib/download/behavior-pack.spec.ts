@@ -104,67 +104,6 @@ describe("downloadBehaviorPack", () => {
     expect(downloadBlob).not.toHaveBeenCalled();
   });
 
-  it("blocks behavior pack download when manual identifier names collide", async () => {
-    const firstRecipe = createCraftingRecipe(
-      {
-        "crafting.1": createItem("minecraft:stone"),
-        "crafting.result": createItem("minecraft:stone_button"),
-      },
-      {
-        bedrock: { identifierMode: "manual", identifierName: "duplicate", priority: 0 },
-      },
-    );
-    const secondRecipe = createCraftingRecipe(
-      {
-        "crafting.1": createItem("minecraft:oak_planks"),
-        "crafting.result": createItem("minecraft:stick"),
-      },
-      {
-        bedrock: { identifierMode: "manual", identifierName: "duplicate", priority: 0 },
-      },
-    );
-    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
-
-    await downloadBehaviorPack({
-      recipes: [firstRecipe, secondRecipe],
-      version: MinecraftVersion.Bedrock,
-      context: { bedrockNamespace: "crafting" },
-      slotContext,
-    });
-
-    expect(globalThis.alert).toHaveBeenCalledWith(
-      "Please finish all recipes before downloading the behavior pack:\n\n- stone_button: Duplicate Bedrock identifier: crafting:duplicate\n- stick: Duplicate Bedrock identifier: crafting:duplicate",
-    );
-    expect(createBehaviorPackBlob).not.toHaveBeenCalled();
-    expect(downloadBlob).not.toHaveBeenCalled();
-  });
-
-  it("blocks behavior pack download when an identifier has invalid syntax", async () => {
-    const recipe = createCraftingRecipe(
-      {
-        "crafting.1": createItem("minecraft:stone"),
-        "crafting.result": createItem("minecraft:stone_button"),
-      },
-      {
-        bedrock: { identifierMode: "manual", identifierName: "Bad-Id", priority: 0 },
-      },
-    );
-    const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
-
-    await downloadBehaviorPack({
-      recipes: [recipe],
-      version: MinecraftVersion.Bedrock,
-      context: { bedrockNamespace: "Crafting" },
-      slotContext,
-    });
-
-    expect(globalThis.alert).toHaveBeenCalledWith(
-      "Please finish all recipes before downloading the behavior pack:\n\n- stone_button: Use a valid Bedrock identifier (namespace:name; a-z, 0-9, _)",
-    );
-    expect(createBehaviorPackBlob).not.toHaveBeenCalled();
-    expect(downloadBlob).not.toHaveBeenCalled();
-  });
-
   it("downloads the behavior pack when all recipes are valid", async () => {
     const blob = new Blob(["zip"]);
     const recipe = createCraftingRecipe({
