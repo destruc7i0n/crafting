@@ -7,9 +7,28 @@ import { makeRecipe } from "@/test/recipe-fixtures";
 
 import type { GeneratedRecipe } from "@/recipes/generate/types";
 
-const { downloadBlob, generate } = vi.hoisted(() => ({
-  downloadBlob: vi.fn<typeof import("@/data/datapack").downloadBlob>(),
-  generate: vi.fn<typeof import("@/recipes/generate").generate>(),
+const { createBehaviorPackBlob, downloadBlob, generate, getBehaviorPackRecipeFileName } =
+  vi.hoisted(() => ({
+    createBehaviorPackBlob: vi.fn<typeof import("@/data/behavior-pack").createBehaviorPackBlob>(),
+    downloadBlob: vi.fn<typeof import("@/data/datapack").downloadBlob>(),
+    generate: vi.fn<typeof import("@/recipes/generate").generate>(),
+    getBehaviorPackRecipeFileName: vi.fn<
+      typeof import("@/data/behavior-pack").getBehaviorPackRecipeFileName
+    >((identifier: string) => {
+      const sanitized =
+        identifier
+          .trim()
+          .replace(/[:/\\]+/g, "_")
+          .replace(/[^a-zA-Z0-9._-]+/g, "_")
+          .replace(/^_+|_+$/g, "") || "recipe";
+
+      return `${sanitized}.json`;
+    }),
+  }));
+
+vi.mock("@/data/behavior-pack", () => ({
+  createBehaviorPackBlob,
+  getBehaviorPackRecipeFileName,
 }));
 
 vi.mock("@/data/datapack", () => ({
@@ -128,6 +147,7 @@ describe("downloadRecipeJson", () => {
 
     expect(globalThis.alert).toHaveBeenCalledWith("Add a Bedrock name before downloading JSON.");
     expect(generate).not.toHaveBeenCalled();
+    expect(createBehaviorPackBlob).not.toHaveBeenCalled();
     expect(downloadBlob).not.toHaveBeenCalled();
   });
 
@@ -160,6 +180,7 @@ describe("downloadRecipeJson", () => {
         bedrockIdentifier: "crafting:stone_button_2",
       },
     });
+    expect(createBehaviorPackBlob).not.toHaveBeenCalled();
     expect(downloadBlob).toHaveBeenCalledWith(expect.any(Blob), "crafting_stone_button_2.json");
   });
 });

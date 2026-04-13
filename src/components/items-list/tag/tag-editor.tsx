@@ -6,6 +6,7 @@ import {
   isValidJavaNamespacedIdentifier,
   javaNamespacedIdentifierHint,
 } from "@/lib/minecraft-identifier";
+import { getDuplicateTagIdErrorMessage, hasDuplicateTagId } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
@@ -37,15 +38,30 @@ export const TagEditor = ({
 
   const [draftId, setDraftId] = useState(tag.id);
   const [valueSearch, setValueSearch] = useState("");
+  const [updateError, setUpdateError] = useState<string>();
 
-  const showDraftIdError = draftId.trim().length > 0 && !isValidJavaNamespacedIdentifier(draftId);
+  const hasValidDraftId = isValidJavaNamespacedIdentifier(draftId);
+  const showDraftIdError = draftId.trim().length > 0 && !hasValidDraftId;
+  const duplicateError =
+    hasValidDraftId && hasDuplicateTagId(tags, draftId, tag.uid)
+      ? getDuplicateTagIdErrorMessage(draftId)
+      : undefined;
+  const draftIdErrorMessage = showDraftIdError
+    ? javaNamespacedIdentifierHint
+    : (duplicateError ?? updateError);
+  const hasDraftIdError = showDraftIdError || draftIdErrorMessage !== undefined;
 
   const commitTag = () => {
-    if (!isValidJavaNamespacedIdentifier(draftId)) {
+    if (!hasValidDraftId || duplicateError !== undefined || draftId === tag.id) {
       return;
     }
 
-    updateTag(tag.uid, { id: draftId });
+    try {
+      updateTag(tag.uid, { id: draftId });
+      setUpdateError(undefined);
+    } catch (error) {
+      setUpdateError(error instanceof Error ? error.message : "Could not update tag");
+    }
   };
 
   const handleAddValue = (option: ValueOption) => {
@@ -88,16 +104,19 @@ export const TagEditor = ({
             autoCorrect="off"
             spellCheck={false}
             placeholder="namespace:tag_name"
-            aria-invalid={showDraftIdError}
+            aria-invalid={hasDraftIdError}
             className={cn(
               "border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset",
-              showDraftIdError && "border-destructive focus:ring-destructive",
+              hasDraftIdError && "border-destructive focus:ring-destructive",
             )}
             onBlur={commitTag}
-            onChange={(event) => setDraftId(event.target.value)}
+            onChange={(event) => {
+              setDraftId(event.target.value);
+              setUpdateError(undefined);
+            }}
           />
-          {showDraftIdError && (
-            <span className="text-destructive text-[10px]">{javaNamespacedIdentifierHint}</span>
+          {draftIdErrorMessage && (
+            <span className="text-destructive text-[10px]">{draftIdErrorMessage}</span>
           )}
         </label>
       </div>

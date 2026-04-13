@@ -68,6 +68,12 @@ export const downloadDatapack = async (
     return;
   }
 
-  const blob = createDatapackBlob(version, recipeFiles, tags);
-  downloadBlob(blob, "datapack.zip");
+  try {
+    const blob = createDatapackBlob(version, recipeFiles, tags);
+    downloadBlob(blob, "datapack.zip");
+  } catch (error) {
+    alert(
+      `Failed to generate the datapack:\n\n${error instanceof Error ? error.message : "Unknown error"}`,
+    );
+  }
 };

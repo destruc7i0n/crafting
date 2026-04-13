@@ -33,6 +33,7 @@ describe("createBehaviorPackBlob", () => {
 
     const files = unzipSync(new Uint8Array(await blob.arrayBuffer()));
     const manifest = JSON.parse(strFromU8(files["manifest.json"]));
+    const filePaths = Object.keys(files).sort();
 
     expect(manifest).toEqual({
       format_version: 2,
@@ -57,8 +58,13 @@ describe("createBehaviorPackBlob", () => {
       },
     });
 
-    expect("recipes/crafting_stone_button.json" in files).toBe(true);
-    expect("recipes/custom_folder_stone_button.json" in files).toBe(true);
+    expect(filePaths).toEqual([
+      "manifest.json",
+      "recipes/crafting_stone_button.json",
+      "recipes/custom_folder_stone_button.json",
+    ]);
+    expect(filePaths.some((path) => path.startsWith("behavior_pack/"))).toBe(false);
+    expect(filePaths.some((path) => path.endsWith(".mcaddon"))).toBe(false);
   });
 
   it("rejects duplicate Bedrock identifiers", () => {

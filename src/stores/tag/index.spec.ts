@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { parseStringToMinecraftIdentifier } from "@/data/models/identifier/utilities";
 import { Tag, TagValue } from "@/data/models/types";
 import { RecipeType } from "@/data/types";
-import { resolveTagValues } from "@/lib/tags";
+import { getDuplicateTagIdErrorMessage, resolveTagValues } from "@/lib/tags";
 import { useRecipeStore } from "@/stores/recipe";
 
 import { useTagStore } from "./index";
@@ -89,6 +89,50 @@ describe("tag store", () => {
       createTagValue("crafting:renamed_child"),
       createTagValue("crafting:other_child"),
     ]);
+  });
+
+  it("throws when creating a duplicate tag id", () => {
+    useTagStore.setState((state) => ({
+      ...state,
+      tags: [createTag("tag-a", "crafting:duplicate")],
+    }));
+
+    expect(() =>
+      useTagStore.getState().createTag({
+        id: "crafting:duplicate",
+        values: [],
+      }),
+    ).toThrow(getDuplicateTagIdErrorMessage("crafting:duplicate"));
+    expect(useTagStore.getState().tags).toEqual([createTag("tag-a", "crafting:duplicate")]);
+  });
+
+  it("throws when renaming a tag to another existing id", () => {
+    useTagStore.setState((state) => ({
+      ...state,
+      tags: [createTag("tag-a", "crafting:first"), createTag("tag-b", "crafting:second")],
+    }));
+
+    expect(() => useTagStore.getState().updateTag("tag-b", { id: "crafting:first" })).toThrow(
+      getDuplicateTagIdErrorMessage("crafting:first"),
+    );
+    expect(useTagStore.getState().tags).toEqual([
+      createTag("tag-a", "crafting:first"),
+      createTag("tag-b", "crafting:second"),
+    ]);
+  });
+
+  it("allows updating a tag to its current id", () => {
+    useTagStore.setState((state) => ({
+      ...state,
+      tags: [createTag("tag-a", "crafting:same")],
+    }));
+
+    expect(() =>
+      useTagStore.getState().updateTag("tag-a", {
+        id: "crafting:same",
+      }),
+    ).not.toThrow();
+    expect(useTagStore.getState().tags).toEqual([createTag("tag-a", "crafting:same")]);
   });
 
   it("keeps nested tag resolution working after renaming a referenced child tag", () => {

@@ -228,6 +228,7 @@ const ExpandedRecipeRow = ({
               }
             }}
             title={`Download ${row.detail}`}
+            aria-label={`Download ${row.detail}`}
           >
             <DownloadIcon size={14} />
           </button>

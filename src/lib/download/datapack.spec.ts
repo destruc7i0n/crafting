@@ -180,4 +180,26 @@ describe("downloadDatapack", () => {
     expect(createDatapackBlob).not.toHaveBeenCalled();
     expect(downloadBlob).not.toHaveBeenCalled();
   });
+
+  it("surfaces datapack packaging failures after recipe generation succeeds", async () => {
+    const recipe = createCraftingRecipe({
+      "crafting.1": createItem("minecraft:stone"),
+      "crafting.result": createItem("minecraft:stone_button"),
+    });
+    const slotContext = createEmptySlotContext(MinecraftVersion.V121);
+
+    generate.mockReturnValue(generatedRecipe);
+    createDatapackBlob.mockImplementation(() => {
+      throw new Error("Zip failed");
+    });
+
+    await downloadDatapack([recipe], MinecraftVersion.V121, {
+      tags: [],
+      context: { bedrockNamespace: "crafting" },
+      slotContext,
+    });
+
+    expect(globalThis.alert).toHaveBeenCalledWith("Failed to generate the datapack:\n\nZip failed");
+    expect(downloadBlob).not.toHaveBeenCalled();
+  });
 });

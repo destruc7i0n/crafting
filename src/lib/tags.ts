@@ -20,8 +20,25 @@ export const getTagLabel = (raw: string) => toTagRef(raw);
 
 export const toTagRef = (rawId: string): string => `#${rawId}`;
 const fromTagRef = (ref: string): string => ref.slice(1);
+export const getDuplicateTagIdErrorMessage = (rawId: string) => `Duplicate tag id: ${rawId}`;
 
 export type TagGraph = Record<string, string[]>;
+
+export const hasDuplicateTagId = (tags: Tag[], rawId: string, ignoreUid?: string) => {
+  const nextKey = identifierUniqueKey(parseStringToMinecraftIdentifier(rawId));
+
+  return tags.some(
+    (tag) =>
+      tag.uid !== ignoreUid &&
+      identifierUniqueKey(parseStringToMinecraftIdentifier(tag.id)) === nextKey,
+  );
+};
+
+export const assertUniqueTagId = (tags: Tag[], rawId: string, ignoreUid?: string) => {
+  if (hasDuplicateTagId(tags, rawId, ignoreUid)) {
+    throw new Error(getDuplicateTagIdErrorMessage(rawId));
+  }
+};
 
 export const resolveTagGraph = (graph: TagGraph): TagGraph => {
   const memo = new Map<string, string[]>();

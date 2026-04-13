@@ -7,7 +7,7 @@ import {
   parseStringToMinecraftIdentifier,
 } from "@/data/models/identifier/utilities";
 import { Tag, TagValue } from "@/data/models/types";
-import { createEmptyTag } from "@/lib/tags";
+import { assertUniqueTagId, createEmptyTag } from "@/lib/tags";
 
 export interface TagState {
   tags: Tag[];
@@ -27,9 +27,13 @@ export const useTagStore = create<TagState & TagActions>()(
       tags: [],
 
       createTag: (initial) => {
-        const tag = createEmptyTag(get().tags);
+        const existingTags = get().tags;
+        const tag = createEmptyTag(existingTags);
 
-        if (initial?.id !== undefined) tag.id = initial.id;
+        if (initial?.id !== undefined) {
+          assertUniqueTagId(existingTags, initial.id);
+          tag.id = initial.id;
+        }
         if (initial?.values !== undefined) tag.values = initial.values;
 
         set((state) => {
@@ -39,6 +43,16 @@ export const useTagStore = create<TagState & TagActions>()(
         return tag.uid;
       },
       updateTag: (uid, updates) => {
+        const tags = get().tags;
+        const currentTag = tags.find((value) => value.uid === uid);
+        if (!currentTag) {
+          return;
+        }
+
+        if (updates.id !== undefined) {
+          assertUniqueTagId(tags, updates.id, uid);
+        }
+
         set((state) => {
           const tag = state.tags.find((value) => value.uid === uid);
           if (!tag) {

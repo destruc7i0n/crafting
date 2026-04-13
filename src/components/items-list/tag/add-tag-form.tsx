@@ -8,6 +8,7 @@ import {
   isValidJavaNamespacedIdentifier,
   javaNamespacedIdentifierHint,
 } from "@/lib/minecraft-identifier";
+import { getDuplicateTagIdErrorMessage, hasDuplicateTagId } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
@@ -38,9 +39,19 @@ export const AddTagForm = ({
   const [tagId, setTagId] = useState("");
   const [valueSearch, setValueSearch] = useState("");
   const [draftValues, setDraftValues] = useState<TagValue[]>([]);
+  const [submitError, setSubmitError] = useState<string>();
 
-  const showTagIdError = tagId.trim().length > 0 && !isValidJavaNamespacedIdentifier(tagId);
-  const canCreate = isValidJavaNamespacedIdentifier(tagId) && draftValues.length > 0;
+  const hasValidTagId = isValidJavaNamespacedIdentifier(tagId);
+  const showTagIdError = tagId.trim().length > 0 && !hasValidTagId;
+  const duplicateError =
+    hasValidTagId && hasDuplicateTagId(tags, tagId)
+      ? getDuplicateTagIdErrorMessage(tagId)
+      : undefined;
+  const tagIdErrorMessage = showTagIdError
+    ? javaNamespacedIdentifierHint
+    : (duplicateError ?? submitError);
+  const hasTagIdError = showTagIdError || tagIdErrorMessage !== undefined;
+  const canCreate = hasValidTagId && duplicateError === undefined && draftValues.length > 0;
 
   const handleAddValue = (option: ValueOption) => {
     const value: TagValue =
@@ -61,11 +72,17 @@ export const AddTagForm = ({
 
   const handleCreate = () => {
     if (!canCreate) return;
-    createTag({
-      id: tagId,
-      values: draftValues,
-    });
-    onClose();
+
+    try {
+      createTag({
+        id: tagId,
+        values: draftValues,
+      });
+      setSubmitError(undefined);
+      onClose();
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Could not create tag");
+    }
   };
 
   const existingValueIds = useMemo(
@@ -106,15 +123,18 @@ export const AddTagForm = ({
           autoCorrect="off"
           spellCheck={false}
           placeholder="namespace:tag_name"
-          aria-invalid={showTagIdError}
+          aria-invalid={hasTagIdError}
           className={cn(
             "border-input bg-background text-foreground focus:ring-ring rounded-md border px-3 py-2 text-sm outline-hidden focus:ring-2 focus:ring-inset",
-            showTagIdError && "border-destructive focus:ring-destructive",
+            hasTagIdError && "border-destructive focus:ring-destructive",
           )}
-          onChange={(event) => setTagId(event.target.value)}
+          onChange={(event) => {
+            setTagId(event.target.value);
+            setSubmitError(undefined);
+          }}
         />
-        {showTagIdError && (
-          <span className="text-destructive text-[10px]">{javaNamespacedIdentifierHint}</span>
+        {tagIdErrorMessage && (
+          <span className="text-destructive text-[10px]">{tagIdErrorMessage}</span>
         )}
       </label>
 

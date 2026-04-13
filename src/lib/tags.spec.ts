@@ -3,7 +3,13 @@ import { describe, expect, it } from "vitest";
 import { Tag, TagValue } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 
-import { createEmptyTag, createTagItem, isSameIngredient, resolveTagValues } from "./tags";
+import {
+  createEmptyTag,
+  createTagItem,
+  hasDuplicateTagId,
+  isSameIngredient,
+  resolveTagValues,
+} from "./tags";
 
 describe("resolveTagValues", () => {
   const makeItemValue = (id: string): TagValue => ({
@@ -98,6 +104,21 @@ describe("createEmptyTag", () => {
   it("starts from 1 when no existing tags match pattern", () => {
     const tag = createEmptyTag([]);
     expect(tag.id).toBe("crafting:custom_tag_1");
+  });
+});
+
+describe("hasDuplicateTagId", () => {
+  it("returns true for normalized duplicate tag ids", () => {
+    const tags: Tag[] = [{ uid: "tag-1", id: "minecraft:duplicate", values: [] }];
+
+    expect(hasDuplicateTagId(tags, "minecraft:duplicate")).toBe(true);
+    expect(hasDuplicateTagId(tags, "duplicate")).toBe(true);
+  });
+
+  it("returns false when the matching tag uid is ignored", () => {
+    const tags: Tag[] = [{ uid: "tag-1", id: "crafting:duplicate", values: [] }];
+
+    expect(hasDuplicateTagId(tags, "crafting:duplicate", "tag-1")).toBe(false);
   });
 });
 
