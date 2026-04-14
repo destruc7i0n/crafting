@@ -3,12 +3,13 @@ import { ChevronRightIcon } from "lucide-react";
 import { ResourceIcon } from "@/components/item/resource-icon";
 import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
 import { getRecipeTypeIconItemId } from "@/recipes/definitions";
-import { getRecipeExportDetail } from "@/recipes/naming";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useUIStore } from "@/stores/ui";
+
+import { getSidebarRecipeSummary } from "./sidebar-utilities";
 
 export const MobileRecipeSwitcher = () => {
   const recipes = useRecipeStore((state) => state.recipes);
@@ -17,12 +18,14 @@ export const MobileRecipeSwitcher = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
 
-  // the recipe store should always have a valid selected recipe
-  if (!currentRecipe) return null;
+  if (!currentRecipe) {
+    return null;
+  }
 
-  const naming = resolvedNames.byId[currentRecipe.id];
-  const sidebarTitle = naming?.sidebarTitle ?? "Recipe";
-  const detail = getRecipeExportDetail(naming, minecraftVersion);
+  const { title, detail } = getSidebarRecipeSummary(
+    resolvedNames.byId[currentRecipe.id],
+    minecraftVersion,
+  );
 
   return (
     <button
@@ -36,7 +39,7 @@ export const MobileRecipeSwitcher = () => {
       />
 
       <span className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm font-semibold">{sidebarTitle}</span>
+        <span className="truncate text-sm font-semibold">{title}</span>
         <span className="text-muted-foreground truncate text-xs">
           {detail} · {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
         </span>

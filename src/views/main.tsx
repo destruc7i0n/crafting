@@ -2,7 +2,7 @@ import { RecipeTypeSelector } from "@/components/fields/recipe-type-selector";
 import { RecipeOptions } from "@/components/options/recipe-options";
 import { ItemOutput } from "@/components/output/item-output";
 import { Preview } from "@/components/preview/preview";
-import { MobileRecipeSwitcher } from "@/components/recipes/mobile-recipe-switcher";
+import { MobileRecipeSwitcher } from "@/components/recipes/sidebar/mobile-recipe-switcher";
 
 export const Main = () => {
   return (

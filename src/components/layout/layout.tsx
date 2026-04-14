@@ -2,12 +2,12 @@ import { memo, useState } from "react";
 
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
+import { RecipeSidebar } from "@/components/recipes/sidebar/recipe-sidebar";
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/stores/ui";
 
 import { Footer } from "../footer";
 import { ItemsList } from "../items-list/items-list";
-import { RecipeSidebar } from "../recipes/recipe-sidebar";
 import { Header } from "./header";
 import { HelpDialog } from "./help-dialog";
 
