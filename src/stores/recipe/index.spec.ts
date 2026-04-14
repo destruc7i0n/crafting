@@ -15,7 +15,9 @@ const createRecipe = (id: string): Recipe => ({
   group: "",
   category: "",
   showNotification: true,
-  smithingTrimPattern: "",
+  smithing: {
+    trimPattern: "",
+  },
   slots: {},
   crafting: {
     shapeless: false,
@@ -163,6 +165,9 @@ describe("recipe store", () => {
       name: "polished_stone",
       group: "building",
       category: "decorations",
+      smithing: {
+        trimPattern: "",
+      },
       crafting: {
         shapeless: true,
         keepWhitespace: true,

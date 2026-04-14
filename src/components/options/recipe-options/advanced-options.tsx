@@ -72,7 +72,7 @@ const CategoryField = ({ categoryOptions }: CategoryFieldProps) => {
 
 const SmithingPatternField = () => {
   const smithingTrimPattern = useRecipeStore(
-    (state) => selectCurrentRecipe(state)?.smithingTrimPattern ?? "",
+    (state) => selectCurrentRecipe(state)?.smithing.trimPattern ?? "",
   );
   const setRecipeSmithingTrimPattern = useRecipeStore(
     (state) => state.setRecipeSmithingTrimPattern,

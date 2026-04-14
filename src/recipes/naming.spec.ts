@@ -104,7 +104,7 @@ describe("getAutoRecipeName", () => {
         "smithing.base": createItem("minecraft:diamond_chestplate"),
         "smithing.addition": createItem("minecraft:redstone"),
       },
-      { smithingTrimPattern: "minecraft:coast" },
+      { smithing: { trimPattern: "minecraft:coast" } },
     );
 
     expect(getAutoRecipeName(recipe, slotContext)).toBe(

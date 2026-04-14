@@ -42,7 +42,9 @@ describe("tag store", () => {
           group: "",
           category: "",
           showNotification: true,
-          smithingTrimPattern: "",
+          smithing: {
+            trimPattern: "",
+          },
           slots: {},
           crafting: {
             shapeless: false,

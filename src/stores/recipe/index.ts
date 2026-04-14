@@ -4,12 +4,17 @@ import { immer } from "zustand/middleware/immer";
 
 import { IngredientItem } from "@/data/models/types";
 import { RecipeType } from "@/data/types";
-import { generateUid } from "@/lib/utils";
 import { RecipeSlot } from "@/recipes/slots";
 
+import {
+  normalizePersistedRecipeState,
+  PersistedRecipeState,
+  RECIPE_STORE_NAME,
+  RECIPE_STORE_VERSION,
+} from "./persistence";
 import { selectCurrentRecipe } from "./selectors";
 import { toRecipeSlotValue } from "./slot-value";
-import { Recipe, RecipeSlotValue, RecipeState, recipeStateDefaults } from "./types";
+import { createDefaultRecipe, Recipe, RecipeSlotValue, RecipeState } from "./types";
 
 type RecipeActions = {
   selectRecipe: (id: string) => void;
@@ -41,15 +46,10 @@ type RecipeActions = {
 
 type ImmerState = RecipeState & RecipeActions;
 
-const createRecipeState = (): Recipe => ({
-  ...recipeStateDefaults,
-  id: generateUid("recipe"),
-});
-
 export const useRecipeStore = create<ImmerState>()(
-  persist(
+  persist<ImmerState, [], [["zustand/immer", never]], PersistedRecipeState>(
     immer((set) => {
-      const initialRecipe = createRecipeState();
+      const initialRecipe = createDefaultRecipe();
 
       const updateSelectedRecipe = (update: (recipe: Recipe) => void) =>
         set((state) => {
@@ -72,7 +72,7 @@ export const useRecipeStore = create<ImmerState>()(
         },
         createRecipe: () => {
           set((state) => {
-            const recipe = createRecipeState();
+            const recipe = createDefaultRecipe();
             state.recipes.push(recipe);
             state.selectedRecipeId = recipe.id;
           });
@@ -134,7 +134,7 @@ export const useRecipeStore = create<ImmerState>()(
         },
         setRecipeSmithingTrimPattern: (pattern) => {
           updateSelectedRecipe((recipe) => {
-            recipe.smithingTrimPattern = pattern;
+            recipe.smithing.trimPattern = pattern;
           });
         },
         setRecipeSlot: (slot, value) => {
@@ -221,11 +221,15 @@ export const useRecipeStore = create<ImmerState>()(
       };
     }),
     {
-      name: "crafting-recipes",
-      version: 0,
+      name: RECIPE_STORE_NAME,
+      version: RECIPE_STORE_VERSION,
       partialize: (state) => ({
         recipes: state.recipes,
         selectedRecipeId: state.selectedRecipeId,
+      }),
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...normalizePersistedRecipeState(persistedState),
       }),
     },
   ),

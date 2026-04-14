@@ -103,7 +103,7 @@ export const extractSmithingInput = (state: Recipe): SmithingInput => ({
   base: state.slots[SLOTS.smithing.base],
   addition: state.slots[SLOTS.smithing.addition],
   result: state.slots[SLOTS.smithing.result],
-  trimPattern: state.smithingTrimPattern || undefined,
+  trimPattern: state.smithing.trimPattern || undefined,
 });
 
 export const validateSmithing = (state: Recipe, version?: MinecraftVersion): string[] => {

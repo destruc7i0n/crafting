@@ -5,8 +5,11 @@ import { Recipe, RecipeSlotValue, recipeStateDefaults } from "@/stores/recipe/ty
 
 type TestSlotInput = IngredientItem | RecipeSlotValue;
 
-type TestRecipeInput = Partial<Omit<Recipe, "slots" | "crafting" | "cooking" | "bedrock">> & {
+type TestRecipeInput = Partial<
+  Omit<Recipe, "slots" | "smithing" | "crafting" | "cooking" | "bedrock">
+> & {
   slots?: Partial<Record<RecipeSlot, TestSlotInput | undefined>>;
+  smithing?: Partial<Recipe["smithing"]>;
   crafting?: Partial<Recipe["crafting"]>;
   cooking?: Partial<Recipe["cooking"]>;
   bedrock?: Partial<Recipe["bedrock"]>;
@@ -60,6 +63,10 @@ export const makeRecipe = (input: TestRecipeInput = {}): Recipe => ({
       .map(([slot, value]) => [slot, normalizeTestSlot(value)])
       .filter(([, value]) => value !== undefined),
   ),
+  smithing: {
+    ...recipeStateDefaults.smithing,
+    ...input.smithing,
+  },
   crafting: {
     ...recipeStateDefaults.crafting,
     ...input.crafting,

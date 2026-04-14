@@ -1,5 +1,6 @@
 import { CustomItem, MinecraftIdentifier, Tag } from "@/data/models/types";
 import { MinecraftVersion, RecipeType } from "@/data/types";
+import { generateUid } from "@/lib/utils";
 import { RecipeSlot } from "@/recipes/slots";
 import { VersionResourceData } from "@/stores/resources";
 
@@ -11,7 +12,9 @@ interface RecipeFields {
   group: string;
   category: string;
   showNotification: boolean;
-  smithingTrimPattern: string;
+  smithing: {
+    trimPattern: string;
+  };
   crafting: {
     shapeless: boolean;
     keepWhitespace: boolean;
@@ -67,7 +70,9 @@ export const recipeStateDefaults: Recipe = {
   group: "",
   category: "",
   showNotification: true,
-  smithingTrimPattern: "",
+  smithing: {
+    trimPattern: "",
+  },
   slots: {},
   crafting: {
     shapeless: false,
@@ -84,3 +89,8 @@ export const recipeStateDefaults: Recipe = {
     priority: 0,
   },
 };
+
+export const createDefaultRecipe = (): Recipe => ({
+  ...recipeStateDefaults,
+  id: generateUid("recipe"),
+});

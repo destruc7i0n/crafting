@@ -24,7 +24,9 @@ const createRecipe = (id: string) => ({
   group: "",
   category: "",
   showNotification: true,
-  smithingTrimPattern: "",
+  smithing: {
+    trimPattern: "",
+  },
   slots: {},
   crafting: {
     shapeless: false,

@@ -256,7 +256,10 @@ describe("generate smithing", () => {
         ...recipeStateDefaults,
         recipeType: RecipeType.SmithingTrim,
         group: "",
-        smithingTrimPattern: "minecraft:bolt",
+        smithing: {
+          ...recipeStateDefaults.smithing,
+          trimPattern: "minecraft:bolt",
+        },
         slots: {
           "smithing.template": {
             type: "default_item",
