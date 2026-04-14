@@ -137,6 +137,7 @@
 
   .content-column {
     @apply p-0;
+    overscroll-behavior-y: auto;
   }
 
   .items-column {
