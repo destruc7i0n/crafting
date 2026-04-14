@@ -265,7 +265,7 @@ const ExpandedRecipeRow = ({
           </div>
         </div>
 
-        <span className="flex shrink-0 items-center gap-1 px-2">
+        <span className="flex shrink-0 items-center gap-2 pr-2 pl-1">
           <RecipeRowOverflowMenu
             row={row}
             mobile={mobile}
