@@ -20,6 +20,13 @@ const DESKTOP_STEPS = [
   },
 ] as const;
 
+const NOTES = (mobile: boolean) =>
+  [
+    "Use the tabs above the preview to change the recipe type.",
+    `${mobile ? "Tap" : "Click"} the result count badge to change the stack size.`,
+    "Java item components and custom enchantments are not currently supported.",
+  ] as const;
+
 const DESKTOP_SECTIONS = [
   {
     title: "Output",
@@ -31,32 +38,23 @@ const DESKTOP_SECTIONS = [
   },
   {
     title: "Notes",
-    items: [
-      "Shaped and shapeless recipes can conflict if they use the same ingredients.",
-      "Java item components and custom enchantments are not supported yet.",
-    ],
+    items: NOTES(false),
   },
 ] as const;
 
 const TOUCH_STEPS = [
   {
-    title: "Browse ingredients",
+    title: "Browse items",
     body: "Use the Items & Tags tray at the bottom to browse and search items.",
   },
   {
     title: "Tap to place",
-    body: "Tap an item or tag, then tap a slot. Use the actions below the preview to remove it or deselect items.",
+    body: "Tap an item or tag, then tap a slot. Use the actions menu to deselect items or remove them from slots.",
   },
   {
     title: "Recipe list",
-    body: "Use the top button to switch between recipes and export as a datapack or behavior pack.",
+    body: "Use the top button to switch between recipes and export as a datapack/behavior pack.",
   },
-] as const;
-
-const TOUCH_NOTES = [
-  "Use the tabs above the preview to change the recipe type.",
-  "Tap the result count badge to change the stack size.",
-  "Java item components and custom enchantments are not supported yet.",
 ] as const;
 
 export const HelpDialog = () => {
@@ -113,7 +111,7 @@ export const HelpDialog = () => {
             </ul>
 
             <ul className="text-muted-foreground border-border/70 list-disc space-y-2 border-t pt-4 pl-5 text-sm leading-6">
-              {TOUCH_NOTES.map((note) => (
+              {NOTES(true).map((note) => (
                 <li key={note}>{note}</li>
               ))}
             </ul>
@@ -143,16 +141,6 @@ export const HelpDialog = () => {
             </div>
           </div>
         )}
-
-        <div className="border-border/70 flex justify-end border-t pt-5">
-          <button
-            type="button"
-            onClick={closeHelpDialog}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer rounded-md px-4 py-2 text-sm font-medium transition-colors sm:w-auto"
-          >
-            Got it
-          </button>
-        </div>
       </div>
     </Dialog>
   );
