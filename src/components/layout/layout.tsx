@@ -9,6 +9,7 @@ import { Footer } from "../footer";
 import { ItemsList } from "../items-list/items-list";
 import { RecipeSidebar } from "../recipes/recipe-sidebar";
 import { Header } from "./header";
+import { HelpDialog } from "./help-dialog";
 
 import styles from "./layout.module.css";
 
@@ -32,6 +33,7 @@ const Layout = memo(({ children }: LayoutProps) => {
     <>
       <div className={styles.shell}>
         <Header />
+        <HelpDialog />
 
         <div
           className={cn(
