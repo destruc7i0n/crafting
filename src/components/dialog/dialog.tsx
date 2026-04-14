@@ -94,7 +94,7 @@ export const Dialog = ({
   return createPortal(
     <div
       className={cn(
-        "fixed inset-0 z-50 flex items-start justify-center bg-black/70 p-3 sm:items-center sm:p-4",
+        "fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 p-3 sm:p-4",
         overlayClassName,
       )}
       onClick={onClose}
@@ -105,7 +105,7 @@ export const Dialog = ({
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
         className={cn(
-          "border-border bg-background text-foreground flex max-h-[min(42rem,calc(100svh-2rem))] min-h-0 w-full flex-col overflow-hidden rounded-lg border shadow-2xl",
+          "border-border bg-background text-foreground flex max-h-[min(42rem,calc(100svh-3rem))] min-h-0 w-full flex-col overflow-hidden rounded-lg border shadow-2xl",
           sizeClassNames[size],
           className,
         )}
