@@ -1,7 +1,7 @@
 import { ChevronDownIcon } from "lucide-react";
 
 import { Select } from "@/components/ui/select";
-import { MinecraftVersion, RecipeType } from "@/data/types";
+import { MinecraftVersion } from "@/data/types";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
@@ -11,7 +11,6 @@ import {
   getRecipeCategoryOptions,
   supportsRecipeCategory,
   supportsShowNotification,
-  supportsSmithingTrimPattern,
 } from "@/versioning";
 
 import { CheckboxField, Field, InputControl } from "./shared";
@@ -70,34 +69,6 @@ const CategoryField = ({ categoryOptions }: CategoryFieldProps) => {
   );
 };
 
-const SmithingPatternField = () => {
-  const smithingTrimPattern = useRecipeStore(
-    (state) => selectCurrentRecipe(state)?.smithing.trimPattern ?? "",
-  );
-  const setRecipeSmithingTrimPattern = useRecipeStore(
-    (state) => state.setRecipeSmithingTrimPattern,
-  );
-
-  return (
-    <Field
-      label="Pattern"
-      htmlFor="recipe-pattern"
-      tooltip="The trim pattern to apply to the base item, such as minecraft:silence."
-    >
-      <InputControl
-        id="recipe-pattern"
-        type="text"
-        value={smithingTrimPattern}
-        onCommit={(v) => setRecipeSmithingTrimPattern(v)}
-        autoCapitalize="off"
-        autoCorrect="off"
-        spellCheck={false}
-        placeholder="minecraft:silence"
-      />
-    </Field>
-  );
-};
-
 const ShowNotificationField = () => {
   const showNotification = useRecipeStore(
     (state) => selectCurrentRecipe(state)?.showNotification ?? true,
@@ -133,8 +104,6 @@ export const AdvancedOptions = ({ open, onToggle }: AdvancedOptionsProps) => {
 
   const categoryOptions = getRecipeCategoryOptions(recipeType);
   const showCategory = supportsRecipeCategory(minecraftVersion, recipeType);
-  const showSmithingTrimPattern =
-    recipeType === RecipeType.SmithingTrim && supportsSmithingTrimPattern(minecraftVersion);
   const showNotification = supportsShowNotification(minecraftVersion, recipeType, shapeless);
 
   return (
@@ -154,7 +123,6 @@ export const AdvancedOptions = ({ open, onToggle }: AdvancedOptionsProps) => {
         <div className="grid gap-3 sm:grid-cols-2">
           <GroupField />
           {showCategory && <CategoryField categoryOptions={categoryOptions!} />}
-          {showSmithingTrimPattern && <SmithingPatternField />}
           {showNotification && <ShowNotificationField />}
         </div>
       )}

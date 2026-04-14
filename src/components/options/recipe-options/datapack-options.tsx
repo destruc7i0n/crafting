@@ -1,13 +1,14 @@
 import { PencilIcon, RotateCcwIcon } from "lucide-react";
 
-import { MinecraftVersion } from "@/data/types";
+import { MinecraftVersion, RecipeType } from "@/data/types";
 import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
 import { cn } from "@/lib/utils";
 import { getCommittedRecipeName, toJavaRecipeFileName } from "@/recipes/naming";
 import { useRecipeStore } from "@/stores/recipe";
-import { selectCurrentRecipe } from "@/stores/recipe/selectors";
+import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
+import { supportsSmithingTrimPattern } from "@/versioning";
 
 import { Field, IconActionButton, InputControl, ReadonlyValueRow } from "./shared";
 
@@ -84,16 +85,49 @@ const FileNameField = () => {
   );
 };
 
+const SmithingTrimPatternField = () => {
+  const smithingTrimPattern = useRecipeStore(
+    (state) => selectCurrentRecipe(state)?.smithing.trimPattern ?? "",
+  );
+  const setRecipeSmithingTrimPattern = useRecipeStore(
+    (state) => state.setRecipeSmithingTrimPattern,
+  );
+
+  return (
+    <Field
+      label="Pattern"
+      htmlFor="recipe-pattern"
+      tooltip="The trim pattern to apply to the base item, such as minecraft:silence."
+    >
+      <InputControl
+        id="recipe-pattern"
+        type="text"
+        value={smithingTrimPattern}
+        onCommit={(value) => setRecipeSmithingTrimPattern(value)}
+        autoCapitalize="off"
+        autoCorrect="off"
+        spellCheck={false}
+        placeholder="minecraft:silence"
+      />
+    </Field>
+  );
+};
+
 export const DatapackOptions = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
+  const recipeType = useRecipeStore(selectCurrentRecipeType);
 
   if (minecraftVersion === MinecraftVersion.Bedrock) {
     return null;
   }
 
+  const showSmithingTrimPattern =
+    recipeType === RecipeType.SmithingTrim && supportsSmithingTrimPattern(minecraftVersion);
+
   return (
     <div className="grid gap-2 sm:grid-cols-2">
       <FileNameField />
+      {showSmithingTrimPattern && <SmithingTrimPatternField />}
     </div>
   );
 };
