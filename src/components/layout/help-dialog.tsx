@@ -20,26 +20,17 @@ const DESKTOP_STEPS = [
   },
 ] as const;
 
-const NOTES = (mobile: boolean) =>
-  [
-    "Use the tabs above the preview to change the recipe type.",
-    `${mobile ? "Tap" : "Click"} the result count badge to change the stack size.`,
-    "Java item components and custom enchantments are not currently supported.",
-  ] as const;
+const DESKTOP_NOTES = [
+  "Create multiple recipes and export as a datapack or behavior pack.",
+  "Use the tabs above the preview to switch recipe type.",
+  "Click the result count badge to change the stack size.",
+  "Java item components and custom enchantments are not currently supported.",
+] as const;
 
-const DESKTOP_SECTIONS = [
-  {
-    title: "Output",
-    items: [
-      "Click the result count badge to change the stack size.",
-      "Copy the recipe JSON from Output.",
-      "Use the recipe list to download recipe JSON, a datapack, or a behavior pack.",
-    ],
-  },
-  {
-    title: "Notes",
-    items: NOTES(false),
-  },
+const MOBILE_NOTES = [
+  "Tap the result count badge to change the stack size.",
+  "Use the tabs above the preview to switch recipe type.",
+  "Java item components and custom enchantments are not currently supported.",
 ] as const;
 
 const TOUCH_STEPS = [
@@ -49,11 +40,11 @@ const TOUCH_STEPS = [
   },
   {
     title: "Tap to place",
-    body: "Tap an item or tag, then tap a slot. Use the actions menu to deselect items or remove them from slots.",
+    body: "Tap an item or tag, then tap a slot. Use the actions menu to deselect the item or remove it from the slot.",
   },
   {
     title: "Recipe list",
-    body: "Use the top button to switch between recipes and export as a datapack/behavior pack.",
+    body: "Use the top button to switch between recipes and export as a datapack or behavior pack.",
   },
 ] as const;
 
@@ -69,7 +60,7 @@ export const HelpDialog = () => {
       onClose={closeHelpDialog}
       size={isTouchDevice ? "md" : "lg"}
       overlayClassName={isTouchDevice ? "items-center" : undefined}
-      className={isTouchDevice ? "max-w-[min(32rem,calc(100vw-1.5rem))]" : "max-w-[54rem]"}
+      className={isTouchDevice ? "max-w-[min(32rem,calc(100vw-1.5rem))]" : undefined}
       icon={
         <div
           className={
@@ -92,53 +83,47 @@ export const HelpDialog = () => {
       }
       title="Crafting Generator"
       description="Crafting recipe generator for Minecraft Java Edition and Bedrock Edition"
-      titleClassName="text-2xl leading-tight sm:text-[2rem]"
-      descriptionClassName={
-        isTouchDevice ? "max-w-[16rem] text-sm leading-6" : "max-w-2xl text-base leading-7"
-      }
-      bodyClassName={isTouchDevice ? "py-4" : "py-6"}
+      titleClassName={isTouchDevice ? undefined : "text-2xl leading-tight"}
+      descriptionClassName={isTouchDevice ? "max-w-[16rem] text-sm leading-6" : "text-sm leading-6"}
+      bodyClassName={isTouchDevice ? "py-4" : "py-5"}
     >
-      <div className="space-y-6">
+      <div className="space-y-4">
         {isTouchDevice ? (
           <div className="space-y-5">
             <ul className="space-y-4">
               {deviceSteps.map((step) => (
-                <li key={step.title} className="space-y-1">
-                  <h4 className="text-base font-medium">{step.title}</h4>
+                <li key={step.title} className="border-primary/50 space-y-0.5 border-l-2 pl-3">
+                  <h4 className="text-sm font-medium">{step.title}</h4>
                   <p className="text-muted-foreground text-sm leading-6">{step.body}</p>
                 </li>
               ))}
             </ul>
 
             <ul className="text-muted-foreground border-border/70 list-disc space-y-2 border-t pt-4 pl-5 text-sm leading-6">
-              {NOTES(true).map((note) => (
+              {MOBILE_NOTES.map((note) => (
                 <li key={note}>{note}</li>
               ))}
             </ul>
           </div>
         ) : (
-          <div className="grid gap-6">
-            <ul className="border-border/70 grid gap-5 border-b pb-6 md:grid-cols-3">
+          <div className="grid gap-4">
+            <ul className="grid gap-3 md:grid-cols-3">
               {deviceSteps.map((step) => (
-                <li key={step.title} className="space-y-2">
-                  <h4 className="text-base font-medium">{step.title}</h4>
+                <li
+                  key={step.title}
+                  className="bg-muted/40 border-border/60 space-y-1 rounded-lg border p-4"
+                >
+                  <h4 className="text-sm font-medium">{step.title}</h4>
                   <p className="text-muted-foreground text-sm leading-6">{step.body}</p>
                 </li>
               ))}
             </ul>
 
-            <div className="grid gap-5 md:grid-cols-2">
-              {DESKTOP_SECTIONS.map((section) => (
-                <div key={section.title} className="space-y-1">
-                  <h3 className="text-base font-medium">{section.title}</h3>
-                  <ul className="text-muted-foreground list-disc space-y-2 pl-5 text-sm leading-6">
-                    {section.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
+            <ul className="text-muted-foreground border-border/70 grid list-disc grid-cols-2 gap-x-8 gap-y-2 border-t pt-4 pl-5 text-sm leading-6">
+              {DESKTOP_NOTES.map((note) => (
+                <li key={note}>{note}</li>
               ))}
-            </div>
+            </ul>
           </div>
         )}
       </div>
