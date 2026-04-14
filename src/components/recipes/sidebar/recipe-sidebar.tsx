@@ -1,6 +1,8 @@
-import { ReactNode, memo, useMemo } from "react";
+import { ReactNode, memo, useMemo, useState } from "react";
 
 import {
+  CopyIcon,
+  Ellipsis,
   TriangleAlertIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -12,6 +14,7 @@ import {
 
 import { Disclosure } from "@/components/disclosure/disclosure";
 import { ResourceIcon } from "@/components/item/resource-icon";
+import { Popover } from "@/components/popover/popover";
 import { Tooltip } from "@/components/tooltip/tooltip";
 import { MinecraftVersion } from "@/data/types";
 import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
@@ -21,6 +24,7 @@ import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
 import { downloadRecipeJson } from "@/lib/download/recipe";
 import {
+  cloneRecipeAndClearInteraction,
   createRecipeAndClearInteraction,
   deleteRecipeAndClearInteraction,
   selectRecipeAndClearInteraction,
@@ -52,9 +56,9 @@ export interface RecipeSidebarProps {
 const UNSUPPORTED_RECIPE_MESSAGE = "Recipe type is not available in this version";
 
 const RecipeWarning = ({ content }: { content: ReactNode }) => (
-  <div className="border-border flex w-10 shrink-0 items-center justify-center border-l">
+  <div className="border-border flex w-9 shrink-0 items-center justify-center border-l">
     <Disclosure placement="right" content={content}>
-      <span className="flex h-full w-full items-center justify-center p-2">
+      <span className="flex h-full w-full items-center justify-center p-1.5">
         <TriangleAlertIcon size={14} className="shrink-0 text-amber-500" />
       </span>
     </Disclosure>
@@ -135,16 +139,97 @@ const CollapsedRecipeButton = ({
   );
 };
 
+const RecipeRowOverflowMenu = ({
+  row,
+  mobile,
+  onCloneRecipe,
+  onDownloadRecipe,
+}: {
+  row: SidebarRecipeRow;
+  mobile: boolean;
+  onCloneRecipe: (id: string) => void;
+  onDownloadRecipe: (recipe: Recipe, target: string) => void;
+}) => {
+  const [menuKey, setMenuKey] = useState(0);
+
+  return (
+    <Popover
+      key={menuKey}
+      placement="left-start"
+      className="min-w-40 p-1 text-sm"
+      content={
+        <div className="flex flex-col">
+          <button
+            type="button"
+            className={cn(
+              "hover:bg-accent active:bg-accent/80 flex w-full cursor-pointer items-center gap-2 rounded-sm text-left font-medium transition-colors",
+              mobile ? "px-2.5 py-2" : "px-2 py-2",
+            )}
+            onClick={(event) => {
+              event.stopPropagation();
+              onCloneRecipe(row.recipe.id);
+              setMenuKey((value) => value + 1);
+            }}
+          >
+            <CopyIcon size={13} className="text-muted-foreground shrink-0" />
+            Clone Recipe
+          </button>
+
+          <div className="border-border my-0.5 border-t" />
+
+          <button
+            type="button"
+            disabled={!row.downloadTarget}
+            className={cn(
+              "hover:bg-accent active:bg-accent/80 flex w-full cursor-pointer items-center gap-2 rounded-sm text-left font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+              mobile ? "px-2.5 py-2" : "px-2 py-2",
+            )}
+            onClick={(event) => {
+              event.stopPropagation();
+
+              if (!row.downloadTarget) {
+                return;
+              }
+
+              onDownloadRecipe(row.recipe, row.downloadTarget);
+              setMenuKey((value) => value + 1);
+            }}
+          >
+            <DownloadIcon size={13} className="text-muted-foreground shrink-0" />
+            Download JSON
+          </button>
+        </div>
+      }
+    >
+      <button
+        type="button"
+        className={cn(
+          "border-border bg-background/90 text-muted-foreground hover:bg-accent hover:text-foreground active:bg-accent/80 inline-flex cursor-pointer items-center justify-center rounded-md border transition-colors",
+          mobile ? "h-8 w-8" : "h-7 w-7",
+        )}
+        title={`More actions for ${row.title}`}
+        aria-label={`More actions for ${row.title}`}
+      >
+        <Ellipsis size={mobile ? 14 : 13} />
+      </button>
+    </Popover>
+  );
+};
+
 const ExpandedRecipeRow = ({
   row,
+  mobile,
   canDelete,
   onSelectRecipe,
+  onCloneRecipe,
   onDeleteRecipe,
   onDownloadRecipe,
 }: {
   row: SidebarRecipeRow;
+  mobile: boolean;
   canDelete: boolean;
   onSelectRecipe: (id: string) => void;
+  onCloneRecipe: (id: string) => void;
   onDeleteRecipe: (id: string, event: { shiftKey: boolean }) => void;
   onDownloadRecipe: (recipe: Recipe, target: string) => void;
 }) => {
@@ -160,51 +245,49 @@ const ExpandedRecipeRow = ({
         row.hasWarning && !row.isSelected && "border-amber-500/40",
       )}
     >
-      <div
-        onClick={() => onSelectRecipe(row.recipe.id)}
-        className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 px-2 py-2"
-      >
-        <ResourceIcon
-          itemId={getRecipeTypeIconItemId(row.recipe.recipeType)}
-          className="h-6 w-6 shrink-0"
-        />
+      <div className="flex min-w-0 flex-1 items-center">
+        <div
+          onClick={() => onSelectRecipe(row.recipe.id)}
+          className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 px-2 py-2"
+        >
+          <ResourceIcon
+            itemId={getRecipeTypeIconItemId(row.recipe.recipeType)}
+            className="h-6 w-6 shrink-0"
+          />
 
-        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-          <span className="truncate text-sm" title={row.title}>
-            {row.title}
-          </span>
-          <span className="text-muted-foreground truncate text-xs" title={row.detail}>
-            {row.detail}
-          </span>
+          <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+            <span className="truncate text-sm" title={row.title}>
+              {row.title}
+            </span>
+            <span className="text-muted-foreground truncate text-xs" title={row.detail}>
+              {row.detail}
+            </span>
+          </div>
         </div>
 
-        <span className="flex shrink-0 items-center gap-2">
-          <button
-            type="button"
-            className="text-muted-foreground hover:text-foreground cursor-pointer rounded transition-colors disabled:cursor-not-allowed disabled:opacity-40"
-            disabled={!row.downloadTarget}
-            onClick={(event) => {
-              event.stopPropagation();
-              if (row.downloadTarget) {
-                onDownloadRecipe(row.recipe, row.downloadTarget);
-              }
-            }}
-            title={`Download ${row.detail}`}
-            aria-label={`Download ${row.detail}`}
-          >
-            <DownloadIcon size={14} />
-          </button>
+        <span className="flex shrink-0 items-center gap-1 px-2">
+          <RecipeRowOverflowMenu
+            row={row}
+            mobile={mobile}
+            onCloneRecipe={onCloneRecipe}
+            onDownloadRecipe={onDownloadRecipe}
+          />
 
           {canDelete && (
             <button
               type="button"
-              className="text-muted-foreground hover:text-destructive cursor-pointer rounded transition-colors"
+              className={cn(
+                "border-border bg-background/90 text-muted-foreground hover:bg-accent hover:text-destructive active:bg-accent/80 inline-flex cursor-pointer items-center justify-center rounded-md border transition-colors",
+                mobile ? "h-8 w-8" : "h-7 w-7",
+              )}
               onClick={(event) => {
                 event.stopPropagation();
                 onDeleteRecipe(row.recipe.id, event);
               }}
+              title={`Delete ${row.title}`}
+              aria-label={`Delete ${row.title}`}
             >
-              <Trash2Icon size={14} />
+              <Trash2Icon size={mobile ? 14 : 13} />
             </button>
           )}
         </span>
@@ -405,8 +488,10 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
           <ExpandedRecipeRow
             key={row.recipe.id}
             row={row}
+            mobile={mobile}
             canDelete={recipes.length > 1}
             onSelectRecipe={handleSelectRecipe}
+            onCloneRecipe={cloneRecipeAndClearInteraction}
             onDeleteRecipe={handleDeleteRecipe}
             onDownloadRecipe={handleDownloadRecipe}
           />

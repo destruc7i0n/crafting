@@ -15,10 +15,12 @@ import {
 import { selectCurrentRecipe } from "./selectors";
 import { toRecipeSlotValue } from "./slot-value";
 import { createDefaultRecipe, Recipe, RecipeSlotValue, RecipeState } from "./types";
+import { cloneRecipe as cloneStoredRecipe } from "./utilities";
 
 type RecipeActions = {
   selectRecipe: (id: string) => void;
   createRecipe: () => void;
+  cloneRecipe: (id: string) => void;
   deleteRecipe: (id: string) => void;
   clearSelectedRecipeSlots: () => void;
 
@@ -75,6 +77,23 @@ export const useRecipeStore = create<ImmerState>()(
             const recipe = createDefaultRecipe();
             state.recipes.push(recipe);
             state.selectedRecipeId = recipe.id;
+          });
+        },
+        cloneRecipe: (id) => {
+          set((state) => {
+            const index = state.recipes.findIndex((recipe) => recipe.id === id);
+            if (index < 0) {
+              return;
+            }
+
+            const sourceRecipe = state.recipes[index];
+            if (!sourceRecipe) {
+              return;
+            }
+
+            const clonedRecipe = cloneStoredRecipe(sourceRecipe);
+            state.recipes.splice(index + 1, 0, clonedRecipe);
+            state.selectedRecipeId = clonedRecipe.id;
           });
         },
         deleteRecipe: (id) => {

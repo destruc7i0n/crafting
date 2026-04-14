@@ -112,6 +112,115 @@ describe("recipe store", () => {
     expect(useRecipeStore.getState().recipes[1]?.crafting.shapeless).toBe(true);
   });
 
+  it("inserts a cloned recipe immediately after the source and selects it", () => {
+    useRecipeStore.setState((state) => ({
+      ...state,
+      recipes: [createRecipe("recipe_1"), createRecipe("recipe_2"), createRecipe("recipe_3")],
+      selectedRecipeId: "recipe_1",
+    }));
+
+    useRecipeStore.getState().cloneRecipe("recipe_2");
+
+    const { recipes, selectedRecipeId } = useRecipeStore.getState();
+    const clonedRecipe = recipes[2];
+
+    expect(recipes).toHaveLength(4);
+    expect(recipes[0]?.id).toBe("recipe_1");
+    expect(recipes[1]?.id).toBe("recipe_2");
+    expect(recipes[3]?.id).toBe("recipe_3");
+    expect(clonedRecipe?.id).not.toBe("recipe_2");
+    expect(selectedRecipeId).toBe(clonedRecipe?.id);
+  });
+
+  it("deep-copies recipe state and resets manual naming fields when cloning", () => {
+    const sourceRecipe = createRecipe("recipe_2");
+    sourceRecipe.nameMode = "manual";
+    sourceRecipe.name = "polished_stone";
+    sourceRecipe.group = "building";
+    sourceRecipe.category = "decorations";
+    sourceRecipe.smithing = {
+      trimPattern: "minecraft:coast",
+    };
+    sourceRecipe.crafting = {
+      shapeless: true,
+      keepWhitespace: true,
+      twoByTwo: true,
+    };
+    sourceRecipe.cooking = {
+      time: 200,
+      experience: 0.35,
+    };
+    sourceRecipe.bedrock = {
+      identifierMode: "manual",
+      identifierName: "stone_recipe",
+      priority: 3,
+    };
+    sourceRecipe.slots = {
+      [SLOTS.crafting.slot1]: { kind: "item", id: { namespace: "minecraft", id: "stone" } },
+      [SLOTS.crafting.result]: createCustomSlotValue("custom-1", 4),
+    };
+
+    useRecipeStore.setState((state) => ({
+      ...state,
+      recipes: [createRecipe("recipe_1"), sourceRecipe, createRecipe("recipe_3")],
+      selectedRecipeId: "recipe_1",
+    }));
+
+    useRecipeStore.getState().cloneRecipe("recipe_2");
+
+    const recipes = useRecipeStore.getState().recipes;
+    const originalRecipe = recipes[1]!;
+    const clonedRecipe = recipes[2]!;
+
+    expect(clonedRecipe).toMatchObject({
+      recipeType: originalRecipe.recipeType,
+      group: "building",
+      category: "decorations",
+      smithing: {
+        trimPattern: "minecraft:coast",
+      },
+      crafting: {
+        shapeless: true,
+        keepWhitespace: true,
+        twoByTwo: true,
+      },
+      cooking: {
+        time: 200,
+        experience: 0.35,
+      },
+      bedrock: {
+        identifierMode: "auto",
+        identifierName: "",
+        priority: 3,
+      },
+      nameMode: "auto",
+      name: "",
+      slots: {
+        [SLOTS.crafting.slot1]: {
+          kind: "item",
+          id: { namespace: "minecraft", id: "stone" },
+        },
+        [SLOTS.crafting.result]: {
+          kind: "custom_item",
+          uid: "custom-1",
+          count: 4,
+        },
+      },
+    });
+    expect(clonedRecipe.id).not.toBe(originalRecipe.id);
+    expect(clonedRecipe.smithing).not.toBe(originalRecipe.smithing);
+    expect(clonedRecipe.crafting).not.toBe(originalRecipe.crafting);
+    expect(clonedRecipe.cooking).not.toBe(originalRecipe.cooking);
+    expect(clonedRecipe.bedrock).not.toBe(originalRecipe.bedrock);
+    expect(clonedRecipe.slots).not.toBe(originalRecipe.slots);
+    expect(clonedRecipe.slots[SLOTS.crafting.slot1]).not.toBe(
+      originalRecipe.slots[SLOTS.crafting.slot1],
+    );
+    expect(clonedRecipe.slots[SLOTS.crafting.result]).not.toBe(
+      originalRecipe.slots[SLOTS.crafting.result],
+    );
+  });
+
   it("clears only the selected recipe slots and preserves its other fields", () => {
     const firstRecipe = createRecipe("recipe_1");
     firstRecipe.slots = {

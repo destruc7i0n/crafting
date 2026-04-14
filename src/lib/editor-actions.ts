@@ -41,6 +41,13 @@ export const createRecipeAndClearInteraction = () => {
   recipeState.createRecipe();
 };
 
+export const cloneRecipeAndClearInteraction = (id: string) => {
+  const recipeState = useRecipeStore.getState();
+
+  useUIStore.getState().clearInteractionState();
+  recipeState.cloneRecipe(id);
+};
+
 export const deleteRecipeAndClearInteraction = (id: string) => {
   const recipeState = useRecipeStore.getState();
   const shouldClearInteraction =

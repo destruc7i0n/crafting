@@ -12,13 +12,16 @@ import {
   type Placement,
 } from "@floating-ui/react";
 
+import { cn } from "@/lib/utils";
+
 type PopoverProps = {
   content: React.ReactNode;
   children: React.ReactNode;
   placement?: Placement;
+  className?: string;
 };
 
-export const Popover = ({ content, children, placement = "right" }: PopoverProps) => {
+export const Popover = ({ content, children, placement = "right", className }: PopoverProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { refs, floatingStyles, isPositioned, context } = useFloating({
@@ -41,7 +44,10 @@ export const Popover = ({ content, children, placement = "right" }: PopoverProps
         createPortal(
           <div
             ref={refs.setFloating}
-            className="border-border bg-popover text-popover-foreground fixed z-50 max-w-72 rounded-md border px-2.5 py-1.5 text-xs leading-snug shadow-md"
+            className={cn(
+              "border-border bg-popover text-popover-foreground fixed z-50 rounded-md border shadow-md",
+              className,
+            )}
             style={{ ...floatingStyles, ...(!isPositioned ? { visibility: "hidden" } : {}) }}
             {...getFloatingProps()}
           >

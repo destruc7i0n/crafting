@@ -9,6 +9,7 @@ import { useTagStore } from "@/stores/tag";
 import { useUIStore } from "@/stores/ui";
 
 import {
+  cloneRecipeAndClearInteraction,
   createRecipeAndClearInteraction,
   deleteCustomItemAndClearRecipeRefs,
   deleteRecipeAndClearInteraction,
@@ -180,6 +181,19 @@ describe("editor actions", () => {
     const recipeState = useRecipeStore.getState();
     expect(recipeState.recipes).toHaveLength(3);
     expect(recipeState.selectedRecipeId).toBe(recipeState.recipes[2]?.id);
+    expect(useUIStore.getState().selection).toBeUndefined();
+    expect(useUIStore.getState().lastPlacedSlot).toBeUndefined();
+  });
+
+  it("clears interaction state and selects the cloned recipe when cloning a recipe", () => {
+    setIngredientInteractionState();
+
+    cloneRecipeAndClearInteraction("recipe-1");
+
+    const recipeState = useRecipeStore.getState();
+    expect(recipeState.recipes).toHaveLength(3);
+    expect(recipeState.selectedRecipeId).toBe(recipeState.recipes[1]?.id);
+    expect(recipeState.recipes[1]?.id).not.toBe("recipe-1");
     expect(useUIStore.getState().selection).toBeUndefined();
     expect(useUIStore.getState().lastPlacedSlot).toBeUndefined();
   });

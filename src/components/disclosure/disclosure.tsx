@@ -15,7 +15,11 @@ export const Disclosure = ({ content, children, placement = "right" }: Disclosur
 
   if (isTouchDevice) {
     return (
-      <Popover content={content} placement={placement}>
+      <Popover
+        content={content}
+        placement={placement}
+        className="max-w-72 px-3 py-2 text-xs leading-snug"
+      >
         {children}
       </Popover>
     );
