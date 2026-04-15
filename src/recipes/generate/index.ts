@@ -6,6 +6,7 @@ import {
 import { getRecipeDefinition, isRecipeTypeSupported } from "@/recipes/definitions";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
+import { getMinecraftVersionLabel } from "@/versioning";
 
 import { createRecipeFormatter } from "./format/recipe-formatter";
 import { GeneratedRecipe } from "./types";
@@ -55,14 +56,16 @@ export function generate({
       tags: meta.tags,
       options: {
         identifier,
-        priority: state.bedrock.priority,
+        priority: meta.supportsPriority ? state.bedrock.priority : 0,
         formatVersion: meta.formatVersion,
       },
     });
   }
 
   if (!isRecipeTypeSupported(definition, version)) {
-    throw new Error(`Recipe type "${state.recipeType}" is not available in Java ${version}`);
+    throw new Error(
+      `Recipe type "${state.recipeType}" is not available in ${getMinecraftVersionLabel(version)}`,
+    );
   }
 
   const formatter = createRecipeFormatter(version);

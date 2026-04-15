@@ -139,11 +139,46 @@ describe("generate orchestrator", () => {
       "minecraft:recipe_smithing_transform": {
         description: { identifier: "smithing:upgrade" },
         tags: ["smithing_table"],
-        priority: 2,
         template: "minecraft:netherite_upgrade_smithing_template",
         base: "minecraft:diamond_sword",
         addition: "minecraft:netherite_ingot",
         result: "minecraft:netherite_sword",
+      },
+    });
+  });
+
+  it("keeps priority on bedrock stonecutter recipes", () => {
+    const state = makeRecipe({
+      ...recipeStateDefaults,
+      recipeType: RecipeType.Stonecutter,
+      slots: {
+        "stonecutter.ingredient": {
+          type: "default_item",
+          id: { id: "stone", namespace: "minecraft" },
+          displayName: "stone",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+        "stonecutter.result": {
+          type: "default_item",
+          id: { id: "stone_bricks", namespace: "minecraft" },
+          displayName: "stone_bricks",
+          texture: "",
+          _version: MinecraftVersion.Bedrock,
+        },
+      },
+      bedrock: { identifierMode: "auto", identifierName: "", priority: 2 },
+    });
+
+    expect(
+      generate({
+        state,
+        version: MinecraftVersion.Bedrock,
+        options: { bedrockIdentifier: "stonecutting:test" },
+      }),
+    ).toMatchObject({
+      "minecraft:recipe_shapeless": {
+        priority: 2,
       },
     });
   });
@@ -204,7 +239,7 @@ describe("generate orchestrator", () => {
     ).toThrow("Bedrock recipes must use a valid identifier");
   });
 
-  it('throws when recipe type "smithing_trim" is unavailable in Java 1.18', () => {
+  it('throws when recipe type "smithing_trim" is unavailable in Java 1.18.2', () => {
     const state = makeRecipe({
       ...recipeStateDefaults,
       recipeType: RecipeType.SmithingTrim,
@@ -215,7 +250,7 @@ describe("generate orchestrator", () => {
     });
 
     expect(() => generate({ state, version: MinecraftVersion.V118 })).toThrow(
-      'Recipe type "smithing_trim" is not available in Java 1.18',
+      'Recipe type "smithing_trim" is not available in Java 1.18.2',
     );
   });
 

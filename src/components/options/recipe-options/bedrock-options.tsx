@@ -14,13 +14,7 @@ import { selectBedrockNamespace, selectMinecraftVersion } from "@/stores/setting
 
 import { Field, IconActionButton, InputControl, ReadonlyValueRow } from "./shared";
 
-const bedrockPriorityRecipeTypes = [
-  RecipeType.Crafting,
-  RecipeType.Stonecutter,
-  RecipeType.Smithing,
-  RecipeType.SmithingTrim,
-  RecipeType.SmithingTransform,
-] as const;
+const bedrockPriorityRecipeTypes = [RecipeType.Crafting, RecipeType.Stonecutter] as const;
 
 const NamespaceField = () => {
   const bedrockNamespace = useSettingsStore(selectBedrockNamespace);

@@ -3,7 +3,7 @@ import { SLOTS } from "@/recipes/slots";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
-import { supportsRecipeCategory } from "@/versioning";
+import { supportsRecipeCategory, supportsShowNotification } from "@/versioning";
 
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
@@ -33,6 +33,7 @@ export const extractTransmuteInput = (state: Recipe): TransmuteInput => ({
   result: state.slots[SLOTS.crafting.result],
   group: state.group,
   category: state.category || undefined,
+  showNotification: state.showNotification,
 });
 
 export const buildJava = ({
@@ -57,6 +58,10 @@ export const buildJava = ({
       ? { category: state.category }
       : {}),
     ...(group ? { group } : {}),
+    ...(supportsShowNotification(version, RecipeType.CraftingTransmute, false) &&
+    state.showNotification === false
+      ? { show_notification: false }
+      : {}),
     input: formatIngredient({ item: input, formatter, slotContext }),
     material: formatIngredient({ item: material, formatter, slotContext }),
     result: result

@@ -6,8 +6,8 @@ import {
   javaV112RecipeFormatter,
   javaV113RecipeFormatter,
   javaV114RecipeFormatter,
+  javaV1205RecipeFormatter,
   javaV1212RecipeFormatter,
-  javaV121RecipeFormatter,
 } from "./recipe-formatter";
 
 const id112 = { namespace: "minecraft", id: "stone", data: 1 };
@@ -18,8 +18,9 @@ describe("createRecipeFormatter", () => {
     expect(createRecipeFormatter(MinecraftVersion.V112)).toBe(javaV112RecipeFormatter);
     expect(createRecipeFormatter(MinecraftVersion.V113)).toBe(javaV113RecipeFormatter);
     expect(createRecipeFormatter(MinecraftVersion.V114)).toBe(javaV114RecipeFormatter);
-    expect(createRecipeFormatter(MinecraftVersion.V120)).toBe(javaV114RecipeFormatter);
-    expect(createRecipeFormatter(MinecraftVersion.V121)).toBe(javaV121RecipeFormatter);
+    expect(createRecipeFormatter(MinecraftVersion.V119)).toBe(javaV114RecipeFormatter);
+    expect(createRecipeFormatter(MinecraftVersion.V120)).toBe(javaV1205RecipeFormatter);
+    expect(createRecipeFormatter(MinecraftVersion.V121)).toBe(javaV1205RecipeFormatter);
     expect(createRecipeFormatter(MinecraftVersion.V1212)).toBe(javaV1212RecipeFormatter);
     expect(createRecipeFormatter(MinecraftVersion.V12111)).toBe(javaV1212RecipeFormatter);
     expect(createRecipeFormatter(MinecraftVersion.Bedrock)).toBe(bedrockRecipeFormatter);
@@ -62,8 +63,8 @@ describe("createRecipeFormatter", () => {
     });
   });
 
-  it("formats 1.21 result ids", () => {
-    const formatter = createRecipeFormatter(MinecraftVersion.V121);
+  it("formats 1.20.5+ result ids before string ingredients land", () => {
+    const formatter = createRecipeFormatter(MinecraftVersion.V120);
 
     expect(formatter.ingredient(id)).toEqual({ item: "minecraft:stone" });
     expect(formatter.objectResult(id, 2)).toEqual({ id: "minecraft:stone", count: 2 });

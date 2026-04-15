@@ -151,6 +151,38 @@ describe("generate stonecutting", () => {
     });
   });
 
+  it("uses object results on 1.20", () => {
+    const recipeSlice = makeRecipe({
+      ...recipeStateDefaults,
+      recipeType: RecipeType.Stonecutter,
+      slots: {
+        "stonecutter.ingredient": {
+          type: "default_item",
+          id: { id: "stone", namespace: "minecraft" },
+          displayName: "stone",
+          texture: "",
+          _version: MinecraftVersion.V120,
+        },
+        "stonecutter.result": {
+          type: "default_item",
+          id: { id: "stone_bricks", namespace: "minecraft" },
+          displayName: "stone_bricks",
+          texture: "",
+          count: 2,
+          _version: MinecraftVersion.V120,
+        },
+      },
+      cooking: { experience: 0, time: 0 },
+      crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
+    });
+
+    expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V120)).toEqual({
+      type: "minecraft:stonecutting",
+      ingredient: { item: "minecraft:stone" },
+      result: { id: "minecraft:stone_bricks", count: 2 },
+    });
+  });
+
   describe("group field", () => {
     const makeSlice = (version: MinecraftVersion) =>
       makeRecipe({
@@ -188,6 +220,37 @@ describe("generate stonecutting", () => {
     it("omits group on 26.1+ (no recipe book)", () => {
       const result = buildJavaRecipe(makeSlice(MinecraftVersion.V261), MinecraftVersion.V261);
       expect(result).not.toHaveProperty("group");
+    });
+  });
+
+  it("emits show_notification for 26.1 stonecutting", () => {
+    const recipeSlice = makeRecipe({
+      ...recipeStateDefaults,
+      recipeType: RecipeType.Stonecutter,
+      showNotification: false,
+      slots: {
+        "stonecutter.ingredient": {
+          type: "default_item",
+          id: { id: "stone", namespace: "minecraft" },
+          displayName: "stone",
+          texture: "",
+          _version: MinecraftVersion.V261,
+        },
+        "stonecutter.result": {
+          type: "default_item",
+          id: { id: "stone_bricks", namespace: "minecraft" },
+          displayName: "stone_bricks",
+          texture: "",
+          count: 2,
+          _version: MinecraftVersion.V261,
+        },
+      },
+      cooking: { experience: 0, time: 0 },
+      crafting: { ...recipeStateDefaults.crafting, keepWhitespace: false, shapeless: false },
+    });
+
+    expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V261)).toMatchObject({
+      show_notification: false,
     });
   });
 

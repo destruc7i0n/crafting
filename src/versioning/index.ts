@@ -64,13 +64,12 @@ export const recipeTypeAvailability = {
   [RecipeType.CampfireCooking]: { minVersion: MinecraftVersion.V114 },
   [RecipeType.Smoking]: { minVersion: MinecraftVersion.V114 },
   [RecipeType.Stonecutter]: { minVersion: MinecraftVersion.V114 },
-  // V119 = 1.19.4, which still uses old smithing
   [RecipeType.Smithing]: {
     minVersion: MinecraftVersion.V116,
-    maxVersion: MinecraftVersion.V119,
+    maxVersion: MinecraftVersion.V118,
   },
-  [RecipeType.SmithingTransform]: { minVersion: MinecraftVersion.V120 },
-  [RecipeType.SmithingTrim]: { minVersion: MinecraftVersion.V120 },
+  [RecipeType.SmithingTransform]: { minVersion: MinecraftVersion.V119 },
+  [RecipeType.SmithingTrim]: { minVersion: MinecraftVersion.V119 },
   [RecipeType.CraftingTransmute]: {
     minVersion: MinecraftVersion.V1212,
     enabled: false,
@@ -106,10 +105,29 @@ export const supportsShowNotification = (
   version: MinecraftVersion,
   recipeType: RecipeType,
   shapeless: boolean,
-): boolean =>
-  version !== MinecraftVersion.Bedrock &&
-  recipeType === RecipeType.Crafting &&
-  isVersionAtLeast(version, shapeless ? MinecraftVersion.V261 : MinecraftVersion.V119);
+): boolean => {
+  if (version === MinecraftVersion.Bedrock) {
+    return false;
+  }
+
+  if (recipeType === RecipeType.Crafting) {
+    return isVersionAtLeast(version, shapeless ? MinecraftVersion.V261 : MinecraftVersion.V119);
+  }
+
+  return (
+    isVersionAtLeast(version, MinecraftVersion.V261) &&
+    [
+      RecipeType.CraftingTransmute,
+      RecipeType.Smelting,
+      RecipeType.Blasting,
+      RecipeType.CampfireCooking,
+      RecipeType.Smoking,
+      RecipeType.Stonecutter,
+      RecipeType.SmithingTrim,
+      RecipeType.SmithingTransform,
+    ].includes(recipeType)
+  );
+};
 
 export const supportsSmithingTrimPattern = (version: MinecraftVersion): boolean =>
   version !== MinecraftVersion.Bedrock && isVersionAtLeast(version, MinecraftVersion.V1215);
@@ -122,6 +140,31 @@ export const supportsCustomTags = (version: MinecraftVersion): boolean =>
 
 export const supportsVanillaTagList = (version: MinecraftVersion): boolean =>
   version === MinecraftVersion.Bedrock || isVersionAtLeast(version, MinecraftVersion.V114);
+
+const minecraftVersionLabels = {
+  [MinecraftVersion.Bedrock]: "Bedrock",
+  [MinecraftVersion.V112]: "Java 1.12",
+  [MinecraftVersion.V113]: "Java 1.13",
+  [MinecraftVersion.V114]: "Java 1.14",
+  [MinecraftVersion.V115]: "Java 1.15",
+  [MinecraftVersion.V116]: "Java 1.16.5",
+  [MinecraftVersion.V117]: "Java 1.17",
+  [MinecraftVersion.V118]: "Java 1.18.2",
+  [MinecraftVersion.V119]: "Java 1.19.4",
+  [MinecraftVersion.V120]: "Java 1.20.6",
+  [MinecraftVersion.V121]: "Java 1.21",
+  [MinecraftVersion.V1212]: "Java 1.21.2",
+  [MinecraftVersion.V1214]: "Java 1.21.4",
+  [MinecraftVersion.V1215]: "Java 1.21.5",
+  [MinecraftVersion.V1216]: "Java 1.21.6",
+  [MinecraftVersion.V1217]: "Java 1.21.7",
+  [MinecraftVersion.V1219]: "Java 1.21.9",
+  [MinecraftVersion.V12111]: "Java 1.21.11",
+  [MinecraftVersion.V261]: "Java 26.1",
+} as const satisfies Record<MinecraftVersion, string>;
+
+export const getMinecraftVersionLabel = (version: MinecraftVersion): string =>
+  minecraftVersionLabels[version];
 
 export const javaPackMetadata = {
   [MinecraftVersion.V113]: {

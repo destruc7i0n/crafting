@@ -46,5 +46,6 @@ export const stonecutterDefinition: BedrockSupportedRecipeDefinition = {
     wrapperKey: "minecraft:recipe_shapeless",
     tags: ["stonecutter"],
     formatVersion: BEDROCK_FORMAT_VERSION,
+    supportsPriority: true,
   }),
 };

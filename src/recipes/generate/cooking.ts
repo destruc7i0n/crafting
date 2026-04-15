@@ -7,7 +7,7 @@ import {
   isTagSlotValue,
 } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
-import { supportsRecipeCategory } from "@/versioning";
+import { supportsRecipeCategory, supportsShowNotification } from "@/versioning";
 
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
@@ -51,6 +51,10 @@ export const buildJava = ({
     type: formatter.recipeType(baseType) as CookingRecipe["type"],
     ...(category ? { category } : {}),
     ...(group ? { group } : {}),
+    ...(supportsShowNotification(version, state.recipeType, false) &&
+    state.showNotification === false
+      ? { show_notification: false }
+      : {}),
     experience: state.experience,
     cookingtime: state.time,
     ingredient: formatIngredient({ item: input, formatter, slotContext }),
@@ -87,6 +91,7 @@ export const extractCookingInput = (state: Recipe): CookingInput => ({
   experience: state.cooking.experience,
   group: state.group,
   category: state.category || undefined,
+  showNotification: state.showNotification,
 });
 
 export const validateCooking = (state: Recipe, version?: MinecraftVersion): string[] => {

@@ -3,7 +3,7 @@ import { MinecraftVersion, RecipeType } from "@/data/types";
 import { SLOTS } from "@/recipes/slots";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
 import { Recipe, RecipeSlotValue, SlotContext } from "@/stores/recipe/types";
-import { supportsSmithingTrimPattern } from "@/versioning";
+import { supportsShowNotification, supportsSmithingTrimPattern } from "@/versioning";
 
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient, formatIngredientString } from "./ingredient";
@@ -42,6 +42,10 @@ export const buildJava = ({
   if (state.recipeType === RecipeType.SmithingTrim) {
     return {
       type: formatter.recipeType("smithing_trim") as "minecraft:smithing_trim",
+      ...(supportsShowNotification(version, state.recipeType, false) &&
+      state.showNotification === false
+        ? { show_notification: false }
+        : {}),
       template: formatIngredient({ item: state.template, formatter, slotContext }),
       base: formatIngredient({ item: state.base, formatter, slotContext }),
       addition: formatIngredient({ item: state.addition, formatter, slotContext }),
@@ -53,6 +57,10 @@ export const buildJava = ({
 
   return {
     type: formatter.recipeType("smithing_transform") as "minecraft:smithing_transform",
+    ...(supportsShowNotification(version, state.recipeType, false) &&
+    state.showNotification === false
+      ? { show_notification: false }
+      : {}),
     template: formatIngredient({ item: state.template, formatter, slotContext }),
     base: formatIngredient({ item: state.base, formatter, slotContext }),
     addition: formatIngredient({ item: state.addition, formatter, slotContext }),
@@ -104,6 +112,7 @@ export const extractSmithingInput = (state: Recipe): SmithingInput => ({
   addition: state.slots[SLOTS.smithing.addition],
   result: state.slots[SLOTS.smithing.result],
   trimPattern: state.smithing.trimPattern || undefined,
+  showNotification: state.showNotification,
 });
 
 export const validateSmithing = (state: Recipe, version?: MinecraftVersion): string[] => {

@@ -63,6 +63,7 @@ const getCraftingBedrockMeta = (recipe: Recipe): BedrockRecipeMeta => ({
   wrapperKey: recipe.crafting.shapeless ? "minecraft:recipe_shapeless" : "minecraft:recipe_shaped",
   tags: ["crafting_table"],
   formatVersion: BEDROCK_FORMAT_VERSION,
+  supportsPriority: true,
 });
 
 export const craftingDefinition: BedrockSupportedRecipeDefinition = {

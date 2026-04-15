@@ -33,6 +33,7 @@ describe("generate transmute", () => {
             },
           },
           group: "shulker_box_dye",
+          showNotification: true,
         },
         formatter,
         version: MinecraftVersion.V1212,
@@ -66,6 +67,7 @@ describe("generate transmute", () => {
           },
           group: "",
           category: "building",
+          showNotification: true,
         },
         formatter,
         version: MinecraftVersion.V1212,
@@ -92,11 +94,39 @@ describe("generate transmute", () => {
             uid: "missing-result",
           },
           group: "",
+          showNotification: true,
         },
         formatter,
         version: MinecraftVersion.V1212,
         slotContext: createEmptySlotContext(MinecraftVersion.V1212),
       }),
     ).toThrow("Cannot generate output for unresolved custom_item reference");
+  });
+
+  it("emits show_notification for 26.1 transmute recipes", () => {
+    const formatter = createRecipeFormatter(MinecraftVersion.V261);
+
+    expect(
+      buildJava({
+        state: {
+          input: {
+            kind: "item",
+            id: { id: "shulker_box", namespace: "minecraft" },
+          },
+          material: {
+            kind: "item",
+            id: { id: "blue_dye", namespace: "minecraft" },
+          },
+          result: {
+            kind: "item",
+            id: { id: "blue_shulker_box", namespace: "minecraft" },
+          },
+          group: "",
+          showNotification: false,
+        },
+        formatter,
+        version: MinecraftVersion.V261,
+      }),
+    ).toMatchObject({ show_notification: false });
   });
 });

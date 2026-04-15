@@ -33,6 +33,7 @@ export interface ShapelessCraftingRecipe {
   type: "crafting_shapeless" | "minecraft:crafting_shapeless";
   category?: string;
   group?: string;
+  show_notification?: boolean;
   ingredients: IngredientRef[];
   result: ObjectResultRef | EmptyObject;
 }
@@ -46,6 +47,7 @@ export interface CookingRecipe {
     | "minecraft:smoking";
   category?: string;
   group?: string;
+  show_notification?: boolean;
   ingredient: IngredientRef | EmptyObject;
   result: ObjectResultRef | string | EmptyObject;
   experience?: number;
@@ -55,6 +57,7 @@ export interface CookingRecipe {
 export interface StonecuttingRecipe {
   type: "minecraft:stonecutting";
   group?: string;
+  show_notification?: boolean;
   ingredient: IngredientRef | EmptyObject;
   result: ObjectResultRef | string | EmptyObject;
   count?: number;
@@ -69,6 +72,7 @@ export interface SmithingRecipe {
 
 export interface SmithingTrimRecipe {
   type: "minecraft:smithing_trim";
+  show_notification?: boolean;
   template: IngredientRef | EmptyObject;
   base: IngredientRef | EmptyObject;
   addition: IngredientRef | EmptyObject;
@@ -77,6 +81,7 @@ export interface SmithingTrimRecipe {
 
 export interface SmithingTransformRecipe {
   type: "minecraft:smithing_transform";
+  show_notification?: boolean;
   template: IngredientRef | EmptyObject;
   base: IngredientRef | EmptyObject;
   addition: IngredientRef | EmptyObject;
@@ -87,6 +92,7 @@ export interface CraftingTransmuteRecipe {
   type: "minecraft:crafting_transmute";
   category?: string;
   group?: string;
+  show_notification?: boolean;
   input: IngredientRef | EmptyObject;
   material: IngredientRef | EmptyObject;
   result: ObjectResultRef | EmptyObject;
@@ -222,12 +228,14 @@ export interface CookingInput {
   experience: number;
   group: string;
   category?: string;
+  showNotification: boolean;
 }
 
 export interface StonecutterInput {
   ingredient: RecipeSlotValue | undefined;
   result: RecipeSlotValue | undefined;
   group: string;
+  showNotification: boolean;
 }
 
 export interface TransmuteInput {
@@ -236,6 +244,7 @@ export interface TransmuteInput {
   result: RecipeSlotValue | undefined;
   group: string;
   category?: string;
+  showNotification: boolean;
 }
 
 export interface SmithingInput {
@@ -245,10 +254,12 @@ export interface SmithingInput {
   addition: RecipeSlotValue | undefined;
   result: RecipeSlotValue | undefined;
   trimPattern?: string;
+  showNotification: boolean;
 }
 
 export interface BedrockRecipeMeta {
   wrapperKey: BedrockWrapperKey;
   tags: BedrockTag[];
   formatVersion: BedrockFormatVersion;
+  supportsPriority?: boolean;
 }

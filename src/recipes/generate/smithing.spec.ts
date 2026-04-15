@@ -100,6 +100,62 @@ describe("generate smithing", () => {
     });
   });
 
+  it("supports smithing transform on 1.19", () => {
+    const recipeSlice = makeRecipe({
+      ...recipeStateDefaults,
+      recipeType: RecipeType.SmithingTransform,
+      slots: {
+        "smithing.template": {
+          type: "default_item",
+          id: {
+            id: "netherite_upgrade_smithing_template",
+            namespace: "minecraft",
+          },
+          displayName: "template",
+          texture: "",
+          _version: MinecraftVersion.V119,
+        },
+        "smithing.base": {
+          type: "default_item",
+          id: { id: "diamond_sword", namespace: "minecraft" },
+          displayName: "base",
+          texture: "",
+          _version: MinecraftVersion.V119,
+        },
+        "smithing.addition": {
+          type: "default_item",
+          id: { id: "netherite_ingot", namespace: "minecraft" },
+          displayName: "addition",
+          texture: "",
+          _version: MinecraftVersion.V119,
+        },
+        "smithing.result": {
+          type: "default_item",
+          id: { id: "netherite_sword", namespace: "minecraft" },
+          displayName: "result",
+          texture: "",
+          _version: MinecraftVersion.V119,
+        },
+      },
+    });
+
+    expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V119)).toEqual({
+      type: "minecraft:smithing_transform",
+      template: {
+        item: "minecraft:netherite_upgrade_smithing_template",
+      },
+      base: {
+        item: "minecraft:diamond_sword",
+      },
+      addition: {
+        item: "minecraft:netherite_ingot",
+      },
+      result: {
+        item: "minecraft:netherite_sword",
+      },
+    });
+  });
+
   describe("1.20", () => {
     describe("smithing trim", () => {
       it("should generate a smithing trim recipe", () => {
@@ -243,7 +299,7 @@ describe("generate smithing", () => {
             item: "minecraft:netherite_ingot",
           },
           result: {
-            item: "minecraft:netherite_sword",
+            id: "minecraft:netherite_sword",
           },
         });
       });
@@ -315,6 +371,51 @@ describe("generate smithing", () => {
         addition: "#minecraft:trim_materials",
         pattern: "minecraft:bolt",
       });
+    });
+  });
+
+  it("emits show_notification for 26.1 smithing recipes", () => {
+    const recipeSlice = makeRecipe({
+      ...recipeStateDefaults,
+      recipeType: RecipeType.SmithingTransform,
+      showNotification: false,
+      slots: {
+        "smithing.template": {
+          type: "default_item",
+          id: {
+            id: "netherite_upgrade_smithing_template",
+            namespace: "minecraft",
+          },
+          displayName: "template",
+          texture: "",
+          _version: MinecraftVersion.V261,
+        },
+        "smithing.base": {
+          type: "default_item",
+          id: { id: "diamond_sword", namespace: "minecraft" },
+          displayName: "base",
+          texture: "",
+          _version: MinecraftVersion.V261,
+        },
+        "smithing.addition": {
+          type: "default_item",
+          id: { id: "netherite_ingot", namespace: "minecraft" },
+          displayName: "addition",
+          texture: "",
+          _version: MinecraftVersion.V261,
+        },
+        "smithing.result": {
+          type: "default_item",
+          id: { id: "netherite_sword", namespace: "minecraft" },
+          displayName: "result",
+          texture: "",
+          _version: MinecraftVersion.V261,
+        },
+      },
+    });
+
+    expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V261)).toMatchObject({
+      show_notification: false,
     });
   });
 

@@ -1,8 +1,8 @@
-import { MinecraftVersion } from "@/data/types";
+import { MinecraftVersion, RecipeType } from "@/data/types";
 import { SLOTS } from "@/recipes/slots";
 import { getRequiredSlotIdentifier, getSlotCount } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
-import { isVersionAtLeast } from "@/versioning";
+import { isVersionAtLeast, supportsShowNotification } from "@/versioning";
 
 import { RecipeFormatter } from "./format/types";
 import { formatIngredient } from "./ingredient";
@@ -35,6 +35,10 @@ export const buildJava = ({
   return {
     type: formatter.recipeType("stonecutting") as "minecraft:stonecutting",
     ...(group ? { group } : {}),
+    ...(supportsShowNotification(version, RecipeType.Stonecutter, false) &&
+    state.showNotification === false
+      ? { show_notification: false }
+      : {}),
     ingredient: formatIngredient({ item: state.ingredient, formatter, slotContext }),
     ...result,
   } satisfies StonecuttingRecipe;
@@ -64,6 +68,7 @@ export const extractStonecutterInput = (state: Recipe): StonecutterInput => ({
   ingredient: state.slots[SLOTS.stonecutter.ingredient],
   result: state.slots[SLOTS.stonecutter.result],
   group: state.group,
+  showNotification: state.showNotification,
 });
 
 export const validateStonecutter = (state: Recipe): string[] => {

@@ -885,7 +885,7 @@ describe("generate crafting", () => {
         show_notification: false,
         pattern: ["#"],
         key: { "#": { item: "minecraft:stone" } },
-        result: { item: "minecraft:stone_button", count: 1 },
+        result: { id: "minecraft:stone_button", count: 1 },
       });
     });
 

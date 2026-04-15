@@ -5,6 +5,7 @@ import { useRecipeStore } from "@/stores/recipe";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useUIStore } from "@/stores/ui";
+import { getMinecraftVersionLabel } from "@/versioning";
 
 export const VersionSelector = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
@@ -33,14 +34,6 @@ export const VersionSelector = () => {
     setMinecraftVersion(nextVersion);
   };
 
-  const getVersionLabel = (version: MinecraftVersion) => {
-    if (version === MinecraftVersion.Bedrock) {
-      return "Bedrock";
-    }
-
-    return `Java ${version}`;
-  };
-
   return (
     <Select
       wrapperClassName="min-w-[8.5rem]"
@@ -51,7 +44,7 @@ export const VersionSelector = () => {
     >
       {defaultMinecraftVersions.map((version) => (
         <option key={version} value={version}>
-          {getVersionLabel(version)}
+          {getMinecraftVersionLabel(version)}
         </option>
       ))}
     </Select>

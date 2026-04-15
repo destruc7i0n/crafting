@@ -4,6 +4,7 @@ import { MinecraftVersion, RecipeType } from "@/data/types";
 
 import {
   compareMinecraftVersions,
+  getMinecraftVersionLabel,
   getJavaPackMetadata,
   isVersionAtLeast,
   recipeTypeAvailability,
@@ -61,10 +62,19 @@ describe("isVersionAtLeast", () => {
 });
 
 describe("recipeTypeAvailability", () => {
-  it("keeps the 1.19 smithing boundary", () => {
+  it("keeps legacy smithing on the 1.16-1.18 line", () => {
     expect(recipeTypeAvailability[RecipeType.Smithing]).toEqual({
       minVersion: MinecraftVersion.V116,
-      maxVersion: MinecraftVersion.V119,
+      maxVersion: MinecraftVersion.V118,
+    });
+  });
+
+  it("starts modern smithing on the 1.19 line", () => {
+    expect(recipeTypeAvailability[RecipeType.SmithingTransform]).toEqual({
+      minVersion: MinecraftVersion.V119,
+    });
+    expect(recipeTypeAvailability[RecipeType.SmithingTrim]).toEqual({
+      minVersion: MinecraftVersion.V119,
     });
   });
 
@@ -96,6 +106,22 @@ describe("recipe feature support", () => {
   it("starts shapeless show_notification at 26.1", () => {
     expect(supportsShowNotification(MinecraftVersion.V119, RecipeType.Crafting, true)).toBe(false);
     expect(supportsShowNotification(MinecraftVersion.V261, RecipeType.Crafting, true)).toBe(true);
+  });
+
+  it("starts non-crafting show_notification fields at 26.1", () => {
+    expect(supportsShowNotification(MinecraftVersion.V12111, RecipeType.Smelting, false)).toBe(
+      false,
+    );
+    expect(supportsShowNotification(MinecraftVersion.V261, RecipeType.Smelting, false)).toBe(true);
+    expect(supportsShowNotification(MinecraftVersion.V261, RecipeType.Stonecutter, false)).toBe(
+      true,
+    );
+    expect(
+      supportsShowNotification(MinecraftVersion.V261, RecipeType.SmithingTransform, false),
+    ).toBe(true);
+    expect(
+      supportsShowNotification(MinecraftVersion.V261, RecipeType.CraftingTransmute, false),
+    ).toBe(true);
   });
 
   it("keeps smithing trim pattern gated to 1.21.5", () => {
@@ -158,6 +184,20 @@ describe("getJavaPackMetadata", () => {
     expect(() => getJavaPackMetadata(MinecraftVersion.V112)).toThrow(
       "Datapacks are not supported for 1.12",
     );
+  });
+});
+
+describe("getMinecraftVersionLabel", () => {
+  it("keeps exact labels where the bucket matches the release", () => {
+    expect(getMinecraftVersionLabel(MinecraftVersion.V1215)).toBe("Java 1.21.5");
+    expect(getMinecraftVersionLabel(MinecraftVersion.Bedrock)).toBe("Bedrock");
+  });
+
+  it("surfaces representative patch labels for coarse release buckets", () => {
+    expect(getMinecraftVersionLabel(MinecraftVersion.V116)).toBe("Java 1.16.5");
+    expect(getMinecraftVersionLabel(MinecraftVersion.V118)).toBe("Java 1.18.2");
+    expect(getMinecraftVersionLabel(MinecraftVersion.V119)).toBe("Java 1.19.4");
+    expect(getMinecraftVersionLabel(MinecraftVersion.V120)).toBe("Java 1.20.6");
   });
 });
 

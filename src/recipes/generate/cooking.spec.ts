@@ -277,6 +277,87 @@ describe("generate cooking", () => {
     });
   });
 
+  it("uses id-based cooking results on 1.20", () => {
+    const recipeSlice = makeRecipe({
+      ...recipeStateDefaults,
+      recipeType: RecipeType.Smelting,
+      slots: {
+        "cooking.ingredient": {
+          type: "default_item",
+          id: { id: "beef", namespace: "minecraft" },
+          displayName: "beef",
+          texture: "",
+          _version: MinecraftVersion.V120,
+        },
+        "cooking.result": {
+          type: "default_item",
+          id: { id: "cooked_beef", namespace: "minecraft" },
+          displayName: "cooked_beef",
+          texture: "",
+          _version: MinecraftVersion.V120,
+        },
+      },
+      crafting: {
+        ...recipeStateDefaults.crafting,
+        shapeless: true,
+        keepWhitespace: false,
+      },
+      cooking: {
+        time: 10,
+        experience: 10,
+      },
+    });
+
+    expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V120)).toEqual({
+      type: "minecraft:smelting",
+      ingredient: {
+        item: "minecraft:beef",
+      },
+      result: {
+        id: "minecraft:cooked_beef",
+      },
+      experience: 10,
+      cookingtime: 10,
+    });
+  });
+
+  it("emits show_notification for 26.1 cooking recipes", () => {
+    const recipeSlice = makeRecipe({
+      ...recipeStateDefaults,
+      recipeType: RecipeType.Smelting,
+      showNotification: false,
+      slots: {
+        "cooking.ingredient": {
+          type: "default_item",
+          id: { id: "beef", namespace: "minecraft" },
+          displayName: "beef",
+          texture: "",
+          _version: MinecraftVersion.V261,
+        },
+        "cooking.result": {
+          type: "default_item",
+          id: { id: "cooked_beef", namespace: "minecraft" },
+          displayName: "cooked_beef",
+          texture: "",
+          _version: MinecraftVersion.V261,
+        },
+      },
+      cooking: {
+        time: 10,
+        experience: 1,
+      },
+      crafting: {
+        ...recipeStateDefaults.crafting,
+        shapeless: true,
+        keepWhitespace: false,
+      },
+    });
+
+    expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V261)).toMatchObject({
+      show_notification: false,
+    });
+  });
+
   describe("1.21+ and bedrock", () => {
     it("should generate 1.21 cooking with object result", () => {
       const recipeSlice = makeRecipe({

@@ -66,7 +66,7 @@ export const javaV114RecipeFormatter: RecipeFormatter = {
   recipeType: namespacedRecipeType,
 };
 
-export const javaV121RecipeFormatter: RecipeFormatter = {
+export const javaV1205RecipeFormatter: RecipeFormatter = {
   ...javaV114RecipeFormatter,
   objectResult: (identifier, count) => withCount({ id: getRawId(identifier) }, count),
   cookingResult: (identifier, count) => withCount({ id: getRawId(identifier) }, count),
@@ -76,7 +76,7 @@ export const javaV121RecipeFormatter: RecipeFormatter = {
 };
 
 export const javaV1212RecipeFormatter: RecipeFormatter = {
-  ...javaV121RecipeFormatter,
+  ...javaV1205RecipeFormatter,
   ingredient: (identifier) => getRawId(identifier),
   ingredientTag: (tagId) => toTagRef(tagId),
 };
@@ -118,8 +118,8 @@ export const bedrockRecipeFormatter: RecipeFormatter = {
 const JAVA_FORMATTER_RANGES: FormatterRange[] = [
   { from: MinecraftVersion.V112, to: MinecraftVersion.V112, formatter: javaV112RecipeFormatter },
   { from: MinecraftVersion.V113, to: MinecraftVersion.V113, formatter: javaV113RecipeFormatter },
-  { from: MinecraftVersion.V114, to: MinecraftVersion.V120, formatter: javaV114RecipeFormatter },
-  { from: MinecraftVersion.V121, to: MinecraftVersion.V121, formatter: javaV121RecipeFormatter },
+  { from: MinecraftVersion.V114, to: MinecraftVersion.V119, formatter: javaV114RecipeFormatter },
+  { from: MinecraftVersion.V120, to: MinecraftVersion.V121, formatter: javaV1205RecipeFormatter },
   { from: MinecraftVersion.V1212, formatter: javaV1212RecipeFormatter },
 ];
 
