@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 
+import { cn } from "@/lib/utils";
 import { RecipeSlot } from "@/recipes/slots";
 import { canEditRecipeSlotCount } from "@/recipes/slots/utils";
 import { useRecipeStore } from "@/stores/recipe";
@@ -10,9 +11,10 @@ import { ItemCount } from "./item-count";
 
 type EditableItemCountProps = {
   slot: RecipeSlot;
+  compact?: boolean;
 };
 
-export const EditableItemCount = ({ slot }: EditableItemCountProps) => {
+export const EditableItemCount = ({ slot, compact = false }: EditableItemCountProps) => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
   const slotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
   const setRecipeSlotCount = useRecipeStore((state) => state.setRecipeSlotCount);
@@ -58,7 +60,10 @@ export const EditableItemCount = ({ slot }: EditableItemCountProps) => {
         min={1}
         max={64}
         value={countDraft}
-        className="border-input bg-background text-foreground focus:ring-ring absolute right-1 bottom-1 z-20 h-6 w-12 rounded border px-1 text-right text-xs outline-hidden focus:ring-2 focus:ring-inset"
+        className={cn(
+          "border-input bg-background text-foreground focus:ring-ring absolute z-20 rounded border px-1 text-right text-xs outline-hidden focus:ring-2 focus:ring-inset",
+          compact ? "right-0.5 bottom-0.5 h-5 w-10" : "right-1 bottom-1 h-6 w-12",
+        )}
         onBlur={commitCount}
         onChange={(event) => setCountDraft(event.target.value)}
         onClick={(event) => event.stopPropagation()}
@@ -82,7 +87,11 @@ export const EditableItemCount = ({ slot }: EditableItemCountProps) => {
     >
       <ItemCount
         count={count}
-        className="pointer-events-auto right-[6px] bottom-[6px] cursor-pointer"
+        compact={compact}
+        className={cn(
+          "pointer-events-auto cursor-pointer",
+          compact ? "right-[3px] bottom-[3px]" : "right-[6px] bottom-[6px]",
+        )}
       />
       <span className="sr-only">Edit result count</span>
     </button>

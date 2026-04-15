@@ -27,12 +27,14 @@ const createCommonSmithingDefinition = ({
   autoPlace,
   resultSlot,
   editableResultCount,
+  isDisabled = () => false,
 }: {
   type: RecipeType.Smithing | RecipeType.SmithingTrim | RecipeType.SmithingTransform;
   label: string;
   autoPlace: RecipeSlot[];
   resultSlot?: RecipeSlot;
   editableResultCount: boolean;
+  isDisabled?: BaseRecipeDefinition["slots"]["isDisabled"];
 }): Omit<BaseRecipeDefinition, "availability"> => ({
   type,
   family: "smithing",
@@ -41,9 +43,9 @@ const createCommonSmithingDefinition = ({
   previewKind: "smithing",
   slots: {
     getAutoPlace: () => autoPlace,
-    resultSlots: [SLOTS.smithing.result],
+    resultSlots: resultSlot ? [resultSlot] : [],
     canEditCount: canEditResultCount(editableResultCount),
-    isDisabled: () => false,
+    isDisabled,
   },
   naming: {
     ...(resultSlot ? { resultSlot } : {}),
@@ -112,6 +114,7 @@ export const smithingTrimDefinition = createBedrockSupportedSmithingDefinition({
   availability: recipeTypeAvailability[RecipeType.SmithingTrim],
   autoPlace: [SLOTS.smithing.template, SLOTS.smithing.base, SLOTS.smithing.addition],
   editableResultCount: false,
+  isDisabled: (_recipe, slot) => slot === SLOTS.smithing.result,
   bedrockWrapperKey: "minecraft:recipe_smithing_trim",
 });
 

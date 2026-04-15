@@ -4,6 +4,7 @@ import { immer } from "zustand/middleware/immer";
 
 import { IngredientItem } from "@/data/models/types";
 import { RecipeType } from "@/data/types";
+import { getRecipeDefinition } from "@/recipes/definitions";
 import { RecipeSlot } from "@/recipes/slots";
 
 import {
@@ -134,6 +135,12 @@ export const useRecipeStore = create<ImmerState>()(
         setRecipeType: (type) => {
           updateSelectedRecipe((recipe) => {
             recipe.recipeType = type;
+
+            for (const slot of Object.keys(recipe.slots) as RecipeSlot[]) {
+              if (getRecipeDefinition(type).slots.isDisabled(recipe, slot)) {
+                recipe.slots[slot] = undefined;
+              }
+            }
           });
         },
         setRecipeGroup: (group) => {

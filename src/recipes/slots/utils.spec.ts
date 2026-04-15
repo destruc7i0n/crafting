@@ -92,6 +92,11 @@ describe("isRecipeSlotDisabled", () => {
     const recipe = makeCanonicalRecipe({ recipeType: RecipeType.Smelting });
     expect(isRecipeSlotDisabled(recipe, "crafting.3")).toBe(false);
   });
+
+  it("disables the smithing result slot for smithing trim", () => {
+    const recipe = makeCanonicalRecipe({ recipeType: RecipeType.SmithingTrim });
+    expect(isRecipeSlotDisabled(recipe, "smithing.result")).toBe(true);
+  });
 });
 
 describe("findFirstEmptyRecipeSlot", () => {
@@ -159,6 +164,18 @@ describe("findFirstEmptyRecipeSlot", () => {
   it("returns first cooking slot for smelting", () => {
     const recipe = makeCanonicalRecipe({ recipeType: RecipeType.Smelting });
     expect(findFirstEmptyRecipeSlot(recipe, makeItem())).toBe("cooking.ingredient");
+  });
+
+  it("uses only smithing trim input slots for smithing trim", () => {
+    const recipe = makeCanonicalRecipe({
+      recipeType: RecipeType.SmithingTrim,
+      slots: {
+        "smithing.template": makeItem("coast_armor_trim_smithing_template"),
+        "smithing.base": makeItem("diamond_chestplate"),
+      },
+    });
+
+    expect(findFirstEmptyRecipeSlot(recipe, makeItem("redstone"))).toBe("smithing.addition");
   });
 });
 

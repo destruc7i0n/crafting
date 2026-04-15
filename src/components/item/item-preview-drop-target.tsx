@@ -8,9 +8,10 @@ import { RecipeSlot } from "@/recipes/slots";
 import {
   canRecipeSlotAcceptIngredientItem,
   canRecipeSlotAcceptSlotValue,
+  isRecipeSlotDisabled,
 } from "@/recipes/slots/utils";
 import { useRecipeStore } from "@/stores/recipe";
-import { selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
+import { selectCurrentRecipe, selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
 
 import { SlotProps } from "../slot/slot";
 import { SlotDropTarget } from "../slot/slot-drop-target";
@@ -21,7 +22,9 @@ type ItemPreviewDropTargetProps = {
 } & SlotProps;
 
 export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetProps) => {
+  const recipe = useRecipeStore(selectCurrentRecipe);
   const slotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
+  const isRecipeDisabled = recipe ? isRecipeSlotDisabled(recipe, slot) : false;
 
   const selection = useItemSelection();
   const isSlotSelected = selection?.type === "slot" && selection.slot === slot;
@@ -42,9 +45,13 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
     <SlotDropTarget<RecipeSlotDropTargetData>
       data={dropTargetData}
       {...props}
-      disabled={isDisabledForSelection || props.disabled}
+      disabled={isRecipeDisabled || isDisabledForSelection || props.disabled}
       className={cn(isSlotSelected && "ring-primary z-10 rounded ring-2", props.className)}
       canDrop={({ source }) => {
+        if (isRecipeDisabled) {
+          return false;
+        }
+
         if (isItemDraggableData(source.data)) {
           return source.data.type === "palette-item"
             ? canRecipeSlotAcceptIngredientItem(slot, source.data.item)
@@ -55,6 +62,9 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
       }}
       onClick={(event) => {
         props.onClick?.(event);
+        if (isRecipeDisabled || props.disabled) {
+          return;
+        }
         handleClick();
       }}
     >

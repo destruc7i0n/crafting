@@ -17,6 +17,8 @@ export const ItemPreviewResultSlot = ({
   style,
   ...props
 }: ItemPreviewResultSlotProps) => {
+  const compactCount = width <= 36 || height <= 36;
+
   return (
     <div
       {...props}
@@ -28,7 +30,7 @@ export const ItemPreviewResultSlot = ({
       }}
     >
       <ItemPreviewDropTarget slot={slot} width={width} height={height} />
-      <EditableItemCount slot={slot} />
+      <EditableItemCount slot={slot} compact={compactCount} />
     </div>
   );
 };

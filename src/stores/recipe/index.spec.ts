@@ -307,6 +307,46 @@ describe("recipe store", () => {
     });
   });
 
+  it("clears disabled smithing result slots when switching to smithing trim", () => {
+    useRecipeStore.setState((state) => ({
+      ...state,
+      recipes: [
+        {
+          ...createRecipe("recipe_1"),
+          recipeType: RecipeType.SmithingTransform,
+          slots: {
+            [SLOTS.smithing.template]: {
+              kind: "item",
+              id: { namespace: "minecraft", id: "netherite_upgrade_smithing_template" },
+            },
+            [SLOTS.smithing.base]: {
+              kind: "item",
+              id: { namespace: "minecraft", id: "diamond_pickaxe" },
+            },
+            [SLOTS.smithing.addition]: {
+              kind: "item",
+              id: { namespace: "minecraft", id: "netherite_ingot" },
+            },
+            [SLOTS.smithing.result]: {
+              kind: "item",
+              id: { namespace: "minecraft", id: "netherite_pickaxe" },
+            },
+          },
+        },
+      ],
+      selectedRecipeId: "recipe_1",
+    }));
+
+    useRecipeStore.getState().setRecipeType(RecipeType.SmithingTrim);
+
+    expect(useRecipeStore.getState().recipes[0]?.recipeType).toBe(RecipeType.SmithingTrim);
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.smithing.result]).toBeUndefined();
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.smithing.template]).toEqual({
+      kind: "item",
+      id: { namespace: "minecraft", id: "netherite_upgrade_smithing_template" },
+    });
+  });
+
   it("updates counts only for item-like slot refs", () => {
     useRecipeStore.setState((state) => ({
       ...state,
