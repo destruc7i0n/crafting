@@ -1,0 +1,41 @@
+import {
+  BedrockBody,
+  BedrockRecipe,
+  BedrockTag,
+  BedrockWrapperKey,
+  BedrockFormatVersion,
+} from "../types";
+
+export interface BedrockWrapperOptions {
+  identifier: string;
+  priority: number;
+  formatVersion: BedrockFormatVersion;
+}
+
+export const wrapBedrockRecipe = ({
+  inner,
+  wrapperKey,
+  tags,
+  options,
+}: {
+  inner: BedrockBody;
+  wrapperKey: BedrockWrapperKey;
+  tags: BedrockTag[];
+  options: BedrockWrapperOptions;
+}): BedrockRecipe => {
+  const payload = {
+    description: {
+      identifier: options.identifier,
+    },
+    tags,
+    ...(options.priority !== 0 ? { priority: options.priority } : {}),
+    ...inner,
+  };
+
+  // TypeScript cannot narrow a computed property key into the correct
+  // discriminated union member, so the assertion is required here.
+  return {
+    format_version: options.formatVersion,
+    [wrapperKey]: payload,
+  } as unknown as BedrockRecipe;
+};

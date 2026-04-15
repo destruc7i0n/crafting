@@ -1,0 +1,5 @@
+.item-count {
+  font-smooth: none;
+  -webkit-font-smoothing: none;
+  text-shadow: 2px 2px 0 #3f3f3f;
+}

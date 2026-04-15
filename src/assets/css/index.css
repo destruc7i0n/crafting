@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-minecraft-inventory-bg: hsl(var(--minecraft-inventory-bg));
+
+  --font-minecraft: "Minecraft", sans-serif;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 224 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 10% 10%;
+    --primary: 152 60% 36%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 150 10% 95%;
+    --secondary-foreground: 220 9% 12%;
+    --muted: 150 10% 95%;
+    --muted-foreground: 220 8% 40%;
+    --accent: 150 14% 93%;
+    --accent-foreground: 220 9% 12%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 210 12% 86%;
+    --input: 210 12% 86%;
+    --ring: 152 60% 36%;
+    --radius: 0.5rem;
+
+    --header-bg: 0 0% 13.3%;
+    --header-fg: 0 0% 96%;
+
+    --minecraft-inventory-bg: 0 0% 77.65%;
+    --minecraft-slot-bg: 0 0% 54.51%;
+    --minecraft-slot-border-tl: #373737;
+    --minecraft-slot-border-br: #ffffff;
+  }
+
+  .dark {
+    --background: 200 10% 6%;
+    --foreground: 210 20% 94%;
+    --card: 200 8% 11%;
+    --card-foreground: 210 20% 94%;
+    --popover: 200 8% 11%;
+    --popover-foreground: 210 20% 94%;
+    --primary: 152 55% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 200 8% 16%;
+    --secondary-foreground: 210 20% 94%;
+    --muted: 200 8% 16%;
+    --muted-foreground: 210 10% 65%;
+    --accent: 200 8% 16%;
+    --accent-foreground: 210 20% 94%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 200 8% 20%;
+    --input: 200 8% 20%;
+    --ring: 152 55% 45%;
+
+    --header-bg: 0 0% 13.3%;
+    --header-fg: 0 0% 96%;
+
+    --minecraft-inventory-bg: 0 0% 20%;
+    --minecraft-slot-bg: 0 0% 14%;
+    --minecraft-slot-border-tl: #0a0a0a;
+    --minecraft-slot-border-br: #3a3a3a;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@utility scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@font-face {
+  font-family: "Minecraft";
+  src:
+    url("/fonts/Minecraft.woff") format("woff"),
+    url("/fonts/Minecraft.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
