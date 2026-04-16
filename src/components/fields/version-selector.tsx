@@ -36,6 +36,7 @@ export const VersionSelector = () => {
 
   return (
     <Select
+      aria-label="Minecraft version"
       wrapperClassName="min-w-[8.5rem]"
       className="border-white/10 bg-white/5 text-[hsl(var(--header-fg))] hover:bg-white/10"
       iconClassName="text-[hsl(var(--header-fg))]/70"

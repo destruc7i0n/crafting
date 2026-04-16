@@ -46,7 +46,8 @@ export const RecipeTypeSelector = () => {
           >
             <ResourceIcon
               itemId={getRecipeTypeIconItemId(type)}
-              alt={getRecipeTypeLabel(type)}
+              alt=""
+              aria-hidden="true"
               className="pointer-events-none h-6 w-6"
               draggable={false}
             />

@@ -19,6 +19,7 @@ export const ThemeToggle = () => {
         {icons[theme as Theme]}
       </div>
       <select
+        aria-label="Theme"
         value={theme}
         onChange={(e) => setTheme(e.target.value as Theme)}
         className="border-input bg-background text-foreground hover:bg-accent focus:ring-ring h-9 appearance-none rounded-md border py-2 pr-8 pl-8 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset"

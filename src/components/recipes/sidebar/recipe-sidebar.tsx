@@ -32,7 +32,11 @@ import {
 import { cn } from "@/lib/utils";
 import { validateBehaviorPackExport } from "@/lib/validate-behavior-pack-export";
 import { validateDatapackExport } from "@/lib/validate-datapack-export";
-import { getRecipeTypeIconItemId, getSupportedRecipeTypesForVersion } from "@/recipes/definitions";
+import {
+  getRecipeTypeIconItemId,
+  getRecipeTypeLabel,
+  getSupportedRecipeTypesForVersion,
+} from "@/recipes/definitions";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectSelectedRecipeId } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
@@ -124,6 +128,8 @@ const CollapsedRecipeButton = ({
       <button
         type="button"
         onClick={() => onSelectRecipe(row.recipe.id)}
+        aria-label={row.title}
+        title={row.title}
         className={cn(
           "flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border transition-colors",
           row.isSelected
@@ -133,7 +139,12 @@ const CollapsedRecipeButton = ({
           row.hasWarning && !row.isSelected && "border-amber-500/40",
         )}
       >
-        <ResourceIcon itemId={getRecipeTypeIconItemId(row.recipe.recipeType)} className="h-6 w-6" />
+        <ResourceIcon
+          itemId={getRecipeTypeIconItemId(row.recipe.recipeType)}
+          alt=""
+          aria-hidden="true"
+          className="h-6 w-6"
+        />
       </button>
     </Tooltip>
   );
@@ -252,6 +263,7 @@ const ExpandedRecipeRow = ({
         >
           <ResourceIcon
             itemId={getRecipeTypeIconItemId(row.recipe.recipeType)}
+            alt={`${getRecipeTypeLabel(row.recipe.recipeType)} recipe type`}
             className="h-6 w-6 shrink-0"
           />
 

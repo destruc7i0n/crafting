@@ -2,7 +2,7 @@ import { ChevronRightIcon } from "lucide-react";
 
 import { ResourceIcon } from "@/components/item/resource-icon";
 import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
-import { getRecipeTypeIconItemId } from "@/recipes/definitions";
+import { getRecipeTypeIconItemId, getRecipeTypeLabel } from "@/recipes/definitions";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
@@ -35,6 +35,7 @@ export const MobileRecipeSwitcher = () => {
     >
       <ResourceIcon
         itemId={getRecipeTypeIconItemId(currentRecipe.recipeType)}
+        alt={`${getRecipeTypeLabel(currentRecipe.recipeType)} recipe type`}
         className="h-8 w-8 shrink-0"
       />
 

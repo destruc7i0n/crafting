@@ -10,7 +10,7 @@ export const Footer = () => (
         href="https://thedestruc7i0n.ca"
         target="_blank"
         rel="noopener"
-        className="text-primary underline-offset-2 hover:underline"
+        className="text-primary underline underline-offset-2"
       >
         destruc7i0n
       </a>{" "}
@@ -19,7 +19,7 @@ export const Footer = () => (
         href="https://twitter.com/TheDestruc7i0n"
         target="_blank"
         rel="noopener"
-        className="text-primary underline-offset-2 hover:underline"
+        className="text-primary underline underline-offset-2"
       >
         Twitter
       </a>{" "}
@@ -28,7 +28,7 @@ export const Footer = () => (
         href="https://github.com/destruc7i0n/crafting"
         target="_blank"
         rel="noopener"
-        className="text-primary underline-offset-2 hover:underline"
+        className="text-primary underline underline-offset-2"
       >
         GitHub
       </a>
@@ -39,7 +39,7 @@ export const Footer = () => (
         href="https://ko-fi.com/destruc7i0n"
         target="_blank"
         rel="noopener"
-        className="text-primary underline-offset-2 hover:underline"
+        className="text-primary underline underline-offset-2"
       >
         Ko-Fi
       </a>
@@ -48,6 +48,6 @@ export const Footer = () => (
       <ThemeToggle />
     </div>
     <p>The Minecraft item icons are copyright © 2009-{currentYear} Mojang Studios</p>
-    <p>This site is not affiliated with Mojang Studios</p>
+    <p>This website is not affiliated with Mojang Studios or Microsoft</p>
   </footer>
 );
