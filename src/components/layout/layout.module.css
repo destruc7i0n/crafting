@@ -43,6 +43,18 @@
   padding: 0.5rem;
 }
 
+.content-body {
+  @apply lg:h-full lg:min-h-0;
+}
+
+.main-content {
+  @apply lg:block lg:h-full;
+}
+
+.mobile-footer {
+  @apply md:hidden;
+}
+
 .items-column {
   @apply bg-card border-border/70 flex min-h-0 min-w-0 flex-col overflow-hidden rounded-t-2xl border-t;
   grid-area: items;

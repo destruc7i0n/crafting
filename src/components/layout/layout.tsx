@@ -46,8 +46,10 @@ const Layout = memo(({ children }: LayoutProps) => {
           </div>
 
           <div className={styles.contentColumn}>
-            <main>{children}</main>
-            <div className="md:hidden">
+            <div className={styles.contentBody}>
+              <main className={styles.mainContent}>{children}</main>
+            </div>
+            <div className={styles.mobileFooter}>
               <Footer />
             </div>
           </div>
