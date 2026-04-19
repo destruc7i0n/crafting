@@ -134,7 +134,7 @@ export const ItemsSection = ({
       )}
 
       {filteredCustomItems.length > 0 && (
-        <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pb-0">
+        <div className="scrollbar-app scrollbar-app-thin flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pb-0">
           {filteredCustomItems.map((item) => (
             <CustomItemEditor
               key={item.uid}

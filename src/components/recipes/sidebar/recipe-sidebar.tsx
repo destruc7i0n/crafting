@@ -442,7 +442,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
           </button>
         </Tooltip>
 
-        <div className="flex min-h-0 flex-1 flex-col items-center gap-1 overflow-y-auto py-1">
+        <div className="scrollbar-app flex min-h-0 flex-1 flex-col items-center gap-1 overflow-y-auto py-1">
           {rows.map((row) => (
             <CollapsedRecipeButton
               key={row.recipe.id}
@@ -495,7 +495,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         </button>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto">
+      <div className="scrollbar-app flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto">
         {rows.map((row) => (
           <ExpandedRecipeRow
             key={row.recipe.id}

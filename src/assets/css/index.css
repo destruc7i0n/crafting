@@ -61,6 +61,10 @@
     --minecraft-slot-bg: 0 0% 54.51%;
     --minecraft-slot-border-tl: #373737;
     --minecraft-slot-border-br: #ffffff;
+    --scrollbar-track: 210 16% 92%;
+    --scrollbar-thumb: 215 12% 64%;
+    --scrollbar-thumb-hover: 215 18% 74%;
+    --scrollbar-thumb-active: 215 18% 78%;
   }
 
   .dark {
@@ -91,6 +95,10 @@
     --minecraft-slot-bg: 0 0% 14%;
     --minecraft-slot-border-tl: #0a0a0a;
     --minecraft-slot-border-br: #3a3a3a;
+    --scrollbar-track: 200 8% 14%;
+    --scrollbar-thumb: 200 8% 34%;
+    --scrollbar-thumb-hover: 200 8% 46%;
+    --scrollbar-thumb-active: 200 8% 52%;
   }
 }
 
@@ -103,11 +111,57 @@
   }
 }
 
-@utility scrollbar-none {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
+@utility scrollbar-app {
+  --scrollbar-size: 0.875rem;
+  --scrollbar-track-color: hsl(var(--scrollbar-track) / 0.92);
+  --scrollbar-thumb-color: hsl(var(--scrollbar-thumb) / 0.92);
+  --scrollbar-thumb-hover-color: hsl(var(--scrollbar-thumb-hover) / 0.96);
+  --scrollbar-thumb-active-color: hsl(var(--scrollbar-thumb-active));
+  scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+  scrollbar-width: thin;
+}
+
+@utility scrollbar-app-thin {
+  --scrollbar-size: 0.625rem;
+}
+
+@layer utilities {
+  .scrollbar-app::-webkit-scrollbar {
+    width: var(--scrollbar-size);
+    height: var(--scrollbar-size);
+  }
+
+  .scrollbar-app::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-color);
+    border-radius: 999px;
+  }
+
+  .scrollbar-app::-webkit-scrollbar-thumb {
+    min-height: 2rem;
+    border: max(2px, calc(var(--scrollbar-size) * 0.2)) solid transparent;
+    border-radius: 999px;
+    background: var(--scrollbar-thumb-color);
+    background-clip: padding-box;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.05);
+    transition:
+      background-color 140ms ease,
+      box-shadow 140ms ease;
+  }
+
+  .scrollbar-app::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover-color);
+    background-clip: padding-box;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+  }
+
+  .scrollbar-app::-webkit-scrollbar-thumb:active {
+    background: var(--scrollbar-thumb-active-color);
+    background-clip: padding-box;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+  }
+
+  .scrollbar-app::-webkit-scrollbar-corner {
+    background: transparent;
   }
 }
 

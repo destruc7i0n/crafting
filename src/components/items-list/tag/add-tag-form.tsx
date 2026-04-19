@@ -103,7 +103,7 @@ export const AddTagForm = ({
   });
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">
+    <div className="scrollbar-app flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">
       <div className="flex items-center gap-3">
         <button
           type="button"

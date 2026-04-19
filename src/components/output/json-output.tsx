@@ -79,7 +79,7 @@ type JsonOutputProps = {
 };
 
 export const JsonOutput = ({ json }: JsonOutputProps) => (
-  <pre className="language-json m-0! overflow-x-auto rounded-lg! rounded-t-none! p-3 text-sm">
+  <pre className="language-json scrollbar-app scrollbar-app-thin m-0! overflow-x-auto rounded-lg! rounded-t-none! p-3 text-sm">
     <code>
       <JsonValue value={json} depth={0} />
     </code>

@@ -140,7 +140,7 @@ export const TagsSection = ({
     const tagItem = customTagItems[expandedTag.uid];
 
     return (
-      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-1 lg:p-0">
+      <div className="scrollbar-app flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-1 lg:p-0">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -202,7 +202,7 @@ export const TagsSection = ({
       )}
 
       {supportsCustomTags && filteredCustomTags.length > 0 && (
-        <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pb-0">
+        <div className="scrollbar-app scrollbar-app-thin flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pb-0">
           {filteredCustomTags.map((tag) => {
             const tagItem = customTagItems[tag.uid];
             if (!tagItem) return null;

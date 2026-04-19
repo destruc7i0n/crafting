@@ -57,7 +57,7 @@ export const ValueList = ({
 
       <div
         ref={scrollRef}
-        className="border-border bg-muted/40 overflow-y-auto rounded-md border"
+        className="border-border bg-muted/40 scrollbar-app overflow-y-auto rounded-md border"
         style={{ maxHeight: ROW_HEIGHT * LIST_MAX_ROWS }}
       >
         <div className="relative w-full" style={{ height: virtualizer.getTotalSize() }}>

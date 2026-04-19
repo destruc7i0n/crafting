@@ -28,7 +28,10 @@ export const RecipeTypeSelector = () => {
   }, [recipeType]);
 
   return (
-    <div ref={scrollRef} className="flex w-full gap-1.5 overflow-x-auto pb-2">
+    <div
+      ref={scrollRef}
+      className="scrollbar-app scrollbar-app-thin flex w-full gap-1.5 overflow-x-auto pb-2"
+    >
       {supportedRecipeTypes.map((type) => {
         const isSelected = recipeType === type;
         return (

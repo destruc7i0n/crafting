@@ -107,7 +107,7 @@ export const Preview = memo(() => {
         } as CSSProperties
       }
     >
-      <div className="w-full overflow-x-auto">
+      <div className="scrollbar-app scrollbar-app-thin w-full overflow-x-auto">
         <div className="mx-auto w-fit min-w-0">
           <div className="group relative w-fit min-w-0">
             <div ref={previewRef} className="w-fit min-w-0">

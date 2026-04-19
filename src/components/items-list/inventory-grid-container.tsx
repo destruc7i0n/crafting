@@ -10,7 +10,7 @@ export const InventoryGridContainer = forwardRef<HTMLDivElement, InventoryGridCo
       {...props}
       ref={ref}
       className={cn(
-        "bg-minecraft-inventory-bg ring-border/70 min-h-0 flex-1 overflow-y-auto rounded-md p-1 ring-1 ring-inset",
+        "bg-minecraft-inventory-bg ring-border/70 scrollbar-app min-h-0 flex-1 overflow-y-auto rounded-md p-1 ring-1 ring-inset",
         className,
       )}
     />
