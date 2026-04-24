@@ -3,6 +3,7 @@ import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 
 import { ItemPreviewDropTarget } from "../item/item-preview-drop-target";
 import { ItemPreviewResultSlot } from "../item/item-preview-result-slot";
+import { MinecraftUiLabel } from "./minecraft-ui-label";
 
 const slotStyles = {
   "crafting.1": { position: "absolute", top: 32, left: 58 },
@@ -38,6 +39,10 @@ export const CraftingGridPreview = () => {
         className="relative mx-auto h-[136px] w-[316px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
         style={{ backgroundImage: `url(/assets/ui/crafting_table_2x2.png)` }}
       >
+        <MinecraftUiLabel top={10} left={58}>
+          Crafting
+        </MinecraftUiLabel>
+
         {visibleSlots.map((slot) => (
           <ItemPreviewDropTarget
             key={slot}
@@ -70,6 +75,10 @@ export const CraftingGridPreview = () => {
       className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
       style={{ backgroundImage: `url(/assets/ui/crafting_table.png)` }}
     >
+      <MinecraftUiLabel top={10} left={58}>
+        Crafting
+      </MinecraftUiLabel>
+
       {visibleSlots.map((slot) => (
         <ItemPreviewDropTarget key={slot} slot={slot} style={slotStyles[slot]} />
       ))}
