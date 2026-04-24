@@ -27,11 +27,12 @@ const FileNameField = () => {
 
   return (
     <Field label="File name">
-      <div className="flex items-center gap-2">
+      <div className="flex min-w-0 items-stretch">
         {isManual ? (
           <div
             className={cn(
-              "border-input bg-background hover:bg-accent focus-within:ring-ring flex h-9 min-w-0 flex-1 items-center rounded-md border transition-colors focus-within:ring-2",
+              "border-input bg-background hover:bg-accent focus-within:ring-ring flex h-9 min-w-0 flex-1 items-center rounded-md border transition-colors focus-within:ring-2 focus-within:ring-inset",
+              "rounded-r-none",
             )}
           >
             <InputControl
@@ -42,9 +43,9 @@ const FileNameField = () => {
               autoCorrect="off"
               spellCheck={false}
               placeholder={naming.autoName}
-              className="text-foreground h-full w-full min-w-0 flex-1 rounded-none border-0 bg-transparent px-2 py-1 outline-hidden focus:ring-0"
+              className="text-foreground h-full w-full min-w-0 flex-1 rounded-none border-0 bg-transparent px-2 py-1 pr-1 outline-hidden hover:bg-transparent focus:ring-0"
             />
-            <span className="border-input text-muted-foreground flex h-full shrink-0 items-center border-l px-2 py-1 text-xs">
+            <span className="text-muted-foreground pointer-events-none flex h-full shrink-0 items-center pr-2 pl-1 text-sm">
               .json
             </span>
           </div>
@@ -56,12 +57,14 @@ const FileNameField = () => {
                 : "Missing file name"
             }
             badge="Auto"
+            className="rounded-r-none"
           />
         )}
 
         {isManual ? (
           <IconActionButton
             label="Use auto file name"
+            className="border-input -ml-px rounded-l-none"
             onClick={() => {
               setRecipeName("");
               setRecipeNameMode("auto");
@@ -72,6 +75,7 @@ const FileNameField = () => {
         ) : (
           <IconActionButton
             label="Customize file name"
+            className="border-input -ml-px rounded-l-none"
             onClick={() => {
               setRecipeName(resolvedJavaName);
               setRecipeNameMode("manual");

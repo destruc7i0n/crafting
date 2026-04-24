@@ -79,7 +79,7 @@ const NameField = () => {
         ) : undefined
       }
     >
-      <div className="flex items-center gap-2">
+      <div className="flex min-w-0 items-stretch">
         {isManual ? (
           <>
             <InputControl
@@ -104,14 +104,15 @@ const NameField = () => {
               spellCheck={false}
               aria-invalid={showNameError}
               className={cn(
-                "min-w-0 flex-1",
+                "min-w-0 flex-1 rounded-r-none",
                 showNameError && "border-destructive focus:ring-destructive",
               )}
               placeholder={naming.autoBedrockName}
             />
 
             <IconActionButton
-              label="Use auto Bedrock name"
+              label="Use auto name"
+              className="border-input -ml-px rounded-l-none"
               onClick={() => {
                 setRecipeBedrockIdentifierName("");
                 setRecipeBedrockIdentifierMode("auto");
@@ -123,10 +124,11 @@ const NameField = () => {
           </>
         ) : (
           <>
-            <ReadonlyValueRow value={bedrockName} badge="Auto" />
+            <ReadonlyValueRow value={bedrockName} badge="Auto" className="rounded-r-none" />
 
             <IconActionButton
-              label="Customize Bedrock name"
+              label="Customize name"
+              className="border-input -ml-px rounded-l-none"
               onClick={() => {
                 setRecipeBedrockIdentifierName(bedrockName);
                 setRecipeBedrockIdentifierMode("manual");

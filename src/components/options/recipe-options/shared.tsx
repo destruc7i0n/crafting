@@ -153,11 +153,20 @@ interface ReadonlyValueRowProps {
   value: string;
   badge?: string;
   title?: string;
+  className?: string;
 }
 
-export const ReadonlyValueRow = ({ value, badge, title = value }: ReadonlyValueRowProps) => (
+export const ReadonlyValueRow = ({
+  value,
+  badge,
+  title = value,
+  className,
+}: ReadonlyValueRowProps) => (
   <div
-    className="border-input bg-muted/30 flex h-9 min-w-0 flex-1 items-center gap-2 rounded-md border px-2 text-sm"
+    className={cn(
+      "border-input bg-muted/30 flex h-9 min-w-0 flex-1 items-center gap-2 rounded-md border px-2 text-sm",
+      className,
+    )}
     title={title}
   >
     <span className="text-foreground/80 min-w-0 flex-1 truncate">{value}</span>
