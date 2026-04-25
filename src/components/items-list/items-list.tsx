@@ -1,20 +1,26 @@
-import { useDeferredValue, useState } from "react";
+import { lazy, Suspense, useDeferredValue, useState } from "react";
 
 import { PlusIcon } from "lucide-react";
 
-import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
-import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { cn } from "@/lib/utils";
+import { useSettingsStore } from "@/stores/settings";
+import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useUIStore } from "@/stores/ui";
 import { supportsCustomTags, supportsItemTags } from "@/versioning";
 
-import { ItemsSection } from "./item/items-section";
-import { TagsSection } from "./tag/tags-section";
+const ItemsListContent = lazy(() =>
+  import("./items-list-content").then(({ ItemsListContent }) => ({ default: ItemsListContent })),
+);
+
+const ItemsListContentFallback = () => (
+  <div aria-hidden="true" className="flex min-h-0 w-full flex-1 flex-col gap-2 rounded-md md:gap-0">
+    <div className="bg-minecraft-inventory-bg ring-border/70 min-h-0 flex-1 rounded-md ring-1 ring-inset" />
+  </div>
+);
 
 export const ItemsList = () => {
-  const { resources, version } = useResourcesForVersion();
+  const version = useSettingsStore(selectMinecraftVersion);
 
-  const resourceItems = resources?.items;
   const supportsTags = supportsItemTags(version);
   const canCreateTags = supportsCustomTags(version);
 
@@ -50,8 +56,6 @@ export const ItemsList = () => {
     setShowAddTagForm(false);
     setExpandedTagUid(null);
   };
-
-  const items = useFuzzySearch(resourceItems ?? [], deferredSearch, (item) => [item.displayName]);
 
   const tabSwitcher = supportsTags ? (
     <div className="bg-muted relative flex shrink-0 items-center self-stretch rounded-md p-0.5 md:self-auto">
@@ -142,25 +146,19 @@ export const ItemsList = () => {
         />
       )}
 
-      <div className="flex min-h-0 w-full flex-1 flex-col gap-2 rounded-md md:gap-0">
-        {tab === "tags" ? (
-          <TagsSection
-            search={deferredSearch}
-            expandedTagUid={expandedTagUid}
-            setExpandedTagUid={setExpandedTagUid}
-            showAddTagForm={showAddTagForm}
-            onCloseAddTagForm={() => setShowAddTagForm(false)}
-            supportsCustomTags={canCreateTags}
-          />
-        ) : (
-          <ItemsSection
-            search={deferredSearch}
-            items={items}
-            showAddItemForm={showAddItemForm}
-            onCloseAddItemForm={() => setShowAddItemForm(false)}
-          />
-        )}
-      </div>
+      <Suspense fallback={<ItemsListContentFallback />}>
+        <ItemsListContent
+          tab={tab}
+          search={deferredSearch}
+          expandedTagUid={expandedTagUid}
+          setExpandedTagUid={setExpandedTagUid}
+          showAddItemForm={showAddItemForm}
+          showAddTagForm={showAddTagForm}
+          onCloseAddItemForm={() => setShowAddItemForm(false)}
+          onCloseAddTagForm={() => setShowAddTagForm(false)}
+          supportsCustomTags={canCreateTags}
+        />
+      </Suspense>
     </div>
   );
 };

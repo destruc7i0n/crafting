@@ -90,6 +90,3 @@ export function loadResources(version: MinecraftVersion): void {
     console.error(error);
   });
 }
-
-// eagerly load latest version textures on load
-loadResources(latestMinecraftVersion);
