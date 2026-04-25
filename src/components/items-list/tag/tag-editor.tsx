@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, Tag, TagItem } from "@/data/models/types";
+import { trackCustomTag } from "@/lib/analytics";
 import {
   isValidJavaNamespacedIdentifier,
   javaNamespacedIdentifierHint,
@@ -22,6 +23,9 @@ interface TagEditorProps {
   customTagItems: Record<string, TagItem>;
   vanillaTags: Record<string, string[]>;
 }
+
+const getTagValueCount = (uid: string) =>
+  useTagStore.getState().tags.find((currentTag) => currentTag.uid === uid)?.values.length;
 
 export const TagEditor = ({
   tag,
@@ -57,7 +61,10 @@ export const TagEditor = ({
     }
 
     try {
-      updateTag(tag.uid, { id: draftId });
+      const didUpdate = updateTag(tag.uid, { id: draftId });
+      if (didUpdate) {
+        trackCustomTag({ action: "update", value_count: tag.values.length });
+      }
       setUpdateError(undefined);
     } catch (error) {
       setUpdateError(error instanceof Error ? error.message : "Could not update tag");
@@ -65,10 +72,21 @@ export const TagEditor = ({
   };
 
   const handleAddValue = (option: ValueOption) => {
-    if (option.kind === "item") {
-      addValueToTag(tag.uid, { type: "item", id: option.item.id });
-    } else {
-      addValueToTag(tag.uid, { type: "tag", id: option.tagItem.id });
+    const didUpdate =
+      option.kind === "item"
+        ? addValueToTag(tag.uid, { type: "item", id: option.item.id })
+        : addValueToTag(tag.uid, { type: "tag", id: option.tagItem.id });
+
+    if (didUpdate) {
+      trackCustomTag({ action: "update", value_count: getTagValueCount(tag.uid) ?? 0 });
+    }
+  };
+
+  const handleRemoveValue = (index: number) => {
+    const didUpdate = removeValueFromTagByIndex(tag.uid, index);
+
+    if (didUpdate) {
+      trackCustomTag({ action: "update", value_count: getTagValueCount(tag.uid) ?? 0 });
     }
   };
 
@@ -132,7 +150,7 @@ export const TagEditor = ({
           tags={tags}
           vanillaTags={vanillaTags}
           itemsById={itemsById}
-          onClick={(index) => removeValueFromTagByIndex(tag.uid, index)}
+          onClick={handleRemoveValue}
         />
       </div>
 

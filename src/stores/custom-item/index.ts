@@ -23,8 +23,8 @@ type CustomItemActions = {
     rawId: string;
     texture: string;
     version: MinecraftVersion;
-  }) => void;
-  updateCustomItem: (uid: string, updates: CustomItemUpdates) => void;
+  }) => boolean;
+  updateCustomItem: (uid: string, updates: CustomItemUpdates) => boolean;
   deleteCustomItem: (uid: string) => void;
 };
 
@@ -39,7 +39,7 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
         if (
           get().customItems.some((item) => identifierUniqueKey(item.id) === identifierUniqueKey(id))
         ) {
-          return;
+          return false;
         }
 
         const item: CustomItem = {
@@ -54,31 +54,46 @@ export const useCustomItemStore = create<CustomItemState & CustomItemActions>()(
         set((state) => {
           state.customItems.push(item);
         });
+
+        return true;
       },
 
       updateCustomItem: (uid, updates) => {
+        let didUpdate = false;
+
         set((state) => {
           const item = state.customItems.find((i) => i.uid === uid);
           if (!item) return;
 
-          if (updates.displayName !== undefined) {
+          if (updates.displayName !== undefined && updates.displayName !== item.displayName) {
             item.displayName = updates.displayName;
+            didUpdate = true;
           }
 
           if (updates.texture !== undefined) {
-            item.texture = updates.texture || NoTextureTexture;
+            const nextTexture = updates.texture || NoTextureTexture;
+            if (nextTexture !== item.texture) {
+              item.texture = nextTexture;
+              didUpdate = true;
+            }
           }
 
           if (updates.rawId !== undefined) {
             const newId = parseMinecraftIdentifierInput(updates.rawId, item._version);
+            const currentKey = identifierUniqueKey(item.id);
+            const newKey = identifierUniqueKey(newId);
             const duplicate = state.customItems.some(
-              (i) => i.uid !== uid && identifierUniqueKey(i.id) === identifierUniqueKey(newId),
+              (i) => i.uid !== uid && identifierUniqueKey(i.id) === newKey,
             );
-            if (!duplicate) {
+
+            if (!duplicate && currentKey !== newKey) {
               item.id = newId;
+              didUpdate = true;
             }
           }
         });
+
+        return didUpdate;
       },
 
       deleteCustomItem: (uid) => {

@@ -12,6 +12,7 @@ import { Tooltip } from "@/components/tooltip/tooltip";
 import { MinecraftVersion } from "@/data/types";
 import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
 import { useSlotContext } from "@/hooks/use-slot-context";
+import { trackRecipeExport } from "@/lib/analytics";
 import { downloadRecipeJson } from "@/lib/download/recipe";
 import { cn } from "@/lib/utils";
 import { generate } from "@/recipes/generate";
@@ -132,12 +133,20 @@ export const ItemOutput = () => {
             type="button"
             onClick={() => {
               if (downloadTarget) {
-                downloadRecipeJson({
+                const result = downloadRecipeJson({
                   recipe: recipeState,
                   version: minecraftVersion,
                   slotContext,
                   target: downloadTarget,
                 });
+
+                if (result.status === "success") {
+                  trackRecipeExport({
+                    export_kind: "single_json",
+                    minecraft_version: minecraftVersion,
+                    recipe_count: 1,
+                  });
+                }
               }
             }}
             disabled={!!generatedResult.error || !downloadTarget}

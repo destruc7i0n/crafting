@@ -1,3 +1,4 @@
+import { Analytics } from "./components/analytics";
 import { Layout } from "./components/layout/layout";
 import { ThemeProvider } from "./context/theme-context";
 import { useDndMonitor } from "./hooks/use-dnd-monitor";
@@ -8,6 +9,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="system">
+      <Analytics />
       <Layout>
         <Main />
       </Layout>

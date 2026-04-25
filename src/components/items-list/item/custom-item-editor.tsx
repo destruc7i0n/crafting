@@ -5,6 +5,7 @@ import { ArrowLeftIcon, Trash2Icon } from "lucide-react";
 import { NoTextureTexture } from "@/data/constants";
 import { getFullId, getRawId } from "@/data/models/identifier/utilities";
 import { CustomItem } from "@/data/models/types";
+import { trackCustomItem } from "@/lib/analytics";
 import { deleteCustomItemAndClearRecipeRefs } from "@/lib/editor-actions";
 import {
   bedrockIdentifierHint,
@@ -18,6 +19,9 @@ import { Item } from "../../item/item";
 import { ItemPreview } from "../../item/item-preview";
 import { Slot } from "../../slot/slot";
 import { IngredientCard } from "../ingredient-card";
+
+const getStoredCustomItem = (uid: string) =>
+  useCustomItemStore.getState().customItems.find((customItem) => customItem.uid === uid);
 
 export const CustomItemEditor = ({
   item,
@@ -54,7 +58,15 @@ export const CustomItemEditor = ({
     }
 
     if (Object.keys(updates).length > 0) {
-      updateCustomItem(item.uid, updates);
+      const didUpdate = updateCustomItem(item.uid, updates);
+      const afterItem = getStoredCustomItem(item.uid);
+
+      if (didUpdate && afterItem) {
+        trackCustomItem({
+          action: "update",
+          has_texture: afterItem.texture !== NoTextureTexture,
+        });
+      }
     }
   };
 
@@ -65,7 +77,15 @@ export const CustomItemEditor = ({
     const reader = new FileReader();
     reader.onloadend = () => {
       if (typeof reader.result === "string") {
-        updateCustomItem(item.uid, { texture: reader.result });
+        const didUpdate = updateCustomItem(item.uid, { texture: reader.result });
+        const afterItem = getStoredCustomItem(item.uid);
+
+        if (didUpdate && afterItem) {
+          trackCustomItem({
+            action: "update",
+            has_texture: afterItem.texture !== NoTextureTexture,
+          });
+        }
       }
     };
     reader.readAsDataURL(file);

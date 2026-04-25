@@ -19,6 +19,7 @@ import { Tooltip } from "@/components/tooltip/tooltip";
 import { MinecraftVersion } from "@/data/types";
 import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
 import { useSlotContext } from "@/hooks/use-slot-context";
+import { trackRecipeExport } from "@/lib/analytics";
 import { confirmAction } from "@/lib/confirm";
 import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
@@ -385,29 +386,55 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     }
 
     if (isBedrock) {
-      await downloadBehaviorPack({
+      const result = await downloadBehaviorPack({
         recipes,
         version: minecraftVersion,
         context: { bedrockNamespace },
         slotContext,
       });
+
+      if (result.status === "success") {
+        trackRecipeExport({
+          export_kind: "behavior_pack",
+          minecraft_version: minecraftVersion,
+          recipe_count: recipes.length,
+        });
+      }
       return;
     }
 
-    await downloadDatapack(recipes, minecraftVersion, {
-      tags: useTagStore.getState().tags,
+    const tags = useTagStore.getState().tags;
+    const result = await downloadDatapack(recipes, minecraftVersion, {
+      tags,
       context: { bedrockNamespace },
       slotContext,
     });
+
+    if (result.status === "success") {
+      trackRecipeExport({
+        export_kind: "datapack",
+        minecraft_version: minecraftVersion,
+        recipe_count: recipes.length,
+        tag_count: tags.length,
+      });
+    }
   };
 
   const handleDownloadRecipe = (recipe: Recipe, target: string) => {
-    downloadRecipeJson({
+    const result = downloadRecipeJson({
       recipe,
       version: minecraftVersion,
       slotContext,
       target,
     });
+
+    if (result.status === "success") {
+      trackRecipeExport({
+        export_kind: "single_json",
+        minecraft_version: minecraftVersion,
+        recipe_count: 1,
+      });
+    }
   };
 
   const collapsedDownloadTooltip = packState.canDownload ? (

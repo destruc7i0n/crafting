@@ -7,6 +7,8 @@ import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import { validateBehaviorPackExport } from "../validate-behavior-pack-export";
 
+import type { DownloadResult } from "./types";
+
 export const downloadBehaviorPack = async ({
   recipes,
   version,
@@ -17,10 +19,10 @@ export const downloadBehaviorPack = async ({
   version: MinecraftVersion;
   context: NamingContext;
   slotContext: SlotContext;
-}) => {
+}): Promise<DownloadResult> => {
   if (version !== MinecraftVersion.Bedrock) {
     alert("Behavior pack export is only available for Bedrock.");
-    return;
+    return { status: "blocked" };
   }
 
   const invalidRecipes = validateBehaviorPackExport(recipes, context, slotContext).map(
@@ -31,7 +33,7 @@ export const downloadBehaviorPack = async ({
     alert(
       `Please finish all recipes before downloading the behavior pack:\n\n- ${invalidRecipes.join("\n- ")}`,
     );
-    return;
+    return { status: "blocked" };
   }
 
   const recipeFiles: { identifier: string; json: object }[] = [];
@@ -65,15 +67,17 @@ export const downloadBehaviorPack = async ({
     alert(
       `Failed to generate all recipes for the behavior pack:\n\n- ${invalidRecipes.join("\n- ")}`,
     );
-    return;
+    return { status: "error" };
   }
 
   try {
     const blob = createBehaviorPackBlob(recipeFiles);
     downloadBlob(blob, "behavior_pack.mcpack");
+    return { status: "success" };
   } catch (error) {
     alert(
       `Failed to generate the behavior pack:\n\n${error instanceof Error ? error.message : "Unknown error"}`,
     );
+    return { status: "error" };
   }
 };

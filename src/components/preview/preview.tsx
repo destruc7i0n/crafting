@@ -9,6 +9,7 @@ import { RecipeType } from "@/data/types";
 import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useItemSelection } from "@/hooks/use-item-selection";
+import { trackPreviewScreenshot } from "@/lib/analytics";
 import { clearSelectedRecipeAndSlotSelection } from "@/lib/editor-actions";
 import { cn } from "@/lib/utils";
 import { getRecipeDefinition, PreviewKind } from "@/recipes/definitions";
@@ -43,7 +44,7 @@ export const Preview = memo(() => {
   const previewKind = recipeType ? getRecipeDefinition(recipeType).previewKind : undefined;
   const preview = previewKind ? previewByKind[previewKind] : null;
 
-  if (!preview) {
+  if (!preview || !recipeType) {
     return null;
   }
 
@@ -80,6 +81,7 @@ export const Preview = memo(() => {
         (recipeType === RecipeType.Crafting ? "crafting-grid.png" : `${recipeType}-preview.png`);
 
       downloadBlob(blob, fileName);
+      trackPreviewScreenshot({ recipe_type: recipeType });
     } catch (error) {
       console.error("Image generation error", error);
       window.alert("Could not download preview image.");

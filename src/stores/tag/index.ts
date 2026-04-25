@@ -14,11 +14,11 @@ export interface TagState {
 }
 
 type TagActions = {
-  createTag: (initial?: Partial<Pick<Tag, "id" | "values">>) => string;
-  updateTag: (uid: string, updates: Partial<Pick<Tag, "id">>) => void;
+  createTag: (initial?: Partial<Pick<Tag, "id" | "values">>) => boolean;
+  updateTag: (uid: string, updates: Partial<Pick<Tag, "id">>) => boolean;
   removeTag: (uid: string) => void;
-  addValueToTag: (uid: string, value: TagValue) => void;
-  removeValueFromTagByIndex: (uid: string, index: number) => void;
+  addValueToTag: (uid: string, value: TagValue) => boolean;
+  removeValueFromTagByIndex: (uid: string, index: number) => boolean;
 };
 
 export const useTagStore = create<TagState & TagActions>()(
@@ -40,18 +40,20 @@ export const useTagStore = create<TagState & TagActions>()(
           state.tags.push(tag);
         });
 
-        return tag.uid;
+        return true;
       },
       updateTag: (uid, updates) => {
         const tags = get().tags;
         const currentTag = tags.find((value) => value.uid === uid);
         if (!currentTag) {
-          return;
+          return false;
         }
 
         if (updates.id !== undefined) {
           assertUniqueTagId(tags, updates.id, uid);
         }
+
+        let didUpdate = false;
 
         set((state) => {
           const tag = state.tags.find((value) => value.uid === uid);
@@ -59,7 +61,7 @@ export const useTagStore = create<TagState & TagActions>()(
             return;
           }
 
-          if (updates.id !== undefined) {
+          if (updates.id !== undefined && updates.id !== tag.id) {
             // keep parent tag refs in sync when a referenced tag id changes
             const oldIdentifier = parseStringToMinecraftIdentifier(tag.id);
             const newIdentifier = parseStringToMinecraftIdentifier(updates.id);
@@ -67,6 +69,7 @@ export const useTagStore = create<TagState & TagActions>()(
             const newKey = identifierUniqueKey(newIdentifier);
 
             tag.id = updates.id;
+            didUpdate = true;
 
             if (oldKey === newKey) {
               return;
@@ -81,6 +84,8 @@ export const useTagStore = create<TagState & TagActions>()(
             }
           }
         });
+
+        return didUpdate;
       },
       removeTag: (uid) => {
         set((state) => {
@@ -89,6 +94,8 @@ export const useTagStore = create<TagState & TagActions>()(
       },
 
       addValueToTag: (uid, value) => {
+        let didAdd = false;
+
         set((state) => {
           const tag = state.tags.find((currentTag) => currentTag.uid === uid);
           if (
@@ -102,18 +109,26 @@ export const useTagStore = create<TagState & TagActions>()(
           }
 
           tag.values.push(value);
+          didAdd = true;
         });
+
+        return didAdd;
       },
 
       removeValueFromTagByIndex: (uid, index) => {
+        let didRemove = false;
+
         set((state) => {
           const tag = state.tags.find((currentTag) => currentTag.uid === uid);
-          if (!tag) {
+          if (!tag || index < 0 || index >= tag.values.length) {
             return;
           }
 
           tag.values.splice(index, 1);
+          didRemove = true;
         });
+
+        return didRemove;
       },
     })),
     {

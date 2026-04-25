@@ -4,6 +4,7 @@ import { ArrowLeftIcon } from "lucide-react";
 
 import { identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, TagItem, TagValue } from "@/data/models/types";
+import { trackCustomTag } from "@/lib/analytics";
 import {
   isValidJavaNamespacedIdentifier,
   javaNamespacedIdentifierHint,
@@ -74,10 +75,13 @@ export const AddTagForm = ({
     if (!canCreate) return;
 
     try {
-      createTag({
+      const didCreate = createTag({
         id: tagId,
         values: draftValues,
       });
+      if (didCreate) {
+        trackCustomTag({ action: "create", value_count: draftValues.length });
+      }
       setSubmitError(undefined);
       onClose();
     } catch (error) {

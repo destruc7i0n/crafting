@@ -89,13 +89,14 @@ describe("downloadRecipeJson", () => {
     );
     const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
-    downloadRecipeJson({
+    const result = downloadRecipeJson({
       recipe,
       version: MinecraftVersion.V121,
       slotContext,
       target: "stone_button.json",
     });
 
+    expect(result).toEqual({ status: "blocked" });
     expect(globalThis.alert).toHaveBeenCalledWith("Add a file name before downloading JSON.");
     expect(generate).not.toHaveBeenCalled();
     expect(downloadBlob).not.toHaveBeenCalled();
@@ -110,13 +111,14 @@ describe("downloadRecipeJson", () => {
 
     generate.mockReturnValue(generatedRecipe);
 
-    downloadRecipeJson({
+    const result = downloadRecipeJson({
       recipe,
       version: MinecraftVersion.V121,
       slotContext,
       target: "stone_button.json",
     });
 
+    expect(result).toEqual({ status: "success" });
     expect(generate).toHaveBeenCalledWith({
       state: recipe,
       version: MinecraftVersion.V121,
@@ -138,13 +140,14 @@ describe("downloadRecipeJson", () => {
     );
     const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
-    downloadRecipeJson({
+    const result = downloadRecipeJson({
       recipe,
       version: MinecraftVersion.Bedrock,
       slotContext,
       target: "crafting:stone_button",
     });
 
+    expect(result).toEqual({ status: "blocked" });
     expect(globalThis.alert).toHaveBeenCalledWith("Add a Bedrock name before downloading JSON.");
     expect(generate).not.toHaveBeenCalled();
     expect(createBehaviorPackBlob).not.toHaveBeenCalled();
@@ -165,13 +168,14 @@ describe("downloadRecipeJson", () => {
 
     generate.mockReturnValue(generatedRecipe);
 
-    downloadRecipeJson({
+    const result = downloadRecipeJson({
       recipe,
       version: MinecraftVersion.Bedrock,
       slotContext,
       target: "crafting:stone_button_2",
     });
 
+    expect(result).toEqual({ status: "success" });
     expect(generate).toHaveBeenCalledWith({
       state: recipe,
       version: MinecraftVersion.Bedrock,

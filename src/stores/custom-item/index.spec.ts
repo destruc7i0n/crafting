@@ -49,12 +49,14 @@ describe("custom item store", () => {
   });
 
   it("does not rewrite recipe slots when a custom item id changes", () => {
-    useCustomItemStore.getState().addCustomItem({
-      name: "Custom Bedrock Item",
-      rawId: "mod:custom_item",
-      texture: "",
-      version: MinecraftVersion.Bedrock,
-    });
+    expect(
+      useCustomItemStore.getState().addCustomItem({
+        name: "Custom Bedrock Item",
+        rawId: "mod:custom_item",
+        texture: "",
+        version: MinecraftVersion.Bedrock,
+      }),
+    ).toBe(true);
 
     const customItem = useCustomItemStore.getState().customItems[0]!;
 
@@ -62,9 +64,11 @@ describe("custom item store", () => {
       kind: "custom_item",
       uid: customItem.uid,
     });
-    useCustomItemStore.getState().updateCustomItem(customItem.uid, {
-      rawId: "mod:item-name/path",
-    });
+    expect(
+      useCustomItemStore.getState().updateCustomItem(customItem.uid, {
+        rawId: "mod:item-name/path",
+      }),
+    ).toBe(true);
 
     expect(useCustomItemStore.getState().customItems[0]).toMatchObject({
       id: {
@@ -76,5 +80,29 @@ describe("custom item store", () => {
       kind: "custom_item",
       uid: customItem.uid,
     });
+  });
+
+  it("returns false when a custom item action does not change state", () => {
+    useCustomItemStore.getState().addCustomItem({
+      name: "Custom Bedrock Item",
+      rawId: "mod:custom_item",
+      texture: "",
+      version: MinecraftVersion.Bedrock,
+    });
+
+    const customItem = useCustomItemStore.getState().customItems[0]!;
+
+    expect(
+      useCustomItemStore.getState().addCustomItem({
+        name: "Duplicate",
+        rawId: "mod:custom_item",
+        texture: "",
+        version: MinecraftVersion.Bedrock,
+      }),
+    ).toBe(false);
+    expect(useCustomItemStore.getState().updateCustomItem(customItem.uid, {})).toBe(false);
+    expect(useCustomItemStore.getState().updateCustomItem("missing", { displayName: "Name" })).toBe(
+      false,
+    );
   });
 });

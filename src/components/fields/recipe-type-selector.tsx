@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef } from "react";
 
 import { ResourceIcon } from "@/components/item/resource-icon";
+import { RecipeType } from "@/data/types";
+import { trackRecipeTypeChange } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import {
   getRecipeTypeIconItemId,
@@ -20,6 +22,22 @@ export const RecipeTypeSelector = () => {
 
   const supportedRecipeTypes = getSupportedRecipeTypesForVersion(minecraftVersion);
 
+  const handleRecipeTypeChange = (nextRecipeType: RecipeType) => {
+    if (nextRecipeType === recipeType) {
+      return;
+    }
+
+    const prevRecipeType = recipeType;
+    setRecipeType(nextRecipeType);
+
+    if (prevRecipeType) {
+      trackRecipeTypeChange({
+        prev_recipe_type: prevRecipeType,
+        recipe_type: nextRecipeType,
+      });
+    }
+  };
+
   useLayoutEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -38,7 +56,7 @@ export const RecipeTypeSelector = () => {
           <button
             key={type}
             type="button"
-            onClick={() => setRecipeType(type)}
+            onClick={() => handleRecipeTypeChange(type)}
             {...(isSelected ? { "data-selected": true } : {})}
             className={cn(
               "flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1.5 transition-all",

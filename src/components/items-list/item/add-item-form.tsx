@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 
 import { ArrowLeftIcon } from "lucide-react";
 
+import { trackCustomItem } from "@/lib/analytics";
 import {
   bedrockIdentifierHint,
   isValidNamespacedIdentifier,
@@ -44,7 +45,12 @@ export const AddItemForm = ({ onClose }: AddItemFormProps) => {
   const handleAdd = () => {
     if (!name.trim() || !isValidNamespacedIdentifier(itemId, minecraftVersion)) return;
 
-    addCustomItem({ name, rawId: itemId, texture, version: minecraftVersion });
+    const didCreate = addCustomItem({ name, rawId: itemId, texture, version: minecraftVersion });
+
+    if (didCreate) {
+      trackCustomItem({ action: "create", has_texture: texture.length > 0 });
+    }
+
     setName("");
     setItemId("");
     setTexture("");

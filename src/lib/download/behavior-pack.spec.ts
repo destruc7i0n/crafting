@@ -89,13 +89,14 @@ describe("downloadBehaviorPack", () => {
     });
     const slotContext = createEmptySlotContext(MinecraftVersion.Bedrock);
 
-    await downloadBehaviorPack({
+    const result = await downloadBehaviorPack({
       recipes: [recipe],
       version: MinecraftVersion.Bedrock,
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
 
+    expect(result).toEqual({ status: "blocked" });
     expect(globalThis.alert).toHaveBeenCalledWith(
       "Please finish all recipes before downloading the behavior pack:\n\n- Crafting Recipe: Add a result item",
     );
@@ -115,13 +116,14 @@ describe("downloadBehaviorPack", () => {
     generate.mockReturnValue(generatedRecipe);
     createBehaviorPackBlob.mockReturnValue(blob);
 
-    await downloadBehaviorPack({
+    const result = await downloadBehaviorPack({
       recipes: [recipe],
       version: MinecraftVersion.Bedrock,
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
 
+    expect(result).toEqual({ status: "success" });
     expect(globalThis.alert).not.toHaveBeenCalled();
     expect(generate).toHaveBeenCalledWith({
       state: recipe,
@@ -148,13 +150,14 @@ describe("downloadBehaviorPack", () => {
       throw new Error("Boom");
     });
 
-    await downloadBehaviorPack({
+    const result = await downloadBehaviorPack({
       recipes: [recipe],
       version: MinecraftVersion.Bedrock,
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
 
+    expect(result).toEqual({ status: "error" });
     expect(globalThis.alert).toHaveBeenCalledWith(
       "Failed to generate all recipes for the behavior pack:\n\n- stone_button: Boom",
     );
@@ -174,13 +177,14 @@ describe("downloadBehaviorPack", () => {
       throw new Error("Zip failed");
     });
 
-    await downloadBehaviorPack({
+    const result = await downloadBehaviorPack({
       recipes: [recipe],
       version: MinecraftVersion.Bedrock,
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
 
+    expect(result).toEqual({ status: "error" });
     expect(globalThis.alert).toHaveBeenCalledWith(
       "Failed to generate the behavior pack:\n\nZip failed",
     );

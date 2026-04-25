@@ -1,6 +1,7 @@
 import { Select } from "@/components/ui/select";
 import { defaultMinecraftVersions } from "@/data/constants";
 import { MinecraftVersion } from "@/data/types";
+import { trackMinecraftVersionChange } from "@/lib/analytics";
 import { useRecipeStore } from "@/stores/recipe";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
@@ -9,11 +10,15 @@ import { getMinecraftVersionLabel } from "@/versioning";
 
 export const VersionSelector = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
-  const setMinecraftVersion = useSettingsStore((state) => state.setMinecraftVersion);
+  const setMinecraftVersionSetting = useSettingsStore((state) => state.setMinecraftVersion);
   const clearAllSlots = useRecipeStore((state) => state.clearAllSlots);
   const clearInteractionState = useUIStore((state) => state.clearInteractionState);
 
   const handleVersionChange = (nextVersion: MinecraftVersion) => {
+    if (nextVersion === minecraftVersion) {
+      return;
+    }
+
     const switchingCrossPlatform =
       (minecraftVersion === MinecraftVersion.Bedrock && nextVersion !== MinecraftVersion.Bedrock) ||
       (minecraftVersion !== MinecraftVersion.Bedrock && nextVersion === MinecraftVersion.Bedrock);
@@ -31,7 +36,8 @@ export const VersionSelector = () => {
       clearInteractionState();
     }
 
-    setMinecraftVersion(nextVersion);
+    trackMinecraftVersionChange(minecraftVersion, nextVersion);
+    setMinecraftVersionSetting(nextVersion);
   };
 
   return (

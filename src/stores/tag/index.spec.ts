@@ -81,7 +81,7 @@ describe("tag store", () => {
       tags: [parentTag, childTag, mixedParentTag, otherChildTag],
     }));
 
-    useTagStore.getState().updateTag("tag-b", { id: "crafting:renamed_child" });
+    expect(useTagStore.getState().updateTag("tag-b", { id: "crafting:renamed_child" })).toBe(true);
 
     const tags = useTagStore.getState().tags;
     expect(tags[1]?.id).toBe("crafting:renamed_child");
@@ -108,6 +108,15 @@ describe("tag store", () => {
     expect(useTagStore.getState().tags).toEqual([createTag("tag-a", "crafting:duplicate")]);
   });
 
+  it("returns true when creating a tag succeeds", () => {
+    expect(
+      useTagStore.getState().createTag({
+        id: "crafting:new_tag",
+        values: [createItemValue("minecraft:stone")],
+      }),
+    ).toBe(true);
+  });
+
   it("throws when renaming a tag to another existing id", () => {
     useTagStore.setState((state) => ({
       ...state,
@@ -129,12 +138,26 @@ describe("tag store", () => {
       tags: [createTag("tag-a", "crafting:same")],
     }));
 
-    expect(() =>
+    expect(
       useTagStore.getState().updateTag("tag-a", {
         id: "crafting:same",
       }),
-    ).not.toThrow();
+    ).toBe(false);
     expect(useTagStore.getState().tags).toEqual([createTag("tag-a", "crafting:same")]);
+  });
+
+  it("returns whether tag values changed", () => {
+    useTagStore.setState((state) => ({
+      ...state,
+      tags: [createTag("tag-a", "crafting:tag")],
+    }));
+
+    const value = createItemValue("minecraft:stone");
+
+    expect(useTagStore.getState().addValueToTag("tag-a", value)).toBe(true);
+    expect(useTagStore.getState().addValueToTag("tag-a", value)).toBe(false);
+    expect(useTagStore.getState().removeValueFromTagByIndex("tag-a", 0)).toBe(true);
+    expect(useTagStore.getState().removeValueFromTagByIndex("tag-a", 0)).toBe(false);
   });
 
   it("keeps nested tag resolution working after renaming a referenced child tag", () => {
@@ -149,7 +172,9 @@ describe("tag store", () => {
       tags: [parentTag, childTag, grandchildTag],
     }));
 
-    useTagStore.getState().updateTag("tag-c", { id: "crafting:renamed_grandchild" });
+    expect(useTagStore.getState().updateTag("tag-c", { id: "crafting:renamed_grandchild" })).toBe(
+      true,
+    );
 
     const tags = useTagStore.getState().tags;
     expect(tags[1]?.values[0]).toEqual(createTagValue("crafting:renamed_grandchild"));

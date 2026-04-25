@@ -69,12 +69,13 @@ describe("downloadDatapack", () => {
     });
     const slotContext = createEmptySlotContext(MinecraftVersion.V112);
 
-    await downloadDatapack([recipe], MinecraftVersion.V112, {
+    const result = await downloadDatapack([recipe], MinecraftVersion.V112, {
       tags: [],
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
 
+    expect(result).toEqual({ status: "blocked" });
     expect(globalThis.alert).toHaveBeenCalledWith(
       "Datapack export is only available for Java 1.13 and newer.",
     );
@@ -89,12 +90,13 @@ describe("downloadDatapack", () => {
     });
     const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
-    await downloadDatapack([recipe], MinecraftVersion.V121, {
+    const result = await downloadDatapack([recipe], MinecraftVersion.V121, {
       tags: [],
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
 
+    expect(result).toEqual({ status: "blocked" });
     expect(globalThis.alert).toHaveBeenCalledWith(
       "Please finish all recipes before downloading the datapack:\n\n- Crafting Recipe: Add a result item",
     );
@@ -114,12 +116,13 @@ describe("downloadDatapack", () => {
     generate.mockReturnValue(generatedRecipe);
     createDatapackBlob.mockReturnValue(blob);
 
-    await downloadDatapack([recipe], MinecraftVersion.V121, {
+    const result = await downloadDatapack([recipe], MinecraftVersion.V121, {
       tags: [],
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
 
+    expect(result).toEqual({ status: "success" });
     expect(globalThis.alert).not.toHaveBeenCalled();
     expect(generate).toHaveBeenCalledWith({
       state: recipe,
@@ -145,12 +148,13 @@ describe("downloadDatapack", () => {
       throw new Error("Boom");
     });
 
-    await downloadDatapack([recipe], MinecraftVersion.V121, {
+    const result = await downloadDatapack([recipe], MinecraftVersion.V121, {
       tags: [],
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
 
+    expect(result).toEqual({ status: "error" });
     expect(globalThis.alert).toHaveBeenCalledWith(
       "Failed to generate all recipes for the datapack:\n\n- stone_button: Boom",
     );
@@ -170,12 +174,13 @@ describe("downloadDatapack", () => {
       throw new Error("Zip failed");
     });
 
-    await downloadDatapack([recipe], MinecraftVersion.V121, {
+    const result = await downloadDatapack([recipe], MinecraftVersion.V121, {
       tags: [],
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
 
+    expect(result).toEqual({ status: "error" });
     expect(globalThis.alert).toHaveBeenCalledWith("Failed to generate the datapack:\n\nZip failed");
     expect(downloadBlob).not.toHaveBeenCalled();
   });

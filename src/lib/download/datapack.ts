@@ -7,6 +7,8 @@ import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import { validateDatapackExport } from "../validate-datapack-export";
 
+import type { DownloadResult } from "./types";
+
 interface DownloadDatapackOptions {
   tags: Tag[];
   context: NamingContext;
@@ -17,16 +19,16 @@ export const downloadDatapack = async (
   recipes: Recipe[],
   version: MinecraftVersion,
   options: DownloadDatapackOptions,
-) => {
+): Promise<DownloadResult> => {
   const { tags, context, slotContext } = options;
   if (version === MinecraftVersion.Bedrock) {
     alert("Datapack export is only available for Java versions.");
-    return;
+    return { status: "blocked" };
   }
 
   if (version === MinecraftVersion.V112) {
     alert("Datapack export is only available for Java 1.13 and newer.");
-    return;
+    return { status: "blocked" };
   }
 
   const invalidRecipes = validateDatapackExport({
@@ -40,7 +42,7 @@ export const downloadDatapack = async (
     alert(
       `Please finish all recipes before downloading the datapack:\n\n- ${invalidRecipes.join("\n- ")}`,
     );
-    return;
+    return { status: "blocked" };
   }
 
   const recipeFiles: { name: string; json: object }[] = [];
@@ -65,15 +67,17 @@ export const downloadDatapack = async (
 
   if (invalidRecipes.length > 0) {
     alert(`Failed to generate all recipes for the datapack:\n\n- ${invalidRecipes.join("\n- ")}`);
-    return;
+    return { status: "error" };
   }
 
   try {
     const blob = createDatapackBlob(version, recipeFiles, tags);
     downloadBlob(blob, "datapack.zip");
+    return { status: "success" };
   } catch (error) {
     alert(
       `Failed to generate the datapack:\n\n${error instanceof Error ? error.message : "Unknown error"}`,
     );
+    return { status: "error" };
   }
 };
