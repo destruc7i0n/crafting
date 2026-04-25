@@ -70,6 +70,19 @@ export const CustomItemEditor = ({
     }
   };
 
+  const handleDeleteCustomItem = () => {
+    deleteCustomItemAndClearRecipeRefs(item.uid);
+    trackCustomItem({
+      action: "delete",
+      has_texture: item.texture !== NoTextureTexture,
+    });
+  };
+
+  const handleDeleteExpandedCustomItem = () => {
+    handleDeleteCustomItem();
+    onToggle();
+  };
+
   const handleEditTextureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -103,7 +116,7 @@ export const CustomItemEditor = ({
           <button
             type="button"
             className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive cursor-pointer rounded p-1 transition-colors"
-            onClick={() => deleteCustomItemAndClearRecipeRefs(item.uid)}
+            onClick={handleDeleteCustomItem}
           >
             <Trash2Icon size={14} />
             <span className="sr-only">Delete item</span>
@@ -138,10 +151,7 @@ export const CustomItemEditor = ({
         <button
           type="button"
           className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive cursor-pointer rounded p-1 transition-colors"
-          onClick={() => {
-            deleteCustomItemAndClearRecipeRefs(item.uid);
-            onToggle();
-          }}
+          onClick={handleDeleteExpandedCustomItem}
         >
           <Trash2Icon size={14} />
           <span className="sr-only">Delete item</span>

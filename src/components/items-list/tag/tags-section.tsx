@@ -12,6 +12,7 @@ import {
 import { Item } from "@/data/models/types";
 import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
+import { trackCustomTag } from "@/lib/analytics";
 import { deleteTagAndClearRecipeRefs } from "@/lib/editor-actions";
 import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
 import { useTagStore } from "@/stores/tag";
@@ -100,7 +101,16 @@ export const TagsSection = ({
   ]);
 
   const handleDeleteTag = (tagUid: string) => {
+    const tag = tagsByUid[tagUid];
+
     deleteTagAndClearRecipeRefs(tagUid);
+    if (tag) {
+      trackCustomTag({
+        action: "delete",
+        value_count: tag.values.length,
+      });
+    }
+
     if (expandedTagUid === tagUid) {
       setExpandedTagUid(null);
     }

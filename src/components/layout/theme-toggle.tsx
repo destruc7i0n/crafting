@@ -19,7 +19,10 @@ export const ThemeToggle = () => {
       return;
     }
 
-    trackThemeChange(theme, nextTheme);
+    trackThemeChange({
+      prev_theme: theme,
+      theme: nextTheme,
+    });
     setAppTheme(nextTheme);
   };
 

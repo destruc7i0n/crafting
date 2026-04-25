@@ -34,6 +34,7 @@ export const RecipeTypeSelector = () => {
       trackRecipeTypeChange({
         prev_recipe_type: prevRecipeType,
         recipe_type: nextRecipeType,
+        minecraft_version: minecraftVersion,
       });
     }
   };

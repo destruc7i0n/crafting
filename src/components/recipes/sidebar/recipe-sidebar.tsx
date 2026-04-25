@@ -1,4 +1,4 @@
-import { ReactNode, memo, useMemo, useState } from "react";
+import { ReactNode, memo, useMemo, useState, type MouseEvent } from "react";
 
 import {
   CopyIcon,
@@ -19,7 +19,7 @@ import { Tooltip } from "@/components/tooltip/tooltip";
 import { MinecraftVersion } from "@/data/types";
 import { useResolvedRecipeNames } from "@/hooks/use-resolved-recipe-names";
 import { useSlotContext } from "@/hooks/use-slot-context";
-import { trackRecipeExport } from "@/lib/analytics";
+import { trackRecipeAction, trackRecipeExport } from "@/lib/analytics";
 import { confirmAction } from "@/lib/confirm";
 import { downloadBehaviorPack } from "@/lib/download/behavior-pack";
 import { downloadDatapack } from "@/lib/download/datapack";
@@ -163,6 +163,22 @@ const RecipeRowOverflowMenu = ({
   onDownloadRecipe: (recipe: Recipe, target: string) => void;
 }) => {
   const [menuKey, setMenuKey] = useState(0);
+  const handleCloneRecipeClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onCloneRecipe(row.recipe.id);
+    setMenuKey((value) => value + 1);
+  };
+
+  const handleDownloadRecipeClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+
+    if (!row.downloadTarget) {
+      return;
+    }
+
+    onDownloadRecipe(row.recipe, row.downloadTarget);
+    setMenuKey((value) => value + 1);
+  };
 
   return (
     <Popover
@@ -177,11 +193,7 @@ const RecipeRowOverflowMenu = ({
               "hover:bg-accent active:bg-accent/80 flex w-full cursor-pointer items-center gap-2 rounded-sm text-left font-medium transition-colors",
               mobile ? "px-2.5 py-2" : "px-2 py-2",
             )}
-            onClick={(event) => {
-              event.stopPropagation();
-              onCloneRecipe(row.recipe.id);
-              setMenuKey((value) => value + 1);
-            }}
+            onClick={handleCloneRecipeClick}
           >
             <CopyIcon size={13} className="text-muted-foreground shrink-0" />
             Clone Recipe
@@ -196,16 +208,7 @@ const RecipeRowOverflowMenu = ({
               "hover:bg-accent active:bg-accent/80 flex w-full cursor-pointer items-center gap-2 rounded-sm text-left font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50",
               mobile ? "px-2.5 py-2" : "px-2 py-2",
             )}
-            onClick={(event) => {
-              event.stopPropagation();
-
-              if (!row.downloadTarget) {
-                return;
-              }
-
-              onDownloadRecipe(row.recipe, row.downloadTarget);
-              setMenuKey((value) => value + 1);
-            }}
+            onClick={handleDownloadRecipeClick}
           >
             <DownloadIcon size={13} className="text-muted-foreground shrink-0" />
             Download JSON
@@ -246,6 +249,10 @@ const ExpandedRecipeRow = ({
   onDownloadRecipe: (recipe: Recipe, target: string) => void;
 }) => {
   const warningContent = getRecipeWarningContent(row);
+  const handleDeleteRecipeClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onDeleteRecipe(row.recipe.id, event);
+  };
 
   return (
     <div
@@ -293,10 +300,7 @@ const ExpandedRecipeRow = ({
                 "border-border bg-background/90 text-muted-foreground hover:bg-accent hover:text-destructive active:bg-accent/80 inline-flex cursor-pointer items-center justify-center rounded-md border transition-colors",
                 mobile ? "h-8 w-8" : "h-7 w-7",
               )}
-              onClick={(event) => {
-                event.stopPropagation();
-                onDeleteRecipe(row.recipe.id, event);
-              }}
+              onClick={handleDeleteRecipeClick}
               title={`Delete ${row.title}`}
               aria-label={`Delete ${row.title}`}
             >
@@ -364,6 +368,15 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     setMobileRecipeSidebarOpen(false);
   };
 
+  const handleCreateRecipe = () => {
+    createRecipeAndClearInteraction();
+    trackRecipeAction({
+      action: "create",
+      minecraft_version: minecraftVersion,
+      recipe_count: recipes.length + 1,
+    });
+  };
+
   const handleSelectRecipe = (id: string) => {
     selectRecipeAndClearInteraction(id);
 
@@ -372,12 +385,37 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
     }
   };
 
+  const handleCloneRecipe = (id: string) => {
+    const recipe = recipes.find((value) => value.id === id);
+
+    cloneRecipeAndClearInteraction(id);
+
+    if (recipe) {
+      trackRecipeAction({
+        action: "clone",
+        minecraft_version: minecraftVersion,
+        recipe_count: recipes.length + 1,
+        recipe_type: recipe.recipeType,
+      });
+    }
+  };
+
   const handleDeleteRecipe = (id: string, event?: { shiftKey: boolean }) => {
     if (!confirmAction("Are you sure you want to delete this recipe?", event)) {
       return;
     }
 
+    const recipe = recipes.find((value) => value.id === id);
     deleteRecipeAndClearInteraction(id);
+
+    if (recipe) {
+      trackRecipeAction({
+        action: "delete",
+        minecraft_version: minecraftVersion,
+        recipe_count: recipes.length - 1,
+        recipe_type: recipe.recipeType,
+      });
+    }
   };
 
   const handleDownloadPack = async () => {
@@ -433,6 +471,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         export_kind: "single_json",
         minecraft_version: minecraftVersion,
         recipe_count: 1,
+        recipe_type: recipe.recipeType,
       });
     }
   };
@@ -462,7 +501,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
         <Tooltip content={<SidebarTooltipContent title="New Recipe" />}>
           <button
             type="button"
-            onClick={createRecipeAndClearInteraction}
+            onClick={handleCreateRecipe}
             className="border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-dashed transition-colors"
           >
             <PlusIcon size={16} />
@@ -505,7 +544,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
       <div className="flex shrink-0 items-center justify-between gap-2">
         <button
           type="button"
-          onClick={createRecipeAndClearInteraction}
+          onClick={handleCreateRecipe}
           className="border-border bg-background text-foreground hover:bg-accent active:bg-accent/80 flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm font-medium transition-colors"
         >
           <PlusIcon size={16} />
@@ -530,7 +569,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
             mobile={mobile}
             canDelete={recipes.length > 1}
             onSelectRecipe={handleSelectRecipe}
-            onCloneRecipe={cloneRecipeAndClearInteraction}
+            onCloneRecipe={handleCloneRecipe}
             onDeleteRecipe={handleDeleteRecipe}
             onDownloadRecipe={handleDownloadRecipe}
           />

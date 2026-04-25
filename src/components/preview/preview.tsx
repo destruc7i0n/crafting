@@ -9,7 +9,7 @@ import { RecipeType } from "@/data/types";
 import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useItemSelection } from "@/hooks/use-item-selection";
-import { trackPreviewScreenshot } from "@/lib/analytics";
+import { trackPreviewScreenshot, trackRecipeAction } from "@/lib/analytics";
 import { clearSelectedRecipeAndSlotSelection } from "@/lib/editor-actions";
 import { cn } from "@/lib/utils";
 import { getRecipeDefinition, PreviewKind } from "@/recipes/definitions";
@@ -29,6 +29,7 @@ export const Preview = memo(() => {
   const hasFilledSlots = useRecipeStore((state) =>
     Object.values(selectCurrentRecipe(state)?.slots ?? {}).some((slotItem) => slotItem != null),
   );
+  const recipeCount = useRecipeStore((state) => state.recipes.length);
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const naming = useCurrentRecipeName();
   const isTouchDevice = useIsTouchDevice();
@@ -96,6 +97,12 @@ export const Preview = memo(() => {
     }
 
     clearSelectedRecipeAndSlotSelection();
+    trackRecipeAction({
+      action: "clear",
+      minecraft_version: minecraftVersion,
+      recipe_count: recipeCount,
+      recipe_type: recipeType,
+    });
   };
 
   return (

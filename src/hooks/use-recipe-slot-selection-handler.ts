@@ -1,13 +1,16 @@
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
+import { trackRecipeStartedIfNeeded } from "@/lib/analytics";
 import { RecipeSlot } from "@/recipes/slots";
 import {
   canRecipeSlotAcceptIngredientItem,
   canRecipeSlotAcceptSlotValue,
 } from "@/recipes/slots/utils";
 import { useRecipeStore } from "@/stores/recipe";
-import { selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
+import { selectCurrentRecipe, selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
 import { cloneRecipeSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";
+import { useSettingsStore } from "@/stores/settings";
+import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useUIStore } from "@/stores/ui";
 
 export const useRecipeSlotSelectionHandler = (
@@ -15,11 +18,22 @@ export const useRecipeSlotSelectionHandler = (
   rawSlotValue: RecipeSlotValue | undefined,
 ) => {
   const isTouchDevice = useIsTouchDevice();
+  const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const setRecipeSlot = useRecipeStore((state) => state.setRecipeSlot);
   const setRecipeSlotFromIngredient = useRecipeStore((state) => state.setRecipeSlotFromIngredient);
 
   return () => {
     if (!isTouchDevice) return;
+
+    const beforeRecipe = selectCurrentRecipe(useRecipeStore.getState());
+    const trackStartedAfterMutation = () => {
+      trackRecipeStartedIfNeeded({
+        beforeRecipe,
+        afterRecipe: selectCurrentRecipe(useRecipeStore.getState()),
+        minecraftVersion,
+        inputMethod: "tap",
+      });
+    };
 
     const { selection, lastPlacedSlot, selectIngredient, selectSlot, clearInteractionState } =
       useUIStore.getState();
@@ -45,6 +59,7 @@ export const useRecipeSlotSelectionHandler = (
       }
 
       setRecipeSlotFromIngredient(slot, selection.item);
+      trackStartedAfterMutation();
       selectIngredient(selection.item, {
         lastPlacedSlot: slot,
       });
@@ -62,6 +77,7 @@ export const useRecipeSlotSelectionHandler = (
         setRecipeSlot(slot, cloneRecipeSlotValue(selection.value));
         setRecipeSlot(selection.slot, undefined);
       }
+      trackStartedAfterMutation();
       selectSlot(slot, cloneRecipeSlotValue(selection.value));
       return;
     }

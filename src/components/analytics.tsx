@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useTheme } from "@/hooks/use-theme";
-import { trackAnalyticsProperties, trackInitialPageView } from "@/lib/analytics";
+import { trackAnalyticsContext, trackInitialPageView } from "@/lib/analytics";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
@@ -12,7 +12,7 @@ export const Analytics = () => {
   const isTouchDevice = useIsTouchDevice();
 
   useEffect(() => {
-    trackAnalyticsProperties({
+    trackAnalyticsContext({
       minecraft_version: minecraftVersion,
       theme,
       pointer: isTouchDevice ? "coarse" : "fine",

@@ -4,6 +4,7 @@ import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/ad
 
 import { IngredientItem } from "@/data/models/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
+import { trackRecipeStartedIfNeeded } from "@/lib/analytics";
 import { ItemDraggableData, isItemDraggableData, isRecipeSlotDropTargetData } from "@/lib/dnd";
 import { RecipeSlot } from "@/recipes/slots";
 import {
@@ -11,8 +12,11 @@ import {
   canRecipeSlotAcceptSlotValue,
 } from "@/recipes/slots/utils";
 import { useRecipeStore } from "@/stores/recipe";
+import { selectCurrentRecipe } from "@/stores/recipe/selectors";
 import { cloneRecipeSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";
+import { useSettingsStore } from "@/stores/settings";
+import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
 type ApplyRecipeDragDropArgs = {
   sourceData: ItemDraggableData;
@@ -64,6 +68,7 @@ export const applyRecipeDragDrop = ({
 
 export const useDndMonitor = () => {
   const isTouchDevice = useIsTouchDevice();
+  const minecraftVersion = useSettingsStore(selectMinecraftVersion);
 
   useEffect(() => {
     if (isTouchDevice) return;
@@ -84,6 +89,7 @@ export const useDndMonitor = () => {
             : undefined;
         const destination = location.current.dropTargets[0];
         const recipeStore = useRecipeStore.getState();
+        const beforeRecipe = selectCurrentRecipe(recipeStore);
 
         applyRecipeDragDrop({
           sourceData: source.data,
@@ -92,7 +98,14 @@ export const useDndMonitor = () => {
           setRecipeSlot: recipeStore.setRecipeSlot,
           setRecipeSlotFromIngredient: recipeStore.setRecipeSlotFromIngredient,
         });
+
+        trackRecipeStartedIfNeeded({
+          beforeRecipe,
+          afterRecipe: selectCurrentRecipe(useRecipeStore.getState()),
+          minecraftVersion,
+          inputMethod: "drag",
+        });
       },
     });
-  }, [isTouchDevice]);
+  }, [isTouchDevice, minecraftVersion]);
 };

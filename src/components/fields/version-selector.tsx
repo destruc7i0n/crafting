@@ -36,7 +36,10 @@ export const VersionSelector = () => {
       clearInteractionState();
     }
 
-    trackMinecraftVersionChange(minecraftVersion, nextVersion);
+    trackMinecraftVersionChange({
+      prev_minecraft_version: minecraftVersion,
+      minecraft_version: nextVersion,
+    });
     setMinecraftVersionSetting(nextVersion);
   };
 

@@ -12,7 +12,7 @@ import { Tooltip } from "@/components/tooltip/tooltip";
 import { MinecraftVersion } from "@/data/types";
 import { useCurrentRecipeName } from "@/hooks/use-current-recipe-name";
 import { useSlotContext } from "@/hooks/use-slot-context";
-import { trackRecipeExport } from "@/lib/analytics";
+import { trackCopyRecipeJson, trackRecipeExport } from "@/lib/analytics";
 import { downloadRecipeJson } from "@/lib/download/recipe";
 import { cn } from "@/lib/utils";
 import { generate } from "@/recipes/generate";
@@ -71,7 +71,7 @@ export const ItemOutput = () => {
   }, [recipeState, minecraftVersion, naming, slotContext]);
 
   const handleCopy = async () => {
-    if (copied) return;
+    if (copied || !recipeState) return;
 
     try {
       await navigator.clipboard.writeText(JSON.stringify(generatedResult.recipe, null, 2));
@@ -79,6 +79,11 @@ export const ItemOutput = () => {
       console.error("Failed to copy to clipboard:", error);
       return;
     }
+
+    trackCopyRecipeJson({
+      recipe_type: recipeState.recipeType,
+      minecraft_version: minecraftVersion,
+    });
     setCopied(true);
     if (copyTimeoutRef.current !== null) {
       window.clearTimeout(copyTimeoutRef.current);
@@ -87,6 +92,28 @@ export const ItemOutput = () => {
       setCopied(false);
       copyTimeoutRef.current = null;
     }, 1000);
+  };
+
+  const handleDownload = () => {
+    if (!downloadTarget || !recipeState) {
+      return;
+    }
+
+    const result = downloadRecipeJson({
+      recipe: recipeState,
+      version: minecraftVersion,
+      slotContext,
+      target: downloadTarget,
+    });
+
+    if (result.status === "success") {
+      trackRecipeExport({
+        export_kind: "single_json",
+        minecraft_version: minecraftVersion,
+        recipe_count: 1,
+        recipe_type: recipeState.recipeType,
+      });
+    }
   };
 
   if (!recipeState) return null;
@@ -131,24 +158,7 @@ export const ItemOutput = () => {
           </Tooltip>
           <button
             type="button"
-            onClick={() => {
-              if (downloadTarget) {
-                const result = downloadRecipeJson({
-                  recipe: recipeState,
-                  version: minecraftVersion,
-                  slotContext,
-                  target: downloadTarget,
-                });
-
-                if (result.status === "success") {
-                  trackRecipeExport({
-                    export_kind: "single_json",
-                    minecraft_version: minecraftVersion,
-                    recipe_count: 1,
-                  });
-                }
-              }
-            }}
+            onClick={handleDownload}
             disabled={!!generatedResult.error || !downloadTarget}
             className="border-border bg-accent/30 text-foreground hover:bg-accent inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             title="Download JSON"
