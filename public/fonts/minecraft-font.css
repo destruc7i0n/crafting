@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "Minecraft";
+  src: url("/fonts/Minecraft.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}

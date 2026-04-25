@@ -24,7 +24,9 @@
   --color-card-foreground: hsl(var(--card-foreground));
   --color-minecraft-inventory-bg: hsl(var(--minecraft-inventory-bg));
 
-  --font-minecraft: "Minecraft", sans-serif;
+  --font-minecraft:
+    "Minecraft", "Minecraftia", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -163,15 +165,4 @@
   .scrollbar-app::-webkit-scrollbar-corner {
     background: transparent;
   }
-}
-
-@font-face {
-  font-family: "Minecraft";
-  src:
-    url("/fonts/Minecraft.woff") format("woff"),
-    url("/fonts/Minecraft.ttf") format("truetype");
-  font-style: normal;
-  font-weight: normal;
-  font-display: swap;
-  text-rendering: optimizeLegibility;
 }
