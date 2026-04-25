@@ -5,6 +5,7 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item as ItemType } from "@/data/models/types";
 import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
+import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useCustomItemStore } from "@/stores/custom-item";
 
 import { Item } from "../../item/item";
@@ -33,6 +34,7 @@ interface ItemsSectionProps {
 const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
+  const isTouchDevice = useIsTouchDevice();
 
   useLayoutEffect(() => {
     const el = scrollRef.current;
@@ -58,7 +60,7 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
     count: rowCount,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => SLOT_SIZE,
-    overscan: 10,
+    overscan: isTouchDevice ? 3 : 10,
   });
 
   return (
