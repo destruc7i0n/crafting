@@ -99,13 +99,14 @@ type AnalyticsEventProperties = {
 };
 
 type AnalyticsEventName = keyof AnalyticsEventProperties;
+type AnalyticsEventPayload<TEventName extends AnalyticsEventName> =
+  AnalyticsEventProperties[TEventName] & Partial<AnalyticsContext>;
 
 type Gtag = {
-  (command: "set", properties: Partial<AnalyticsContext>): void;
   <TEventName extends AnalyticsEventName>(
     command: "event",
     eventName: TEventName,
-    properties: AnalyticsEventProperties[TEventName],
+    properties: AnalyticsEventPayload<TEventName>,
   ): void;
 };
 
@@ -118,25 +119,32 @@ declare global {
 const getGtag = () => (typeof window === "undefined" ? undefined : window.gtag);
 
 let pageViewSentForThisLoad = false;
+let analyticsContext: Partial<AnalyticsContext> = {};
 
 const sendEvent = <TEventName extends AnalyticsEventName>(
   eventName: TEventName,
   properties: AnalyticsEventProperties[TEventName],
 ) => {
-  getGtag()?.("event", eventName, properties);
+  getGtag()?.("event", eventName, {
+    ...analyticsContext,
+    ...properties,
+  } as AnalyticsEventPayload<TEventName>);
 };
 
-export function trackAnalyticsContext(context: AnalyticsContext) {
-  getGtag()?.("set", context);
+export function trackAnalyticsContext(context: Partial<AnalyticsContext>) {
+  analyticsContext = {
+    ...analyticsContext,
+    ...context,
+  };
 }
 
 export function trackMinecraftVersionChange(properties: ChangeMinecraftVersionProperties) {
-  getGtag()?.("set", { minecraft_version: properties.minecraft_version });
+  trackAnalyticsContext({ minecraft_version: properties.minecraft_version });
   sendEvent("change_minecraft_version", properties);
 }
 
 export function trackThemeChange(properties: ChangeThemeProperties) {
-  getGtag()?.("set", { theme: properties.theme });
+  trackAnalyticsContext({ theme: properties.theme });
   sendEvent("change_theme", properties);
 }
 
