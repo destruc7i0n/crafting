@@ -17,6 +17,11 @@ export default defineConfig({
     tanstackStart({
       spa: {
         enabled: true,
+        prerender: {
+          outputPath: "/index.html",
+          crawlLinks: true,
+          retryCount: 3,
+        },
       },
       sitemap: {
         enabled: false,
