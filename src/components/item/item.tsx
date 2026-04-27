@@ -125,11 +125,7 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
         ref={ref}
         draggable={isTouchDevice ? false : undefined}
         style={{ opacity: dragging ? 0.5 : 1 }}
-        className={cn(
-          "touch-action-manipulation",
-          !isTouchDevice && "cursor-move",
-          isSelectedFromIngredients && "ring-primary rounded ring-2",
-        )}
+        className={cn("touch-action-manipulation", !isTouchDevice && "cursor-move")}
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
         onMouseEnter={() => setIsHovering(true)}
@@ -142,11 +138,7 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
         ref={ref}
         draggable={isTouchDevice ? false : undefined}
         style={{ opacity: dragging ? 0.5 : 1 }}
-        className={cn(
-          "touch-action-manipulation",
-          !isTouchDevice && "cursor-move",
-          isSelectedFromIngredients && "ring-primary rounded ring-2",
-        )}
+        className={cn("touch-action-manipulation", !isTouchDevice && "cursor-move")}
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
       />
@@ -155,7 +147,15 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
   const description = getFullId(item.id);
 
   return (
-    <ItemTooltip title={item.displayName} description={description} visible={!dragging}>
+    <ItemTooltip
+      title={item.displayName}
+      description={description}
+      visible={!dragging}
+      className={cn(
+        "absolute -inset-0.5 flex items-center justify-center",
+        isSelectedFromIngredients && "ring-primary z-10 rounded ring-2",
+      )}
+    >
       {preview}
       {showCount && <ItemCount count={item.count ?? 1} />}
     </ItemTooltip>

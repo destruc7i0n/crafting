@@ -19,10 +19,17 @@ type TooltipProps = {
   title: string;
   description: string;
   visible?: boolean;
+  className?: string;
   children: React.ReactNode;
 };
 
-const TooltipDesktop = ({ title, description, children, visible = true }: TooltipProps) => {
+const TooltipDesktop = ({
+  title,
+  description,
+  children,
+  visible = true,
+  className,
+}: TooltipProps) => {
   const [isHovering, setIsHovering] = useState(false);
 
   const shouldShowTooltip = isHovering && visible;
@@ -39,12 +46,12 @@ const TooltipDesktop = ({ title, description, children, visible = true }: Toolti
     ],
   });
 
-  const hover = useHover(context);
+  const hover = useHover(context, { mouseOnly: true });
   const clientPoint = useClientPoint(context);
   const { getReferenceProps, getFloatingProps } = useInteractions([hover, clientPoint]);
 
   return (
-    <div ref={refs.setReference} {...getReferenceProps()}>
+    <div ref={refs.setReference} className={className} {...getReferenceProps()}>
       {children}
 
       {shouldShowTooltip &&
@@ -66,6 +73,10 @@ export const ItemTooltip = (props: TooltipProps) => {
   const isTouchDevice = useIsTouchDevice();
 
   if (isTouchDevice) {
+    if (props.className) {
+      return <div className={props.className}>{props.children}</div>;
+    }
+
     return <>{props.children}</>;
   }
 

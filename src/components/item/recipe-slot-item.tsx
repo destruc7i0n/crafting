@@ -138,7 +138,12 @@ const RecipeSlotItemBase = memo(
     const description = identifier ? getFullId(identifier) : label;
 
     return (
-      <ItemTooltip title={label} description={description} visible={!dragging}>
+      <ItemTooltip
+        title={label}
+        description={description}
+        visible={!dragging}
+        className="absolute -inset-0.5 flex items-center justify-center"
+      >
         {isTagSlotValue(value) ? (
           <CyclingItemPreview
             alt={label}
