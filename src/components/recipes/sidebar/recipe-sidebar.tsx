@@ -526,8 +526,10 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
                 disabled={!packState.canDownload}
                 onClick={handleDownloadPack}
                 className={cn(
-                  "border-border hover:bg-accent active:bg-accent/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border transition-colors",
-                  !packState.canDownload && "cursor-not-allowed opacity-50",
+                  "border-border flex h-8 w-8 items-center justify-center rounded-md border transition-colors",
+                  packState.canDownload
+                    ? "hover:bg-accent active:bg-accent/80 cursor-pointer"
+                    : "cursor-not-allowed opacity-50",
                 )}
               >
                 <DownloadIcon size={16} />
@@ -586,7 +588,12 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
             <button
               type="button"
               disabled={!packState.canDownload}
-              className="border-primary bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 dark:bg-primary/80 dark:hover:bg-primary/90 dark:active:bg-primary/70 disabled:border-border disabled:bg-secondary disabled:text-secondary-foreground flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+              className={cn(
+                "flex w-full items-center justify-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold transition-colors",
+                packState.canDownload
+                  ? "border-primary bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 dark:bg-primary/80 dark:hover:bg-primary/90 dark:active:bg-primary/70 cursor-pointer"
+                  : "border-border bg-secondary text-secondary-foreground cursor-not-allowed opacity-50",
+              )}
               onClick={handleDownloadPack}
             >
               <DownloadIcon size={16} className="shrink-0" />
