@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://crafting.thedestruc7i0n.ca/sitemap.xml

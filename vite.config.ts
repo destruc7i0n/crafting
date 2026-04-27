@@ -1,6 +1,7 @@
 import path from "path";
 
 import tailwindcss from "@tailwindcss/vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
@@ -10,7 +11,15 @@ export default defineConfig({
   build: {
     target: "es2020",
   },
-  plugins: [tailwindcss(), seo(), react()],
+  plugins: [
+    tailwindcss(),
+    seo(),
+    tanstackRouter({
+      target: "react",
+      autoCodeSplitting: true,
+    }),
+    react(),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

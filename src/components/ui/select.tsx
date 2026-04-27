@@ -4,7 +4,8 @@ import { ChevronDownIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-type SelectProps = ComponentPropsWithoutRef<"select"> & {
+type SelectProps = Omit<ComponentPropsWithoutRef<"select">, "className"> & {
+  className?: string;
   wrapperClassName?: string;
   iconClassName?: string;
 };

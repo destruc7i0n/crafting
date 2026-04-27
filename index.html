@@ -14,18 +14,23 @@
     <title>%TITLE%</title>
 
     <meta name="description" content="%DESCRIPTION%" />
+    <link rel="canonical" href="%CANONICAL_URL%" />
     <meta property="og:title" content="%TITLE%" />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="%CANONICAL_URL%" />
     <meta property="og:image" content="/icons/icon-512.png" />
     <meta property="og:description" content="%DESCRIPTION%" />
     <meta property="og:site_name" content="Crafting Recipe Generator" />
     <meta property="og:locale" content="en_us" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@thedestruc7i0n" />
-    <meta property="twitter:url" content="/" />
+    <meta property="twitter:url" content="%CANONICAL_URL%" />
     <meta property="twitter:image" content="/icons/icon-512.png" />
     <meta property="twitter:title" content="%TITLE%" />
     <meta property="twitter:description" content="%DESCRIPTION%" />
+    <script type="application/ld+json">
+      %JSON_LD%
+    </script>
 
     <link rel="preload" href="/assets/ui/crafting_table.png" as="image" fetchpriority="high" />
     <link rel="preload" href="/assets/ui/crafting_table_2x2.png" as="image" />

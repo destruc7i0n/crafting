@@ -5,10 +5,13 @@ import {
   flip,
   offset,
   shift,
+  useClick,
   useClientPoint,
+  useDismiss,
   useFloating,
   useHover,
   useInteractions,
+  type Placement,
 } from "@floating-ui/react";
 
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
@@ -20,35 +23,53 @@ type TooltipProps = {
   description: string;
   visible?: boolean;
   className?: string;
+  touchBehavior?: "disabled" | "tap";
   children: React.ReactNode;
 };
 
-const TooltipDesktop = ({
+type TooltipInnerProps = TooltipProps & {
+  mode: "hover" | "tap";
+  placement: Placement;
+};
+
+const TooltipInner = ({
   title,
   description,
   children,
   visible = true,
   className,
-}: TooltipProps) => {
-  const [isHovering, setIsHovering] = useState(false);
+  mode,
+  placement,
+}: TooltipInnerProps) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-  const shouldShowTooltip = isHovering && visible;
+  const shouldShowTooltip = isOpen && visible;
 
   const { refs, floatingStyles, isPositioned, context } = useFloating({
     open: shouldShowTooltip,
-    onOpenChange: setIsHovering,
-    placement: "right",
+    onOpenChange: setIsOpen,
+    placement,
     strategy: "fixed",
     middleware: [
-      offset(16),
-      flip({ padding: 8, fallbackPlacements: ["left", "top"] }),
+      offset(mode === "tap" ? 12 : 16),
+      flip({
+        padding: 8,
+        fallbackPlacements: mode === "tap" ? ["bottom", "top"] : ["left", "top"],
+      }),
       shift({ padding: 8 }),
     ],
   });
 
-  const hover = useHover(context, { mouseOnly: true });
-  const clientPoint = useClientPoint(context);
-  const { getReferenceProps, getFloatingProps } = useInteractions([hover, clientPoint]);
+  const hover = useHover(context, { enabled: mode === "hover", mouseOnly: true });
+  const clientPoint = useClientPoint(context, { enabled: mode === "hover" });
+  const click = useClick(context, { enabled: mode === "tap", ignoreMouse: true });
+  const dismiss = useDismiss(context, { enabled: mode === "tap", ancestorScroll: true });
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    clientPoint,
+    click,
+    dismiss,
+  ]);
 
   return (
     <div ref={refs.setReference} className={className} {...getReferenceProps()}>
@@ -73,6 +94,10 @@ export const ItemTooltip = (props: TooltipProps) => {
   const isTouchDevice = useIsTouchDevice();
 
   if (isTouchDevice) {
+    if (props.touchBehavior === "tap") {
+      return <TooltipInner {...props} mode="tap" placement="bottom" />;
+    }
+
     if (props.className) {
       return <div className={props.className}>{props.children}</div>;
     }
@@ -80,5 +105,5 @@ export const ItemTooltip = (props: TooltipProps) => {
     return <>{props.children}</>;
   }
 
-  return <TooltipDesktop {...props} />;
+  return <TooltipInner {...props} mode="hover" placement="right" />;
 };
