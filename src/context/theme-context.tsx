@@ -1,4 +1,4 @@
-import { createContext, useCallback, useLayoutEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 type Theme = "dark" | "light" | "system";
 
@@ -26,11 +26,17 @@ export function ThemeProvider({
   storageKey = "ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
-  );
+  const [theme, setTheme] = useState<Theme>(defaultTheme);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    const storedTheme = localStorage.getItem(storageKey) as Theme | null;
+
+    if (storedTheme) {
+      setTheme(storedTheme);
+    }
+  }, [storageKey]);
+
+  useEffect(() => {
     const root = window.document.documentElement;
 
     root.classList.remove("light", "dark");

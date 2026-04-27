@@ -5,11 +5,11 @@ import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import type { GeneratedRecipeCatalogEntry } from "@/recipes/catalog/types";
 import type { VersionResourceData } from "@/stores/resources";
 
+import { recipeCatalogRowHeight } from "./catalog-layout";
 import { RecipeCatalogCard } from "./recipe-catalog-card";
 import { useElementScrollMargin, useElementWidth } from "./use-element-width";
 
 const cardMinWidth = 360;
-const rowHeight = 264;
 const rowOverscan = 1;
 
 export type CatalogGridRecipe = {
@@ -33,7 +33,7 @@ export function RecipeCatalogGrid({ recipes, resources, scrollResetKey }: Recipe
   const rowCount = Math.ceil(recipes.length / columns);
   const rowVirtualizer = useWindowVirtualizer({
     count: rowCount,
-    estimateSize: () => rowHeight,
+    estimateSize: () => recipeCatalogRowHeight,
     overscan: rowOverscan,
     scrollMargin,
   });

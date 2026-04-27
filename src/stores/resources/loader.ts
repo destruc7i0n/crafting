@@ -1,4 +1,4 @@
-import { TexturesType as MinecraftTexturesType } from "minecraft-textures";
+import type { TexturesType as MinecraftTexturesType } from "minecraft-textures";
 
 import { latestMinecraftVersion } from "@/data/constants";
 import {

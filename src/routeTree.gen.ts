@@ -10,55 +10,46 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as RecipesIndexRouteImport } from './routes/recipes.index'
-import { Route as RecipesVersionRouteImport } from './routes/recipes.$version'
+import { Route as RecipesChar123VersionChar125RouteImport } from './routes/recipes.{-$version}'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
-const RecipesIndexRoute = RecipesIndexRouteImport.update({
-  id: '/recipes/',
-  path: '/recipes/',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/recipes.index.lazy').then((d) => d.Route))
-const RecipesVersionRoute = RecipesVersionRouteImport.update({
-  id: '/recipes/$version',
-  path: '/recipes/$version',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() =>
-  import('./routes/recipes.$version.lazy').then((d) => d.Route),
-)
+const RecipesChar123VersionChar125Route =
+  RecipesChar123VersionChar125RouteImport.update({
+    id: '/recipes/{-$version}',
+    path: '/recipes/{-$version}',
+    getParentRoute: () => rootRouteImport,
+  } as any).lazy(() =>
+    import('./routes/recipes.{-$version}.lazy').then((d) => d.Route),
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/recipes/$version': typeof RecipesVersionRoute
-  '/recipes/': typeof RecipesIndexRoute
+  '/recipes/{-$version}': typeof RecipesChar123VersionChar125Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/recipes/$version': typeof RecipesVersionRoute
-  '/recipes': typeof RecipesIndexRoute
+  '/recipes/{-$version}': typeof RecipesChar123VersionChar125Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/recipes/$version': typeof RecipesVersionRoute
-  '/recipes/': typeof RecipesIndexRoute
+  '/recipes/{-$version}': typeof RecipesChar123VersionChar125Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/recipes/$version' | '/recipes/'
+  fullPaths: '/' | '/recipes/{-$version}'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/recipes/$version' | '/recipes'
-  id: '__root__' | '/' | '/recipes/$version' | '/recipes/'
+  to: '/' | '/recipes/{-$version}'
+  id: '__root__' | '/' | '/recipes/{-$version}'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  RecipesVersionRoute: typeof RecipesVersionRoute
-  RecipesIndexRoute: typeof RecipesIndexRoute
+  RecipesChar123VersionChar125Route: typeof RecipesChar123VersionChar125Route
 }
 
 declare module '@tanstack/react-router' {
@@ -70,18 +61,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/recipes/': {
-      id: '/recipes/'
-      path: '/recipes'
-      fullPath: '/recipes/'
-      preLoaderRoute: typeof RecipesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recipes/$version': {
-      id: '/recipes/$version'
-      path: '/recipes/$version'
-      fullPath: '/recipes/$version'
-      preLoaderRoute: typeof RecipesVersionRouteImport
+    '/recipes/{-$version}': {
+      id: '/recipes/{-$version}'
+      path: '/recipes/{-$version}'
+      fullPath: '/recipes/{-$version}'
+      preLoaderRoute: typeof RecipesChar123VersionChar125RouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -89,9 +73,17 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  RecipesVersionRoute: RecipesVersionRoute,
-  RecipesIndexRoute: RecipesIndexRoute,
+  RecipesChar123VersionChar125Route: RecipesChar123VersionChar125Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

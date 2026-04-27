@@ -1,9 +1,8 @@
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { type ReactNode, useDeferredValue, useEffect, useMemo, useState } from "react";
 
 import { Footer } from "@/components/footer";
 import { CatalogControls } from "@/components/recipes/catalog/catalog-controls";
 import { CatalogHeader } from "@/components/recipes/catalog/catalog-header";
-import { CatalogResultsState } from "@/components/recipes/catalog/catalog-results-state";
 import {
   RecipeCatalogGrid,
   type CatalogGridRecipe,
@@ -12,7 +11,6 @@ import { RecipeType } from "@/data/types";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useResourcesForMinecraftVersion } from "@/hooks/use-resources-for-version";
 import { getRecipeCardTitle, getRecipeSearchText } from "@/recipes/catalog/display";
-import { loadRecipeCatalog } from "@/recipes/catalog/load-catalog";
 
 import type { MinecraftVersion } from "@/data/types";
 import type { RecipesSearch } from "@/recipes/catalog/routing";
@@ -28,14 +26,10 @@ const catalogRecipeTypes = [
   RecipeType.Smithing,
   RecipeType.SmithingTransform,
 ] as const;
-const emptyCatalog: GeneratedRecipeCatalog = [];
-
-type CatalogStatus =
-  | { state: "loading"; catalog?: undefined }
-  | { state: "loaded"; catalog: GeneratedRecipeCatalog | undefined };
 
 type RecipesPageProps = {
   version: MinecraftVersion;
+  catalog: GeneratedRecipeCatalog;
   search: RecipesSearch;
   onSearchChange: (nextSearch: Partial<RecipesSearch>) => void;
   onVersionChange: (version: MinecraftVersion, search: RecipesSearch) => void;
@@ -43,11 +37,11 @@ type RecipesPageProps = {
 
 export function RecipesPage({
   version,
+  catalog,
   search,
   onSearchChange,
   onVersionChange,
 }: RecipesPageProps) {
-  const [catalogStatus, setCatalogStatus] = useState<CatalogStatus>({ state: "loading" });
   const [searchInput, setSearchInput] = useState(search.q);
   const { resources } = useResourcesForMinecraftVersion(version);
   const debouncedSearchInput = useDebouncedValue(searchInput, 200);
@@ -70,30 +64,14 @@ export function RecipesPage({
     }
   }, [debouncedSearchInput, onSearchChange, search.q]);
 
-  useEffect(() => {
-    let active = true;
-
-    setCatalogStatus({ state: "loading" });
-    void loadRecipeCatalog(version).then((catalog) => {
-      if (active) {
-        setCatalogStatus({ state: "loaded", catalog });
-      }
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [version]);
-
-  const recipes = catalogStatus.catalog ?? emptyCatalog;
   const recipeTypeOptions = useMemo(() => {
-    const presentTypes = new Set(recipes.map((entry) => entry.recipeType));
+    const presentTypes = new Set(catalog.map((entry) => entry.recipeType));
     return catalogRecipeTypes.filter((recipeType) => presentTypes.has(recipeType));
-  }, [recipes]);
+  }, [catalog]);
 
   const filteredRecipes = useMemo(
     (): CatalogGridRecipe[] =>
-      recipes
+      catalog
         .map((entry) => ({
           entry,
           title: getRecipeCardTitle(entry, resources),
@@ -106,20 +84,8 @@ export function RecipesPage({
           return matchesType && matchesSearch;
         })
         .map(({ entry, title }) => ({ entry, title })),
-    [deferredQuery, recipes, resources, search.recipeType],
+    [catalog, deferredQuery, resources, search.recipeType],
   );
-
-  const noCatalog = catalogStatus.state === "loaded" && catalogStatus.catalog === undefined;
-  const noMatches =
-    catalogStatus.state === "loaded" &&
-    catalogStatus.catalog !== undefined &&
-    filteredRecipes.length === 0;
-  let emptyMessage: string | undefined;
-  if (noCatalog) {
-    emptyMessage = "No generated recipe catalog is available for this version.";
-  } else if (noMatches) {
-    emptyMessage = "No recipes match the current search.";
-  }
 
   return (
     <div className="bg-background text-foreground flex min-h-screen flex-col">
@@ -138,23 +104,27 @@ export function RecipesPage({
           onSearchChange={onSearchChange}
         />
 
-        <section className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col px-4 py-4 lg:px-0">
-          <CatalogResultsState
-            loading={catalogStatus.state === "loading"}
-            hasCatalog={catalogStatus.catalog !== undefined}
-            emptyMessage={emptyMessage}
-          />
-
-          {filteredRecipes.length > 0 ? (
+        <section className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col px-4 py-4">
+          {filteredRecipes.length === 0 ? (
+            <CatalogEmptyState>No recipes match the current search.</CatalogEmptyState>
+          ) : (
             <RecipeCatalogGrid
               recipes={filteredRecipes}
               resources={resources}
               scrollResetKey={`${version}:${search.recipeType}`}
             />
-          ) : null}
+          )}
         </section>
       </main>
       <Footer />
+    </div>
+  );
+}
+
+function CatalogEmptyState({ children }: { children: ReactNode }) {
+  return (
+    <div className="border-border bg-card text-card-foreground rounded-lg border p-6 text-sm">
+      {children}
     </div>
   );
 }

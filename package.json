@@ -2,8 +2,9 @@
   "name": "crafting",
   "version": "2.0.0",
   "private": false,
+  "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite dev",
     "generate:vanilla-data": "bun scripts/vanilla-data/index.ts",
     "generate:bedrock": "bun scripts/fetch-bedrock-mappings.ts",
     "generate:data": "pnpm generate:vanilla-data && pnpm generate:bedrock",
@@ -24,6 +25,7 @@
     "@jongwooo/prism-theme-github": "^1.15.1",
     "@nozbe/microfuzz": "^1.0.0",
     "@tanstack/react-router": "^1.168.25",
+    "@tanstack/react-start": "^1.167.50",
     "@tanstack/react-virtual": "^3.13.24",
     "clsx": "^2.1.1",
     "fflate": "^0.8.2",
@@ -39,7 +41,6 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.4",
-    "@tanstack/router-plugin": "^1.167.28",
     "@types/bun": "^1.3.13",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",

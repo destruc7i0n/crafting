@@ -41,6 +41,7 @@ export const Popover = ({ content, children, placement = "right", className }: P
       {children}
 
       {isOpen &&
+        typeof document !== "undefined" &&
         createPortal(
           <div
             ref={refs.setFloating}

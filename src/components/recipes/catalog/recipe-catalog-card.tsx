@@ -4,6 +4,7 @@ import {
   RecipePreviewSurface,
   type PreviewSlotRenderOptions,
 } from "@/components/preview/recipe-preview-surface";
+import { recipeCatalogCardHeight } from "@/components/recipes/catalog/catalog-layout";
 import { CatalogPreviewSlot } from "@/components/recipes/catalog/catalog-preview-slot";
 import { getRecipeFileName, getRecipeResult } from "@/recipes/catalog/display";
 import { getRecipeTypeLabel } from "@/recipes/definitions";
@@ -34,9 +35,10 @@ export const RecipeCatalogCard = memo(function RecipeCatalogCard({
 
   return (
     <article
-      className="border-border bg-card text-card-foreground flex h-[248px] min-w-0 flex-col rounded-lg border p-2 [contain:layout_paint_style]"
+      className="border-border bg-card text-card-foreground flex min-w-0 flex-col rounded-lg border p-2 [contain:layout_paint_style]"
       style={
         {
+          height: recipeCatalogCardHeight,
           "--minecraft-slot-bg": "0 0% 54.51%",
           "--minecraft-slot-border-tl": "#373737",
           "--minecraft-slot-border-br": "#ffffff",

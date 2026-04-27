@@ -19,7 +19,8 @@ type HeaderProps = {
 
 const defaultRecipesLink = (
   <Link
-    to="/recipes"
+    to="/recipes/{-$version}"
+    params={{ version: undefined }}
     search={{ q: "", recipeType: "all" }}
     className="hidden items-center text-sm font-medium text-[hsl(var(--header-fg)/0.82)] transition-colors outline-none hover:text-[hsl(var(--header-fg)/0.62)] focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-white/60 sm:inline-flex"
   >

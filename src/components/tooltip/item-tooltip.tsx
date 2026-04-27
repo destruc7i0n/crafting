@@ -76,6 +76,7 @@ const TooltipInner = ({
       {children}
 
       {shouldShowTooltip &&
+        typeof document !== "undefined" &&
         createPortal(
           <TooltipDisplay
             ref={refs.setFloating}

@@ -1,11 +1,12 @@
-import path from "path";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import tailwindcss from "@tailwindcss/vite";
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
-import { seo } from "./vite/plugins/seo";
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   build: {
@@ -13,17 +14,23 @@ export default defineConfig({
   },
   plugins: [
     tailwindcss(),
-    seo(),
-    tanstackRouter({
-      target: "react",
-      autoCodeSplitting: true,
+    tanstackStart({
+      spa: {
+        enabled: true,
+      },
+      sitemap: {
+        enabled: false,
+      },
     }),
     react(),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(projectRoot, "./src"),
     },
+  },
+  ssr: {
+    noExternal: ["@atlaskit/pragmatic-drag-and-drop", "@nozbe/microfuzz"],
   },
   css: {
     modules: {

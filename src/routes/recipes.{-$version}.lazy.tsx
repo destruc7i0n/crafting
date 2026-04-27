@@ -4,18 +4,21 @@ import { RecipesPage } from "@/components/recipes/catalog/recipes-page";
 import { latestRecipeCatalogVersion } from "@/recipes/catalog/load-catalog";
 import { mergeRecipesSearch } from "@/recipes/catalog/routing";
 
-export const Route = createLazyFileRoute("/recipes/$version")({
-  component: VersionedRecipesRoute,
+export const Route = createLazyFileRoute("/recipes/{-$version}")({
+  component: RecipesRoute,
 });
 
-function VersionedRecipesRoute() {
-  const { version } = Route.useParams();
+function RecipesRoute() {
+  const { version: routeVersion } = Route.useParams();
+  const catalog = Route.useLoaderData();
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
+  const version = routeVersion ?? latestRecipeCatalogVersion;
 
   return (
     <RecipesPage
       version={version}
+      catalog={catalog}
       search={search}
       onSearchChange={(nextSearch) => {
         void navigate({
@@ -24,17 +27,11 @@ function VersionedRecipesRoute() {
         });
       }}
       onVersionChange={(nextVersion, nextSearch) => {
-        if (nextVersion === latestRecipeCatalogVersion) {
-          void navigate({
-            to: "/recipes",
-            search: nextSearch,
-          });
-          return;
-        }
-
         void navigate({
-          to: "/recipes/$version",
-          params: { version: nextVersion },
+          to: "/recipes/{-$version}",
+          params: {
+            version: nextVersion === latestRecipeCatalogVersion ? undefined : nextVersion,
+          },
           search: nextSearch,
         });
       }}
