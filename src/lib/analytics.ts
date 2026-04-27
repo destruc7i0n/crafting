@@ -3,7 +3,8 @@ import { getRecipeDefinition } from "@/recipes/definitions";
 
 import type { Recipe } from "@/stores/recipe/types";
 
-type AnalyticsTheme = "light" | "dark" | "system";
+type ColorScheme = "light" | "dark";
+type Theme = ColorScheme | "system";
 type PointerType = "coarse" | "fine";
 type CustomContentAction = "create" | "update" | "delete";
 type RecipeAction = "create" | "clone" | "delete" | "clear";
@@ -11,7 +12,8 @@ type RecipeStartInputMethod = "drag" | "tap";
 
 export type AnalyticsContext = {
   minecraft_version: MinecraftVersion;
-  theme: AnalyticsTheme;
+  theme: Theme;
+  prefers_color_scheme: ColorScheme;
   pointer: PointerType;
 };
 
@@ -29,8 +31,8 @@ type ChangeMinecraftVersionProperties = {
 };
 
 type ChangeThemeProperties = {
-  prev_theme: AnalyticsTheme;
-  theme: AnalyticsTheme;
+  prev_theme: Theme;
+  theme: Theme;
 };
 
 type ChangeRecipeTypeProperties = {
@@ -100,7 +102,8 @@ type AnalyticsEventProperties = {
 
 type AnalyticsEventName = keyof AnalyticsEventProperties;
 type AnalyticsEventPayload<TEventName extends AnalyticsEventName> =
-  AnalyticsEventProperties[TEventName] & Partial<AnalyticsContext>;
+  AnalyticsEventProperties[TEventName] &
+    Partial<AnalyticsContext> & { prefers_color_scheme: ColorScheme };
 
 type Gtag = {
   <TEventName extends AnalyticsEventName>(
@@ -119,7 +122,9 @@ declare global {
 const getGtag = () => (typeof window === "undefined" ? undefined : window.gtag);
 
 let pageViewSentForThisLoad = false;
-let analyticsContext: Partial<AnalyticsContext> = {};
+let analyticsContext: Partial<AnalyticsContext> & { prefers_color_scheme: ColorScheme } = {
+  prefers_color_scheme: getPreferredColorScheme(),
+};
 
 const sendEvent = <TEventName extends AnalyticsEventName>(
   eventName: TEventName,
@@ -138,13 +143,23 @@ export function trackAnalyticsContext(context: Partial<AnalyticsContext>) {
   };
 }
 
+function getPreferredColorScheme(): ColorScheme {
+  if (typeof window === "undefined") {
+    return "light";
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
 export function trackMinecraftVersionChange(properties: ChangeMinecraftVersionProperties) {
   trackAnalyticsContext({ minecraft_version: properties.minecraft_version });
   sendEvent("change_minecraft_version", properties);
 }
 
 export function trackThemeChange(properties: ChangeThemeProperties) {
-  trackAnalyticsContext({ theme: properties.theme });
+  trackAnalyticsContext({
+    theme: properties.theme,
+  });
   sendEvent("change_theme", properties);
 }
 
