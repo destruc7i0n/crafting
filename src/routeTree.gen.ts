@@ -16,7 +16,7 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 const RecipesChar123VersionChar125Route =
   RecipesChar123VersionChar125RouteImport.update({
     id: '/recipes/{-$version}',

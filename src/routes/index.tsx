@@ -1,5 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { Layout } from "@/components/layout/layout";
+import { useDndMonitor } from "@/hooks/use-dnd-monitor";
+import { Main } from "@/views/main";
+
 const siteUrl = (import.meta.env.VITE_SITE_URL ?? "https://crafting.thedestruc7i0n.ca").replace(
   /\/$/,
   "",
@@ -35,4 +39,15 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
+  component: CreatorRoute,
 });
+
+function CreatorRoute() {
+  useDndMonitor();
+
+  return (
+    <Layout>
+      <Main />
+    </Layout>
+  );
+}
