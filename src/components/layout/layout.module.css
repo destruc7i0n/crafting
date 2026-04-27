@@ -44,7 +44,7 @@
 }
 
 .content-body {
-  @apply lg:h-full lg:min-h-0;
+  @apply min-h-full lg:h-full lg:min-h-0;
 }
 
 .main-content {
@@ -52,7 +52,7 @@
 }
 
 .mobile-footer {
-  @apply md:hidden;
+  @apply lg:hidden;
 }
 
 .items-column {

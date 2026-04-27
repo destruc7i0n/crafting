@@ -97,7 +97,7 @@ const Layout = memo(({ children }: LayoutProps) => {
         )}
       </div>
 
-      <div className="hidden md:block">
+      <div className="hidden lg:block">
         <Footer />
       </div>
     </>
