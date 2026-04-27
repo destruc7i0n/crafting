@@ -91,7 +91,12 @@ export function RecipesPage({
     <div className="bg-background text-foreground flex min-h-screen flex-col">
       <CatalogHeader
         version={version}
-        onVersionChange={(nextVersion) => onVersionChange(nextVersion, currentSearch)}
+        onVersionChange={(nextVersion) =>
+          onVersionChange(nextVersion, {
+            q: currentSearch.q,
+            recipeType: "all",
+          })
+        }
       />
 
       <main className="flex min-h-0 flex-1 flex-col">

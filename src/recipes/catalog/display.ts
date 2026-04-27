@@ -82,7 +82,7 @@ function getSlotSearchParts(
     return [slot, value.id, resources?.itemsById[value.id]?.displayName ?? ""];
   }
 
-  return [slot, value.id];
+  return [slot, ...getTagSearchParts(value.id, resources)];
 }
 
 function getAlternativeSearchParts(
@@ -93,9 +93,13 @@ function getAlternativeSearchParts(
     return [value.id, resources?.itemsById[value.id]?.displayName ?? ""];
   }
 
+  return getTagSearchParts(value.id, resources);
+}
+
+function getTagSearchParts(id: string, resources?: VersionResourceData): string[] {
   return [
-    value.id,
-    ...(resources?.vanillaTags[value.id] ?? []).flatMap((itemId) => [
+    id,
+    ...(resources?.vanillaTags[id] ?? []).flatMap((itemId) => [
       itemId,
       resources?.itemsById[itemId]?.displayName ?? "",
     ]),

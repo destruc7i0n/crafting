@@ -99,4 +99,21 @@ describe("recipe catalog display", () => {
     expect(searchText).toContain("minecraft:planks");
     expect(searchText).toContain("oak planks");
   });
+
+  it("includes direct tag item display names in search text", () => {
+    const recipeWithDirectTag = {
+      id: "minecraft:oak_button",
+      recipeType: RecipeType.Crafting,
+      slots: {
+        "crafting.5": { kind: "tag", id: "minecraft:planks" },
+        "crafting.result": { kind: "item", id: "minecraft:oak_button" },
+      },
+    } as const satisfies GeneratedRecipeCatalogEntry;
+
+    const searchText = getRecipeSearchText(recipeWithDirectTag, resources);
+
+    expect(searchText).toContain("minecraft:planks");
+    expect(searchText).toContain("minecraft:oak_planks");
+    expect(searchText).toContain("oak planks");
+  });
 });
