@@ -586,10 +586,11 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
             <button
               type="button"
               disabled={!packState.canDownload}
-              className="border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 w-full cursor-pointer rounded-md border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+              className="border-primary bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 dark:bg-primary/80 dark:hover:bg-primary/90 dark:active:bg-primary/70 disabled:border-border disabled:bg-secondary disabled:text-secondary-foreground flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50"
               onClick={handleDownloadPack}
             >
-              {packState.label}
+              <DownloadIcon size={16} className="shrink-0" />
+              <span>{packState.label}</span>
             </button>
           </span>
         </Tooltip>

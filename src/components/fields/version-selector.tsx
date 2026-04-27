@@ -47,8 +47,8 @@ export const VersionSelector = () => {
     <Select
       aria-label="Minecraft version"
       wrapperClassName="min-w-[8.5rem]"
-      className="border-white/10 bg-white/5 text-[hsl(var(--header-fg))] hover:bg-white/10"
-      iconClassName="text-[hsl(var(--header-fg))]/70"
+      className="border-primary/55 bg-primary/20 hover:border-primary/70 hover:bg-primary/30 focus:ring-primary/50 dark:border-primary/40 dark:bg-primary/10 dark:hover:border-primary/55 dark:hover:bg-primary/15 dark:focus:ring-primary/35 text-[hsl(var(--header-fg))]"
+      iconClassName="text-primary/90 dark:text-primary/75"
       onChange={(e) => handleVersionChange(e.target.value as MinecraftVersion)}
       value={minecraftVersion}
     >
