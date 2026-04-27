@@ -18,9 +18,7 @@ export default defineConfig({
       spa: {
         enabled: true,
         prerender: {
-          outputPath: "/index.html",
-          crawlLinks: true,
-          retryCount: 3,
+          outputPath: "/index",
         },
       },
       sitemap: {
