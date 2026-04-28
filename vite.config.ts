@@ -39,6 +39,7 @@ export default defineConfig({
           path: "/recipes",
           prerender: {
             enabled: true,
+            autoSubfolderIndex: false,
           },
         },
       ],
