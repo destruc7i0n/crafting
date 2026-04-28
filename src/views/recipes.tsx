@@ -1,6 +1,6 @@
 import { type ReactNode, useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 
-import { getRouteApi } from "@tanstack/react-router";
+import { getRouteApi, Link } from "@tanstack/react-router";
 
 import { MinecraftVersionSelect } from "@/components/fields/minecraft-version-select";
 import { Footer } from "@/components/footer";
@@ -35,6 +35,15 @@ const catalogRecipeTypes = [
 ] as const;
 
 const recipesRoute = getRouteApi("/recipes/{-$version}");
+
+const navLink = (
+  <Link
+    to="/"
+    className="hidden items-center text-sm font-medium text-[hsl(var(--header-fg)/0.82)] transition-colors outline-none hover:text-[hsl(var(--header-fg)/0.62)] focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-white/60 sm:inline-flex"
+  >
+    Generator
+  </Link>
+);
 
 export function RecipesView() {
   const { version: routeVersion } = recipesRoute.useParams();
@@ -110,8 +119,8 @@ export function RecipesView() {
   return (
     <div className="bg-background text-foreground flex min-h-screen flex-col">
       <Header
-        brandTo="/"
-        navLink={null}
+        title="Crafting Recipes"
+        navLink={navLink}
         showHelp={false}
         versionSelector={
           <MinecraftVersionSelect
@@ -131,7 +140,7 @@ export function RecipesView() {
           onSearchChange={handleSearchChange}
         />
 
-        <section className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col px-4 py-4">
+        <section className="mx-auto flex min-h-0 w-full max-w-(--app-max-width) flex-1 flex-col p-2 md:p-4">
           {filteredRecipes.length === 0 ? (
             <CatalogEmptyState>No recipes match the current search.</CatalogEmptyState>
           ) : (

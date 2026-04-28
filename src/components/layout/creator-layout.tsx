@@ -1,5 +1,6 @@
 import { memo, useState } from "react";
 
+import { Link } from "@tanstack/react-router";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 import { RecipeSidebar } from "@/components/recipes/sidebar/recipe-sidebar";
@@ -14,6 +15,17 @@ import { HelpDialog } from "./help-dialog";
 import styles from "./creator-layout.module.css";
 
 type CreatorLayoutProps = { children: React.ReactNode };
+
+const navLink = (
+  <Link
+    to="/recipes/{-$version}"
+    params={{ version: undefined }}
+    search={{ q: "", recipeType: "all" }}
+    className="hidden items-center text-sm font-medium text-[hsl(var(--header-fg)/0.82)] transition-colors outline-none hover:text-[hsl(var(--header-fg)/0.62)] focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-white/60 sm:inline-flex"
+  >
+    Recipes List
+  </Link>
+);
 
 const CreatorLayout = memo(({ children }: CreatorLayoutProps) => {
   const isMobileRecipeSidebarOpen = useUIStore((state) => state.isMobileRecipeSidebarOpen);
@@ -32,7 +44,7 @@ const CreatorLayout = memo(({ children }: CreatorLayoutProps) => {
   return (
     <>
       <div className={styles.shell}>
-        <Header />
+        <Header title="Crafting Generator" navLink={navLink} />
         <HelpDialog />
 
         <div

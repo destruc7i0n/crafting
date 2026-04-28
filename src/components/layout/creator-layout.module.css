@@ -3,7 +3,6 @@
 .shell {
   @apply flex h-svh flex-col overflow-hidden;
 
-  --app-max-width: var(--breakpoint-2xl);
   /* h-14 */
   --app-header-height: calc(var(--spacing) * 14);
   /* 920px - design max-height for desktop frame */
