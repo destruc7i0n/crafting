@@ -1,8 +1,11 @@
-import { type ReactNode, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { type ReactNode, useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 
+import { getRouteApi } from "@tanstack/react-router";
+
+import { MinecraftVersionSelect } from "@/components/fields/minecraft-version-select";
 import { Footer } from "@/components/footer";
+import { Header } from "@/components/layout/header";
 import { CatalogControls } from "@/components/recipes/catalog/catalog-controls";
-import { CatalogHeader } from "@/components/recipes/catalog/catalog-header";
 import {
   RecipeCatalogGrid,
   type CatalogGridRecipe,
@@ -11,10 +14,14 @@ import { RecipeType } from "@/data/types";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useResourcesForMinecraftVersion } from "@/hooks/use-resources-for-version";
 import { getRecipeCardTitle, getRecipeSearchText } from "@/recipes/catalog/display";
+import {
+  latestRecipeCatalogVersion,
+  supportedRecipeCatalogVersions,
+} from "@/recipes/catalog/load-catalog";
+import { mergeRecipesSearch } from "@/recipes/catalog/routing";
 
 import type { MinecraftVersion } from "@/data/types";
 import type { RecipesSearch } from "@/recipes/catalog/routing";
-import type { GeneratedRecipeCatalog } from "@/recipes/catalog/types";
 
 const catalogRecipeTypes = [
   RecipeType.Crafting,
@@ -27,31 +34,44 @@ const catalogRecipeTypes = [
   RecipeType.SmithingTransform,
 ] as const;
 
-type RecipesPageProps = {
-  version: MinecraftVersion;
-  catalog: GeneratedRecipeCatalog;
-  search: RecipesSearch;
-  onSearchChange: (nextSearch: Partial<RecipesSearch>) => void;
-  onVersionChange: (version: MinecraftVersion, search: RecipesSearch) => void;
-};
+const recipesRoute = getRouteApi("/recipes/{-$version}");
 
-export function RecipesPage({
-  version,
-  catalog,
-  search,
-  onSearchChange,
-  onVersionChange,
-}: RecipesPageProps) {
+export function RecipesView() {
+  const { version: routeVersion } = recipesRoute.useParams();
+  const catalog = recipesRoute.useLoaderData();
+  const search = recipesRoute.useSearch();
+  const navigate = recipesRoute.useNavigate();
+  const version = routeVersion ?? latestRecipeCatalogVersion;
+
   const [searchInput, setSearchInput] = useState(search.q);
+
   const { resources } = useResourcesForMinecraftVersion(version);
   const debouncedSearchInput = useDebouncedValue(searchInput, 200);
   const deferredQuery = useDeferredValue(debouncedSearchInput.trim().toLowerCase());
-  const currentSearch = useMemo(
-    () => ({
-      ...search,
-      q: searchInput,
-    }),
-    [search, searchInput],
+
+  const handleSearchChange = useCallback(
+    (nextSearch: Partial<RecipesSearch>) => {
+      void navigate({
+        replace: true,
+        search: (previous) => mergeRecipesSearch(previous, nextSearch),
+      });
+    },
+    [navigate],
+  );
+  const handleVersionChange = useCallback(
+    (nextVersion: MinecraftVersion) => {
+      void navigate({
+        to: "/recipes/{-$version}",
+        params: {
+          version: nextVersion === latestRecipeCatalogVersion ? undefined : nextVersion,
+        },
+        search: {
+          q: searchInput,
+          recipeType: "all",
+        },
+      });
+    },
+    [navigate, searchInput],
   );
 
   useEffect(() => {
@@ -60,9 +80,9 @@ export function RecipesPage({
 
   useEffect(() => {
     if (debouncedSearchInput !== search.q) {
-      onSearchChange({ q: debouncedSearchInput });
+      handleSearchChange({ q: debouncedSearchInput });
     }
-  }, [debouncedSearchInput, onSearchChange, search.q]);
+  }, [debouncedSearchInput, handleSearchChange, search.q]);
 
   const recipeTypeOptions = useMemo(() => {
     const presentTypes = new Set(catalog.map((entry) => entry.recipeType));
@@ -89,16 +109,18 @@ export function RecipesPage({
 
   return (
     <div className="bg-background text-foreground flex min-h-screen flex-col">
-      <CatalogHeader
-        version={version}
-        onVersionChange={(nextVersion) =>
-          onVersionChange(nextVersion, {
-            q: currentSearch.q,
-            recipeType: "all",
-          })
+      <Header
+        brandTo="/"
+        navLink={null}
+        showHelp={false}
+        versionSelector={
+          <MinecraftVersionSelect
+            value={version}
+            versions={supportedRecipeCatalogVersions}
+            onChange={handleVersionChange}
+          />
         }
       />
-
       <main className="flex min-h-0 flex-1 flex-col">
         <CatalogControls
           version={version}
@@ -106,7 +128,7 @@ export function RecipesPage({
           searchInput={searchInput}
           recipeTypeOptions={recipeTypeOptions}
           onSearchInputChange={setSearchInput}
-          onSearchChange={onSearchChange}
+          onSearchChange={handleSearchChange}
         />
 
         <section className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col px-4 py-4">

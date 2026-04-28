@@ -11,11 +11,11 @@ import { ItemsList } from "../items-list/items-list";
 import { Header } from "./header";
 import { HelpDialog } from "./help-dialog";
 
-import styles from "./layout.module.css";
+import styles from "./creator-layout.module.css";
 
-type LayoutProps = { children: React.ReactNode };
+type CreatorLayoutProps = { children: React.ReactNode };
 
-const Layout = memo(({ children }: LayoutProps) => {
+const CreatorLayout = memo(({ children }: CreatorLayoutProps) => {
   const isMobileRecipeSidebarOpen = useUIStore((state) => state.isMobileRecipeSidebarOpen);
   const isRecipeSidebarExpanded = useUIStore((state) => state.isRecipeSidebarExpanded);
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
@@ -104,4 +104,6 @@ const Layout = memo(({ children }: LayoutProps) => {
   );
 });
 
-export { Layout };
+CreatorLayout.displayName = "CreatorLayout";
+
+export { CreatorLayout };
