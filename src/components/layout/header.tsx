@@ -42,7 +42,7 @@ export function Header({
 
   return (
     <header className="w-full bg-[hsl(var(--header-bg))] text-[hsl(var(--header-fg))]">
-      <div className="mx-auto flex w-full max-w-(--app-max-width) items-center justify-between px-4 py-2">
+      <div className="mx-auto flex w-full max-w-(--app-max-width) items-center justify-between px-2 py-2 md:px-4">
         <div className="flex items-center gap-4">
           <div className="flex min-w-0 items-center gap-2">{brandContent}</div>
           {navLink}
