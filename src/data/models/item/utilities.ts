@@ -1,4 +1,4 @@
-import { Item as MinecraftTexturesItem } from "minecraft-textures";
+import type { Item as MinecraftTexturesItem } from "minecraft-textures";
 
 import { MinecraftVersion } from "@/data/types";
 

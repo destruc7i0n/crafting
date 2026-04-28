@@ -5,7 +5,7 @@
     "browser": true,
     "es2020": true
   },
-  "ignorePatterns": ["dist/**", "public/**", "node_modules/**"],
+  "ignorePatterns": ["dist/**", "public/**", "node_modules/**", "src/routeTree.gen.ts"],
   "settings": {
     "react": {
       "version": "19.2.4"

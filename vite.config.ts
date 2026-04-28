@@ -1,20 +1,60 @@
-import path from "path";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
-import { seo } from "./vite/plugins/seo";
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   build: {
     target: "es2020",
   },
-  plugins: [tailwindcss(), seo(), react()],
+  plugins: [
+    tailwindcss(),
+    tanstackStart({
+      spa: {
+        enabled: true,
+        prerender: {
+          enabled: true,
+          outputPath: "/index",
+          crawlLinks: false,
+        },
+      },
+      prerender: {
+        enabled: true,
+        crawlLinks: false,
+        failOnError: true,
+      },
+      pages: [
+        {
+          path: "/",
+          prerender: {
+            enabled: true,
+          },
+        },
+        {
+          path: "/recipes",
+          prerender: {
+            enabled: true,
+          },
+        },
+      ],
+      sitemap: {
+        enabled: false,
+      },
+    }),
+    react(),
+  ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(projectRoot, "./src"),
     },
+  },
+  ssr: {
+    noExternal: ["@atlaskit/pragmatic-drag-and-drop", "@nozbe/microfuzz"],
   },
   css: {
     modules: {

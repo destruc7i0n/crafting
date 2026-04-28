@@ -1,4 +1,4 @@
-import { createContext, useCallback, useLayoutEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 type Theme = "dark" | "light" | "system";
 
@@ -20,17 +20,29 @@ const initialState: ThemeProviderState = {
 
 export const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
+function isTheme(value: string | null): value is Theme {
+  return value === "dark" || value === "light" || value === "system";
+}
+
+function getInitialTheme(defaultTheme: Theme, storageKey: string) {
+  if (typeof window === "undefined") {
+    return defaultTheme;
+  }
+
+  const storedTheme = window.localStorage.getItem(storageKey);
+
+  return isTheme(storedTheme) ? storedTheme : defaultTheme;
+}
+
 export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
-  );
+  const [theme, setTheme] = useState<Theme>(() => getInitialTheme(defaultTheme, storageKey));
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const root = window.document.documentElement;
 
     root.classList.remove("light", "dark");

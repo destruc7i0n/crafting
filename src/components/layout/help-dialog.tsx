@@ -3,7 +3,6 @@ import { ResourceIcon } from "@/components/item/resource-icon";
 import { RecipeType } from "@/data/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { getRecipeTypeIconItemId } from "@/recipes/definitions";
-import { useUIStore } from "@/stores/ui";
 
 const DESKTOP_STEPS = [
   {
@@ -48,16 +47,19 @@ const TOUCH_STEPS = [
   },
 ] as const;
 
-export const HelpDialog = () => {
-  const isHelpDialogOpen = useUIStore((state) => state.isHelpDialogOpen);
-  const closeHelpDialog = useUIStore((state) => state.closeHelpDialog);
+type HelpDialogProps = {
+  open: boolean;
+  onClose: () => void;
+};
+
+export const HelpDialog = ({ open, onClose }: HelpDialogProps) => {
   const isTouchDevice = useIsTouchDevice();
   const deviceSteps = isTouchDevice ? TOUCH_STEPS : DESKTOP_STEPS;
 
   return (
     <Dialog
-      open={isHelpDialogOpen}
-      onClose={closeHelpDialog}
+      open={open}
+      onClose={onClose}
       size={isTouchDevice ? "md" : "lg"}
       overlayClassName={isTouchDevice ? "items-center" : undefined}
       className={isTouchDevice ? "max-w-[min(32rem,calc(100vw-1.5rem))]" : undefined}

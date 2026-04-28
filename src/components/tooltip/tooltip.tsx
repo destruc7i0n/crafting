@@ -39,6 +39,7 @@ const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) 
       {children}
 
       {isHovering &&
+        typeof document !== "undefined" &&
         createPortal(
           <div
             ref={refs.setFloating}

@@ -10,7 +10,6 @@ export type Selection =
   | { type: "slot"; value: RecipeSlotValue; slot: RecipeSlot };
 
 export interface UIState {
-  isHelpDialogOpen: boolean;
   isMobileRecipeSidebarOpen: boolean;
   isRecipeSidebarExpanded: boolean;
   selection?: Selection;
@@ -18,8 +17,6 @@ export interface UIState {
 }
 
 export interface UIStateActions {
-  openHelpDialog: () => void;
-  closeHelpDialog: () => void;
   setMobileRecipeSidebarOpen: (isOpen: boolean) => void;
   toggleRecipeSidebar: () => void;
   selectIngredient: (item: IngredientItem, options?: { lastPlacedSlot?: RecipeSlot }) => void;
@@ -30,13 +27,10 @@ export interface UIStateActions {
 export const useUIStore = create<UIState & UIStateActions>()(
   persist(
     (set) => ({
-      isHelpDialogOpen: true,
       isMobileRecipeSidebarOpen: false,
       isRecipeSidebarExpanded: true,
       selection: undefined,
       lastPlacedSlot: undefined,
-      openHelpDialog: () => set({ isHelpDialogOpen: true }),
-      closeHelpDialog: () => set({ isHelpDialogOpen: false }),
       setMobileRecipeSidebarOpen: (isOpen) => set({ isMobileRecipeSidebarOpen: isOpen }),
       toggleRecipeSidebar: () =>
         set((state) => ({ isRecipeSidebarExpanded: !state.isRecipeSidebarExpanded })),
@@ -60,7 +54,6 @@ export const useUIStore = create<UIState & UIStateActions>()(
       name: "crafting-ui",
       version: 0,
       partialize: (state) => ({
-        isHelpDialogOpen: state.isHelpDialogOpen,
         isRecipeSidebarExpanded: state.isRecipeSidebarExpanded,
       }),
     },

@@ -56,6 +56,8 @@
     --ring: 152 60% 36%;
     --radius: 0.5rem;
 
+    --app-max-width: var(--breakpoint-2xl);
+
     --header-bg: 0 0% 13.3%;
     --header-fg: 0 0% 96%;
 
@@ -125,6 +127,12 @@
 
 @utility scrollbar-app-thin {
   --scrollbar-size: 0.625rem;
+}
+
+@utility minecraft-preview-slots {
+  --minecraft-slot-bg: 0 0% 54.51%;
+  --minecraft-slot-border-tl: #373737;
+  --minecraft-slot-border-br: #ffffff;
 }
 
 @layer utilities {

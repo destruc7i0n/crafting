@@ -3,14 +3,13 @@
 .shell {
   @apply flex h-svh flex-col overflow-hidden;
 
-  --app-max-width: var(--breakpoint-2xl);
   /* h-14 */
   --app-header-height: calc(var(--spacing) * 14);
   /* 920px - design max-height for desktop frame */
   --app-desktop-max-height: 920px;
-  /* items panel at 48rem breakpoint: clamps 320–420px at 36vw */
+  /* items panel at 48rem breakpoint: clamps 320-420px at 36vw */
   --items-panel-width-md: clamp(20rem, 36vw, 420px);
-  /* items panel at 64rem+ breakpoint: clamps 400–480px at 34vw */
+  /* items panel at 64rem+ breakpoint: clamps 400-480px at 34vw */
   --items-panel-width-lg: clamp(25rem, 34vw, 30rem);
   /* 320px - expanded desktop recipe sidebar width */
   --recipes-panel-width-desktop: 320px;

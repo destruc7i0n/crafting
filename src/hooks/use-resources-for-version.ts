@@ -12,6 +12,16 @@ export const useResourcesForVersion = (): {
   resources: VersionResourceData | undefined;
 } => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
+
+  return useResourcesForMinecraftVersion(minecraftVersion);
+};
+
+export const useResourcesForMinecraftVersion = (
+  minecraftVersion: MinecraftVersion,
+): {
+  version: MinecraftVersion;
+  resources: VersionResourceData | undefined;
+} => {
   const resources = useResourcesStore(selectResourcesForVersion(minecraftVersion));
 
   useEffect(() => {

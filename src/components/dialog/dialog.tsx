@@ -87,7 +87,7 @@ export const Dialog = ({
     };
   }, [onClose, open]);
 
-  if (!open) {
+  if (!open || typeof document === "undefined") {
     return null;
   }
 

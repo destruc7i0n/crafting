@@ -1,9 +1,11 @@
-import {
-  latestVersion as latestMinecraftTexturesVersion,
-  versions as minecraftTextureVersions,
-} from "minecraft-textures";
+import minecraftTextures from "minecraft-textures";
+
+import type * as MinecraftTextures from "minecraft-textures";
 
 import { MinecraftVersion } from "./types";
+
+const { latestVersion: latestMinecraftTexturesVersion, versions: minecraftTextureVersions } =
+  minecraftTextures as unknown as typeof MinecraftTextures;
 
 type Assert<T extends true> = T;
 type IsExact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
