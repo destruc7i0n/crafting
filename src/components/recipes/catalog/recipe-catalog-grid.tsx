@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 
@@ -21,15 +21,13 @@ export type CatalogGridRecipe = {
 };
 
 type RecipeCatalogGridProps = {
-  recipes: CatalogGridRecipe[];
+  recipes: readonly CatalogGridRecipe[];
   resources?: VersionResourceData;
-  scrollResetKey: string;
 };
 
-export function RecipeCatalogGrid({ recipes, resources, scrollResetKey }: RecipeCatalogGridProps) {
+export function RecipeCatalogGrid({ recipes, resources }: RecipeCatalogGridProps) {
   const gridRef = useRef<HTMLDivElement | null>(null);
 
-  const previousScrollResetKeyRef = useRef(scrollResetKey);
   const width = useElementWidth(gridRef, recipeCatalogCardMinWidth);
 
   const measuredScrollMargin = useElementScrollMargin(gridRef);
@@ -52,18 +50,6 @@ export function RecipeCatalogGrid({ recipes, resources, scrollResetKey }: Recipe
     overscan: columns * overscanRows,
     scrollMargin,
   });
-
-  useEffect(() => {
-    if (
-      measuredScrollMargin === undefined ||
-      previousScrollResetKeyRef.current === scrollResetKey
-    ) {
-      return;
-    }
-
-    previousScrollResetKeyRef.current = scrollResetKey;
-    window.scrollTo({ top: Math.max(0, measuredScrollMargin - 8), behavior: "auto" });
-  }, [measuredScrollMargin, scrollResetKey]);
 
   return (
     <div

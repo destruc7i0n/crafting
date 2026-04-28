@@ -1,4 +1,12 @@
-import { type ReactNode, useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
+import {
+  type ReactNode,
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { getRouteApi } from "@tanstack/react-router";
 
@@ -44,6 +52,7 @@ export function RecipesView() {
   const search = recipesRoute.useSearch();
   const navigate = recipesRoute.useNavigate();
   const version = routeVersion ?? latestRecipeCatalogVersion;
+  const previousScrollResetKeyRef = useRef(`${version}:${search.recipeType}`);
 
   const [searchInput, setSearchInput] = useState(search.q);
 
@@ -86,28 +95,45 @@ export function RecipesView() {
     }
   }, [debouncedSearchInput, handleSearchChange, search.q]);
 
+  useEffect(() => {
+    const scrollResetKey = `${version}:${search.recipeType}`;
+
+    if (previousScrollResetKeyRef.current === scrollResetKey) {
+      return;
+    }
+
+    previousScrollResetKeyRef.current = scrollResetKey;
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [version, search.recipeType]);
+
   const recipeTypeOptions = useMemo(() => {
     const presentTypes = new Set(catalog.map((entry) => entry.recipeType));
     return catalogRecipeTypes.filter((recipeType) => presentTypes.has(recipeType));
   }, [catalog]);
 
-  const filteredRecipes = useMemo(
-    (): CatalogGridRecipe[] =>
-      catalog
-        .map((entry) => ({
-          entry,
-          title: getRecipeCardTitle(entry, resources),
-          searchText: getRecipeSearchText(entry, resources),
-        }))
-        .filter(({ entry, searchText }) => {
-          const matchesType = search.recipeType === "all" || entry.recipeType === search.recipeType;
-          const matchesSearch = deferredQuery.length === 0 || searchText.includes(deferredQuery);
+  const filteredRecipes = useMemo((): CatalogGridRecipe[] => {
+    const nextRecipes: CatalogGridRecipe[] = [];
 
-          return matchesType && matchesSearch;
-        })
-        .map(({ entry, title }) => ({ entry, title })),
-    [catalog, deferredQuery, resources, search.recipeType],
-  );
+    for (const entry of catalog) {
+      if (search.recipeType !== "all" && entry.recipeType !== search.recipeType) {
+        continue;
+      }
+
+      if (
+        deferredQuery.length > 0 &&
+        !getRecipeSearchText(entry, resources).includes(deferredQuery)
+      ) {
+        continue;
+      }
+
+      nextRecipes.push({
+        entry,
+        title: getRecipeCardTitle(entry, resources),
+      });
+    }
+
+    return nextRecipes;
+  }, [catalog, deferredQuery, resources, search.recipeType]);
 
   return (
     <AppShell
@@ -136,11 +162,7 @@ export function RecipesView() {
           {filteredRecipes.length === 0 ? (
             <CatalogEmptyState>No recipes match the current search.</CatalogEmptyState>
           ) : (
-            <RecipeCatalogGrid
-              recipes={filteredRecipes}
-              resources={resources}
-              scrollResetKey={`${version}:${search.recipeType}`}
-            />
+            <RecipeCatalogGrid recipes={filteredRecipes} resources={resources} />
           )}
         </section>
       </main>
