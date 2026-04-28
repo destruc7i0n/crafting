@@ -25,8 +25,8 @@
   --color-minecraft-inventory-bg: hsl(var(--minecraft-inventory-bg));
 
   --font-minecraft:
-    "Minecraft", "Minecraftia", ui-monospace, "SFMono-Regular", Menlo, Monaco,
-    Consolas, "Liberation Mono", "Courier New", monospace;
+    "Minecraft", "Minecraftia", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
