@@ -1,22 +1,37 @@
-import { memo, useMemo } from "react";
+import { useCallback } from "react";
 
 import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemCount } from "@/components/item/item-count";
 import { ItemPreview } from "@/components/item/item-preview";
+import {
+  CraftingPreviewSurface,
+  FurnacePreviewSurface,
+  type PreviewSlotRenderer,
+  type PreviewSlotRenderOptions,
+  SmithingPreviewSurface,
+  StonecutterPreviewSurface,
+} from "@/components/preview/recipe-preview-surface";
 import { Slot } from "@/components/slot/slot";
 import { ItemTooltip } from "@/components/tooltip/item-tooltip";
 import { NoTextureTexture } from "@/data/constants";
 import { getFullId } from "@/data/models/identifier/utilities";
 import { getTagLabel } from "@/lib/tags";
+import { getRecipeDefinition } from "@/recipes/definitions";
 
-import type { PreviewSlotRenderOptions } from "@/components/preview/recipe-preview-surface";
 import type { Item } from "@/data/models/types";
-import type { CatalogSlotAlternative, CatalogSlotValue } from "@/recipes/catalog/types";
-import type { RecipeSlot } from "@/recipes/slots";
+import type {
+  CatalogSlotAlternative,
+  CatalogSlotValue,
+  GeneratedRecipeCatalogEntry,
+} from "@/recipes/catalog/types";
 import type { VersionResourceData } from "@/stores/resources";
 
-type CatalogPreviewSlotProps = {
-  slot: RecipeSlot;
+type RecipeCatalogPreviewProps = {
+  entry: GeneratedRecipeCatalogEntry;
+  resources?: VersionResourceData;
+};
+
+type CatalogPreviewSlotOptions = {
   value?: CatalogSlotValue;
   resources?: VersionResourceData;
   options?: PreviewSlotRenderOptions;
@@ -38,15 +53,33 @@ type CyclingCatalogSlotPresentation = BaseCatalogSlotPresentation & {
 
 type CatalogSlotPresentation = StaticCatalogSlotPresentation | CyclingCatalogSlotPresentation;
 
-export const CatalogPreviewSlot = memo(function CatalogPreviewSlot({
-  value,
-  resources,
-  options,
-}: CatalogPreviewSlotProps) {
-  const presentation = useMemo(
-    () => (value ? getCatalogSlotPresentation(value, resources) : undefined),
-    [resources, value],
+export function RecipeCatalogPreview({ entry, resources }: RecipeCatalogPreviewProps) {
+  const renderSlot = useCallback<PreviewSlotRenderer<CatalogSlotValue>>(
+    (_slot, value, options) => renderCatalogPreviewSlot({ value, resources, options }),
+    [resources],
   );
+  const previewKind = getRecipeDefinition(entry.recipeType).previewKind;
+
+  switch (previewKind) {
+    case "crafting":
+      return (
+        <CraftingPreviewSurface slots={entry.slots} renderSlot={renderSlot} twoByTwo={false} />
+      );
+    case "furnace":
+      return (
+        <FurnacePreviewSurface slots={entry.slots} renderSlot={renderSlot} fuelDisabled={false} />
+      );
+    case "stonecutter":
+      return <StonecutterPreviewSurface slots={entry.slots} renderSlot={renderSlot} />;
+    case "smithing":
+      return <SmithingPreviewSurface slots={entry.slots} renderSlot={renderSlot} />;
+    default:
+      return null;
+  }
+}
+
+function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewSlotOptions) {
+  const presentation = value ? getCatalogSlotPresentation(value, resources) : undefined;
 
   if (!presentation) {
     return <Slot inert width={options?.width} height={options?.height} className="relative" />;
@@ -101,9 +134,7 @@ export const CatalogPreviewSlot = memo(function CatalogPreviewSlot({
       </ItemTooltip>
     </Slot>
   );
-});
-
-CatalogPreviewSlot.displayName = "CatalogPreviewSlot";
+}
 
 function getCyclingLabel(
   currentItem: Item | undefined,

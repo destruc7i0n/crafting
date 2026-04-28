@@ -1,14 +1,49 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { javaMinecraftVersions } from "@/data/constants";
+import { RecipeType } from "@/data/types";
+import { getRecipeTypeLabel } from "@/recipes/definitions";
 import { CreatorView } from "@/views/creator";
+
+const JAVA_VERSION_GROUP_COUNT = 2;
+const SEO_RECIPE_TYPES = [
+  RecipeType.Crafting,
+  RecipeType.Smelting,
+  RecipeType.Blasting,
+  RecipeType.Smoking,
+  RecipeType.CampfireCooking,
+  RecipeType.Stonecutter,
+  RecipeType.Smithing,
+] as const;
 
 const siteUrl = (import.meta.env.VITE_SITE_URL ?? "https://crafting.thedestruc7i0n.ca").replace(
   /\/$/,
   "",
 );
-const title = "Crafting Recipe Generator";
-const description =
-  "Create visual Minecraft crafting, smelting, blasting, smoking, campfire cooking, stonecutting, and smithing recipes.";
+const minecraftVersions = getMinecraftVersions();
+const listFormatter = new Intl.ListFormat("en", { style: "long", type: "conjunction" });
+const recipeTypes = listFormatter.format(
+  SEO_RECIPE_TYPES.map((type) => getRecipeTypeLabel(type).toLocaleLowerCase("en-US")),
+);
+const title = `Crafting Recipe Generator - ${minecraftVersions}`;
+const description = `Crafting recipe generator for ${minecraftVersions}. Create ${recipeTypes} recipes.`;
+
+function getMajorMinorVersion(version: string) {
+  const [major, minor] = version.split(".");
+  return `${major}.${minor}`;
+}
+
+function getMinecraftVersions() {
+  const groups = new Set<string>();
+
+  for (const version of javaMinecraftVersions) {
+    groups.add(getMajorMinorVersion(version));
+    if (groups.size === JAVA_VERSION_GROUP_COUNT) break;
+  }
+
+  const [latestJavaVersion, ...otherJavaVersions] = [...groups];
+  return [`Minecraft ${latestJavaVersion}`, ...otherJavaVersions, "Bedrock Edition"].join(", ");
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({

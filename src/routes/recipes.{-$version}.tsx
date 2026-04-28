@@ -1,17 +1,30 @@
 import { createFileRoute, redirect, stripSearchParams } from "@tanstack/react-router";
 
+import { RecipeType, type MinecraftVersion } from "@/data/types";
 import {
   isSupportedRecipeCatalogVersion,
   latestRecipeCatalogVersion,
   loadRecipeCatalog,
 } from "@/recipes/catalog/load-catalog";
 import { recipesSearchDefaults, validateRecipesSearch } from "@/recipes/catalog/routing";
-
-import type { MinecraftVersion } from "@/data/types";
+import { getRecipeTypeLabel } from "@/recipes/definitions";
 
 const siteUrl = (import.meta.env.VITE_SITE_URL ?? "https://crafting.thedestruc7i0n.ca").replace(
   /\/$/,
   "",
+);
+const SEO_RECIPE_TYPES = [
+  RecipeType.Crafting,
+  RecipeType.Smelting,
+  RecipeType.Blasting,
+  RecipeType.Smoking,
+  RecipeType.CampfireCooking,
+  RecipeType.Stonecutter,
+  RecipeType.Smithing,
+] as const;
+const listFormatter = new Intl.ListFormat("en", { style: "long", type: "conjunction" });
+const recipeTypes = listFormatter.format(
+  SEO_RECIPE_TYPES.map((type) => getRecipeTypeLabel(type).toLocaleLowerCase("en-US")),
 );
 
 export const Route = createFileRoute("/recipes/{-$version}")({
@@ -66,7 +79,7 @@ function getRouteRecipeCatalogVersion(version: MinecraftVersion | undefined): Mi
 
 function getRecipesRouteHead(version: MinecraftVersion, path: string) {
   const title = `Minecraft ${version} Recipes List`;
-  const description = `Search Minecraft ${version} crafting recipes, smelting recipes, stonecutting recipes, and smithing recipes.`;
+  const description = `Search and view all Minecraft ${version} ${recipeTypes} recipes.`;
   const url = `${siteUrl}${path}`;
 
   return {

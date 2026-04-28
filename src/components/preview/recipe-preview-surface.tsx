@@ -1,8 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
 
-import { RecipeType } from "@/data/types";
-import { getRecipeDefinition } from "@/recipes/definitions";
-
 import type { RecipeSlot } from "@/recipes/slots";
 
 import { Slot } from "../slot/slot";
@@ -13,16 +10,15 @@ export type PreviewSlotRenderOptions = {
   height?: number;
 };
 
-type RecipePreviewSurfaceProps<TSlotValue> = {
-  recipeType: RecipeType;
+export type PreviewSlotRenderer<TSlotValue> = (
+  slot: RecipeSlot,
+  value: TSlotValue | undefined,
+  options?: PreviewSlotRenderOptions,
+) => ReactNode;
+
+type PreviewSurfaceProps<TSlotValue> = {
   slots: Partial<Record<RecipeSlot, TSlotValue>>;
-  renderSlot: (
-    slot: RecipeSlot,
-    value: TSlotValue | undefined,
-    options?: PreviewSlotRenderOptions,
-  ) => ReactNode;
-  craftingTwoByTwo?: boolean;
-  furnaceFuelDisabled?: boolean;
+  renderSlot: PreviewSlotRenderer<TSlotValue>;
 };
 
 const craftingSlotStyles = {
@@ -47,44 +43,11 @@ const twoByTwoCraftingSlots = [
   "crafting.5",
 ] as const satisfies readonly CraftingGridSlot[];
 
-export function RecipePreviewSurface<TSlotValue>({
-  recipeType,
-  slots,
-  renderSlot,
-  craftingTwoByTwo = false,
-  furnaceFuelDisabled = false,
-}: RecipePreviewSurfaceProps<TSlotValue>) {
-  const previewKind = getRecipeDefinition(recipeType).previewKind;
-
-  switch (previewKind) {
-    case "crafting":
-      return (
-        <CraftingPreviewSurface slots={slots} renderSlot={renderSlot} twoByTwo={craftingTwoByTwo} />
-      );
-    case "furnace":
-      return (
-        <FurnacePreviewSurface
-          slots={slots}
-          renderSlot={renderSlot}
-          fuelDisabled={furnaceFuelDisabled}
-        />
-      );
-    case "stonecutter":
-      return <StonecutterPreviewSurface slots={slots} renderSlot={renderSlot} />;
-    case "smithing":
-      return <SmithingPreviewSurface slots={slots} renderSlot={renderSlot} />;
-    default:
-      return null;
-  }
-}
-
-function CraftingPreviewSurface<TSlotValue>({
+export function CraftingPreviewSurface<TSlotValue>({
   slots,
   renderSlot,
   twoByTwo,
-}: {
-  slots: Partial<Record<RecipeSlot, TSlotValue>>;
-  renderSlot: RecipePreviewSurfaceProps<TSlotValue>["renderSlot"];
+}: PreviewSurfaceProps<TSlotValue> & {
   twoByTwo: boolean;
 }) {
   const visibleSlots = twoByTwo ? twoByTwoCraftingSlots : threeByThreeCraftingSlots;
@@ -138,13 +101,11 @@ function CraftingPreviewSurface<TSlotValue>({
   );
 }
 
-function FurnacePreviewSurface<TSlotValue>({
+export function FurnacePreviewSurface<TSlotValue>({
   slots,
   renderSlot,
   fuelDisabled,
-}: {
-  slots: Partial<Record<RecipeSlot, TSlotValue>>;
-  renderSlot: RecipePreviewSurfaceProps<TSlotValue>["renderSlot"];
+}: PreviewSurfaceProps<TSlotValue> & {
   fuelDisabled: boolean;
 }) {
   return (
@@ -171,13 +132,10 @@ function FurnacePreviewSurface<TSlotValue>({
   );
 }
 
-function StonecutterPreviewSurface<TSlotValue>({
+export function StonecutterPreviewSurface<TSlotValue>({
   slots,
   renderSlot,
-}: {
-  slots: Partial<Record<RecipeSlot, TSlotValue>>;
-  renderSlot: RecipePreviewSurfaceProps<TSlotValue>["renderSlot"];
-}) {
+}: PreviewSurfaceProps<TSlotValue>) {
   return (
     <div
       className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
@@ -198,13 +156,10 @@ function StonecutterPreviewSurface<TSlotValue>({
   );
 }
 
-function SmithingPreviewSurface<TSlotValue>({
+export function SmithingPreviewSurface<TSlotValue>({
   slots,
   renderSlot,
-}: {
-  slots: Partial<Record<RecipeSlot, TSlotValue>>;
-  renderSlot: RecipePreviewSurfaceProps<TSlotValue>["renderSlot"];
-}) {
+}: PreviewSurfaceProps<TSlotValue>) {
   return (
     <div
       className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"

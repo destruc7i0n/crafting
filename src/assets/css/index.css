@@ -129,6 +129,12 @@
   --scrollbar-size: 0.625rem;
 }
 
+@utility minecraft-preview-slots {
+  --minecraft-slot-bg: 0 0% 54.51%;
+  --minecraft-slot-border-tl: #373737;
+  --minecraft-slot-border-br: #ffffff;
+}
+
 @layer utilities {
   .scrollbar-app::-webkit-scrollbar {
     width: var(--scrollbar-size);

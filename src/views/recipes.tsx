@@ -1,10 +1,10 @@
 import { type ReactNode, useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 
-import { getRouteApi, Link } from "@tanstack/react-router";
+import { getRouteApi } from "@tanstack/react-router";
 
 import { MinecraftVersionSelect } from "@/components/fields/minecraft-version-select";
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/layout/header";
+import { AppShell } from "@/components/layout/app-shell";
+import { HeaderNavLink } from "@/components/layout/header";
 import { CatalogControls } from "@/components/recipes/catalog/catalog-controls";
 import {
   RecipeCatalogGrid,
@@ -36,14 +36,7 @@ const catalogRecipeTypes = [
 
 const recipesRoute = getRouteApi("/recipes/{-$version}");
 
-const navLink = (
-  <Link
-    to="/"
-    className="hidden items-center text-sm font-medium text-[hsl(var(--header-fg)/0.82)] transition-colors outline-none hover:text-[hsl(var(--header-fg)/0.62)] focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-white/60 sm:inline-flex"
-  >
-    Generator
-  </Link>
-);
+const navLink = <HeaderNavLink to="/">Generator</HeaderNavLink>;
 
 export function RecipesView() {
   const { version: routeVersion } = recipesRoute.useParams();
@@ -117,19 +110,18 @@ export function RecipesView() {
   );
 
   return (
-    <div className="bg-background text-foreground flex min-h-screen flex-col">
-      <Header
-        title="Crafting Recipes"
-        navLink={navLink}
-        showHelp={false}
-        versionSelector={
-          <MinecraftVersionSelect
-            value={version}
-            versions={supportedRecipeCatalogVersions}
-            onChange={handleVersionChange}
-          />
-        }
-      />
+    <AppShell
+      title="Crafting Recipes"
+      navLink={navLink}
+      showHelp={false}
+      versionSelector={
+        <MinecraftVersionSelect
+          value={version}
+          versions={supportedRecipeCatalogVersions}
+          onChange={handleVersionChange}
+        />
+      }
+    >
       <main className="flex min-h-0 flex-1 flex-col">
         <CatalogControls
           version={version}
@@ -152,8 +144,7 @@ export function RecipesView() {
           )}
         </section>
       </main>
-      <Footer />
-    </div>
+    </AppShell>
   );
 }
 

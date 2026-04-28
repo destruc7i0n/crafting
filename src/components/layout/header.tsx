@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 
+import { Link, type LinkProps } from "@tanstack/react-router";
 import { CircleHelpIcon } from "lucide-react";
 
 import { ResourceIcon } from "@/components/item/resource-icon";
 import { RecipeType } from "@/data/types";
 import { getRecipeTypeIconItemId } from "@/recipes/definitions";
-import { useUIStore } from "@/stores/ui";
 
 import { VersionSelector } from "../fields/version-selector";
 
@@ -13,6 +13,7 @@ type HeaderProps = {
   title: string;
   navLink?: ReactNode;
   showHelp?: boolean;
+  onHelpClick?: () => void;
   versionSelector?: ReactNode;
 };
 
@@ -22,9 +23,9 @@ export function Header({
   title,
   navLink = null,
   showHelp = true,
+  onHelpClick,
   versionSelector = defaultVersionSelector,
 }: HeaderProps) {
-  const openHelpDialog = useUIStore((state) => state.openHelpDialog);
   const brandContent = (
     <>
       <ResourceIcon
@@ -52,7 +53,7 @@ export function Header({
           {showHelp ? (
             <button
               type="button"
-              onClick={openHelpDialog}
+              onClick={onHelpClick}
               className="flex cursor-pointer items-center gap-1 rounded-md border border-white/20 px-2 py-1 text-sm font-medium transition-colors hover:bg-white/10 active:bg-white/15"
               aria-label="Show help"
               title="Show help"
@@ -65,5 +66,16 @@ export function Header({
         </div>
       </div>
     </header>
+  );
+}
+
+export function HeaderNavLink({ children, ...props }: LinkProps & { children: ReactNode }) {
+  return (
+    <Link
+      {...props}
+      className="hidden items-center text-sm font-medium text-[hsl(var(--header-fg)/0.82)] transition-colors outline-none hover:text-[hsl(var(--header-fg)/0.62)] focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-white/60 sm:inline-flex"
+    >
+      {children}
+    </Link>
   );
 }

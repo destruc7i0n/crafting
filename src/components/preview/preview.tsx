@@ -1,4 +1,4 @@
-import { memo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { memo, useRef, useState, type ReactNode } from "react";
 
 import { EraserIcon, ImageDownIcon } from "lucide-react";
 
@@ -12,7 +12,7 @@ import { useItemSelection } from "@/hooks/use-item-selection";
 import { trackPreviewScreenshot, trackRecipeAction } from "@/lib/analytics";
 import { clearSelectedRecipeAndSlotSelection } from "@/lib/editor-actions";
 import { cn } from "@/lib/utils";
-import { getRecipeDefinition, PreviewKind } from "@/recipes/definitions";
+import { getRecipeDefinition, type PreviewKind } from "@/recipes/definitions";
 import { getPreviewBaseName, toPreviewFileName } from "@/recipes/naming";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
@@ -106,16 +106,7 @@ export const Preview = memo(() => {
   };
 
   return (
-    <div
-      className="flex w-full flex-col"
-      style={
-        {
-          "--minecraft-slot-bg": "0 0% 54.51%",
-          "--minecraft-slot-border-tl": "#373737",
-          "--minecraft-slot-border-br": "#ffffff",
-        } as CSSProperties
-      }
-    >
+    <div className="minecraft-preview-slots flex w-full flex-col">
       <div className="scrollbar-app scrollbar-app-thin w-full overflow-x-auto">
         <div className="mx-auto w-fit min-w-0">
           <div className="group relative w-fit min-w-0">

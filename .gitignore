@@ -25,6 +25,5 @@ dist-ssr
 
 private/
 src/data/generated/vanilla-recipes/*.json
-!src/data/generated/vanilla-recipes/manifest.json
 src/data/generated/vanilla-tags/*.json
 src/data/generated/bedrock-mappings.json

@@ -1,16 +1,11 @@
-import { memo, useCallback, type CSSProperties } from "react";
+import { memo } from "react";
 
-import {
-  RecipePreviewSurface,
-  type PreviewSlotRenderOptions,
-} from "@/components/preview/recipe-preview-surface";
-import { CatalogPreviewSlot } from "@/components/recipes/catalog/catalog-preview-slot";
 import { recipeCatalogCardHeight } from "@/components/recipes/catalog/constants";
+import { RecipeCatalogPreview } from "@/components/recipes/catalog/recipe-catalog-preview";
 import { getRecipeFileName, getRecipeResult } from "@/recipes/catalog/display";
 import { getRecipeTypeLabel } from "@/recipes/definitions";
 
-import type { CatalogSlotValue, GeneratedRecipeCatalogEntry } from "@/recipes/catalog/types";
-import type { RecipeSlot } from "@/recipes/slots";
+import type { GeneratedRecipeCatalogEntry } from "@/recipes/catalog/types";
 import type { VersionResourceData } from "@/stores/resources";
 
 type RecipeCatalogCardProps = {
@@ -24,26 +19,13 @@ export const RecipeCatalogCard = memo(function RecipeCatalogCard({
   title,
   resources,
 }: RecipeCatalogCardProps) {
-  const renderSlot = useCallback(
-    (slot: RecipeSlot, value: CatalogSlotValue | undefined, options?: PreviewSlotRenderOptions) => (
-      <CatalogPreviewSlot slot={slot} value={value} resources={resources} options={options} />
-    ),
-    [resources],
-  );
   const result = getRecipeResult(entry);
   const outputId = result?.value.kind === "item" ? result.value.id : undefined;
 
   return (
     <article
-      className="border-border bg-card text-card-foreground flex min-w-0 flex-col rounded-lg border p-2 contain-[layout_paint_style]"
-      style={
-        {
-          height: recipeCatalogCardHeight,
-          "--minecraft-slot-bg": "0 0% 54.51%",
-          "--minecraft-slot-border-tl": "#373737",
-          "--minecraft-slot-border-br": "#ffffff",
-        } as CSSProperties
-      }
+      className="minecraft-preview-slots border-border bg-card text-card-foreground flex min-w-0 flex-col rounded-lg border p-2 contain-[layout_paint_style]"
+      style={{ height: recipeCatalogCardHeight }}
     >
       <div className="min-w-0">
         <div className="flex min-w-0 items-start gap-2">
@@ -68,11 +50,7 @@ export const RecipeCatalogCard = memo(function RecipeCatalogCard({
 
       <div className="mt-2 flex flex-1 items-center justify-center overflow-hidden">
         <div className="scrollbar-app scrollbar-app-thin max-w-full overflow-x-auto">
-          <RecipePreviewSurface<CatalogSlotValue>
-            recipeType={entry.recipeType}
-            slots={entry.slots}
-            renderSlot={renderSlot}
-          />
+          <RecipeCatalogPreview entry={entry} resources={resources} />
         </div>
       </div>
     </article>
