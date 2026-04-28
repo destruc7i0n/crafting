@@ -18,9 +18,30 @@ export default defineConfig({
       spa: {
         enabled: true,
         prerender: {
+          enabled: true,
           outputPath: "/index",
+          crawlLinks: false,
         },
       },
+      prerender: {
+        enabled: true,
+        crawlLinks: false,
+        failOnError: true,
+      },
+      pages: [
+        {
+          path: "/",
+          prerender: {
+            enabled: true,
+          },
+        },
+        {
+          path: "/recipes",
+          prerender: {
+            enabled: true,
+          },
+        },
+      ],
       sitemap: {
         enabled: false,
       },
