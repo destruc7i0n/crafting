@@ -11,6 +11,7 @@ import type {
   GeneratedRecipeCatalogManifest,
 } from "@/recipes/catalog/types";
 
+import { loadItemGroupOrder } from "./item-group-order";
 import { exportMcmetaTree } from "./mcmeta-repo";
 import { buildRecipeCatalogEntry } from "./recipe-handlers";
 import { compareRecipeCatalogEntries } from "./recipe-order";
@@ -28,13 +29,12 @@ const recipeCatalogVersions = javaMinecraftVersions.filter(
   (version) => !versionsWithoutRecipeCatalog.has(version),
 );
 
-export async function generateJavaRecipeCatalogs(
-  gitDir: string,
-  itemGroupOrder: ItemGroupOrder,
-): Promise<void> {
+export async function generateJavaRecipeCatalogs(gitDir: string): Promise<void> {
   console.log(
     `Starting Java recipe catalog generation for ${recipeCatalogVersions.length} versions`,
   );
+
+  const itemGroupOrder = await loadItemGroupOrder();
 
   await prepareOutputDir();
 

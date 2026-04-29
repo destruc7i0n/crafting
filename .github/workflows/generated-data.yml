@@ -1,6 +1,8 @@
 name: Check Generated Data
 
 on:
+  push:
+  pull_request:
   schedule:
     - cron: "0 17 * * 5"
       timezone: "America/Los_Angeles"
@@ -23,7 +25,7 @@ jobs:
       - run: pnpm generate:data
       - name: Verify generated data is committed
         run: |
-          if [ -n "$(git status --porcelain -- src/data/generated)" ]; then
+          if ! git diff --quiet -- src/data/generated || [ -n "$(git ls-files --others --exclude-standard -- src/data/generated)" ]; then
             git status --short -- src/data/generated
             git diff -- src/data/generated
             echo "::error::Generated data changed. Run pnpm generate:data and commit src/data/generated."

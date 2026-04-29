@@ -1,6 +1,7 @@
 import type { TexturesType as MinecraftTexturesType } from "minecraft-textures";
 
 import { latestMinecraftVersion } from "@/data/constants";
+import manifest from "@/data/generated/vanilla-tags/manifest.json";
 import {
   getRawId,
   identifierUniqueKey,
@@ -12,13 +13,21 @@ import { MinecraftVersion } from "@/data/types";
 import { resolveItemId } from "@/lib/resolve-item-id";
 import { useResourcesStore } from "@/stores/resources";
 
+type GeneratedVanillaTagsManifest = {
+  versions: MinecraftVersion[];
+};
+
+const vanillaTagsManifest = manifest as GeneratedVanillaTagsManifest;
+const supportedVanillaTagVersions = new Set(vanillaTagsManifest.versions);
+
 const textureLoaders = import.meta.glob<{ default: MinecraftTexturesType }>(
   // match 1.20.json but not 1.20.id.json
   "/node_modules/minecraft-textures/dist/textures/json/[0-9]*[0-9].json",
 );
-const tagLoaders = import.meta.glob<{ default: Record<string, string[]> }>(
+const tagLoaders = import.meta.glob<{ default: Record<string, string[]> }>([
   "/src/data/generated/vanilla-tags/*.json",
-);
+  "!/src/data/generated/vanilla-tags/manifest.json",
+]);
 
 // track in-flight loads - prevents double-fetch
 const loadingVersions = new Set<MinecraftVersion>();
@@ -44,7 +53,7 @@ async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void
     version === MinecraftVersion.Bedrock
       ? `/src/data/generated/vanilla-tags/bedrock.json`
       : `/src/data/generated/vanilla-tags/${version}.json`;
-  const loadTagModule = tagLoaders[tagPath];
+  const loadTagModule = supportedVanillaTagVersions.has(version) ? tagLoaders[tagPath] : undefined;
   if (loadTagModule) {
     vanillaTags = (await loadTagModule()).default;
   }

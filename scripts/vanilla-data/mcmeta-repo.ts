@@ -75,9 +75,19 @@ export async function exportMcmetaTree(
   return tempDir;
 }
 
-export async function readMcmetaJson<T>(gitDir: string, ref: string, filePath: string): Promise<T> {
+export async function tryReadMcmetaJson<T>(
+  gitDir: string,
+  ref: string,
+  filePath: string,
+): Promise<T | undefined> {
   const resolvedRef = await resolveMcmetaRef(gitDir, ref);
-  return (await $`git --git-dir=${gitDir} show ${resolvedRef}:${filePath}`.json()) as T;
+  const result = await $`git --git-dir=${gitDir} show ${resolvedRef}:${filePath}`.quiet().nothrow();
+
+  if (result.exitCode !== 0) {
+    return undefined;
+  }
+
+  return JSON.parse(result.stdout.toString()) as T;
 }
 
 export async function getSummaryCommitForVersion(

@@ -1,11 +1,11 @@
 import { mkdir, readdir, rm } from "node:fs/promises";
 import path from "node:path";
 
-import { versions } from "minecraft-textures";
-
+import { javaMinecraftVersions } from "@/data/constants";
+import { MinecraftVersion } from "@/data/types";
 import { type TagGraph, resolveTagGraph, toTagRef } from "@/lib/tags";
 
-import { getSummaryCommitForVersion, readMcmetaJson } from "./mcmeta-repo";
+import { getSummaryCommitForVersion, tryReadMcmetaJson } from "./mcmeta-repo";
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
 const outputDir = path.join(repoRoot, "src/data/generated/vanilla-tags");
@@ -16,36 +16,49 @@ type SummaryTagEntry = {
   values?: SummaryTagValue[];
 };
 type SummaryTagFile = Record<string, SummaryTagEntry>;
+type GeneratedVanillaTagsManifest = {
+  versions: MinecraftVersion[];
+};
 
-const versionsWithoutVanillaTags = new Set(["1.12", "1.13"]);
-const versionsWithVanillaTags = versions.filter(
-  (version) => !versionsWithoutVanillaTags.has(version),
-);
-
-export async function generateJavaVanillaTags(gitDir: string): Promise<void> {
-  console.log(
-    `Starting Java vanilla tag generation for ${versionsWithVanillaTags.length} versions`,
-  );
+export async function generateJavaVanillaTags(gitDir: string): Promise<MinecraftVersion[]> {
+  console.log(`Starting Java vanilla tag generation for ${javaMinecraftVersions.length} versions`);
 
   await prepareOutputDir();
 
-  await Promise.all(
-    versionsWithVanillaTags.map(async (version, index) => {
+  const generatedVersions = await Promise.all(
+    javaMinecraftVersions.map(async (version, index): Promise<MinecraftVersion | null> => {
       console.log(
-        `Generating Java vanilla item tags for ${version} (${index + 1}/${versionsWithVanillaTags.length})`,
+        `Checking Java vanilla item tags for ${version} (${index + 1}/${javaMinecraftVersions.length})`,
       );
 
       const sha = await getSummaryCommitForVersion(gitDir, version);
       if (!sha) {
-        throw new Error(`No mcmeta summary commit found for version ${version}`);
+        console.log(`Skipping Java vanilla item tags for ${version}: no mcmeta summary commit`);
+        return null;
       }
 
       const rawTags = await readRawTagsForCommit(gitDir, sha);
+      if (!rawTags) {
+        console.log(`Skipping Java vanilla item tags for ${version}: no item tag summary`);
+        return null;
+      }
+
       const resolvedTags = resolveTagGraph(rawTags);
 
       await writeVersionTags(version, resolvedTags);
+      return version;
     }),
   );
+
+  return generatedVersions.filter((version): version is MinecraftVersion => version !== null);
+}
+
+export async function writeVanillaTagsManifest(versions: MinecraftVersion[]): Promise<void> {
+  const manifest = {
+    versions: [...versions],
+  } satisfies GeneratedVanillaTagsManifest;
+
+  await Bun.write(path.join(outputDir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
 }
 
 async function prepareOutputDir(): Promise<void> {
@@ -64,8 +77,12 @@ async function prepareOutputDir(): Promise<void> {
 async function readRawTagsForCommit(
   gitDir: string,
   sha: string,
-): Promise<Record<string, string[]>> {
-  const data = await readMcmetaJson<SummaryTagFile>(gitDir, sha, summaryTagFilePath);
+): Promise<Record<string, string[]> | undefined> {
+  const data = await tryReadMcmetaJson<SummaryTagFile>(gitDir, sha, summaryTagFilePath);
+
+  if (!data) {
+    return undefined;
+  }
 
   return Object.fromEntries(
     Object.entries(data).map(([tagName, entry]) => [
