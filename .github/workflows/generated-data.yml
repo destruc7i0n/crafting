@@ -1,0 +1,31 @@
+name: Check Generated Data
+
+on:
+  schedule:
+    - cron: "0 17 * * 5"
+      timezone: "America/Los_Angeles"
+  workflow_dispatch:
+
+jobs:
+  generated-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: oven-sh/setup-bun@v2
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm generate:data
+      - name: Verify generated data is committed
+        run: |
+          if [ -n "$(git status --porcelain -- src/data/generated)" ]; then
+            git status --short -- src/data/generated
+            git diff -- src/data/generated
+            echo "::error::Generated data changed. Run pnpm generate:data and commit src/data/generated."
+            exit 1
+          fi

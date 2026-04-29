@@ -1,0 +1,261 @@
+{
+  "minecraft:black_banner": {
+    "id": "minecraft:banner",
+    "data": 0
+  },
+  "minecraft:black_bed": {
+    "id": "minecraft:bed",
+    "data": 15
+  },
+  "minecraft:blue_banner": {
+    "id": "minecraft:banner",
+    "data": 4
+  },
+  "minecraft:blue_bed": {
+    "id": "minecraft:bed",
+    "data": 11
+  },
+  "minecraft:bricks": {
+    "id": "minecraft:brick_block"
+  },
+  "minecraft:brown_banner": {
+    "id": "minecraft:banner",
+    "data": 3
+  },
+  "minecraft:brown_bed": {
+    "id": "minecraft:bed",
+    "data": 12
+  },
+  "minecraft:cobblestone_stairs": {
+    "id": "minecraft:stone_stairs",
+    "data": 0
+  },
+  "minecraft:cobweb": {
+    "id": "minecraft:web"
+  },
+  "minecraft:cyan_banner": {
+    "id": "minecraft:banner",
+    "data": 6
+  },
+  "minecraft:cyan_bed": {
+    "id": "minecraft:bed",
+    "data": 9
+  },
+  "minecraft:dead_bush": {
+    "id": "minecraft:deadbush"
+  },
+  "minecraft:debug_stick": null,
+  "minecraft:dirt_path": {
+    "id": "minecraft:grass_path"
+  },
+  "minecraft:end_stone_brick_stairs": {
+    "id": "minecraft:end_brick_stairs"
+  },
+  "minecraft:end_stone_bricks": {
+    "id": "minecraft:end_bricks"
+  },
+  "minecraft:flowering_azalea_leaves": {
+    "id": "minecraft:azalea_leaves_flowered"
+  },
+  "minecraft:frogspawn": {
+    "id": "minecraft:frog_spawn"
+  },
+  "minecraft:furnace_minecart": null,
+  "minecraft:glow_item_frame": {
+    "id": "minecraft:glow_frame"
+  },
+  "minecraft:gray_banner": {
+    "id": "minecraft:banner",
+    "data": 8
+  },
+  "minecraft:gray_bed": {
+    "id": "minecraft:bed",
+    "data": 7
+  },
+  "minecraft:green_banner": {
+    "id": "minecraft:banner",
+    "data": 2
+  },
+  "minecraft:green_bed": {
+    "id": "minecraft:bed",
+    "data": 13
+  },
+  "minecraft:item_frame": {
+    "id": "minecraft:frame"
+  },
+  "minecraft:jack_o_lantern": {
+    "id": "minecraft:lit_pumpkin"
+  },
+  "minecraft:knowledge_book": null,
+  "minecraft:light": null,
+  "minecraft:light_blue_banner": {
+    "id": "minecraft:banner",
+    "data": 12
+  },
+  "minecraft:light_blue_bed": {
+    "id": "minecraft:bed",
+    "data": 3
+  },
+  "minecraft:light_gray_banner": {
+    "id": "minecraft:banner",
+    "data": 7
+  },
+  "minecraft:light_gray_bed": {
+    "id": "minecraft:bed",
+    "data": 8
+  },
+  "minecraft:light_gray_glazed_terracotta": {
+    "id": "minecraft:silver_glazed_terracotta"
+  },
+  "minecraft:lily_pad": {
+    "id": "minecraft:waterlily"
+  },
+  "minecraft:lime_banner": {
+    "id": "minecraft:banner",
+    "data": 10
+  },
+  "minecraft:lime_bed": {
+    "id": "minecraft:bed",
+    "data": 5
+  },
+  "minecraft:magenta_banner": {
+    "id": "minecraft:banner",
+    "data": 13
+  },
+  "minecraft:magenta_bed": {
+    "id": "minecraft:bed",
+    "data": 2
+  },
+  "minecraft:magma_block": {
+    "id": "minecraft:magma"
+  },
+  "minecraft:map": {
+    "id": "minecraft:empty_map"
+  },
+  "minecraft:melon": {
+    "id": "minecraft:melon_block"
+  },
+  "minecraft:nether_bricks": {
+    "id": "minecraft:nether_brick",
+    "data": 0
+  },
+  "minecraft:nether_quartz_ore": {
+    "id": "minecraft:quartz_ore"
+  },
+  "minecraft:note_block": {
+    "id": "minecraft:noteblock"
+  },
+  "minecraft:oak_button": {
+    "id": "minecraft:wooden_button"
+  },
+  "minecraft:oak_door": {
+    "id": "minecraft:wooden_door"
+  },
+  "minecraft:oak_fence_gate": {
+    "id": "minecraft:fence_gate"
+  },
+  "minecraft:oak_pressure_plate": {
+    "id": "minecraft:wooden_pressure_plate"
+  },
+  "minecraft:oak_trapdoor": {
+    "id": "minecraft:trapdoor"
+  },
+  "minecraft:orange_banner": {
+    "id": "minecraft:banner",
+    "data": 14
+  },
+  "minecraft:orange_bed": {
+    "id": "minecraft:bed",
+    "data": 1
+  },
+  "minecraft:pink_banner": {
+    "id": "minecraft:banner",
+    "data": 9
+  },
+  "minecraft:pink_bed": {
+    "id": "minecraft:bed",
+    "data": 6
+  },
+  "minecraft:powered_rail": {
+    "id": "minecraft:golden_rail"
+  },
+  "minecraft:prismarine_brick_stairs": {
+    "id": "minecraft:prismarine_bricks_stairs"
+  },
+  "minecraft:purple_banner": {
+    "id": "minecraft:banner",
+    "data": 5
+  },
+  "minecraft:purple_bed": {
+    "id": "minecraft:bed",
+    "data": 10
+  },
+  "minecraft:red_banner": {
+    "id": "minecraft:banner",
+    "data": 1
+  },
+  "minecraft:red_bed": {
+    "id": "minecraft:bed",
+    "data": 14
+  },
+  "minecraft:red_nether_bricks": {
+    "id": "minecraft:red_nether_brick"
+  },
+  "minecraft:rooted_dirt": {
+    "id": "minecraft:dirt_with_roots"
+  },
+  "minecraft:shulker_box": {
+    "id": "minecraft:undyed_shulker_box"
+  },
+  "minecraft:slime_block": {
+    "id": "minecraft:slime"
+  },
+  "minecraft:small_dripleaf": {
+    "id": "minecraft:small_dripleaf_block"
+  },
+  "minecraft:snow_block": {
+    "id": "minecraft:snow",
+    "data": 0
+  },
+  "minecraft:spawner": {
+    "id": "minecraft:mob_spawner"
+  },
+  "minecraft:spectral_arrow": null,
+  "minecraft:stone_slab": {
+    "id": "minecraft:normal_stone_slab"
+  },
+  "minecraft:stonecutter": {
+    "id": "minecraft:stonecutter_block"
+  },
+  "minecraft:terracotta": {
+    "id": "minecraft:hardened_clay"
+  },
+  "minecraft:test_block": null,
+  "minecraft:test_instance_block": null,
+  "minecraft:tipped_arrow": {
+    "id": "minecraft:arrow",
+    "data": 0
+  },
+  "minecraft:waxed_copper_block": {
+    "id": "minecraft:waxed_copper"
+  },
+  "minecraft:white_banner": {
+    "id": "minecraft:banner",
+    "data": 15
+  },
+  "minecraft:white_bed": {
+    "id": "minecraft:bed",
+    "data": 0
+  },
+  "minecraft:yellow_banner": {
+    "id": "minecraft:banner",
+    "data": 11
+  },
+  "minecraft:yellow_bed": {
+    "id": "minecraft:bed",
+    "data": 4
+  },
+  "minecraft:zombified_piglin_spawn_egg": {
+    "id": "minecraft:zombie_pigman_spawn_egg"
+  }
+}
