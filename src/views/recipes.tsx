@@ -140,6 +140,7 @@ export function RecipesView() {
       title="Crafting Recipes"
       navLink={navLink}
       showHelp={false}
+      className="min-h-screen"
       versionSelector={
         <MinecraftVersionSelect
           value={version}

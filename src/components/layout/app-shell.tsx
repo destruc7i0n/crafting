@@ -52,7 +52,7 @@ export function AppShell({
   };
 
   return (
-    <div className={cn("bg-background text-foreground flex min-h-screen flex-col", className)}>
+    <div className={cn("bg-background text-foreground flex flex-col", className)}>
       <Header
         title={title}
         navLink={navLink}

@@ -1,7 +1,7 @@
 @reference "@/assets/css/index.css";
 
 .shell {
-  @apply flex h-svh flex-col overflow-hidden;
+  @apply flex h-svh min-h-0 flex-col overflow-hidden;
 
   /* h-14 */
   --app-header-height: calc(var(--spacing) * 14);
@@ -101,25 +101,32 @@
 
 /* 48rem = --breakpoint-md */
 @media (width >= 48rem) {
+  .shell {
+    @apply h-auto min-h-screen overflow-visible;
+  }
+
   .frame {
-    @apply min-h-0 gap-4 overflow-hidden p-4;
+    @apply min-h-0 flex-none gap-4 overflow-visible p-4;
     grid-template-areas: "content items";
     grid-template-columns: minmax(0, 1fr) var(--items-panel-width-md);
-    grid-template-rows: minmax(0, 1fr);
-    height: calc(100svh - var(--app-header-height));
+    grid-template-rows: auto;
+    height: auto;
+    min-height: calc(100svh - var(--app-header-height));
   }
 
   .content-column {
-    @apply min-h-0 overflow-y-auto p-0;
+    @apply min-h-0 overflow-visible p-0;
+    overscroll-behavior-y: auto;
   }
 
   .items-column {
-    @apply static mx-0 min-h-0 w-auto overflow-visible rounded-none border-0 bg-transparent shadow-none;
+    @apply sticky top-4 mx-0 min-h-0 w-auto self-start overflow-hidden rounded-none border-0 bg-transparent shadow-none;
+    height: calc(100svh - var(--app-header-height) - 2rem);
   }
 
   .items-column-collapsed,
   .items-column-expanded {
-    @apply h-auto max-h-none;
+    @apply max-h-none;
   }
 
   .tray-toggle {
@@ -138,8 +145,11 @@
   }
 
   .frame {
-    @apply overflow-visible;
+    @apply flex-1 overflow-visible;
     grid-template-areas: "recipes content items";
+    grid-template-rows: minmax(0, 1fr);
+    height: calc(100svh - var(--app-header-height));
+    min-height: 0;
   }
 
   .recipe-column {
@@ -152,7 +162,8 @@
   }
 
   .items-column {
-    @apply mt-0 border-0;
+    @apply static mt-0 self-auto overflow-visible border-0;
+    height: auto;
   }
 
   .desktop-expanded {
