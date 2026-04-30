@@ -54,6 +54,110 @@ describe("buildRecipeCatalogEntry", () => {
     });
   });
 
+  it("places two-row shaped recipes in the middle and bottom rows", () => {
+    const entry = buildRecipeCatalogEntry({
+      recipe: {
+        type: "crafting_shaped",
+        pattern: ["ABC", "DEF"],
+        key: {
+          A: { item: "minecraft:apple" },
+          B: { item: "minecraft:bread" },
+          C: { item: "minecraft:carrot" },
+          D: { item: "minecraft:diamond" },
+          E: { item: "minecraft:emerald" },
+          F: { item: "minecraft:flint" },
+        },
+        result: { item: "minecraft:stick" },
+      },
+    });
+
+    expect(entry?.slots[SLOTS.crafting.slot1]).toBeUndefined();
+    expect(entry?.slots[SLOTS.crafting.slot2]).toBeUndefined();
+    expect(entry?.slots[SLOTS.crafting.slot3]).toBeUndefined();
+    expect(entry?.slots[SLOTS.crafting.slot4]).toEqual({
+      kind: "item",
+      id: "minecraft:apple",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot5]).toEqual({
+      kind: "item",
+      id: "minecraft:bread",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot6]).toEqual({
+      kind: "item",
+      id: "minecraft:carrot",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot7]).toEqual({
+      kind: "item",
+      id: "minecraft:diamond",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot8]).toEqual({
+      kind: "item",
+      id: "minecraft:emerald",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot9]).toEqual({
+      kind: "item",
+      id: "minecraft:flint",
+    });
+  });
+
+  it("keeps three-row shaped recipes in the full 3x3 pattern", () => {
+    const entry = buildRecipeCatalogEntry({
+      recipe: {
+        type: "crafting_shaped",
+        pattern: ["ABC", "DEF", "GHI"],
+        key: {
+          A: { item: "minecraft:apple" },
+          B: { item: "minecraft:bread" },
+          C: { item: "minecraft:carrot" },
+          D: { item: "minecraft:diamond" },
+          E: { item: "minecraft:emerald" },
+          F: { item: "minecraft:flint" },
+          G: { item: "minecraft:gold_ingot" },
+          H: { item: "minecraft:honeycomb" },
+          I: { item: "minecraft:iron_ingot" },
+        },
+        result: { item: "minecraft:stick" },
+      },
+    });
+
+    expect(entry?.slots[SLOTS.crafting.slot1]).toEqual({
+      kind: "item",
+      id: "minecraft:apple",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot2]).toEqual({
+      kind: "item",
+      id: "minecraft:bread",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot3]).toEqual({
+      kind: "item",
+      id: "minecraft:carrot",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot4]).toEqual({
+      kind: "item",
+      id: "minecraft:diamond",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot5]).toEqual({
+      kind: "item",
+      id: "minecraft:emerald",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot6]).toEqual({
+      kind: "item",
+      id: "minecraft:flint",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot7]).toEqual({
+      kind: "item",
+      id: "minecraft:gold_ingot",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot8]).toEqual({
+      kind: "item",
+      id: "minecraft:honeycomb",
+    });
+    expect(entry?.slots[SLOTS.crafting.slot9]).toEqual({
+      kind: "item",
+      id: "minecraft:iron_ingot",
+    });
+  });
+
   it("translates tags and alternatives", () => {
     const entry = buildRecipeCatalogEntry({
       recipe: {
@@ -66,7 +170,7 @@ describe("buildRecipeCatalogEntry", () => {
       },
     });
 
-    expect(entry?.slots[SLOTS.crafting.slot2]).toEqual({
+    expect(entry?.slots[SLOTS.crafting.slot5]).toEqual({
       kind: "alternatives",
       values: [
         { kind: "item", id: "minecraft:bamboo" },

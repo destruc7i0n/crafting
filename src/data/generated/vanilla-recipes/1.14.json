@@ -7,19 +7,19 @@
         "id": "minecraft:oak_wood",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:oak_log"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:oak_log"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:oak_log"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:oak_log"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:oak_log"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:oak_log"
       }
@@ -103,18 +103,6 @@
         "id": "minecraft:oak_fence",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:oak_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:oak_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:oak_planks"
@@ -124,6 +112,18 @@
         "id": "minecraft:stick"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:oak_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:oak_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:oak_planks"
       }
@@ -136,18 +136,6 @@
         "kind": "item",
         "id": "minecraft:oak_fence_gate"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:oak_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:stick"
@@ -157,6 +145,18 @@
         "id": "minecraft:oak_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:oak_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:stick"
       }
@@ -204,18 +204,6 @@
         "id": "minecraft:oak_trapdoor",
         "count": 2
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:oak_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:oak_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:oak_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:oak_planks"
@@ -225,6 +213,18 @@
         "id": "minecraft:oak_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:oak_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:oak_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:oak_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:oak_planks"
       }
@@ -268,19 +268,19 @@
         "id": "minecraft:spruce_wood",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:spruce_log"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:spruce_log"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:spruce_log"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:spruce_log"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:spruce_log"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:spruce_log"
       }
@@ -364,18 +364,6 @@
         "id": "minecraft:spruce_fence",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:spruce_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:spruce_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:spruce_planks"
@@ -385,6 +373,18 @@
         "id": "minecraft:stick"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:spruce_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:spruce_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:spruce_planks"
       }
@@ -397,18 +397,6 @@
         "kind": "item",
         "id": "minecraft:spruce_fence_gate"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:spruce_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:stick"
@@ -418,6 +406,18 @@
         "id": "minecraft:spruce_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:spruce_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:stick"
       }
@@ -465,18 +465,6 @@
         "id": "minecraft:spruce_trapdoor",
         "count": 2
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:spruce_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:spruce_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:spruce_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:spruce_planks"
@@ -486,6 +474,18 @@
         "id": "minecraft:spruce_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:spruce_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:spruce_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:spruce_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:spruce_planks"
       }
@@ -529,19 +529,19 @@
         "id": "minecraft:birch_wood",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:birch_log"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:birch_log"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:birch_log"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:birch_log"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:birch_log"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:birch_log"
       }
@@ -625,18 +625,6 @@
         "id": "minecraft:birch_fence",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:birch_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:birch_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:birch_planks"
@@ -646,6 +634,18 @@
         "id": "minecraft:stick"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:birch_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:birch_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:birch_planks"
       }
@@ -658,18 +658,6 @@
         "kind": "item",
         "id": "minecraft:birch_fence_gate"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:birch_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:stick"
@@ -679,6 +667,18 @@
         "id": "minecraft:birch_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:birch_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:stick"
       }
@@ -726,18 +726,6 @@
         "id": "minecraft:birch_trapdoor",
         "count": 2
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:birch_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:birch_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:birch_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:birch_planks"
@@ -747,6 +735,18 @@
         "id": "minecraft:birch_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:birch_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:birch_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:birch_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:birch_planks"
       }
@@ -790,19 +790,19 @@
         "id": "minecraft:jungle_wood",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:jungle_log"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:jungle_log"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:jungle_log"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:jungle_log"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:jungle_log"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:jungle_log"
       }
@@ -886,18 +886,6 @@
         "id": "minecraft:jungle_fence",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:jungle_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:jungle_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:jungle_planks"
@@ -907,6 +895,18 @@
         "id": "minecraft:stick"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:jungle_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:jungle_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:jungle_planks"
       }
@@ -919,18 +919,6 @@
         "kind": "item",
         "id": "minecraft:jungle_fence_gate"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:jungle_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:stick"
@@ -940,6 +928,18 @@
         "id": "minecraft:jungle_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:jungle_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:stick"
       }
@@ -987,18 +987,6 @@
         "id": "minecraft:jungle_trapdoor",
         "count": 2
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:jungle_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:jungle_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:jungle_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:jungle_planks"
@@ -1008,6 +996,18 @@
         "id": "minecraft:jungle_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:jungle_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:jungle_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:jungle_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:jungle_planks"
       }
@@ -1051,19 +1051,19 @@
         "id": "minecraft:acacia_wood",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:acacia_log"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:acacia_log"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:acacia_log"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:acacia_log"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:acacia_log"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:acacia_log"
       }
@@ -1147,18 +1147,6 @@
         "id": "minecraft:acacia_fence",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:acacia_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:acacia_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:acacia_planks"
@@ -1168,6 +1156,18 @@
         "id": "minecraft:stick"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:acacia_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:acacia_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:acacia_planks"
       }
@@ -1180,18 +1180,6 @@
         "kind": "item",
         "id": "minecraft:acacia_fence_gate"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:acacia_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:stick"
@@ -1201,6 +1189,18 @@
         "id": "minecraft:acacia_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:acacia_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:stick"
       }
@@ -1248,18 +1248,6 @@
         "id": "minecraft:acacia_trapdoor",
         "count": 2
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:acacia_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:acacia_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:acacia_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:acacia_planks"
@@ -1269,6 +1257,18 @@
         "id": "minecraft:acacia_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:acacia_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:acacia_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:acacia_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:acacia_planks"
       }
@@ -1312,19 +1312,19 @@
         "id": "minecraft:dark_oak_wood",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:dark_oak_log"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:dark_oak_log"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:dark_oak_log"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:dark_oak_log"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:dark_oak_log"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:dark_oak_log"
       }
@@ -1408,18 +1408,6 @@
         "id": "minecraft:dark_oak_fence",
         "count": 3
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:dark_oak_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:dark_oak_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:dark_oak_planks"
@@ -1429,6 +1417,18 @@
         "id": "minecraft:stick"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:dark_oak_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:dark_oak_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:dark_oak_planks"
       }
@@ -1441,18 +1441,6 @@
         "kind": "item",
         "id": "minecraft:dark_oak_fence_gate"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:dark_oak_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:stick"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:stick"
@@ -1462,6 +1450,18 @@
         "id": "minecraft:dark_oak_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:stick"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:dark_oak_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:stick"
       }
@@ -1509,18 +1509,6 @@
         "id": "minecraft:dark_oak_trapdoor",
         "count": 2
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:dark_oak_planks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:dark_oak_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:dark_oak_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:dark_oak_planks"
@@ -1530,6 +1518,18 @@
         "id": "minecraft:dark_oak_planks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:dark_oak_planks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:dark_oak_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:dark_oak_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:dark_oak_planks"
       }
@@ -1782,18 +1782,6 @@
         "id": "minecraft:cobblestone_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:cobblestone"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:cobblestone"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:cobblestone"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:cobblestone"
@@ -1803,6 +1791,18 @@
         "id": "minecraft:cobblestone"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:cobblestone"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:cobblestone"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:cobblestone"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:cobblestone"
       }
@@ -1929,18 +1929,6 @@
         "id": "minecraft:mossy_cobblestone_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:mossy_cobblestone"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:mossy_cobblestone"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:mossy_cobblestone"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:mossy_cobblestone"
@@ -1950,6 +1938,18 @@
         "id": "minecraft:mossy_cobblestone"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:mossy_cobblestone"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:mossy_cobblestone"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:mossy_cobblestone"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:mossy_cobblestone"
       }
@@ -2025,19 +2025,19 @@
         "id": "minecraft:stone_bricks",
         "count": 4
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:stone"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:stone"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:stone"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:stone"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:stone"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:stone"
       }
@@ -2187,18 +2187,6 @@
         "id": "minecraft:stone_brick_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:stone_bricks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:stone_bricks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:stone_bricks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:stone_bricks"
@@ -2208,6 +2196,18 @@
         "id": "minecraft:stone_bricks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:stone_bricks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:stone_bricks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:stone_bricks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:stone_bricks"
       }
@@ -2246,11 +2246,11 @@
         "kind": "item",
         "id": "minecraft:chiseled_stone_bricks"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:stone_brick_slab"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:stone_brick_slab"
       }
@@ -2390,18 +2390,6 @@
         "id": "minecraft:mossy_stone_brick_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:mossy_stone_bricks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:mossy_stone_bricks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:mossy_stone_bricks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:mossy_stone_bricks"
@@ -2411,6 +2399,18 @@
         "id": "minecraft:mossy_stone_bricks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:mossy_stone_bricks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:mossy_stone_bricks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:mossy_stone_bricks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:mossy_stone_bricks"
       }
@@ -2537,18 +2537,6 @@
         "id": "minecraft:granite_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:granite"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:granite"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:granite"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:granite"
@@ -2558,6 +2546,18 @@
         "id": "minecraft:granite"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:granite"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:granite"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:granite"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:granite"
       }
@@ -2584,19 +2584,19 @@
         "id": "minecraft:polished_granite",
         "count": 4
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:granite"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:granite"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:granite"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:granite"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:granite"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:granite"
       }
@@ -2733,19 +2733,19 @@
         "id": "minecraft:diorite",
         "count": 2
       },
-      "crafting.1": {
+      "crafting.4": {
         "kind": "item",
         "id": "minecraft:cobblestone"
       },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:quartz"
-      },
-      "crafting.4": {
-        "kind": "item",
-        "id": "minecraft:quartz"
-      },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:quartz"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:quartz"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:cobblestone"
       }
@@ -2842,18 +2842,6 @@
         "id": "minecraft:diorite_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:diorite"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:diorite"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:diorite"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:diorite"
@@ -2863,6 +2851,18 @@
         "id": "minecraft:diorite"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:diorite"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:diorite"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:diorite"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:diorite"
       }
@@ -2889,19 +2889,19 @@
         "id": "minecraft:polished_diorite",
         "count": 4
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:diorite"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:diorite"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:diorite"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:diorite"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:diorite"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:diorite"
       }
@@ -3139,18 +3139,6 @@
         "id": "minecraft:andesite_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:andesite"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:andesite"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:andesite"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:andesite"
@@ -3160,6 +3148,18 @@
         "id": "minecraft:andesite"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:andesite"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:andesite"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:andesite"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:andesite"
       }
@@ -3186,19 +3186,19 @@
         "id": "minecraft:polished_andesite",
         "count": 4
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:andesite"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:andesite"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:andesite"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:andesite"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:andesite"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:andesite"
       }
@@ -3334,19 +3334,19 @@
         "kind": "item",
         "id": "minecraft:bricks"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:brick"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:brick"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:brick"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:brick"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:brick"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:brick"
       }
@@ -3443,18 +3443,6 @@
         "id": "minecraft:brick_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:bricks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:bricks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:bricks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:bricks"
@@ -3464,6 +3452,18 @@
         "id": "minecraft:bricks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:bricks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:bricks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:bricks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:bricks"
       }
@@ -3489,19 +3489,19 @@
         "kind": "item",
         "id": "minecraft:sandstone"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:sand"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:sand"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:sand"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:sand"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:sand"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:sand"
       }
@@ -3703,18 +3703,6 @@
         "id": "minecraft:sandstone_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:sandstone"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:sandstone"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:sandstone"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:sandstone"
@@ -3724,6 +3712,18 @@
         "id": "minecraft:sandstone"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:sandstone"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:sandstone"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:sandstone"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:sandstone"
       }
@@ -3749,11 +3749,11 @@
         "kind": "item",
         "id": "minecraft:chiseled_sandstone"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:sandstone_slab"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:sandstone_slab"
       }
@@ -3876,19 +3876,19 @@
         "id": "minecraft:cut_sandstone",
         "count": 4
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:sandstone"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:sandstone"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:sandstone"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:sandstone"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:sandstone"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:sandstone"
       }
@@ -3964,19 +3964,19 @@
         "kind": "item",
         "id": "minecraft:red_sandstone"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:red_sand"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:red_sand"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:red_sand"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:red_sand"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:red_sand"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:red_sand"
       }
@@ -4178,18 +4178,6 @@
         "id": "minecraft:red_sandstone_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:red_sandstone"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:red_sandstone"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:red_sandstone"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:red_sandstone"
@@ -4199,6 +4187,18 @@
         "id": "minecraft:red_sandstone"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:red_sandstone"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:red_sandstone"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:red_sandstone"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:red_sandstone"
       }
@@ -4224,11 +4224,11 @@
         "kind": "item",
         "id": "minecraft:chiseled_red_sandstone"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:red_sandstone_slab"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:red_sandstone_slab"
       }
@@ -4351,19 +4351,19 @@
         "id": "minecraft:cut_red_sandstone",
         "count": 4
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:red_sandstone"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:red_sandstone"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:red_sandstone"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:red_sandstone"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:red_sandstone"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:red_sandstone"
       }
@@ -4484,19 +4484,19 @@
         "kind": "item",
         "id": "minecraft:prismarine"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:prismarine_shard"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:prismarine_shard"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:prismarine_shard"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:prismarine_shard"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:prismarine_shard"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:prismarine_shard"
       }
@@ -4593,18 +4593,6 @@
         "id": "minecraft:prismarine_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:prismarine"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:prismarine"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:prismarine"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:prismarine"
@@ -4614,6 +4602,18 @@
         "id": "minecraft:prismarine"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:prismarine"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:prismarine"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:prismarine"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:prismarine"
       }
@@ -4895,19 +4895,19 @@
         "kind": "item",
         "id": "minecraft:nether_bricks"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:nether_brick"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:nether_brick"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:nether_brick"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:nether_brick"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:nether_brick"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:nether_brick"
       }
@@ -5004,18 +5004,6 @@
         "id": "minecraft:nether_brick_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:nether_bricks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:nether_bricks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:nether_bricks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:nether_bricks"
@@ -5025,6 +5013,18 @@
         "id": "minecraft:nether_bricks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:nether_bricks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:nether_bricks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:nether_bricks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:nether_bricks"
       }
@@ -5051,18 +5051,6 @@
         "id": "minecraft:nether_brick_fence",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:nether_bricks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:nether_brick"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:nether_bricks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:nether_bricks"
@@ -5072,6 +5060,18 @@
         "id": "minecraft:nether_brick"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:nether_bricks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:nether_bricks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:nether_brick"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:nether_bricks"
       }
@@ -5084,19 +5084,19 @@
         "kind": "item",
         "id": "minecraft:red_nether_bricks"
       },
-      "crafting.1": {
+      "crafting.4": {
         "kind": "item",
         "id": "minecraft:nether_brick"
       },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:nether_wart"
-      },
-      "crafting.4": {
-        "kind": "item",
-        "id": "minecraft:nether_wart"
-      },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:nether_wart"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:nether_wart"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:nether_brick"
       }
@@ -5193,18 +5193,6 @@
         "id": "minecraft:red_nether_brick_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:red_nether_bricks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:red_nether_bricks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:red_nether_bricks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:red_nether_bricks"
@@ -5214,6 +5202,18 @@
         "id": "minecraft:red_nether_bricks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:red_nether_bricks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:red_nether_bricks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:red_nether_bricks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:red_nether_bricks"
       }
@@ -5240,19 +5240,19 @@
         "id": "minecraft:end_stone_bricks",
         "count": 4
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:end_stone"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:end_stone"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:end_stone"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:end_stone"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:end_stone"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:end_stone"
       }
@@ -5389,18 +5389,6 @@
         "id": "minecraft:end_stone_brick_wall",
         "count": 6
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:end_stone_bricks"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:end_stone_bricks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:end_stone_bricks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:end_stone_bricks"
@@ -5410,6 +5398,18 @@
         "id": "minecraft:end_stone_bricks"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:end_stone_bricks"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:end_stone_bricks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:end_stone_bricks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:end_stone_bricks"
       }
@@ -5449,19 +5449,19 @@
         "id": "minecraft:purpur_block",
         "count": 4
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:popped_chorus_fruit"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:popped_chorus_fruit"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:popped_chorus_fruit"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:popped_chorus_fruit"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:popped_chorus_fruit"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:popped_chorus_fruit"
       }
@@ -5474,11 +5474,11 @@
         "kind": "item",
         "id": "minecraft:purpur_pillar"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:purpur_slab"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:purpur_slab"
       }
@@ -5759,18 +5759,6 @@
         "id": "minecraft:iron_bars",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
@@ -5780,6 +5768,18 @@
         "id": "minecraft:iron_ingot"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       }
@@ -5826,19 +5826,19 @@
         "kind": "item",
         "id": "minecraft:iron_trapdoor"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       }
@@ -6110,19 +6110,19 @@
         "kind": "item",
         "id": "minecraft:quartz_block"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:quartz"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:quartz"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:quartz"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:quartz"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:quartz"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:quartz"
       }
@@ -6335,11 +6335,11 @@
         "kind": "item",
         "id": "minecraft:chiseled_quartz_block"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:quartz_slab"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:quartz_slab"
       }
@@ -6366,11 +6366,11 @@
         "id": "minecraft:quartz_pillar",
         "count": 2
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:quartz_block"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:quartz_block"
       }
@@ -6492,19 +6492,19 @@
         "kind": "item",
         "id": "minecraft:white_wool"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:string"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:string"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:string"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:string"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:string"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:string"
       }
@@ -10193,18 +10193,6 @@
         "id": "minecraft:glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:glass"
@@ -10214,6 +10202,18 @@
         "id": "minecraft:glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:glass"
       }
@@ -10227,18 +10227,6 @@
         "id": "minecraft:white_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:white_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:white_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:white_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:white_stained_glass"
@@ -10248,6 +10236,18 @@
         "id": "minecraft:white_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:white_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:white_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:white_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:white_stained_glass"
       }
@@ -10307,18 +10307,6 @@
         "id": "minecraft:light_gray_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:light_gray_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:light_gray_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:light_gray_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:light_gray_stained_glass"
@@ -10328,6 +10316,18 @@
         "id": "minecraft:light_gray_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:light_gray_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:light_gray_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:light_gray_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:light_gray_stained_glass"
       }
@@ -10387,18 +10387,6 @@
         "id": "minecraft:gray_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:gray_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:gray_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:gray_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:gray_stained_glass"
@@ -10408,6 +10396,18 @@
         "id": "minecraft:gray_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:gray_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:gray_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:gray_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:gray_stained_glass"
       }
@@ -10467,18 +10467,6 @@
         "id": "minecraft:black_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:black_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:black_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:black_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:black_stained_glass"
@@ -10488,6 +10476,18 @@
         "id": "minecraft:black_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:black_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:black_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:black_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:black_stained_glass"
       }
@@ -10547,18 +10547,6 @@
         "id": "minecraft:brown_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:brown_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:brown_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:brown_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:brown_stained_glass"
@@ -10568,6 +10556,18 @@
         "id": "minecraft:brown_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:brown_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:brown_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:brown_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:brown_stained_glass"
       }
@@ -10627,18 +10627,6 @@
         "id": "minecraft:red_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:red_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:red_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:red_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:red_stained_glass"
@@ -10648,6 +10636,18 @@
         "id": "minecraft:red_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:red_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:red_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:red_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:red_stained_glass"
       }
@@ -10707,18 +10707,6 @@
         "id": "minecraft:orange_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:orange_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:orange_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:orange_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:orange_stained_glass"
@@ -10728,6 +10716,18 @@
         "id": "minecraft:orange_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:orange_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:orange_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:orange_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:orange_stained_glass"
       }
@@ -10787,18 +10787,6 @@
         "id": "minecraft:yellow_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:yellow_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:yellow_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:yellow_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:yellow_stained_glass"
@@ -10808,6 +10796,18 @@
         "id": "minecraft:yellow_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:yellow_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:yellow_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:yellow_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:yellow_stained_glass"
       }
@@ -10867,18 +10867,6 @@
         "id": "minecraft:lime_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:lime_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:lime_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:lime_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:lime_stained_glass"
@@ -10888,6 +10876,18 @@
         "id": "minecraft:lime_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:lime_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:lime_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:lime_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:lime_stained_glass"
       }
@@ -10947,18 +10947,6 @@
         "id": "minecraft:green_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:green_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:green_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:green_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:green_stained_glass"
@@ -10968,6 +10956,18 @@
         "id": "minecraft:green_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:green_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:green_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:green_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:green_stained_glass"
       }
@@ -11027,18 +11027,6 @@
         "id": "minecraft:cyan_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:cyan_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:cyan_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:cyan_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:cyan_stained_glass"
@@ -11048,6 +11036,18 @@
         "id": "minecraft:cyan_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:cyan_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:cyan_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:cyan_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:cyan_stained_glass"
       }
@@ -11107,18 +11107,6 @@
         "id": "minecraft:light_blue_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:light_blue_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:light_blue_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:light_blue_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:light_blue_stained_glass"
@@ -11128,6 +11116,18 @@
         "id": "minecraft:light_blue_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:light_blue_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:light_blue_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:light_blue_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:light_blue_stained_glass"
       }
@@ -11187,18 +11187,6 @@
         "id": "minecraft:blue_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:blue_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:blue_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:blue_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:blue_stained_glass"
@@ -11208,6 +11196,18 @@
         "id": "minecraft:blue_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:blue_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:blue_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:blue_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:blue_stained_glass"
       }
@@ -11267,18 +11267,6 @@
         "id": "minecraft:purple_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:purple_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:purple_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:purple_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:purple_stained_glass"
@@ -11288,6 +11276,18 @@
         "id": "minecraft:purple_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:purple_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:purple_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:purple_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:purple_stained_glass"
       }
@@ -11347,18 +11347,6 @@
         "id": "minecraft:magenta_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:magenta_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:magenta_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:magenta_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:magenta_stained_glass"
@@ -11368,6 +11356,18 @@
         "id": "minecraft:magenta_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:magenta_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:magenta_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:magenta_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:magenta_stained_glass"
       }
@@ -11427,18 +11427,6 @@
         "id": "minecraft:pink_stained_glass_pane",
         "count": 16
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:pink_stained_glass"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:pink_stained_glass"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:pink_stained_glass"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:pink_stained_glass"
@@ -11448,6 +11436,18 @@
         "id": "minecraft:pink_stained_glass"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:pink_stained_glass"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:pink_stained_glass"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:pink_stained_glass"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:pink_stained_glass"
       }
@@ -11527,27 +11527,27 @@
         "kind": "item",
         "id": "minecraft:white_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:white_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:white_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:white_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:white_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:white_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:white_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -11560,27 +11560,27 @@
         "kind": "item",
         "id": "minecraft:light_gray_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:light_gray_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:light_gray_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:light_gray_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:light_gray_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:light_gray_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:light_gray_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -11610,27 +11610,27 @@
         "kind": "item",
         "id": "minecraft:gray_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:gray_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:gray_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:gray_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:gray_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:gray_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:gray_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -11660,27 +11660,27 @@
         "kind": "item",
         "id": "minecraft:black_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:black_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:black_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:black_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:black_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:black_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:black_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -11710,27 +11710,27 @@
         "kind": "item",
         "id": "minecraft:brown_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:brown_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:brown_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:brown_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:brown_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:brown_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:brown_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -11760,27 +11760,27 @@
         "kind": "item",
         "id": "minecraft:red_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:red_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:red_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:red_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:red_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:red_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:red_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -11810,27 +11810,27 @@
         "kind": "item",
         "id": "minecraft:orange_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:orange_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:orange_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:orange_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:orange_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:orange_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:orange_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -11860,27 +11860,27 @@
         "kind": "item",
         "id": "minecraft:yellow_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:yellow_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:yellow_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:yellow_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:yellow_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:yellow_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:yellow_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -11910,27 +11910,27 @@
         "kind": "item",
         "id": "minecraft:lime_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:lime_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:lime_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:lime_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:lime_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:lime_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:lime_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -11960,27 +11960,27 @@
         "kind": "item",
         "id": "minecraft:green_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:green_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:green_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:green_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:green_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:green_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:green_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -12010,27 +12010,27 @@
         "kind": "item",
         "id": "minecraft:cyan_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:cyan_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:cyan_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:cyan_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:cyan_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:cyan_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:cyan_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -12060,27 +12060,27 @@
         "kind": "item",
         "id": "minecraft:light_blue_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:light_blue_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:light_blue_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:light_blue_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:light_blue_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:light_blue_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:light_blue_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -12110,27 +12110,27 @@
         "kind": "item",
         "id": "minecraft:blue_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:blue_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:blue_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:blue_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:blue_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:blue_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:blue_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -12160,27 +12160,27 @@
         "kind": "item",
         "id": "minecraft:purple_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:purple_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:purple_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:purple_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:purple_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:purple_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:purple_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -12210,27 +12210,27 @@
         "kind": "item",
         "id": "minecraft:magenta_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:magenta_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:magenta_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:magenta_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:magenta_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:magenta_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:magenta_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -12260,27 +12260,27 @@
         "kind": "item",
         "id": "minecraft:pink_bed"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:pink_wool"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:pink_wool"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:pink_wool"
-      },
       "crafting.4": {
-        "kind": "tag",
-        "id": "minecraft:planks"
+        "kind": "item",
+        "id": "minecraft:pink_wool"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:pink_wool"
+      },
+      "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:pink_wool"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.8": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -12903,19 +12903,19 @@
         "id": "minecraft:coarse_dirt",
         "count": 4
       },
-      "crafting.1": {
+      "crafting.4": {
         "kind": "item",
         "id": "minecraft:dirt"
       },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:gravel"
-      },
-      "crafting.4": {
-        "kind": "item",
-        "id": "minecraft:gravel"
-      },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:gravel"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:gravel"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:dirt"
       }
@@ -12928,19 +12928,19 @@
         "kind": "item",
         "id": "minecraft:clay"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:clay_ball"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:clay_ball"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:clay_ball"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:clay_ball"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:clay_ball"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:clay_ball"
       }
@@ -13043,19 +13043,19 @@
         "kind": "item",
         "id": "minecraft:snow_block"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:snowball"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:snowball"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:snowball"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:snowball"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:snowball"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:snowball"
       }
@@ -13090,19 +13090,19 @@
         "kind": "item",
         "id": "minecraft:magma_block"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:magma_cream"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:magma_cream"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:magma_cream"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:magma_cream"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:magma_cream"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:magma_cream"
       }
@@ -13160,19 +13160,19 @@
         "kind": "item",
         "id": "minecraft:glowstone"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:glowstone_dust"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:glowstone_dust"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:glowstone_dust"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:glowstone_dust"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:glowstone_dust"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:glowstone_dust"
       }
@@ -13360,11 +13360,11 @@
         "kind": "item",
         "id": "minecraft:jack_o_lantern"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:carved_pumpkin"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:torch"
       }
@@ -13468,7 +13468,7 @@
         "id": "minecraft:torch",
         "count": 4
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "alternatives",
         "values": [
           {
@@ -13481,7 +13481,7 @@
           }
         ]
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:stick"
       }
@@ -13494,11 +13494,11 @@
         "kind": "item",
         "id": "minecraft:redstone_torch"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:redstone"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:stick"
       }
@@ -13557,11 +13557,11 @@
         "id": "minecraft:end_rod",
         "count": 4
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:blaze_rod"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:popped_chorus_fruit"
       }
@@ -13603,19 +13603,19 @@
         "kind": "item",
         "id": "minecraft:crafting_table"
       },
-      "crafting.1": {
-        "kind": "tag",
-        "id": "minecraft:planks"
-      },
-      "crafting.2": {
-        "kind": "tag",
-        "id": "minecraft:planks"
-      },
       "crafting.4": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
       "crafting.5": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.7": {
+        "kind": "tag",
+        "id": "minecraft:planks"
+      },
+      "crafting.8": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -13628,19 +13628,19 @@
         "kind": "item",
         "id": "minecraft:stonecutter"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       },
-      "crafting.4": {
+      "crafting.7": {
         "kind": "item",
         "id": "minecraft:stone"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:stone"
       },
-      "crafting.6": {
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:stone"
       }
@@ -13752,23 +13752,23 @@
         "kind": "item",
         "id": "minecraft:grindstone"
       },
-      "crafting.1": {
+      "crafting.4": {
         "kind": "item",
         "id": "minecraft:stick"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:stone_slab"
       },
-      "crafting.3": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:stick"
       },
-      "crafting.4": {
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.6": {
+      "crafting.9": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -13781,19 +13781,19 @@
         "kind": "item",
         "id": "minecraft:loom"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:string"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:string"
-      },
       "crafting.4": {
+        "kind": "item",
+        "id": "minecraft:string"
+      },
+      "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:string"
+      },
+      "crafting.7": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -14204,19 +14204,19 @@
         "kind": "item",
         "id": "minecraft:brewing_stand"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:blaze_rod"
       },
-      "crafting.4": {
+      "crafting.7": {
         "kind": "item",
         "id": "minecraft:cobblestone"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:cobblestone"
       },
-      "crafting.6": {
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:cobblestone"
       }
@@ -14432,15 +14432,15 @@
         "kind": "item",
         "id": "minecraft:flower_pot"
       },
-      "crafting.1": {
+      "crafting.4": {
         "kind": "item",
         "id": "minecraft:brick"
       },
-      "crafting.3": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:brick"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:brick"
       }
@@ -15066,27 +15066,27 @@
         "kind": "item",
         "id": "minecraft:repeater"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:redstone_torch"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:redstone"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:redstone_torch"
-      },
       "crafting.4": {
         "kind": "item",
-        "id": "minecraft:stone"
+        "id": "minecraft:redstone_torch"
       },
       "crafting.5": {
         "kind": "item",
-        "id": "minecraft:stone"
+        "id": "minecraft:redstone"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:redstone_torch"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:stone"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:stone"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:stone"
       }
@@ -15136,11 +15136,11 @@
         "kind": "item",
         "id": "minecraft:lever"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:stick"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:cobblestone"
       }
@@ -15265,11 +15265,11 @@
         "kind": "item",
         "id": "minecraft:sticky_piston"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:slime_ball"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:piston"
       }
@@ -15631,23 +15631,23 @@
         "kind": "item",
         "id": "minecraft:minecart"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       },
-      "crafting.5": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       },
-      "crafting.6": {
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       }
@@ -15660,11 +15660,11 @@
         "kind": "item",
         "id": "minecraft:hopper_minecart"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:hopper"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:minecart"
       }
@@ -15677,11 +15677,11 @@
         "kind": "item",
         "id": "minecraft:chest_minecart"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:chest"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:minecart"
       }
@@ -15694,11 +15694,11 @@
         "kind": "item",
         "id": "minecraft:furnace_minecart"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:furnace"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:minecart"
       }
@@ -15711,11 +15711,11 @@
         "kind": "item",
         "id": "minecraft:tnt_minecart"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:tnt"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:minecart"
       }
@@ -16329,15 +16329,15 @@
         "kind": "item",
         "id": "minecraft:bucket"
       },
-      "crafting.1": {
+      "crafting.4": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       },
-      "crafting.3": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       }
@@ -16455,11 +16455,11 @@
         "kind": "item",
         "id": "minecraft:shears"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       },
-      "crafting.4": {
+      "crafting.7": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       }
@@ -16626,11 +16626,11 @@
         "kind": "item",
         "id": "minecraft:carrot_on_a_stick"
       },
-      "crafting.1": {
+      "crafting.4": {
         "kind": "item",
         "id": "minecraft:fishing_rod"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:carrot"
       }
@@ -16643,23 +16643,23 @@
         "kind": "item",
         "id": "minecraft:oak_boat"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:oak_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:oak_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:oak_planks"
       },
-      "crafting.5": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:oak_planks"
       },
-      "crafting.6": {
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:oak_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:oak_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:oak_planks"
       }
@@ -16672,23 +16672,23 @@
         "kind": "item",
         "id": "minecraft:spruce_boat"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:spruce_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:spruce_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:spruce_planks"
       },
-      "crafting.5": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:spruce_planks"
       },
-      "crafting.6": {
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:spruce_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:spruce_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:spruce_planks"
       }
@@ -16701,23 +16701,23 @@
         "kind": "item",
         "id": "minecraft:birch_boat"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:birch_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:birch_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:birch_planks"
       },
-      "crafting.5": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:birch_planks"
       },
-      "crafting.6": {
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:birch_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:birch_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:birch_planks"
       }
@@ -16730,23 +16730,23 @@
         "kind": "item",
         "id": "minecraft:jungle_boat"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:jungle_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:jungle_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:jungle_planks"
       },
-      "crafting.5": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:jungle_planks"
       },
-      "crafting.6": {
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:jungle_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:jungle_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:jungle_planks"
       }
@@ -16759,23 +16759,23 @@
         "kind": "item",
         "id": "minecraft:acacia_boat"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:acacia_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:acacia_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:acacia_planks"
       },
-      "crafting.5": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:acacia_planks"
       },
-      "crafting.6": {
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:acacia_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:acacia_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:acacia_planks"
       }
@@ -16788,23 +16788,23 @@
         "kind": "item",
         "id": "minecraft:dark_oak_boat"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:dark_oak_planks"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:dark_oak_planks"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:dark_oak_planks"
       },
-      "crafting.5": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:dark_oak_planks"
       },
-      "crafting.6": {
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:dark_oak_planks"
+      },
+      "crafting.8": {
+        "kind": "item",
+        "id": "minecraft:dark_oak_planks"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:dark_oak_planks"
       }
@@ -16959,23 +16959,23 @@
         "kind": "item",
         "id": "minecraft:leather_helmet"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:leather"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:leather"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:leather"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:leather"
       },
+      "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:leather"
+      },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:leather"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:leather"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:leather"
       }
@@ -17066,19 +17066,19 @@
         "kind": "item",
         "id": "minecraft:leather_boots"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:leather"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:leather"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:leather"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:leather"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:leather"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:leather"
       }
@@ -17091,23 +17091,23 @@
         "kind": "item",
         "id": "minecraft:iron_helmet"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       },
+      "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       }
@@ -17198,19 +17198,19 @@
         "kind": "item",
         "id": "minecraft:iron_boots"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:iron_ingot"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:iron_ingot"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:iron_ingot"
       }
@@ -17223,23 +17223,23 @@
         "kind": "item",
         "id": "minecraft:golden_helmet"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:gold_ingot"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:gold_ingot"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:gold_ingot"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:gold_ingot"
       },
+      "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:gold_ingot"
+      },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:gold_ingot"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:gold_ingot"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:gold_ingot"
       }
@@ -17330,19 +17330,19 @@
         "kind": "item",
         "id": "minecraft:golden_boots"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:gold_ingot"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:gold_ingot"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:gold_ingot"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:gold_ingot"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:gold_ingot"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:gold_ingot"
       }
@@ -17355,23 +17355,23 @@
         "kind": "item",
         "id": "minecraft:diamond_helmet"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:diamond"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:diamond"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:diamond"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:diamond"
       },
+      "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:diamond"
+      },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:diamond"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:diamond"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:diamond"
       }
@@ -17462,19 +17462,19 @@
         "kind": "item",
         "id": "minecraft:diamond_boots"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:diamond"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:diamond"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:diamond"
       },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:diamond"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:diamond"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:diamond"
       }
@@ -17487,23 +17487,23 @@
         "kind": "item",
         "id": "minecraft:turtle_helmet"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:scute"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:scute"
-      },
-      "crafting.3": {
-        "kind": "item",
-        "id": "minecraft:scute"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:scute"
       },
+      "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:scute"
+      },
       "crafting.6": {
+        "kind": "item",
+        "id": "minecraft:scute"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:scute"
+      },
+      "crafting.9": {
         "kind": "item",
         "id": "minecraft:scute"
       }
@@ -19001,11 +19001,11 @@
         "id": "minecraft:stick",
         "count": 4
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -19018,11 +19018,11 @@
         "kind": "item",
         "id": "minecraft:stick"
       },
-      "crafting.2": {
+      "crafting.5": {
         "kind": "item",
         "id": "minecraft:bamboo"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:bamboo"
       }
@@ -19049,19 +19049,19 @@
         "kind": "item",
         "id": "minecraft:leather"
       },
-      "crafting.1": {
-        "kind": "item",
-        "id": "minecraft:rabbit_hide"
-      },
-      "crafting.2": {
-        "kind": "item",
-        "id": "minecraft:rabbit_hide"
-      },
       "crafting.4": {
         "kind": "item",
         "id": "minecraft:rabbit_hide"
       },
       "crafting.5": {
+        "kind": "item",
+        "id": "minecraft:rabbit_hide"
+      },
+      "crafting.7": {
+        "kind": "item",
+        "id": "minecraft:rabbit_hide"
+      },
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:rabbit_hide"
       }
@@ -19650,15 +19650,15 @@
         "id": "minecraft:bowl",
         "count": 4
       },
-      "crafting.1": {
+      "crafting.4": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.3": {
+      "crafting.6": {
         "kind": "tag",
         "id": "minecraft:planks"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "tag",
         "id": "minecraft:planks"
       }
@@ -19745,15 +19745,15 @@
         "id": "minecraft:glass_bottle",
         "count": 3
       },
-      "crafting.1": {
+      "crafting.4": {
         "kind": "item",
         "id": "minecraft:glass"
       },
-      "crafting.3": {
+      "crafting.6": {
         "kind": "item",
         "id": "minecraft:glass"
       },
-      "crafting.5": {
+      "crafting.8": {
         "kind": "item",
         "id": "minecraft:glass"
       }

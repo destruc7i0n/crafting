@@ -62,7 +62,7 @@ const craftingShapedHandler: RecipeHandler = {
       return null;
     }
 
-    const rowOffset = Math.floor((3 - rows.length) / 2);
+    const rowOffset = Math.min(1, craftingGridSlots.length - rows.length);
     const columnOffset = Math.floor((3 - width) / 2);
     const slots: Partial<Record<RecipeSlot, CatalogSlotValue>> = {
       [SLOTS.crafting.result]: result,
