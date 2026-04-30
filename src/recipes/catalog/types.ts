@@ -9,7 +9,6 @@ export type GeneratedRecipeCatalogManifest = {
 };
 
 export type GeneratedRecipeCatalogEntry = {
-  id: string;
   recipeType: RecipeType;
   slots: Partial<Record<RecipeSlot, CatalogSlotValue>>;
 };

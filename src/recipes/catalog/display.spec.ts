@@ -4,12 +4,7 @@ import { RecipeType } from "@/data/types";
 
 import type { VersionResourceData } from "@/stores/resources";
 
-import {
-  getRecipeCardTitle,
-  getRecipeFileName,
-  getRecipeResult,
-  getRecipeSearchText,
-} from "./display";
+import { getRecipeCardTitle, getRecipeResult, getRecipeSearchText } from "./display";
 
 import type { GeneratedRecipeCatalogEntry } from "./types";
 
@@ -44,7 +39,6 @@ const resources = {
 } as VersionResourceData;
 
 const recipe = {
-  id: "minecraft:bone_meal_from_bone_block",
   recipeType: RecipeType.Crafting,
   slots: {
     "crafting.1": { kind: "item", id: "minecraft:bone_block" },
@@ -57,6 +51,10 @@ describe("recipe catalog display", () => {
     expect(getRecipeCardTitle(recipe, resources)).toBe("Bone Meal");
   });
 
+  it("falls back to the output item id for the card title", () => {
+    expect(getRecipeCardTitle(recipe)).toBe("bone meal");
+  });
+
   it("exposes the concrete output slot for rendering", () => {
     expect(getRecipeResult(recipe)).toEqual({
       slot: "crafting.result",
@@ -64,22 +62,16 @@ describe("recipe catalog display", () => {
     });
   });
 
-  it("formats the displayed file name without the minecraft namespace", () => {
-    expect(getRecipeFileName(recipe)).toBe("bone_meal_from_bone_block");
-  });
-
-  it("includes both recipe file and output item identity in search text", () => {
+  it("includes output item identity in search text", () => {
     const searchText = getRecipeSearchText(recipe, resources);
 
     expect(searchText).toContain("bone meal");
-    expect(searchText).toContain("minecraft:bone_meal_from_bone_block");
     expect(searchText).toContain("minecraft:bone_meal");
     expect(searchText).toContain("crafting");
   });
 
   it("includes alternative item and tag display names in search text", () => {
     const recipeWithAlternatives = {
-      id: "minecraft:stick",
       recipeType: RecipeType.Crafting,
       slots: {
         "crafting.5": {
@@ -102,7 +94,6 @@ describe("recipe catalog display", () => {
 
   it("includes direct tag item display names in search text", () => {
     const recipeWithDirectTag = {
-      id: "minecraft:oak_button",
       recipeType: RecipeType.Crafting,
       slots: {
         "crafting.5": { kind: "tag", id: "minecraft:planks" },

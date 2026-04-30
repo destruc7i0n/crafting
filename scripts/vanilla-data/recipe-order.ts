@@ -7,6 +7,11 @@ import type { ItemGroupOrder } from "./item-group-order";
 
 const missingItemOrder = Number.MAX_SAFE_INTEGER;
 
+export type RecipeCatalogSortEntry = {
+  id: string;
+  entry: GeneratedRecipeCatalogEntry;
+};
+
 export const catalogRecipeTypeOrder = {
   [RecipeType.Crafting]: 0,
   [RecipeType.Smelting]: 1,
@@ -22,13 +27,14 @@ export const catalogRecipeTypeOrder = {
 
 export function compareRecipeCatalogEntries(
   itemGroupOrder: ItemGroupOrder,
-  left: GeneratedRecipeCatalogEntry,
-  right: GeneratedRecipeCatalogEntry,
+  left: RecipeCatalogSortEntry,
+  right: RecipeCatalogSortEntry,
 ): number {
   return (
-    getCatalogEntryOutputOrder(itemGroupOrder, left) -
-      getCatalogEntryOutputOrder(itemGroupOrder, right) ||
-    catalogRecipeTypeOrder[left.recipeType] - catalogRecipeTypeOrder[right.recipeType] ||
+    getCatalogEntryOutputOrder(itemGroupOrder, left.entry) -
+      getCatalogEntryOutputOrder(itemGroupOrder, right.entry) ||
+    catalogRecipeTypeOrder[left.entry.recipeType] -
+      catalogRecipeTypeOrder[right.entry.recipeType] ||
     left.id.localeCompare(right.id)
   );
 }

@@ -2,10 +2,11 @@ import { describe, expect, it } from "vitest";
 
 import { RecipeType } from "@/data/types";
 
-import type { GeneratedRecipeCatalogEntry } from "@/recipes/catalog/types";
 import type { RecipeSlot } from "@/recipes/slots";
 
 import { compareRecipeCatalogEntries } from "./recipe-order";
+
+import type { RecipeCatalogSortEntry } from "./recipe-order";
 
 describe("compareRecipeCatalogEntries", () => {
   it("uses creative item order before recipe id alpha order", () => {
@@ -67,7 +68,7 @@ describe("compareRecipeCatalogEntries", () => {
 
     recipes.sort((left, right) => compareRecipeCatalogEntries(itemGroupOrder, left, right));
 
-    expect(recipes.map((recipe) => recipe.recipeType)).toEqual([
+    expect(recipes.map((recipe) => recipe.entry.recipeType)).toEqual([
       RecipeType.Smelting,
       RecipeType.Blasting,
       RecipeType.Smoking,
@@ -118,12 +119,14 @@ function entry({
   recipeType: RecipeType;
   outputId: string;
   resultSlot: RecipeSlot;
-}): GeneratedRecipeCatalogEntry {
+}): RecipeCatalogSortEntry {
   return {
     id,
-    recipeType,
-    slots: {
-      [resultSlot]: { kind: "item", id: outputId },
+    entry: {
+      recipeType,
+      slots: {
+        [resultSlot]: { kind: "item", id: outputId },
+      },
     },
   };
 }

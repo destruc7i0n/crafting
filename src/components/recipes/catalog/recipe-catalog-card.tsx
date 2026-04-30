@@ -2,7 +2,6 @@ import { memo } from "react";
 
 import { recipeCatalogCardHeight } from "@/components/recipes/catalog/constants";
 import { RecipeCatalogPreview } from "@/components/recipes/catalog/recipe-catalog-preview";
-import { getRecipeFileName, getRecipeResult } from "@/recipes/catalog/display";
 import { getRecipeTypeLabel } from "@/recipes/definitions";
 
 import type { GeneratedRecipeCatalogEntry } from "@/recipes/catalog/types";
@@ -19,16 +18,13 @@ export const RecipeCatalogCard = memo(function RecipeCatalogCard({
   title,
   resources,
 }: RecipeCatalogCardProps) {
-  const result = getRecipeResult(entry);
-  const outputId = result?.value.kind === "item" ? result.value.id : undefined;
-
   return (
     <article
       className="minecraft-preview-slots border-border bg-card text-card-foreground flex min-w-0 flex-col rounded-lg border p-2 contain-[layout_paint_style]"
       style={{ height: recipeCatalogCardHeight }}
     >
       <div className="min-w-0">
-        <div className="flex min-w-0 items-start gap-2">
+        <div className="flex min-w-0 items-center gap-2">
           <h2 className="min-w-0 flex-1 truncate text-sm leading-5 font-semibold capitalize">
             {title}
           </h2>
@@ -36,16 +32,6 @@ export const RecipeCatalogCard = memo(function RecipeCatalogCard({
             {getRecipeTypeLabel(entry.recipeType)}
           </span>
         </div>
-        {outputId ? (
-          <p className="text-muted-foreground truncate text-xs leading-4">
-            <span className="font-medium select-none">Output Item ID: </span>
-            {outputId}
-          </p>
-        ) : null}
-        <p className="text-muted-foreground truncate text-xs leading-4">
-          <span className="font-medium select-none">File: </span>
-          {getRecipeFileName(entry)}
-        </p>
       </div>
 
       <div className="mt-2 flex flex-1 items-center justify-center overflow-hidden">

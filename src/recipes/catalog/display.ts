@@ -16,10 +16,10 @@ export function getRecipeCardTitle(
   const result = getRecipeResult(entry);
 
   if (result?.value.kind === "item") {
-    return resources?.itemsById[result.value.id]?.displayName ?? formatRecipeId(entry.id);
+    return resources?.itemsById[result.value.id]?.displayName ?? formatResourceId(result.value.id);
   }
 
-  return formatRecipeId(entry.id);
+  return getRecipeDefinition(entry.recipeType).label;
 }
 
 export function getRecipeResult(
@@ -36,7 +36,6 @@ export function getRecipeSearchText(
   resources?: VersionResourceData,
 ): string {
   return [
-    entry.id,
     entry.recipeType,
     getRecipeDefinition(entry.recipeType).label,
     getRecipeCardTitle(entry, resources),
@@ -47,10 +46,6 @@ export function getRecipeSearchText(
   ]
     .join(" ")
     .toLowerCase();
-}
-
-export function getRecipeFileName(entry: GeneratedRecipeCatalogEntry): string {
-  return entry.id.replace(/^minecraft:/, "");
 }
 
 function getRecipeResultSearchParts(
@@ -106,7 +101,7 @@ function getTagSearchParts(id: string, resources?: VersionResourceData): string[
   ];
 }
 
-function formatRecipeId(id: string): string {
+function formatResourceId(id: string): string {
   return id
     .replace(/^minecraft:/, "")
     .split("/")

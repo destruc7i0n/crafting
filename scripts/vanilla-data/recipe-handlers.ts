@@ -13,7 +13,6 @@ import {
 } from "./recipe-parsing";
 
 type RecipeHandlerArgs = {
-  id: string;
   recipe: Record<string, unknown>;
 };
 
@@ -44,7 +43,7 @@ const craftingGridSlots = [
 const craftingShapedHandler: RecipeHandler = {
   recipeType: RecipeType.Crafting,
   rawTypes: ["crafting_shaped"],
-  toEntry: ({ id, recipe }) => {
+  toEntry: ({ recipe }) => {
     const pattern = getArrayField(recipe, "pattern");
     const key = getRecordField(recipe, "key");
     const result = parseResult(recipe.result);
@@ -90,14 +89,14 @@ const craftingShapedHandler: RecipeHandler = {
       }
     }
 
-    return { id, recipeType: RecipeType.Crafting, slots };
+    return { recipeType: RecipeType.Crafting, slots };
   },
 };
 
 const craftingShapelessHandler: RecipeHandler = {
   recipeType: RecipeType.Crafting,
   rawTypes: ["crafting_shapeless"],
-  toEntry: ({ id, recipe }) => {
+  toEntry: ({ recipe }) => {
     const ingredients = getArrayField(recipe, "ingredients");
     const result = parseResult(recipe.result);
 
@@ -120,7 +119,7 @@ const craftingShapelessHandler: RecipeHandler = {
       slots[slot] = ingredient;
     }
 
-    return { id, recipeType: RecipeType.Crafting, slots };
+    return { recipeType: RecipeType.Crafting, slots };
   },
 };
 
@@ -132,7 +131,7 @@ const smokingHandler = createCookingHandler(RecipeType.Smoking, "smoking");
 const stonecuttingHandler: RecipeHandler = {
   recipeType: RecipeType.Stonecutter,
   rawTypes: ["stonecutting"],
-  toEntry: ({ id, recipe }) => {
+  toEntry: ({ recipe }) => {
     const ingredient = parseIngredient(recipe.ingredient);
     const result = parseResult(recipe.result, recipe.count);
 
@@ -141,7 +140,6 @@ const stonecuttingHandler: RecipeHandler = {
     }
 
     return {
-      id,
       recipeType: RecipeType.Stonecutter,
       slots: {
         [SLOTS.stonecutter.ingredient]: ingredient,
@@ -154,7 +152,7 @@ const stonecuttingHandler: RecipeHandler = {
 const smithingHandler: RecipeHandler = {
   recipeType: RecipeType.Smithing,
   rawTypes: ["smithing"],
-  toEntry: ({ id, recipe }) => {
+  toEntry: ({ recipe }) => {
     const base = parseIngredient(recipe.base);
     const addition = parseIngredient(recipe.addition);
     const result = parseResult(recipe.result);
@@ -164,7 +162,6 @@ const smithingHandler: RecipeHandler = {
     }
 
     return {
-      id,
       recipeType: RecipeType.Smithing,
       slots: {
         [SLOTS.smithing.base]: base,
@@ -178,7 +175,7 @@ const smithingHandler: RecipeHandler = {
 const smithingTransformHandler: RecipeHandler = {
   recipeType: RecipeType.SmithingTransform,
   rawTypes: ["smithing_transform"],
-  toEntry: ({ id, recipe }) => {
+  toEntry: ({ recipe }) => {
     const template = parseIngredient(recipe.template);
     const base = parseIngredient(recipe.base);
     const addition = parseIngredient(recipe.addition);
@@ -189,7 +186,6 @@ const smithingTransformHandler: RecipeHandler = {
     }
 
     return {
-      id,
       recipeType: RecipeType.SmithingTransform,
       slots: {
         [SLOTS.smithing.template]: template,
@@ -214,10 +210,8 @@ const handlers = [
 ] satisfies RecipeHandler[];
 
 export function buildRecipeCatalogEntry({
-  id,
   recipe,
 }: {
-  id: string;
   recipe: unknown;
 }): GeneratedRecipeCatalogEntry | null {
   if (!isRecord(recipe)) {
@@ -239,14 +233,14 @@ export function buildRecipeCatalogEntry({
     return null;
   }
 
-  return handler.toEntry({ id, recipe });
+  return handler.toEntry({ recipe });
 }
 
 function createCookingHandler(recipeType: RecipeHandler["recipeType"], rawType: string) {
   return {
     recipeType,
     rawTypes: [rawType],
-    toEntry: ({ id, recipe }) => {
+    toEntry: ({ recipe }) => {
       const ingredient = parseIngredient(recipe.ingredient);
       const result = parseResult(recipe.result);
 
@@ -255,7 +249,6 @@ function createCookingHandler(recipeType: RecipeHandler["recipeType"], rawType: 
       }
 
       return {
-        id,
         recipeType,
         slots: {
           [SLOTS.cooking.ingredient]: ingredient,

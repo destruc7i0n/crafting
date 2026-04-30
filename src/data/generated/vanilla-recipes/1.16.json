@@ -1,6 +1,5 @@
 [
   {
-    "id": "minecraft:oak_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -27,7 +26,6 @@
     }
   },
   {
-    "id": "minecraft:stripped_oak_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -54,7 +52,6 @@
     }
   },
   {
-    "id": "minecraft:oak_planks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -69,7 +66,6 @@
     }
   },
   {
-    "id": "minecraft:oak_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -104,7 +100,6 @@
     }
   },
   {
-    "id": "minecraft:oak_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -127,7 +122,6 @@
     }
   },
   {
-    "id": "minecraft:oak_fence",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -162,7 +156,6 @@
     }
   },
   {
-    "id": "minecraft:oak_fence_gate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -196,7 +189,6 @@
     }
   },
   {
-    "id": "minecraft:oak_door",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -231,7 +223,6 @@
     }
   },
   {
-    "id": "minecraft:oak_trapdoor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -266,7 +257,6 @@
     }
   },
   {
-    "id": "minecraft:oak_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -284,7 +274,6 @@
     }
   },
   {
-    "id": "minecraft:oak_button",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -298,7 +287,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -325,7 +313,6 @@
     }
   },
   {
-    "id": "minecraft:stripped_spruce_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -352,7 +339,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_planks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -367,7 +353,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -402,7 +387,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -425,7 +409,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_fence",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -460,7 +443,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_fence_gate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -494,7 +476,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_door",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -529,7 +510,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_trapdoor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -564,7 +544,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -582,7 +561,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_button",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -596,7 +574,6 @@
     }
   },
   {
-    "id": "minecraft:birch_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -623,7 +600,6 @@
     }
   },
   {
-    "id": "minecraft:stripped_birch_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -650,7 +626,6 @@
     }
   },
   {
-    "id": "minecraft:birch_planks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -665,7 +640,6 @@
     }
   },
   {
-    "id": "minecraft:birch_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -700,7 +674,6 @@
     }
   },
   {
-    "id": "minecraft:birch_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -723,7 +696,6 @@
     }
   },
   {
-    "id": "minecraft:birch_fence",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -758,7 +730,6 @@
     }
   },
   {
-    "id": "minecraft:birch_fence_gate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -792,7 +763,6 @@
     }
   },
   {
-    "id": "minecraft:birch_door",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -827,7 +797,6 @@
     }
   },
   {
-    "id": "minecraft:birch_trapdoor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -862,7 +831,6 @@
     }
   },
   {
-    "id": "minecraft:birch_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -880,7 +848,6 @@
     }
   },
   {
-    "id": "minecraft:birch_button",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -894,7 +861,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -921,7 +887,6 @@
     }
   },
   {
-    "id": "minecraft:stripped_jungle_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -948,7 +913,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_planks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -963,7 +927,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -998,7 +961,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1021,7 +983,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_fence",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1056,7 +1017,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_fence_gate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1090,7 +1050,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_door",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1125,7 +1084,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_trapdoor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1160,7 +1118,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1178,7 +1135,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_button",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1192,7 +1148,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1219,7 +1174,6 @@
     }
   },
   {
-    "id": "minecraft:stripped_acacia_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1246,7 +1200,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_planks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1261,7 +1214,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1296,7 +1248,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1319,7 +1270,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_fence",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1354,7 +1304,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_fence_gate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1388,7 +1337,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_door",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1423,7 +1371,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_trapdoor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1458,7 +1405,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1476,7 +1422,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_button",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1490,7 +1435,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1517,7 +1461,6 @@
     }
   },
   {
-    "id": "minecraft:stripped_dark_oak_wood",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1544,7 +1487,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_planks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1559,7 +1501,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1594,7 +1535,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1617,7 +1557,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_fence",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1652,7 +1591,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_fence_gate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1686,7 +1624,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_door",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1721,7 +1658,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_trapdoor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1756,7 +1692,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1774,7 +1709,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_button",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1788,7 +1722,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_hyphae",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1815,7 +1748,6 @@
     }
   },
   {
-    "id": "minecraft:stripped_crimson_hyphae",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1842,7 +1774,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_planks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1857,7 +1788,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1892,7 +1822,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1915,7 +1844,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_fence",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1950,7 +1878,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_fence_gate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -1984,7 +1911,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_door",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2019,7 +1945,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_trapdoor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2054,7 +1979,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2072,7 +1996,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_button",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2086,7 +2009,6 @@
     }
   },
   {
-    "id": "minecraft:warped_hyphae",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2113,7 +2035,6 @@
     }
   },
   {
-    "id": "minecraft:stripped_warped_hyphae",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2140,7 +2061,6 @@
     }
   },
   {
-    "id": "minecraft:warped_planks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2155,7 +2075,6 @@
     }
   },
   {
-    "id": "minecraft:warped_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2190,7 +2109,6 @@
     }
   },
   {
-    "id": "minecraft:warped_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2213,7 +2131,6 @@
     }
   },
   {
-    "id": "minecraft:warped_fence",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2248,7 +2165,6 @@
     }
   },
   {
-    "id": "minecraft:warped_fence_gate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2282,7 +2198,6 @@
     }
   },
   {
-    "id": "minecraft:warped_door",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2317,7 +2232,6 @@
     }
   },
   {
-    "id": "minecraft:warped_trapdoor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2352,7 +2266,6 @@
     }
   },
   {
-    "id": "minecraft:warped_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2370,7 +2283,6 @@
     }
   },
   {
-    "id": "minecraft:warped_button",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2384,7 +2296,6 @@
     }
   },
   {
-    "id": "minecraft:stone",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -2398,7 +2309,6 @@
     }
   },
   {
-    "id": "minecraft:stone_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2433,7 +2343,6 @@
     }
   },
   {
-    "id": "minecraft:stone_stairs_from_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2447,7 +2356,6 @@
     }
   },
   {
-    "id": "minecraft:stone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2470,7 +2378,6 @@
     }
   },
   {
-    "id": "minecraft:stone_slab_from_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2485,7 +2392,6 @@
     }
   },
   {
-    "id": "minecraft:stone_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2503,7 +2409,6 @@
     }
   },
   {
-    "id": "minecraft:stone_button",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2517,7 +2422,6 @@
     }
   },
   {
-    "id": "minecraft:cobblestone_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2552,7 +2456,6 @@
     }
   },
   {
-    "id": "minecraft:cobblestone_stairs_from_cobblestone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2566,7 +2469,6 @@
     }
   },
   {
-    "id": "minecraft:cobblestone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2589,7 +2491,6 @@
     }
   },
   {
-    "id": "minecraft:cobblestone_slab_from_cobblestone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2604,7 +2505,6 @@
     }
   },
   {
-    "id": "minecraft:cobblestone_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2639,7 +2539,6 @@
     }
   },
   {
-    "id": "minecraft:cobblestone_wall_from_cobblestone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2653,7 +2552,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_cobblestone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2671,7 +2569,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_cobblestone_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2706,7 +2603,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_cobblestone_stairs_from_mossy_cobblestone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2720,7 +2616,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_cobblestone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2743,7 +2638,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_cobblestone_slab_from_mossy_cobblestone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2758,7 +2652,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_cobblestone_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2793,7 +2686,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_cobblestone_wall_from_mossy_cobblestone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2807,7 +2699,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_stone",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -2821,7 +2712,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_stone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2844,7 +2734,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_stone_slab_from_smooth_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2859,7 +2748,6 @@
     }
   },
   {
-    "id": "minecraft:stone_bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2886,7 +2774,6 @@
     }
   },
   {
-    "id": "minecraft:stone_bricks_from_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2900,7 +2787,6 @@
     }
   },
   {
-    "id": "minecraft:cracked_stone_bricks",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -2914,7 +2800,6 @@
     }
   },
   {
-    "id": "minecraft:stone_brick_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -2949,7 +2834,6 @@
     }
   },
   {
-    "id": "minecraft:stone_brick_stairs_from_stone_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2963,7 +2847,6 @@
     }
   },
   {
-    "id": "minecraft:stone_brick_stairs_from_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -2977,7 +2860,6 @@
     }
   },
   {
-    "id": "minecraft:stone_brick_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3000,7 +2882,6 @@
     }
   },
   {
-    "id": "minecraft:stone_brick_slab_from_stone_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3015,7 +2896,6 @@
     }
   },
   {
-    "id": "minecraft:stone_brick_slab_from_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3030,7 +2910,6 @@
     }
   },
   {
-    "id": "minecraft:stone_brick_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3065,7 +2944,6 @@
     }
   },
   {
-    "id": "minecraft:stone_brick_wall_from_stone_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3079,7 +2957,6 @@
     }
   },
   {
-    "id": "minecraft:stone_brick_walls_from_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3093,7 +2970,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_stone_bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3111,7 +2987,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_stone_bricks_from_stone_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3125,7 +3000,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_stone_bricks_stone_from_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3139,7 +3013,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_stone_bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3157,7 +3030,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_stone_brick_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3192,7 +3064,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_stone_brick_stairs_from_mossy_stone_brick_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3206,7 +3077,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_stone_brick_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3229,7 +3099,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_stone_brick_slab_from_mossy_stone_brick_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3244,7 +3113,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_stone_brick_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3279,7 +3147,6 @@
     }
   },
   {
-    "id": "minecraft:mossy_stone_brick_wall_from_mossy_stone_brick_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3293,7 +3160,6 @@
     }
   },
   {
-    "id": "minecraft:granite",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3311,7 +3177,6 @@
     }
   },
   {
-    "id": "minecraft:granite_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3346,7 +3211,6 @@
     }
   },
   {
-    "id": "minecraft:granite_stairs_from_granite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3360,7 +3224,6 @@
     }
   },
   {
-    "id": "minecraft:granite_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3383,7 +3246,6 @@
     }
   },
   {
-    "id": "minecraft:granite_slab_from_granite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3398,7 +3260,6 @@
     }
   },
   {
-    "id": "minecraft:granite_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3433,7 +3294,6 @@
     }
   },
   {
-    "id": "minecraft:granite_wall_from_granite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3447,7 +3307,6 @@
     }
   },
   {
-    "id": "minecraft:polished_granite",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3474,7 +3333,6 @@
     }
   },
   {
-    "id": "minecraft:polished_granite_from_granite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3488,7 +3346,6 @@
     }
   },
   {
-    "id": "minecraft:polished_granite_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3523,7 +3380,6 @@
     }
   },
   {
-    "id": "minecraft:polished_granite_stairs_from_granite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3537,7 +3393,6 @@
     }
   },
   {
-    "id": "minecraft:polished_granite_stairs_from_polished_granite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3551,7 +3406,6 @@
     }
   },
   {
-    "id": "minecraft:polished_granite_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3574,7 +3428,6 @@
     }
   },
   {
-    "id": "minecraft:polished_granite_slab_from_granite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3589,7 +3442,6 @@
     }
   },
   {
-    "id": "minecraft:polished_granite_slab_from_polished_granite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3604,7 +3456,6 @@
     }
   },
   {
-    "id": "minecraft:diorite",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3631,7 +3482,6 @@
     }
   },
   {
-    "id": "minecraft:diorite_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3666,7 +3516,6 @@
     }
   },
   {
-    "id": "minecraft:diorite_stairs_from_diorite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3680,7 +3529,6 @@
     }
   },
   {
-    "id": "minecraft:diorite_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3703,7 +3551,6 @@
     }
   },
   {
-    "id": "minecraft:diorite_slab_from_diorite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3718,7 +3565,6 @@
     }
   },
   {
-    "id": "minecraft:diorite_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3753,7 +3599,6 @@
     }
   },
   {
-    "id": "minecraft:diorite_wall_from_diorite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3767,7 +3612,6 @@
     }
   },
   {
-    "id": "minecraft:polished_diorite",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3794,7 +3638,6 @@
     }
   },
   {
-    "id": "minecraft:polished_diorite_from_diorite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3808,7 +3651,6 @@
     }
   },
   {
-    "id": "minecraft:polished_diorite_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3843,7 +3685,6 @@
     }
   },
   {
-    "id": "minecraft:polished_diorite_stairs_from_diorite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3857,7 +3698,6 @@
     }
   },
   {
-    "id": "minecraft:polished_diorite_stairs_from_polished_diorite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3871,7 +3711,6 @@
     }
   },
   {
-    "id": "minecraft:polished_diorite_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3894,7 +3733,6 @@
     }
   },
   {
-    "id": "minecraft:polished_diorite_slab_from_diorite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3909,7 +3747,6 @@
     }
   },
   {
-    "id": "minecraft:polished_diorite_slab_from_polished_diorite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3924,7 +3761,6 @@
     }
   },
   {
-    "id": "minecraft:andesite",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3943,7 +3779,6 @@
     }
   },
   {
-    "id": "minecraft:andesite_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -3978,7 +3813,6 @@
     }
   },
   {
-    "id": "minecraft:andesite_stairs_from_andesite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -3992,7 +3826,6 @@
     }
   },
   {
-    "id": "minecraft:andesite_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4015,7 +3848,6 @@
     }
   },
   {
-    "id": "minecraft:andesite_slab_from_andesite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4030,7 +3862,6 @@
     }
   },
   {
-    "id": "minecraft:andesite_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4065,7 +3896,6 @@
     }
   },
   {
-    "id": "minecraft:andesite_wall_from_andesite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4079,7 +3909,6 @@
     }
   },
   {
-    "id": "minecraft:polished_andesite",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4106,7 +3935,6 @@
     }
   },
   {
-    "id": "minecraft:polished_andesite_from_andesite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4120,7 +3948,6 @@
     }
   },
   {
-    "id": "minecraft:polished_andesite_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4155,7 +3982,6 @@
     }
   },
   {
-    "id": "minecraft:polished_andesite_stairs_from_andesite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4169,7 +3995,6 @@
     }
   },
   {
-    "id": "minecraft:polished_andesite_stairs_from_polished_andesite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4183,7 +4008,6 @@
     }
   },
   {
-    "id": "minecraft:polished_andesite_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4206,7 +4030,6 @@
     }
   },
   {
-    "id": "minecraft:polished_andesite_slab_from_andesite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4221,7 +4044,6 @@
     }
   },
   {
-    "id": "minecraft:polished_andesite_slab_from_polished_andesite_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4236,7 +4058,6 @@
     }
   },
   {
-    "id": "minecraft:bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4262,7 +4083,6 @@
     }
   },
   {
-    "id": "minecraft:brick_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4297,7 +4117,6 @@
     }
   },
   {
-    "id": "minecraft:brick_stairs_from_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4311,7 +4130,6 @@
     }
   },
   {
-    "id": "minecraft:brick_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4334,7 +4152,6 @@
     }
   },
   {
-    "id": "minecraft:brick_slab_from_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4349,7 +4166,6 @@
     }
   },
   {
-    "id": "minecraft:brick_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4384,7 +4200,6 @@
     }
   },
   {
-    "id": "minecraft:brick_wall_from_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4398,7 +4213,6 @@
     }
   },
   {
-    "id": "minecraft:sandstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4424,7 +4238,6 @@
     }
   },
   {
-    "id": "minecraft:sandstone_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4537,7 +4350,6 @@
     }
   },
   {
-    "id": "minecraft:sandstone_stairs_from_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4551,7 +4363,6 @@
     }
   },
   {
-    "id": "minecraft:sandstone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4601,7 +4412,6 @@
     }
   },
   {
-    "id": "minecraft:sandstone_slab_from_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4616,7 +4426,6 @@
     }
   },
   {
-    "id": "minecraft:sandstone_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4651,7 +4460,6 @@
     }
   },
   {
-    "id": "minecraft:sandstone_wall_from_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4665,7 +4473,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_sandstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4683,7 +4490,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_sandstone_from_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4697,7 +4503,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_sandstone",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -4711,7 +4516,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_sandstone_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4746,7 +4550,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_sandstone_stairs_from_smooth_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4760,7 +4563,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_sandstone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4783,7 +4585,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_sandstone_slab_from_smooth_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4798,7 +4599,6 @@
     }
   },
   {
-    "id": "minecraft:cut_sandstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4825,7 +4625,6 @@
     }
   },
   {
-    "id": "minecraft:cut_sandstone_from_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4839,7 +4638,6 @@
     }
   },
   {
-    "id": "minecraft:cut_sandstone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4862,7 +4660,6 @@
     }
   },
   {
-    "id": "minecraft:cut_sandstone_slab_from_cut_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4877,7 +4674,6 @@
     }
   },
   {
-    "id": "minecraft:cut_sandstone_slab_from_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -4892,7 +4688,6 @@
     }
   },
   {
-    "id": "minecraft:red_sandstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -4918,7 +4713,6 @@
     }
   },
   {
-    "id": "minecraft:red_sandstone_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5031,7 +4825,6 @@
     }
   },
   {
-    "id": "minecraft:red_sandstone_stairs_from_red_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5045,7 +4838,6 @@
     }
   },
   {
-    "id": "minecraft:red_sandstone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5095,7 +4887,6 @@
     }
   },
   {
-    "id": "minecraft:red_sandstone_slab_from_red_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5110,7 +4901,6 @@
     }
   },
   {
-    "id": "minecraft:red_sandstone_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5145,7 +4935,6 @@
     }
   },
   {
-    "id": "minecraft:red_sandstone_wall_from_red_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5159,7 +4948,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_red_sandstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5177,7 +4965,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_red_sandstone_from_red_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5191,7 +4978,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_red_sandstone",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -5205,7 +4991,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_red_sandstone_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5240,7 +5025,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_red_sandstone_stairs_from_smooth_red_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5254,7 +5038,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_red_sandstone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5277,7 +5060,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_red_sandstone_slab_from_smooth_red_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5292,7 +5074,6 @@
     }
   },
   {
-    "id": "minecraft:cut_red_sandstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5319,7 +5100,6 @@
     }
   },
   {
-    "id": "minecraft:cut_red_sandstone_from_red_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5333,7 +5113,6 @@
     }
   },
   {
-    "id": "minecraft:cut_red_sandstone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5356,7 +5135,6 @@
     }
   },
   {
-    "id": "minecraft:cut_red_sandstone_slab_from_cut_red_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5371,7 +5149,6 @@
     }
   },
   {
-    "id": "minecraft:cut_red_sandstone_slab_from_red_sandstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5386,7 +5163,6 @@
     }
   },
   {
-    "id": "minecraft:sea_lantern",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5432,7 +5208,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5458,7 +5233,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5493,7 +5267,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_stairs_from_prismarine_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5507,7 +5280,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5530,7 +5302,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_slab_from_prismarine_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5545,7 +5316,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5580,7 +5350,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_wall_from_prismarine_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5594,7 +5363,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5640,7 +5408,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_brick_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5675,7 +5442,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_brick_stairs_from_prismarine_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5689,7 +5455,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_brick_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5712,7 +5477,6 @@
     }
   },
   {
-    "id": "minecraft:prismarine_brick_slab_from_prismarine_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5727,7 +5491,6 @@
     }
   },
   {
-    "id": "minecraft:dark_prismarine",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5773,7 +5536,6 @@
     }
   },
   {
-    "id": "minecraft:dark_prismarine_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5808,7 +5570,6 @@
     }
   },
   {
-    "id": "minecraft:dark_prismarine_stairs_from_dark_prismarine_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5822,7 +5583,6 @@
     }
   },
   {
-    "id": "minecraft:dark_prismarine_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5845,7 +5605,6 @@
     }
   },
   {
-    "id": "minecraft:dark_prismarine_slab_from_dark_prismarine_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5860,7 +5619,6 @@
     }
   },
   {
-    "id": "minecraft:nether_bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5886,7 +5644,6 @@
     }
   },
   {
-    "id": "minecraft:cracked_nether_bricks",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -5900,7 +5657,6 @@
     }
   },
   {
-    "id": "minecraft:nether_brick_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5935,7 +5691,6 @@
     }
   },
   {
-    "id": "minecraft:nether_brick_stairs_from_nether_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5949,7 +5704,6 @@
     }
   },
   {
-    "id": "minecraft:nether_brick_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -5972,7 +5726,6 @@
     }
   },
   {
-    "id": "minecraft:nether_brick_slab_from_nether_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -5987,7 +5740,6 @@
     }
   },
   {
-    "id": "minecraft:nether_brick_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6022,7 +5774,6 @@
     }
   },
   {
-    "id": "minecraft:nether_brick_wall_from_nether_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6036,7 +5787,6 @@
     }
   },
   {
-    "id": "minecraft:nether_brick_fence",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6071,7 +5821,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_nether_bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6089,7 +5838,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_nether_bricks_from_nether_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6103,7 +5851,6 @@
     }
   },
   {
-    "id": "minecraft:red_nether_bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6129,7 +5876,6 @@
     }
   },
   {
-    "id": "minecraft:red_nether_brick_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6164,7 +5910,6 @@
     }
   },
   {
-    "id": "minecraft:red_nether_brick_stairs_from_red_nether_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6178,7 +5923,6 @@
     }
   },
   {
-    "id": "minecraft:red_nether_brick_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6201,7 +5945,6 @@
     }
   },
   {
-    "id": "minecraft:red_nether_brick_slab_from_red_nether_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6216,7 +5959,6 @@
     }
   },
   {
-    "id": "minecraft:red_nether_brick_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6251,7 +5993,6 @@
     }
   },
   {
-    "id": "minecraft:red_nether_brick_wall_from_red_nether_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6265,7 +6006,6 @@
     }
   },
   {
-    "id": "minecraft:polished_basalt",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6292,7 +6032,6 @@
     }
   },
   {
-    "id": "minecraft:polished_basalt_from_basalt_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6306,7 +6045,6 @@
     }
   },
   {
-    "id": "minecraft:blackstone_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6341,7 +6079,6 @@
     }
   },
   {
-    "id": "minecraft:blackstone_stairs_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6355,7 +6092,6 @@
     }
   },
   {
-    "id": "minecraft:blackstone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6378,7 +6114,6 @@
     }
   },
   {
-    "id": "minecraft:blackstone_slab_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6393,7 +6128,6 @@
     }
   },
   {
-    "id": "minecraft:blackstone_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6428,7 +6162,6 @@
     }
   },
   {
-    "id": "minecraft:blackstone_wall_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6442,7 +6175,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_polished_blackstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6460,7 +6192,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_polished_blackstone_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6474,7 +6205,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_polished_blackstone_from_polished_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6488,7 +6218,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6515,7 +6244,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6529,7 +6257,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6564,7 +6291,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_stairs_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6578,7 +6304,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_stairs_from_polished_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6592,7 +6317,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6615,7 +6339,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_slab_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6630,7 +6353,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_slab_from_polished_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6645,7 +6367,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6680,7 +6401,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_wall_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6694,7 +6414,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_wall_from_polished_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6708,7 +6427,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6726,7 +6444,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_button",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6740,7 +6457,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6767,7 +6483,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_bricks_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6781,7 +6496,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_bricks_from_polished_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6795,7 +6509,6 @@
     }
   },
   {
-    "id": "minecraft:cracked_polished_blackstone_bricks",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -6809,7 +6522,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6844,7 +6556,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_stairs_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6858,7 +6569,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_stairs_from_polished_blackstone_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6872,7 +6582,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_stairs_from_polished_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6886,7 +6595,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6909,7 +6617,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_slab_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6924,7 +6631,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_slab_from_polished_blackstone_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6939,7 +6645,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_slab_from_polished_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -6954,7 +6659,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -6989,7 +6693,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_wall_from_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7003,7 +6706,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_wall_from_polished_blackstone_bricks_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7017,7 +6719,6 @@
     }
   },
   {
-    "id": "minecraft:polished_blackstone_brick_wall_from_polished_blackstone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7031,7 +6732,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7058,7 +6758,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_bricks_from_end_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7072,7 +6771,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_brick_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7107,7 +6805,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_brick_stairs_from_end_stone_brick_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7121,7 +6818,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_brick_stairs_from_end_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7135,7 +6831,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_brick_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7158,7 +6853,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_brick_slab_from_end_stone_brick_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7173,7 +6867,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_brick_slab_from_end_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7188,7 +6881,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_brick_wall",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7223,7 +6915,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_brick_wall_from_end_stone_brick_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7237,7 +6928,6 @@
     }
   },
   {
-    "id": "minecraft:end_stone_brick_wall_from_end_stone_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7251,7 +6941,6 @@
     }
   },
   {
-    "id": "minecraft:purpur_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7278,7 +6967,6 @@
     }
   },
   {
-    "id": "minecraft:purpur_pillar",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7296,7 +6984,6 @@
     }
   },
   {
-    "id": "minecraft:purpur_pillar_from_purpur_block_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7310,7 +6997,6 @@
     }
   },
   {
-    "id": "minecraft:purpur_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7399,7 +7085,6 @@
     }
   },
   {
-    "id": "minecraft:purpur_stairs_from_purpur_block_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7413,7 +7098,6 @@
     }
   },
   {
-    "id": "minecraft:purpur_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7463,7 +7147,6 @@
     }
   },
   {
-    "id": "minecraft:purpur_slab_from_purpur_block_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -7478,7 +7161,6 @@
     }
   },
   {
-    "id": "minecraft:coal_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7524,7 +7206,6 @@
     }
   },
   {
-    "id": "minecraft:iron_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7570,7 +7251,6 @@
     }
   },
   {
-    "id": "minecraft:iron_bars",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7605,7 +7285,6 @@
     }
   },
   {
-    "id": "minecraft:iron_door",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7640,7 +7319,6 @@
     }
   },
   {
-    "id": "minecraft:iron_trapdoor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7666,7 +7344,6 @@
     }
   },
   {
-    "id": "minecraft:heavy_weighted_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7684,7 +7361,6 @@
     }
   },
   {
-    "id": "minecraft:gold_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7730,7 +7406,6 @@
     }
   },
   {
-    "id": "minecraft:light_weighted_pressure_plate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7748,7 +7423,6 @@
     }
   },
   {
-    "id": "minecraft:redstone_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7794,7 +7468,6 @@
     }
   },
   {
-    "id": "minecraft:emerald_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7840,7 +7513,6 @@
     }
   },
   {
-    "id": "minecraft:lapis_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7886,7 +7558,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7932,7 +7603,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -7978,7 +7648,6 @@
     }
   },
   {
-    "id": "minecraft:quartz_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8004,7 +7673,6 @@
     }
   },
   {
-    "id": "minecraft:quartz_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8117,7 +7785,6 @@
     }
   },
   {
-    "id": "minecraft:quartz_stairs_from_quartz_block_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -8131,7 +7798,6 @@
     }
   },
   {
-    "id": "minecraft:quartz_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8193,7 +7859,6 @@
     }
   },
   {
-    "id": "minecraft:quartz_slab_from_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -8208,7 +7873,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_quartz_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8226,7 +7890,6 @@
     }
   },
   {
-    "id": "minecraft:chiseled_quartz_block_from_quartz_block_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -8240,7 +7903,6 @@
     }
   },
   {
-    "id": "minecraft:quartz_bricks",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8267,7 +7929,6 @@
     }
   },
   {
-    "id": "minecraft:quartz_bricks_from_quartz_block_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -8281,7 +7942,6 @@
     }
   },
   {
-    "id": "minecraft:quartz_pillar",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8300,7 +7960,6 @@
     }
   },
   {
-    "id": "minecraft:quartz_pillar_from_quartz_block_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -8314,7 +7973,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_quartz",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -8328,7 +7986,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_quartz_stairs",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8363,7 +8020,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_quartz_stairs_from_smooth_quartz_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -8377,7 +8033,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_quartz_slab",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8400,7 +8055,6 @@
     }
   },
   {
-    "id": "minecraft:smooth_quartz_slab_from_smooth_quartz_stonecutting",
     "recipeType": "stonecutter",
     "slots": {
       "stonecutter.ingredient": {
@@ -8415,7 +8069,6 @@
     }
   },
   {
-    "id": "minecraft:white_wool_from_string",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8441,7 +8094,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8459,7 +8111,6 @@
     }
   },
   {
-    "id": "minecraft:gray_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8477,7 +8128,6 @@
     }
   },
   {
-    "id": "minecraft:black_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8495,7 +8145,6 @@
     }
   },
   {
-    "id": "minecraft:brown_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8513,7 +8162,6 @@
     }
   },
   {
-    "id": "minecraft:red_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8531,7 +8179,6 @@
     }
   },
   {
-    "id": "minecraft:orange_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8549,7 +8196,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8567,7 +8213,6 @@
     }
   },
   {
-    "id": "minecraft:lime_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8585,7 +8230,6 @@
     }
   },
   {
-    "id": "minecraft:green_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8603,7 +8247,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8621,7 +8264,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8639,7 +8281,6 @@
     }
   },
   {
-    "id": "minecraft:blue_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8657,7 +8298,6 @@
     }
   },
   {
-    "id": "minecraft:purple_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8675,7 +8315,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8693,7 +8332,6 @@
     }
   },
   {
-    "id": "minecraft:pink_wool",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8711,7 +8349,6 @@
     }
   },
   {
-    "id": "minecraft:white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8730,7 +8367,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8749,7 +8385,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8796,7 +8431,6 @@
     }
   },
   {
-    "id": "minecraft:gray_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8815,7 +8449,6 @@
     }
   },
   {
-    "id": "minecraft:gray_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8862,7 +8495,6 @@
     }
   },
   {
-    "id": "minecraft:black_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8881,7 +8513,6 @@
     }
   },
   {
-    "id": "minecraft:black_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8928,7 +8559,6 @@
     }
   },
   {
-    "id": "minecraft:brown_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8947,7 +8577,6 @@
     }
   },
   {
-    "id": "minecraft:brown_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -8994,7 +8623,6 @@
     }
   },
   {
-    "id": "minecraft:red_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9013,7 +8641,6 @@
     }
   },
   {
-    "id": "minecraft:red_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9060,7 +8687,6 @@
     }
   },
   {
-    "id": "minecraft:orange_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9079,7 +8705,6 @@
     }
   },
   {
-    "id": "minecraft:orange_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9126,7 +8751,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9145,7 +8769,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9192,7 +8815,6 @@
     }
   },
   {
-    "id": "minecraft:lime_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9211,7 +8833,6 @@
     }
   },
   {
-    "id": "minecraft:lime_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9258,7 +8879,6 @@
     }
   },
   {
-    "id": "minecraft:green_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9277,7 +8897,6 @@
     }
   },
   {
-    "id": "minecraft:green_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9324,7 +8943,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9343,7 +8961,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9390,7 +9007,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9409,7 +9025,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9456,7 +9071,6 @@
     }
   },
   {
-    "id": "minecraft:blue_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9475,7 +9089,6 @@
     }
   },
   {
-    "id": "minecraft:blue_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9522,7 +9135,6 @@
     }
   },
   {
-    "id": "minecraft:purple_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9541,7 +9153,6 @@
     }
   },
   {
-    "id": "minecraft:purple_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9588,7 +9199,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9607,7 +9217,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9654,7 +9263,6 @@
     }
   },
   {
-    "id": "minecraft:pink_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9673,7 +9281,6 @@
     }
   },
   {
-    "id": "minecraft:pink_carpet_from_white_carpet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9720,7 +9327,6 @@
     }
   },
   {
-    "id": "minecraft:terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -9734,7 +9340,6 @@
     }
   },
   {
-    "id": "minecraft:white_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9781,7 +9386,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9828,7 +9432,6 @@
     }
   },
   {
-    "id": "minecraft:gray_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9875,7 +9478,6 @@
     }
   },
   {
-    "id": "minecraft:black_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9922,7 +9524,6 @@
     }
   },
   {
-    "id": "minecraft:brown_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -9969,7 +9570,6 @@
     }
   },
   {
-    "id": "minecraft:red_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10016,7 +9616,6 @@
     }
   },
   {
-    "id": "minecraft:orange_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10063,7 +9662,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10110,7 +9708,6 @@
     }
   },
   {
-    "id": "minecraft:lime_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10157,7 +9754,6 @@
     }
   },
   {
-    "id": "minecraft:green_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10204,7 +9800,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10251,7 +9846,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10298,7 +9892,6 @@
     }
   },
   {
-    "id": "minecraft:blue_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10345,7 +9938,6 @@
     }
   },
   {
-    "id": "minecraft:purple_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10392,7 +9984,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10439,7 +10030,6 @@
     }
   },
   {
-    "id": "minecraft:pink_terracotta",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10486,7 +10076,6 @@
     }
   },
   {
-    "id": "minecraft:white_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10533,7 +10122,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10580,7 +10168,6 @@
     }
   },
   {
-    "id": "minecraft:gray_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10627,7 +10214,6 @@
     }
   },
   {
-    "id": "minecraft:black_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10674,7 +10260,6 @@
     }
   },
   {
-    "id": "minecraft:brown_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10721,7 +10306,6 @@
     }
   },
   {
-    "id": "minecraft:red_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10768,7 +10352,6 @@
     }
   },
   {
-    "id": "minecraft:orange_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10815,7 +10398,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10862,7 +10444,6 @@
     }
   },
   {
-    "id": "minecraft:lime_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10909,7 +10490,6 @@
     }
   },
   {
-    "id": "minecraft:green_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -10956,7 +10536,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11003,7 +10582,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11050,7 +10628,6 @@
     }
   },
   {
-    "id": "minecraft:blue_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11097,7 +10674,6 @@
     }
   },
   {
-    "id": "minecraft:purple_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11144,7 +10720,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11191,7 +10766,6 @@
     }
   },
   {
-    "id": "minecraft:pink_concrete_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11238,7 +10812,6 @@
     }
   },
   {
-    "id": "minecraft:white_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11252,7 +10825,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11266,7 +10838,6 @@
     }
   },
   {
-    "id": "minecraft:gray_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11280,7 +10851,6 @@
     }
   },
   {
-    "id": "minecraft:black_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11294,7 +10864,6 @@
     }
   },
   {
-    "id": "minecraft:brown_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11308,7 +10877,6 @@
     }
   },
   {
-    "id": "minecraft:red_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11322,7 +10890,6 @@
     }
   },
   {
-    "id": "minecraft:orange_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11336,7 +10903,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11350,7 +10916,6 @@
     }
   },
   {
-    "id": "minecraft:lime_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11364,7 +10929,6 @@
     }
   },
   {
-    "id": "minecraft:green_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11378,7 +10942,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11392,7 +10955,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11406,7 +10968,6 @@
     }
   },
   {
-    "id": "minecraft:blue_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11420,7 +10981,6 @@
     }
   },
   {
-    "id": "minecraft:purple_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11434,7 +10994,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11448,7 +11007,6 @@
     }
   },
   {
-    "id": "minecraft:pink_glazed_terracotta",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11462,7 +11020,6 @@
     }
   },
   {
-    "id": "minecraft:glass",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -11476,7 +11033,6 @@
     }
   },
   {
-    "id": "minecraft:white_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11523,7 +11079,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11570,7 +11125,6 @@
     }
   },
   {
-    "id": "minecraft:gray_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11617,7 +11171,6 @@
     }
   },
   {
-    "id": "minecraft:black_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11664,7 +11217,6 @@
     }
   },
   {
-    "id": "minecraft:brown_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11711,7 +11263,6 @@
     }
   },
   {
-    "id": "minecraft:red_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11758,7 +11309,6 @@
     }
   },
   {
-    "id": "minecraft:orange_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11805,7 +11355,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11852,7 +11401,6 @@
     }
   },
   {
-    "id": "minecraft:lime_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11899,7 +11447,6 @@
     }
   },
   {
-    "id": "minecraft:green_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11946,7 +11493,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -11993,7 +11539,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12040,7 +11585,6 @@
     }
   },
   {
-    "id": "minecraft:blue_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12087,7 +11631,6 @@
     }
   },
   {
-    "id": "minecraft:purple_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12134,7 +11677,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12181,7 +11723,6 @@
     }
   },
   {
-    "id": "minecraft:pink_stained_glass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12228,7 +11769,6 @@
     }
   },
   {
-    "id": "minecraft:glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12263,7 +11803,6 @@
     }
   },
   {
-    "id": "minecraft:white_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12298,7 +11837,6 @@
     }
   },
   {
-    "id": "minecraft:white_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12345,7 +11883,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12380,7 +11917,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12427,7 +11963,6 @@
     }
   },
   {
-    "id": "minecraft:gray_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12462,7 +11997,6 @@
     }
   },
   {
-    "id": "minecraft:gray_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12509,7 +12043,6 @@
     }
   },
   {
-    "id": "minecraft:black_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12544,7 +12077,6 @@
     }
   },
   {
-    "id": "minecraft:black_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12591,7 +12123,6 @@
     }
   },
   {
-    "id": "minecraft:brown_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12626,7 +12157,6 @@
     }
   },
   {
-    "id": "minecraft:brown_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12673,7 +12203,6 @@
     }
   },
   {
-    "id": "minecraft:red_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12708,7 +12237,6 @@
     }
   },
   {
-    "id": "minecraft:red_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12755,7 +12283,6 @@
     }
   },
   {
-    "id": "minecraft:orange_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12790,7 +12317,6 @@
     }
   },
   {
-    "id": "minecraft:orange_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12837,7 +12363,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12872,7 +12397,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12919,7 +12443,6 @@
     }
   },
   {
-    "id": "minecraft:lime_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -12954,7 +12477,6 @@
     }
   },
   {
-    "id": "minecraft:lime_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13001,7 +12523,6 @@
     }
   },
   {
-    "id": "minecraft:green_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13036,7 +12557,6 @@
     }
   },
   {
-    "id": "minecraft:green_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13083,7 +12603,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13118,7 +12637,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13165,7 +12683,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13200,7 +12717,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13247,7 +12763,6 @@
     }
   },
   {
-    "id": "minecraft:blue_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13282,7 +12797,6 @@
     }
   },
   {
-    "id": "minecraft:blue_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13329,7 +12843,6 @@
     }
   },
   {
-    "id": "minecraft:purple_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13364,7 +12877,6 @@
     }
   },
   {
-    "id": "minecraft:purple_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13411,7 +12923,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13446,7 +12957,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13493,7 +13003,6 @@
     }
   },
   {
-    "id": "minecraft:pink_stained_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13528,7 +13037,6 @@
     }
   },
   {
-    "id": "minecraft:pink_stained_glass_pane_from_glass_pane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13575,7 +13083,6 @@
     }
   },
   {
-    "id": "minecraft:shulker_box",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13597,7 +13104,6 @@
     }
   },
   {
-    "id": "minecraft:white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13631,7 +13137,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13665,7 +13170,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13683,7 +13187,6 @@
     }
   },
   {
-    "id": "minecraft:gray_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13717,7 +13220,6 @@
     }
   },
   {
-    "id": "minecraft:gray_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13735,7 +13237,6 @@
     }
   },
   {
-    "id": "minecraft:black_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13769,7 +13270,6 @@
     }
   },
   {
-    "id": "minecraft:black_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13787,7 +13287,6 @@
     }
   },
   {
-    "id": "minecraft:brown_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13821,7 +13320,6 @@
     }
   },
   {
-    "id": "minecraft:brown_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13839,7 +13337,6 @@
     }
   },
   {
-    "id": "minecraft:red_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13873,7 +13370,6 @@
     }
   },
   {
-    "id": "minecraft:red_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13891,7 +13387,6 @@
     }
   },
   {
-    "id": "minecraft:orange_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13925,7 +13420,6 @@
     }
   },
   {
-    "id": "minecraft:orange_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13943,7 +13437,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13977,7 +13470,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -13995,7 +13487,6 @@
     }
   },
   {
-    "id": "minecraft:lime_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14029,7 +13520,6 @@
     }
   },
   {
-    "id": "minecraft:lime_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14047,7 +13537,6 @@
     }
   },
   {
-    "id": "minecraft:green_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14081,7 +13570,6 @@
     }
   },
   {
-    "id": "minecraft:green_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14099,7 +13587,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14133,7 +13620,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14151,7 +13637,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14185,7 +13670,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14203,7 +13687,6 @@
     }
   },
   {
-    "id": "minecraft:blue_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14237,7 +13720,6 @@
     }
   },
   {
-    "id": "minecraft:blue_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14255,7 +13737,6 @@
     }
   },
   {
-    "id": "minecraft:purple_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14289,7 +13770,6 @@
     }
   },
   {
-    "id": "minecraft:purple_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14307,7 +13787,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14341,7 +13820,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14359,7 +13837,6 @@
     }
   },
   {
-    "id": "minecraft:pink_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14393,7 +13870,6 @@
     }
   },
   {
-    "id": "minecraft:pink_bed_from_white_bed",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14411,7 +13887,6 @@
     }
   },
   {
-    "id": "minecraft:white_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14449,7 +13924,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14487,7 +13961,6 @@
     }
   },
   {
-    "id": "minecraft:gray_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14525,7 +13998,6 @@
     }
   },
   {
-    "id": "minecraft:black_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14563,7 +14035,6 @@
     }
   },
   {
-    "id": "minecraft:brown_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14601,7 +14072,6 @@
     }
   },
   {
-    "id": "minecraft:red_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14639,7 +14109,6 @@
     }
   },
   {
-    "id": "minecraft:orange_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14677,7 +14146,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14715,7 +14183,6 @@
     }
   },
   {
-    "id": "minecraft:lime_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14753,7 +14220,6 @@
     }
   },
   {
-    "id": "minecraft:green_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14791,7 +14257,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14829,7 +14294,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14867,7 +14331,6 @@
     }
   },
   {
-    "id": "minecraft:blue_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14905,7 +14368,6 @@
     }
   },
   {
-    "id": "minecraft:purple_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14943,7 +14405,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -14981,7 +14442,6 @@
     }
   },
   {
-    "id": "minecraft:pink_banner",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15019,7 +14479,6 @@
     }
   },
   {
-    "id": "minecraft:coarse_dirt",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15046,7 +14505,6 @@
     }
   },
   {
-    "id": "minecraft:clay",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15072,7 +14530,6 @@
     }
   },
   {
-    "id": "minecraft:packed_ice",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15118,7 +14575,6 @@
     }
   },
   {
-    "id": "minecraft:blue_ice",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15164,7 +14620,6 @@
     }
   },
   {
-    "id": "minecraft:snow_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15190,7 +14645,6 @@
     }
   },
   {
-    "id": "minecraft:snow",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15213,7 +14667,6 @@
     }
   },
   {
-    "id": "minecraft:magma_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15239,7 +14692,6 @@
     }
   },
   {
-    "id": "minecraft:bone_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15285,7 +14737,6 @@
     }
   },
   {
-    "id": "minecraft:glowstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15311,7 +14762,6 @@
     }
   },
   {
-    "id": "minecraft:nether_wart_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15357,7 +14807,6 @@
     }
   },
   {
-    "id": "minecraft:pumpkin_seeds",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15372,7 +14821,6 @@
     }
   },
   {
-    "id": "minecraft:melon_seeds",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15386,7 +14834,6 @@
     }
   },
   {
-    "id": "minecraft:dried_kelp_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15432,7 +14879,6 @@
     }
   },
   {
-    "id": "minecraft:sponge",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -15446,7 +14892,6 @@
     }
   },
   {
-    "id": "minecraft:melon",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15492,7 +14937,6 @@
     }
   },
   {
-    "id": "minecraft:jack_o_lantern",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15510,7 +14954,6 @@
     }
   },
   {
-    "id": "minecraft:hay_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15556,7 +14999,6 @@
     }
   },
   {
-    "id": "minecraft:honeycomb_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15582,7 +15024,6 @@
     }
   },
   {
-    "id": "minecraft:slime_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15628,7 +15069,6 @@
     }
   },
   {
-    "id": "minecraft:honey_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15654,7 +15094,6 @@
     }
   },
   {
-    "id": "minecraft:torch",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15682,7 +15121,6 @@
     }
   },
   {
-    "id": "minecraft:soul_torch",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15714,7 +15152,6 @@
     }
   },
   {
-    "id": "minecraft:redstone_torch",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15732,7 +15169,6 @@
     }
   },
   {
-    "id": "minecraft:lantern",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15778,7 +15214,6 @@
     }
   },
   {
-    "id": "minecraft:soul_lantern",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15824,7 +15259,6 @@
     }
   },
   {
-    "id": "minecraft:end_rod",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15843,7 +15277,6 @@
     }
   },
   {
-    "id": "minecraft:redstone_lamp",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15873,7 +15306,6 @@
     }
   },
   {
-    "id": "minecraft:crafting_table",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15899,7 +15331,6 @@
     }
   },
   {
-    "id": "minecraft:stonecutter",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15925,7 +15356,6 @@
     }
   },
   {
-    "id": "minecraft:cartography_table",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15959,7 +15389,6 @@
     }
   },
   {
-    "id": "minecraft:fletching_table",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -15993,7 +15422,6 @@
     }
   },
   {
-    "id": "minecraft:smithing_table",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16027,7 +15455,6 @@
     }
   },
   {
-    "id": "minecraft:grindstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16057,7 +15484,6 @@
     }
   },
   {
-    "id": "minecraft:loom",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16083,7 +15509,6 @@
     }
   },
   {
-    "id": "minecraft:furnace",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16125,7 +15550,6 @@
     }
   },
   {
-    "id": "minecraft:smoker",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16155,7 +15579,6 @@
     }
   },
   {
-    "id": "minecraft:blast_furnace",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16201,7 +15624,6 @@
     }
   },
   {
-    "id": "minecraft:campfire",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16239,7 +15661,6 @@
     }
   },
   {
-    "id": "minecraft:soul_campfire",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16277,7 +15698,6 @@
     }
   },
   {
-    "id": "minecraft:anvil",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16315,7 +15735,6 @@
     }
   },
   {
-    "id": "minecraft:composter",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16353,7 +15772,6 @@
     }
   },
   {
-    "id": "minecraft:note_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16399,7 +15817,6 @@
     }
   },
   {
-    "id": "minecraft:jukebox",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16445,7 +15862,6 @@
     }
   },
   {
-    "id": "minecraft:enchanting_table",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16483,7 +15899,6 @@
     }
   },
   {
-    "id": "minecraft:end_crystal",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16529,7 +15944,6 @@
     }
   },
   {
-    "id": "minecraft:brewing_stand",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16555,7 +15969,6 @@
     }
   },
   {
-    "id": "minecraft:cauldron",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16593,7 +16006,6 @@
     }
   },
   {
-    "id": "minecraft:beacon",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16639,7 +16051,6 @@
     }
   },
   {
-    "id": "minecraft:conduit",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16685,7 +16096,6 @@
     }
   },
   {
-    "id": "minecraft:lodestone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16731,7 +16141,6 @@
     }
   },
   {
-    "id": "minecraft:ladder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16770,7 +16179,6 @@
     }
   },
   {
-    "id": "minecraft:scaffolding",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16809,7 +16217,6 @@
     }
   },
   {
-    "id": "minecraft:beehive",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16855,7 +16262,6 @@
     }
   },
   {
-    "id": "minecraft:flower_pot",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16877,7 +16283,6 @@
     }
   },
   {
-    "id": "minecraft:armor_stand",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16915,7 +16320,6 @@
     }
   },
   {
-    "id": "minecraft:item_frame",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -16961,7 +16365,6 @@
     }
   },
   {
-    "id": "minecraft:painting",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17007,7 +16410,6 @@
     }
   },
   {
-    "id": "minecraft:bookshelf",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17053,7 +16455,6 @@
     }
   },
   {
-    "id": "minecraft:lectern",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17083,7 +16484,6 @@
     }
   },
   {
-    "id": "minecraft:oak_sign",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17122,7 +16522,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_sign",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17161,7 +16560,6 @@
     }
   },
   {
-    "id": "minecraft:birch_sign",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17200,7 +16598,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_sign",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17239,7 +16636,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_sign",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17278,7 +16674,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_sign",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17317,7 +16712,6 @@
     }
   },
   {
-    "id": "minecraft:crimson_sign",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17356,7 +16750,6 @@
     }
   },
   {
-    "id": "minecraft:warped_sign",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17395,7 +16788,6 @@
     }
   },
   {
-    "id": "minecraft:chest",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17437,7 +16829,6 @@
     }
   },
   {
-    "id": "minecraft:barrel",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17479,7 +16870,6 @@
     }
   },
   {
-    "id": "minecraft:ender_chest",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17525,7 +16915,6 @@
     }
   },
   {
-    "id": "minecraft:respawn_anchor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17571,7 +16960,6 @@
     }
   },
   {
-    "id": "minecraft:ender_eye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17589,7 +16977,6 @@
     }
   },
   {
-    "id": "minecraft:redstone",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17604,7 +16991,6 @@
     }
   },
   {
-    "id": "minecraft:redstone_from_smelting",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -17618,7 +17004,6 @@
     }
   },
   {
-    "id": "minecraft:redstone_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -17632,7 +17017,6 @@
     }
   },
   {
-    "id": "minecraft:repeater",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17666,7 +17050,6 @@
     }
   },
   {
-    "id": "minecraft:comparator",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17704,7 +17087,6 @@
     }
   },
   {
-    "id": "minecraft:target",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17734,7 +17116,6 @@
     }
   },
   {
-    "id": "minecraft:lever",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17752,7 +17133,6 @@
     }
   },
   {
-    "id": "minecraft:tripwire_hook",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17775,7 +17155,6 @@
     }
   },
   {
-    "id": "minecraft:daylight_detector",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17821,7 +17200,6 @@
     }
   },
   {
-    "id": "minecraft:piston",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17867,7 +17245,6 @@
     }
   },
   {
-    "id": "minecraft:sticky_piston",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17885,7 +17262,6 @@
     }
   },
   {
-    "id": "minecraft:dispenser",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17931,7 +17307,6 @@
     }
   },
   {
-    "id": "minecraft:dropper",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -17973,7 +17348,6 @@
     }
   },
   {
-    "id": "minecraft:hopper",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18007,7 +17381,6 @@
     }
   },
   {
-    "id": "minecraft:trapped_chest",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18025,7 +17398,6 @@
     }
   },
   {
-    "id": "minecraft:observer",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18071,7 +17443,6 @@
     }
   },
   {
-    "id": "minecraft:rail",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18110,7 +17481,6 @@
     }
   },
   {
-    "id": "minecraft:powered_rail",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18153,7 +17523,6 @@
     }
   },
   {
-    "id": "minecraft:detector_rail",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18196,7 +17565,6 @@
     }
   },
   {
-    "id": "minecraft:activator_rail",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18243,7 +17611,6 @@
     }
   },
   {
-    "id": "minecraft:minecart",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18273,7 +17640,6 @@
     }
   },
   {
-    "id": "minecraft:hopper_minecart",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18291,7 +17657,6 @@
     }
   },
   {
-    "id": "minecraft:chest_minecart",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18309,7 +17674,6 @@
     }
   },
   {
-    "id": "minecraft:furnace_minecart",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18327,7 +17691,6 @@
     }
   },
   {
-    "id": "minecraft:tnt_minecart",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18345,7 +17708,6 @@
     }
   },
   {
-    "id": "minecraft:tnt",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18427,7 +17789,6 @@
     }
   },
   {
-    "id": "minecraft:wooden_shovel",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18449,7 +17810,6 @@
     }
   },
   {
-    "id": "minecraft:wooden_pickaxe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18479,7 +17839,6 @@
     }
   },
   {
-    "id": "minecraft:wooden_axe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18509,7 +17868,6 @@
     }
   },
   {
-    "id": "minecraft:wooden_hoe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18535,7 +17893,6 @@
     }
   },
   {
-    "id": "minecraft:stone_shovel",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18557,7 +17914,6 @@
     }
   },
   {
-    "id": "minecraft:stone_pickaxe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18587,7 +17943,6 @@
     }
   },
   {
-    "id": "minecraft:stone_axe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18617,7 +17972,6 @@
     }
   },
   {
-    "id": "minecraft:stone_hoe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18643,7 +17997,6 @@
     }
   },
   {
-    "id": "minecraft:iron_shovel",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18665,7 +18018,6 @@
     }
   },
   {
-    "id": "minecraft:iron_pickaxe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18695,7 +18047,6 @@
     }
   },
   {
-    "id": "minecraft:iron_axe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18725,7 +18076,6 @@
     }
   },
   {
-    "id": "minecraft:iron_hoe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18751,7 +18101,6 @@
     }
   },
   {
-    "id": "minecraft:golden_shovel",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18773,7 +18122,6 @@
     }
   },
   {
-    "id": "minecraft:golden_pickaxe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18803,7 +18151,6 @@
     }
   },
   {
-    "id": "minecraft:golden_axe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18833,7 +18180,6 @@
     }
   },
   {
-    "id": "minecraft:golden_hoe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18859,7 +18205,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_shovel",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18881,7 +18226,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_pickaxe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18911,7 +18255,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_axe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18941,7 +18284,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_hoe",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -18967,7 +18309,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_shovel_smithing",
     "recipeType": "smithing",
     "slots": {
       "smithing.base": {
@@ -18985,7 +18326,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_pickaxe_smithing",
     "recipeType": "smithing",
     "slots": {
       "smithing.base": {
@@ -19003,7 +18343,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_axe_smithing",
     "recipeType": "smithing",
     "slots": {
       "smithing.base": {
@@ -19021,7 +18360,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_hoe_smithing",
     "recipeType": "smithing",
     "slots": {
       "smithing.base": {
@@ -19039,7 +18377,6 @@
     }
   },
   {
-    "id": "minecraft:bucket",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19061,7 +18398,6 @@
     }
   },
   {
-    "id": "minecraft:fishing_rod",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19091,7 +18427,6 @@
     }
   },
   {
-    "id": "minecraft:flint_and_steel",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19109,7 +18444,6 @@
     }
   },
   {
-    "id": "minecraft:fire_charge",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19141,7 +18475,6 @@
     }
   },
   {
-    "id": "minecraft:bone_meal",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19156,7 +18489,6 @@
     }
   },
   {
-    "id": "minecraft:bone_meal_from_bone_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19171,7 +18503,6 @@
     }
   },
   {
-    "id": "minecraft:shears",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19189,7 +18520,6 @@
     }
   },
   {
-    "id": "minecraft:lead",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19220,7 +18550,6 @@
     }
   },
   {
-    "id": "minecraft:compass",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19250,7 +18579,6 @@
     }
   },
   {
-    "id": "minecraft:clock",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19280,7 +18608,6 @@
     }
   },
   {
-    "id": "minecraft:map",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19326,7 +18653,6 @@
     }
   },
   {
-    "id": "minecraft:writable_book",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19348,7 +18674,6 @@
     }
   },
   {
-    "id": "minecraft:carrot_on_a_stick",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19366,7 +18691,6 @@
     }
   },
   {
-    "id": "minecraft:warped_fungus_on_a_stick",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19384,7 +18708,6 @@
     }
   },
   {
-    "id": "minecraft:oak_boat",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19414,7 +18737,6 @@
     }
   },
   {
-    "id": "minecraft:spruce_boat",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19444,7 +18766,6 @@
     }
   },
   {
-    "id": "minecraft:birch_boat",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19474,7 +18795,6 @@
     }
   },
   {
-    "id": "minecraft:jungle_boat",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19504,7 +18824,6 @@
     }
   },
   {
-    "id": "minecraft:acacia_boat",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19534,7 +18853,6 @@
     }
   },
   {
-    "id": "minecraft:dark_oak_boat",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19564,7 +18882,6 @@
     }
   },
   {
-    "id": "minecraft:wooden_sword",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19586,7 +18903,6 @@
     }
   },
   {
-    "id": "minecraft:stone_sword",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19608,7 +18924,6 @@
     }
   },
   {
-    "id": "minecraft:iron_sword",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19630,7 +18945,6 @@
     }
   },
   {
-    "id": "minecraft:golden_sword",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19652,7 +18966,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_sword",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19674,7 +18987,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_sword_smithing",
     "recipeType": "smithing",
     "slots": {
       "smithing.base": {
@@ -19692,7 +19004,6 @@
     }
   },
   {
-    "id": "minecraft:shield",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19730,7 +19041,6 @@
     }
   },
   {
-    "id": "minecraft:leather_helmet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19760,7 +19070,6 @@
     }
   },
   {
-    "id": "minecraft:leather_chestplate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19802,7 +19111,6 @@
     }
   },
   {
-    "id": "minecraft:leather_leggings",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19840,7 +19148,6 @@
     }
   },
   {
-    "id": "minecraft:leather_boots",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19866,7 +19173,6 @@
     }
   },
   {
-    "id": "minecraft:iron_helmet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19896,7 +19202,6 @@
     }
   },
   {
-    "id": "minecraft:iron_chestplate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19938,7 +19243,6 @@
     }
   },
   {
-    "id": "minecraft:iron_leggings",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -19976,7 +19280,6 @@
     }
   },
   {
-    "id": "minecraft:iron_boots",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20002,7 +19305,6 @@
     }
   },
   {
-    "id": "minecraft:golden_helmet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20032,7 +19334,6 @@
     }
   },
   {
-    "id": "minecraft:golden_chestplate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20074,7 +19375,6 @@
     }
   },
   {
-    "id": "minecraft:golden_leggings",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20112,7 +19412,6 @@
     }
   },
   {
-    "id": "minecraft:golden_boots",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20138,7 +19437,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_helmet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20168,7 +19466,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_chestplate",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20210,7 +19507,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_leggings",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20248,7 +19544,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_boots",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20274,7 +19569,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_helmet_smithing",
     "recipeType": "smithing",
     "slots": {
       "smithing.base": {
@@ -20292,7 +19586,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_chestplate_smithing",
     "recipeType": "smithing",
     "slots": {
       "smithing.base": {
@@ -20310,7 +19603,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_leggings_smithing",
     "recipeType": "smithing",
     "slots": {
       "smithing.base": {
@@ -20328,7 +19620,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_boots_smithing",
     "recipeType": "smithing",
     "slots": {
       "smithing.base": {
@@ -20346,7 +19637,6 @@
     }
   },
   {
-    "id": "minecraft:turtle_helmet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20376,7 +19666,6 @@
     }
   },
   {
-    "id": "minecraft:leather_horse_armor",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20414,7 +19703,6 @@
     }
   },
   {
-    "id": "minecraft:bow",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20448,7 +19736,6 @@
     }
   },
   {
-    "id": "minecraft:crossbow",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20486,7 +19773,6 @@
     }
   },
   {
-    "id": "minecraft:arrow",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20509,7 +19795,6 @@
     }
   },
   {
-    "id": "minecraft:spectral_arrow",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20540,7 +19825,6 @@
     }
   },
   {
-    "id": "minecraft:golden_apple",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20586,7 +19870,6 @@
     }
   },
   {
-    "id": "minecraft:golden_carrot",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20632,7 +19915,6 @@
     }
   },
   {
-    "id": "minecraft:baked_potato",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -20646,7 +19928,6 @@
     }
   },
   {
-    "id": "minecraft:baked_potato_from_smoking",
     "recipeType": "smoking",
     "slots": {
       "cooking.ingredient": {
@@ -20660,7 +19941,6 @@
     }
   },
   {
-    "id": "minecraft:baked_potato_from_campfire_cooking",
     "recipeType": "campfire_cooking",
     "slots": {
       "cooking.ingredient": {
@@ -20674,7 +19954,6 @@
     }
   },
   {
-    "id": "minecraft:dried_kelp",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -20689,7 +19968,6 @@
     }
   },
   {
-    "id": "minecraft:dried_kelp_from_smelting",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -20703,7 +19981,6 @@
     }
   },
   {
-    "id": "minecraft:dried_kelp_from_smoking",
     "recipeType": "smoking",
     "slots": {
       "cooking.ingredient": {
@@ -20717,7 +19994,6 @@
     }
   },
   {
-    "id": "minecraft:dried_kelp_from_campfire_cooking",
     "recipeType": "campfire_cooking",
     "slots": {
       "cooking.ingredient": {
@@ -20731,7 +20007,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_beef",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -20745,7 +20020,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_beef_from_smoking",
     "recipeType": "smoking",
     "slots": {
       "cooking.ingredient": {
@@ -20759,7 +20033,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_beef_from_campfire_cooking",
     "recipeType": "campfire_cooking",
     "slots": {
       "cooking.ingredient": {
@@ -20773,7 +20046,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_porkchop",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -20787,7 +20059,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_porkchop_from_smoking",
     "recipeType": "smoking",
     "slots": {
       "cooking.ingredient": {
@@ -20801,7 +20072,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_porkchop_from_campfire_cooking",
     "recipeType": "campfire_cooking",
     "slots": {
       "cooking.ingredient": {
@@ -20815,7 +20085,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_mutton",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -20829,7 +20098,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_mutton_from_smoking",
     "recipeType": "smoking",
     "slots": {
       "cooking.ingredient": {
@@ -20843,7 +20111,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_mutton_from_campfire_cooking",
     "recipeType": "campfire_cooking",
     "slots": {
       "cooking.ingredient": {
@@ -20857,7 +20124,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_chicken",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -20871,7 +20137,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_chicken_from_smoking",
     "recipeType": "smoking",
     "slots": {
       "cooking.ingredient": {
@@ -20885,7 +20150,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_chicken_from_campfire_cooking",
     "recipeType": "campfire_cooking",
     "slots": {
       "cooking.ingredient": {
@@ -20899,7 +20163,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_rabbit",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -20913,7 +20176,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_rabbit_from_smoking",
     "recipeType": "smoking",
     "slots": {
       "cooking.ingredient": {
@@ -20927,7 +20189,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_rabbit_from_campfire_cooking",
     "recipeType": "campfire_cooking",
     "slots": {
       "cooking.ingredient": {
@@ -20941,7 +20202,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_cod",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -20955,7 +20215,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_cod_from_smoking",
     "recipeType": "smoking",
     "slots": {
       "cooking.ingredient": {
@@ -20969,7 +20228,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_cod_from_campfire_cooking",
     "recipeType": "campfire_cooking",
     "slots": {
       "cooking.ingredient": {
@@ -20983,7 +20241,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_salmon",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -20997,7 +20254,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_salmon_from_smoking",
     "recipeType": "smoking",
     "slots": {
       "cooking.ingredient": {
@@ -21011,7 +20267,6 @@
     }
   },
   {
-    "id": "minecraft:cooked_salmon_from_campfire_cooking",
     "recipeType": "campfire_cooking",
     "slots": {
       "cooking.ingredient": {
@@ -21025,7 +20280,6 @@
     }
   },
   {
-    "id": "minecraft:bread",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21047,7 +20301,6 @@
     }
   },
   {
-    "id": "minecraft:cookie",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21070,7 +20323,6 @@
     }
   },
   {
-    "id": "minecraft:cake",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21116,7 +20368,6 @@
     }
   },
   {
-    "id": "minecraft:pumpkin_pie",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21138,7 +20389,6 @@
     }
   },
   {
-    "id": "minecraft:mushroom_stew",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21160,7 +20410,6 @@
     }
   },
   {
-    "id": "minecraft:beetroot_soup",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21198,7 +20447,6 @@
     }
   },
   {
-    "id": "minecraft:rabbit_stew_from_brown_mushroom",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21228,7 +20476,6 @@
     }
   },
   {
-    "id": "minecraft:rabbit_stew_from_red_mushroom",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21258,7 +20505,6 @@
     }
   },
   {
-    "id": "minecraft:honey_bottle",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21289,7 +20535,6 @@
     }
   },
   {
-    "id": "minecraft:coal",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21304,7 +20549,6 @@
     }
   },
   {
-    "id": "minecraft:coal_from_smelting",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21318,7 +20562,6 @@
     }
   },
   {
-    "id": "minecraft:coal_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -21332,7 +20575,6 @@
     }
   },
   {
-    "id": "minecraft:charcoal",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21346,7 +20588,6 @@
     }
   },
   {
-    "id": "minecraft:emerald",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21361,7 +20602,6 @@
     }
   },
   {
-    "id": "minecraft:emerald_from_smelting",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21375,7 +20615,6 @@
     }
   },
   {
-    "id": "minecraft:emerald_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -21389,7 +20628,6 @@
     }
   },
   {
-    "id": "minecraft:lapis_lazuli",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21404,7 +20642,6 @@
     }
   },
   {
-    "id": "minecraft:lapis_from_smelting",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21418,7 +20655,6 @@
     }
   },
   {
-    "id": "minecraft:lapis_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -21432,7 +20668,6 @@
     }
   },
   {
-    "id": "minecraft:diamond",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21447,7 +20682,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_from_smelting",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21461,7 +20695,6 @@
     }
   },
   {
-    "id": "minecraft:diamond_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -21475,7 +20708,6 @@
     }
   },
   {
-    "id": "minecraft:quartz",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21489,7 +20721,6 @@
     }
   },
   {
-    "id": "minecraft:quartz_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -21503,7 +20734,6 @@
     }
   },
   {
-    "id": "minecraft:iron_nugget",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21518,7 +20748,6 @@
     }
   },
   {
-    "id": "minecraft:iron_nugget_from_smelting",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21589,7 +20818,6 @@
     }
   },
   {
-    "id": "minecraft:iron_nugget_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -21660,7 +20888,6 @@
     }
   },
   {
-    "id": "minecraft:gold_nugget",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21675,7 +20902,6 @@
     }
   },
   {
-    "id": "minecraft:gold_nugget_from_smelting",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21730,7 +20956,6 @@
     }
   },
   {
-    "id": "minecraft:gold_nugget_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -21785,7 +21010,6 @@
     }
   },
   {
-    "id": "minecraft:iron_ingot_from_iron_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21800,7 +21024,6 @@
     }
   },
   {
-    "id": "minecraft:iron_ingot_from_nuggets",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21846,7 +21069,6 @@
     }
   },
   {
-    "id": "minecraft:iron_ingot",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21860,7 +21082,6 @@
     }
   },
   {
-    "id": "minecraft:iron_ingot_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -21874,7 +21095,6 @@
     }
   },
   {
-    "id": "minecraft:gold_ingot_from_gold_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21889,7 +21109,6 @@
     }
   },
   {
-    "id": "minecraft:gold_ingot_from_nuggets",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -21935,7 +21154,6 @@
     }
   },
   {
-    "id": "minecraft:gold_ingot",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21949,7 +21167,6 @@
     }
   },
   {
-    "id": "minecraft:gold_ingot_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -21963,7 +21180,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_scrap",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -21977,7 +21193,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_scrap_from_blasting",
     "recipeType": "blasting",
     "slots": {
       "cooking.ingredient": {
@@ -21991,7 +21206,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_ingot",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22033,7 +21247,6 @@
     }
   },
   {
-    "id": "minecraft:netherite_ingot_from_netherite_block",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22048,7 +21261,6 @@
     }
   },
   {
-    "id": "minecraft:stick",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22067,7 +21279,6 @@
     }
   },
   {
-    "id": "minecraft:stick_from_bamboo_item",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22085,7 +21296,6 @@
     }
   },
   {
-    "id": "minecraft:wheat",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22100,7 +21310,6 @@
     }
   },
   {
-    "id": "minecraft:leather",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22126,7 +21335,6 @@
     }
   },
   {
-    "id": "minecraft:slime_ball",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22141,7 +21349,6 @@
     }
   },
   {
-    "id": "minecraft:popped_chorus_fruit",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -22155,7 +21362,6 @@
     }
   },
   {
-    "id": "minecraft:white_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22169,7 +21375,6 @@
     }
   },
   {
-    "id": "minecraft:white_dye_from_lily_of_the_valley",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22183,7 +21388,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_dye_from_azure_bluet",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22197,7 +21401,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_dye_from_black_white_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22220,7 +21423,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_dye_from_gray_white_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22239,7 +21441,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_dye_from_oxeye_daisy",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22253,7 +21454,6 @@
     }
   },
   {
-    "id": "minecraft:light_gray_dye_from_white_tulip",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22267,7 +21467,6 @@
     }
   },
   {
-    "id": "minecraft:gray_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22286,7 +21485,6 @@
     }
   },
   {
-    "id": "minecraft:black_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22300,7 +21498,6 @@
     }
   },
   {
-    "id": "minecraft:black_dye_from_wither_rose",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22314,7 +21511,6 @@
     }
   },
   {
-    "id": "minecraft:brown_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22328,7 +21524,6 @@
     }
   },
   {
-    "id": "minecraft:red_dye_from_beetroot",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22342,7 +21537,6 @@
     }
   },
   {
-    "id": "minecraft:red_dye_from_poppy",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22356,7 +21550,6 @@
     }
   },
   {
-    "id": "minecraft:red_dye_from_rose_bush",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22371,7 +21564,6 @@
     }
   },
   {
-    "id": "minecraft:red_dye_from_tulip",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22385,7 +21577,6 @@
     }
   },
   {
-    "id": "minecraft:orange_dye_from_orange_tulip",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22399,7 +21590,6 @@
     }
   },
   {
-    "id": "minecraft:orange_dye_from_red_yellow",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22418,7 +21608,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_dye_from_dandelion",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22432,7 +21621,6 @@
     }
   },
   {
-    "id": "minecraft:yellow_dye_from_sunflower",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22447,7 +21635,6 @@
     }
   },
   {
-    "id": "minecraft:lime_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22466,7 +21653,6 @@
     }
   },
   {
-    "id": "minecraft:lime_dye_from_smelting",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -22480,7 +21666,6 @@
     }
   },
   {
-    "id": "minecraft:green_dye",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -22494,7 +21679,6 @@
     }
   },
   {
-    "id": "minecraft:cyan_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22513,7 +21697,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_dye_from_blue_orchid",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22527,7 +21710,6 @@
     }
   },
   {
-    "id": "minecraft:light_blue_dye_from_blue_white_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22546,7 +21728,6 @@
     }
   },
   {
-    "id": "minecraft:blue_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22560,7 +21741,6 @@
     }
   },
   {
-    "id": "minecraft:blue_dye_from_cornflower",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22574,7 +21754,6 @@
     }
   },
   {
-    "id": "minecraft:purple_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22593,7 +21772,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_dye_from_allium",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22607,7 +21785,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_dye_from_blue_red_pink",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22630,7 +21807,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_dye_from_blue_red_white_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22657,7 +21833,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_dye_from_lilac",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22672,7 +21847,6 @@
     }
   },
   {
-    "id": "minecraft:magenta_dye_from_purple_and_pink",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22691,7 +21865,6 @@
     }
   },
   {
-    "id": "minecraft:pink_dye_from_peony",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22706,7 +21879,6 @@
     }
   },
   {
-    "id": "minecraft:pink_dye_from_pink_tulip",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22720,7 +21892,6 @@
     }
   },
   {
-    "id": "minecraft:pink_dye_from_red_white_dye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22739,7 +21910,6 @@
     }
   },
   {
-    "id": "minecraft:bowl",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22762,7 +21932,6 @@
     }
   },
   {
-    "id": "minecraft:brick",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -22776,7 +21945,6 @@
     }
   },
   {
-    "id": "minecraft:nether_brick",
     "recipeType": "smelting",
     "slots": {
       "cooking.ingredient": {
@@ -22790,7 +21958,6 @@
     }
   },
   {
-    "id": "minecraft:paper",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22813,7 +21980,6 @@
     }
   },
   {
-    "id": "minecraft:book",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22839,7 +22005,6 @@
     }
   },
   {
-    "id": "minecraft:glass_bottle",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22862,7 +22027,6 @@
     }
   },
   {
-    "id": "minecraft:fermented_spider_eye",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22884,7 +22048,6 @@
     }
   },
   {
-    "id": "minecraft:blaze_powder",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22899,7 +22062,6 @@
     }
   },
   {
-    "id": "minecraft:sugar_from_honey_bottle",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22914,7 +22076,6 @@
     }
   },
   {
-    "id": "minecraft:sugar_from_sugar_cane",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22928,7 +22089,6 @@
     }
   },
   {
-    "id": "minecraft:glistering_melon_slice",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22974,7 +22134,6 @@
     }
   },
   {
-    "id": "minecraft:magma_cream",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -22992,7 +22151,6 @@
     }
   },
   {
-    "id": "minecraft:flower_banner_pattern",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -23010,7 +22168,6 @@
     }
   },
   {
-    "id": "minecraft:creeper_banner_pattern",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -23028,7 +22185,6 @@
     }
   },
   {
-    "id": "minecraft:skull_banner_pattern",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -23046,7 +22202,6 @@
     }
   },
   {
-    "id": "minecraft:mojang_banner_pattern",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {
@@ -23064,7 +22219,6 @@
     }
   },
   {
-    "id": "minecraft:chain",
     "recipeType": "crafting",
     "slots": {
       "crafting.result": {

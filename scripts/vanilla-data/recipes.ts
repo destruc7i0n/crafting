@@ -7,7 +7,6 @@ import { getJavaPackMetadata } from "@/versioning";
 
 import type {
   GeneratedRecipeCatalog,
-  GeneratedRecipeCatalogEntry,
   GeneratedRecipeCatalogManifest,
 } from "@/recipes/catalog/types";
 
@@ -17,6 +16,7 @@ import { buildRecipeCatalogEntry } from "./recipe-handlers";
 import { compareRecipeCatalogEntries } from "./recipe-order";
 
 import type { ItemGroupOrder } from "./item-group-order";
+import type { RecipeCatalogSortEntry } from "./recipe-order";
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
 const outputDir = path.join(repoRoot, "src/data/generated/vanilla-recipes");
@@ -78,18 +78,21 @@ async function generateJavaRecipeCatalog(
     const recipes = await Promise.all(
       files.map(async (filePath) => {
         const recipe = JSON.parse(await readFile(filePath, "utf8")) as unknown;
-        const repoPath = toRepoPath(treeDir, filePath);
-        const id = toRecipeId(prefix, repoPath);
+        const entry = buildRecipeCatalogEntry({ recipe });
 
-        return buildRecipeCatalogEntry({ id, recipe });
+        if (!entry) {
+          return null;
+        }
+
+        const repoPath = toRepoPath(treeDir, filePath);
+        return { id: toRecipeId(prefix, repoPath), entry };
       }),
     );
 
     const catalog = recipes
-      .filter((entry): entry is GeneratedRecipeCatalogEntry => entry !== null)
-      .sort((a, b) =>
-        compareRecipeCatalogEntries(itemGroupOrder, a, b),
-      ) satisfies GeneratedRecipeCatalog;
+      .filter((entry): entry is RecipeCatalogSortEntry => entry !== null)
+      .sort((a, b) => compareRecipeCatalogEntries(itemGroupOrder, a, b))
+      .map(({ entry }) => entry) satisfies GeneratedRecipeCatalog;
 
     console.log(`Rendered ${catalog.length}/${files.length} recipes for ${version}`);
 
