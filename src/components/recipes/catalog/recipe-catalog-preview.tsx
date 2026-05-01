@@ -82,12 +82,12 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
   const presentation = value ? getCatalogSlotPresentation(value, resources) : undefined;
 
   if (!presentation) {
-    return <Slot inert width={options?.width} height={options?.height} className="relative" />;
+    return <Slot width={options?.width} height={options?.height} className="relative" />;
   }
 
   if (isCyclingPresentation(presentation)) {
     return (
-      <Slot inert width={options?.width} height={options?.height} className="relative">
+      <Slot width={options?.width} height={options?.height} className="relative">
         <CyclingItemPreview
           alt={presentation.label}
           itemIds={presentation.preview.itemIds}
@@ -114,7 +114,7 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
   }
 
   return (
-    <Slot inert width={options?.width} height={options?.height} className="relative">
+    <Slot width={options?.width} height={options?.height} className="relative">
       <ItemTooltip
         title={presentation.label}
         description={presentation.description}
