@@ -7,6 +7,10 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
+const siteUrl = (process.env.VITE_SITE_URL ?? "https://crafting.thedestruc7i0n.ca").replace(
+  /\/$/,
+  "",
+);
 
 export default defineConfig({
   build: {
@@ -21,6 +25,15 @@ export default defineConfig({
           enabled: true,
           outputPath: "/index",
           crawlLinks: false,
+          onSuccess: ({ page }) =>
+            page.path === "/"
+              ? {
+                  sitemap: {
+                    priority: 1,
+                    changefreq: "monthly",
+                  },
+                }
+              : undefined,
         },
       },
       prerender: {
@@ -34,6 +47,10 @@ export default defineConfig({
           prerender: {
             enabled: true,
           },
+          sitemap: {
+            priority: 1,
+            changefreq: "monthly",
+          },
         },
         {
           path: "/recipes",
@@ -41,10 +58,16 @@ export default defineConfig({
             enabled: true,
             autoSubfolderIndex: false,
           },
+          sitemap: {
+            priority: 0.8,
+            changefreq: "monthly",
+          },
         },
       ],
       sitemap: {
-        enabled: false,
+        enabled: true,
+        host: siteUrl,
+        outputPath: "sitemap.xml",
       },
     }),
     react(),

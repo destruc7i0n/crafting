@@ -78,12 +78,13 @@ function getRouteRecipeCatalogVersion(version: MinecraftVersion | undefined): Mi
 }
 
 function getRecipesRouteHead(version: MinecraftVersion, path: string) {
-  const title = `Minecraft ${version} Recipes List`;
-  const description = `Search and view all Minecraft ${version} ${recipeTypes} recipes.`;
+  const isLatest = version === latestRecipeCatalogVersion;
+  const title = `Crafting Recipes List - Minecraft ${version}`;
+  const description = `Search and view every Minecraft ${version} ${recipeTypes} recipes.`;
   const url = `${siteUrl}${path}`;
 
   return {
-    links: [{ rel: "canonical", href: url }],
+    links: [{ rel: "canonical", href: isLatest ? `${siteUrl}/recipes` : url }],
     meta: [
       { title },
       { name: "description", content: description },
