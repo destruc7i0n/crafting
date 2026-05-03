@@ -3,7 +3,9 @@
 
 import path from "node:path";
 
-import { latestVersion } from "minecraft-textures";
+import textureManifestIndex from "minecraft-textures/manifest/index.json";
+
+const { latestVersion } = textureManifestIndex;
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const outputPath = path.join(repoRoot, "src/data/generated/bedrock-mappings.json");
@@ -64,7 +66,7 @@ const fetchBedrockMappings = async () => {
   const raw = (await geyserResponse.json()) as Record<string, GeyserItemMapping>;
   const mojangData = (await mojangResponse.json()) as BedrockSamplesMojangItemsFile;
   const textureData = (
-    await import(`minecraft-textures/dist/textures/json/${latestVersion}.json`, {
+    await import(`minecraft-textures/manifest/${latestVersion}.json`, {
       with: { type: "json" },
     })
   ).default as MinecraftTexturesFile;
