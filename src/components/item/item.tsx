@@ -123,6 +123,9 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
         ref={previewRef}
         draggable={isTouchDevice ? false : undefined}
         style={{ opacity: dragging ? 0.5 : 1 }}
+        loading="lazy"
+        decoding="async"
+        fetchPriority="low"
         className={cn("touch-action-manipulation", !isTouchDevice && "cursor-move")}
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
@@ -136,6 +139,9 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
         ref={previewRef}
         draggable={isTouchDevice ? false : undefined}
         style={{ opacity: dragging ? 0.5 : 1 }}
+        loading="lazy"
+        decoding="async"
+        fetchPriority="low"
         className={cn("touch-action-manipulation", !isTouchDevice && "cursor-move")}
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}

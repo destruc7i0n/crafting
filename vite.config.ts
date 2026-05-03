@@ -6,6 +6,8 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
+import { minecraftTextures } from "./vite/minecraft-textures";
+
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const siteUrl = (process.env.VITE_SITE_URL ?? "https://crafting.thedestruc7i0n.ca").replace(
   /\/$/,
@@ -17,6 +19,7 @@ export default defineConfig({
     target: "es2020",
   },
   plugins: [
+    minecraftTextures,
     tailwindcss(),
     tanstackStart({
       spa: {
