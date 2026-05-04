@@ -4,8 +4,7 @@ import { cn } from "@/lib/utils";
 
 import type { RecipeSlot } from "@/recipes/slots";
 
-import { SLOT_SIZE } from "../slot/slot";
-import { SlotDropTarget } from "../slot/slot-drop-target";
+import { Slot, SLOT_SIZE } from "../slot/slot";
 import {
   CraftingArrow,
   FurnaceFire,
@@ -139,7 +138,7 @@ export function FurnacePreviewSurface<TSlotValue>({
               <FurnaceFire />
             </div>
 
-            <SlotDropTarget canDrop={() => false} data-fuel-slot inert disabled={fuelDisabled} />
+            <Slot data-fuel-slot inert disabled={fuelDisabled} />
           </div>
 
           <div

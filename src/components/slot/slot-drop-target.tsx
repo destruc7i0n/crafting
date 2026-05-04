@@ -11,13 +11,13 @@ import { isItemDraggableData } from "@/lib/dnd";
 
 import { Slot, SlotProps } from "./slot";
 
-type SlotDropTargetProps<T extends Record<string, unknown> = Record<string, unknown>> = {
-  data?: T;
+type SlotDropTargetProps<T extends Record<string, unknown>> = {
+  data: T;
   children?: React.ReactNode;
   canDrop?: ({ source }: { source: { data: unknown } }) => boolean;
 } & SlotProps;
 
-export const SlotDropTarget = <T extends Record<string, unknown> = Record<string, unknown>>({
+export const SlotDropTarget = <T extends Record<string, unknown>>({
   data,
   children,
   canDrop,
@@ -44,7 +44,7 @@ export const SlotDropTarget = <T extends Record<string, unknown> = Record<string
         element: el,
         canDrop: ({ source }) =>
           isItemDraggableData(source.data) && (canDropRef.current?.({ source }) ?? true),
-        getData: () => dataRef.current ?? {},
+        getData: () => dataRef.current,
         onDragEnter: () => setIsDraggedOver(true),
         onDragLeave: () => setIsDraggedOver(false),
         onDrop: () => {
