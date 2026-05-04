@@ -1,5 +1,6 @@
 import { ItemPreviewDropTarget } from "@/components/item/item-preview-drop-target";
 import { ItemPreviewResultSlot } from "@/components/item/item-preview-result-slot";
+import { LARGE_SLOT_SIZE, SLOT_SIZE } from "@/components/slot/slot";
 import { isResultSlot } from "@/recipes/slots/utils";
 
 import type { PreviewSlotRenderOptions } from "@/components/preview/recipe-preview-surface";
@@ -11,9 +12,11 @@ export function renderCreatorPreviewSlot(
   _value?: RecipeSlotValue,
   options?: PreviewSlotRenderOptions,
 ) {
+  const size = options?.compact === false ? LARGE_SLOT_SIZE : SLOT_SIZE;
+
   if (isResultSlot(slot)) {
-    return <ItemPreviewResultSlot slot={slot} width={options?.width} height={options?.height} />;
+    return <ItemPreviewResultSlot slot={slot} compact={options?.compact} />;
   }
 
-  return <ItemPreviewDropTarget slot={slot} width={options?.width} height={options?.height} />;
+  return <ItemPreviewDropTarget slot={slot} width={size} height={size} />;
 }

@@ -1,36 +1,36 @@
 import { cn } from "@/lib/utils";
 import { RecipeSlot } from "@/recipes/slots";
 
-import { SlotProps } from "../slot/slot";
+import { LARGE_SLOT_SIZE, SLOT_SIZE, SlotProps } from "../slot/slot";
 import { EditableItemCount } from "./editable-item-count";
 import { ItemPreviewDropTarget } from "./item-preview-drop-target";
 
 type ItemPreviewResultSlotProps = {
   slot: RecipeSlot;
-} & Omit<SlotProps, "children">;
+  compact?: boolean;
+} & Omit<SlotProps, "children" | "width" | "height">;
 
 export const ItemPreviewResultSlot = ({
   slot,
-  width = 36,
-  height = 36,
+  compact,
   className,
   style,
   ...props
 }: ItemPreviewResultSlotProps) => {
-  const compactCount = width <= 36 || height <= 36;
+  const size = compact === false ? LARGE_SLOT_SIZE : SLOT_SIZE;
 
   return (
     <div
       {...props}
       className={cn("relative", className)}
       style={{
-        width: `${width}px`,
-        height: `${height}px`,
+        width: size,
+        height: size,
         ...style,
       }}
     >
-      <ItemPreviewDropTarget slot={slot} width={width} height={height} />
-      <EditableItemCount slot={slot} compact={compactCount} />
+      <ItemPreviewDropTarget slot={slot} width={size} height={size} />
+      <EditableItemCount slot={slot} compact={compact !== false} />
     </div>
   );
 };

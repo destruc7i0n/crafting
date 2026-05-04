@@ -1,4 +1,4 @@
-import { memo, useRef, useState, type ReactNode } from "react";
+import { memo, useRef, useState } from "react";
 
 import { EraserIcon, ImageDownIcon } from "lucide-react";
 
@@ -19,13 +19,17 @@ import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/se
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
-import { CraftingGridPreview } from "./crafting-grid";
-import { FurnacePreview } from "./furnace";
-import { SmithingPreview } from "./smithing";
-import { StonecutterPreview } from "./stonecutter";
+import { renderCreatorPreviewSlot } from "./creator-preview-slot";
+import {
+  CraftingPreviewSurface,
+  FurnacePreviewSurface,
+  SmithingPreviewSurface,
+  StonecutterPreviewSurface,
+} from "./recipe-preview-surface";
 
 export const Preview = memo(() => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
+  const recipe = useRecipeStore(selectCurrentRecipe);
   const hasFilledSlots = useRecipeStore((state) =>
     Object.values(selectCurrentRecipe(state)?.slots ?? {}).some((slotItem) => slotItem != null),
   );
@@ -36,14 +40,15 @@ export const Preview = memo(() => {
   const selection = useItemSelection();
   const previewRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const previewByKind: Record<PreviewKind, ReactNode> = {
-    crafting: <CraftingGridPreview />,
-    furnace: <FurnacePreview />,
-    smithing: <SmithingPreview />,
-    stonecutter: <StonecutterPreview />,
-  };
   const previewKind = recipeType ? getRecipeDefinition(recipeType).previewKind : undefined;
-  const preview = previewKind ? previewByKind[previewKind] : null;
+  const preview = previewKind
+    ? renderPreview({
+        previewKind,
+        slots: recipe?.slots ?? {},
+        fuelDisabled: selection !== undefined,
+        twoByTwo: recipe?.crafting.twoByTwo === true,
+      })
+    : null;
 
   if (!preview || !recipeType) {
     return null;
@@ -107,10 +112,10 @@ export const Preview = memo(() => {
 
   return (
     <div className="minecraft-preview-slots flex w-full flex-col">
-      <div className="scrollbar-app scrollbar-app-thin w-full overflow-x-auto">
-        <div className="mx-auto w-fit min-w-0">
-          <div className="group relative w-fit min-w-0">
-            <div ref={previewRef} className="w-fit min-w-0">
+      <div className="w-full">
+        <div className="mx-auto w-fit max-w-full min-w-0">
+          <div className="group relative w-fit max-w-full min-w-0">
+            <div ref={previewRef} className="w-fit max-w-full min-w-0">
               {preview}
             </div>
 
@@ -173,3 +178,35 @@ export const Preview = memo(() => {
 });
 
 Preview.displayName = "Preview";
+
+type RenderPreviewOptions = {
+  previewKind: PreviewKind;
+  slots: NonNullable<ReturnType<typeof selectCurrentRecipe>>["slots"] | {};
+  fuelDisabled: boolean;
+  twoByTwo: boolean;
+};
+
+function renderPreview({ previewKind, slots, fuelDisabled, twoByTwo }: RenderPreviewOptions) {
+  switch (previewKind) {
+    case "crafting":
+      return (
+        <CraftingPreviewSurface
+          slots={slots}
+          twoByTwo={twoByTwo}
+          renderSlot={renderCreatorPreviewSlot}
+        />
+      );
+    case "furnace":
+      return (
+        <FurnacePreviewSurface
+          slots={slots}
+          fuelDisabled={fuelDisabled}
+          renderSlot={renderCreatorPreviewSlot}
+        />
+      );
+    case "smithing":
+      return <SmithingPreviewSurface slots={slots} renderSlot={renderCreatorPreviewSlot} />;
+    case "stonecutter":
+      return <StonecutterPreviewSurface slots={slots} renderSlot={renderCreatorPreviewSlot} />;
+  }
+}
