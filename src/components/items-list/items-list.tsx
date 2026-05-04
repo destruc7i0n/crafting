@@ -89,7 +89,7 @@ export const ItemsList = () => {
   ) : null;
 
   return (
-    <div className="md:bg-background flex h-full min-h-0 flex-1 flex-col gap-2 self-stretch bg-transparent p-0 md:mx-0 md:w-full md:gap-3 md:rounded-lg md:border md:p-3">
+    <div className="md:bg-background flex h-full min-h-0 min-w-0 flex-1 flex-col gap-2 self-stretch bg-transparent p-0 md:mx-0 md:w-full md:gap-3 md:rounded-lg md:border md:p-3">
       <div className="flex items-center gap-2 md:hidden">
         {!isCreating && (
           <input

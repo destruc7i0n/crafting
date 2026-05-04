@@ -212,7 +212,7 @@ export const TagsSection = ({
       )}
 
       {supportsCustomTags && filteredCustomTags.length > 0 && (
-        <div className="scrollbar-app scrollbar-app-thin flex shrink-0 gap-2 overflow-x-auto pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pb-0">
+        <div className="scrollbar-app scrollbar-app-thin flex max-w-full shrink-0 gap-2 overflow-x-auto pr-2 pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pr-0 lg:pb-0">
           {filteredCustomTags.map((tag) => {
             const tagItem = customTagItems[tag.uid];
             if (!tagItem) return null;
@@ -222,7 +222,7 @@ export const TagsSection = ({
                 key={tag.uid}
                 label={tag.id}
                 onClick={() => setExpandedTagUid(tag.uid)}
-                className="min-w-[180px] items-center lg:min-w-0"
+                className="w-[180px] shrink-0 items-center lg:w-auto lg:min-w-0 lg:shrink"
                 actions={
                   <>
                     <button
