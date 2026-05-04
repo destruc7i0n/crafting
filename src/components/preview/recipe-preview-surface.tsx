@@ -78,7 +78,11 @@ export function CraftingPreviewSurface<TSlotValue>({
   const columns = twoByTwo ? 2 : 3;
 
   return (
-    <PreviewSurfaceFrame align="center" maxWidth={twoByTwo ? 316 : 352}>
+    <PreviewSurfaceFrame
+      align="center"
+      preferredWidth={twoByTwo ? 316 : 352}
+      minWidth={twoByTwo ? 236 : 256}
+    >
       <div>
         <MinecraftUiLabel>Crafting</MinecraftUiLabel>
 
@@ -123,7 +127,7 @@ export function FurnacePreviewSurface<TSlotValue>({
   fuelDisabled: boolean;
 }) {
   return (
-    <PreviewSurfaceFrame align="center" maxWidth={352}>
+    <PreviewSurfaceFrame align="center" preferredWidth={352} minWidth={188}>
       <div>
         <MinecraftUiLabel center>Furnace</MinecraftUiLabel>
 
@@ -164,7 +168,7 @@ export function StonecutterPreviewSurface<TSlotValue>({
   renderSlot,
 }: PreviewSurfaceProps<TSlotValue>) {
   return (
-    <PreviewSurfaceFrame align="start" maxWidth={352}>
+    <PreviewSurfaceFrame align="start" preferredWidth={352} minWidth={336}>
       <div className="relative" style={{ height: 132, width: 312 }}>
         <MinecraftUiLabel>Stonecutter</MinecraftUiLabel>
 
@@ -189,7 +193,7 @@ export function SmithingPreviewSurface<TSlotValue>({
   renderSlot,
 }: PreviewSurfaceProps<TSlotValue>) {
   return (
-    <PreviewSurfaceFrame align="start" maxWidth={352}>
+    <PreviewSurfaceFrame align="start" preferredWidth={352} minWidth={242}>
       <div className="relative" style={{ height: 122, width: 218 }}>
         <div className="absolute" style={{ height: 62, left: 2, top: 6, width: 60 }}>
           <SmithingHammer />
@@ -226,11 +230,13 @@ export function SmithingPreviewSurface<TSlotValue>({
 function PreviewSurfaceFrame({
   children,
   align,
-  maxWidth,
+  preferredWidth,
+  minWidth,
 }: {
   children: ReactNode;
   align: PreviewFrameAlign;
-  maxWidth: number;
+  preferredWidth: number;
+  minWidth: number;
 }) {
   return (
     <div
@@ -239,8 +245,9 @@ function PreviewSurfaceFrame({
         align === "center" ? "justify-center" : "justify-start",
       )}
       style={{
+        minWidth,
         padding: `${FRAME_PADDING.top}px ${FRAME_PADDING.right}px ${FRAME_PADDING.bottom}px ${FRAME_PADDING.left}px`,
-        width: maxWidth,
+        width: preferredWidth,
       }}
     >
       <MinecraftUiFrame />

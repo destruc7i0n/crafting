@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from "react";
+import { memo, useRef, useState, type ReactNode, type Ref } from "react";
 
 import { EraserIcon, ImageDownIcon } from "lucide-react";
 
@@ -12,7 +12,7 @@ import { useItemSelection } from "@/hooks/use-item-selection";
 import { trackPreviewScreenshot, trackRecipeAction } from "@/lib/analytics";
 import { clearSelectedRecipeAndSlotSelection } from "@/lib/editor-actions";
 import { cn } from "@/lib/utils";
-import { getRecipeDefinition, type PreviewKind } from "@/recipes/definitions";
+import { getRecipeDefinition } from "@/recipes/definitions";
 import { getPreviewBaseName, toPreviewFileName } from "@/recipes/naming";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
@@ -29,7 +29,6 @@ import {
 
 export const Preview = memo(() => {
   const recipeType = useRecipeStore(selectCurrentRecipeType);
-  const recipe = useRecipeStore(selectCurrentRecipe);
   const hasFilledSlots = useRecipeStore((state) =>
     Object.values(selectCurrentRecipe(state)?.slots ?? {}).some((slotItem) => slotItem != null),
   );
@@ -40,17 +39,7 @@ export const Preview = memo(() => {
   const selection = useItemSelection();
   const previewRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const previewKind = recipeType ? getRecipeDefinition(recipeType).previewKind : undefined;
-  const preview = previewKind
-    ? renderPreview({
-        previewKind,
-        slots: recipe?.slots ?? {},
-        fuelDisabled: selection !== undefined,
-        twoByTwo: recipe?.crafting.twoByTwo === true,
-      })
-    : null;
-
-  if (!preview || !recipeType) {
+  if (!recipeType) {
     return null;
   }
 
@@ -110,55 +99,49 @@ export const Preview = memo(() => {
     });
   };
 
+  const previewControls = (
+    <div
+      className={cn(
+        "absolute right-2 bottom-2 z-10 flex items-center gap-1 transition-opacity",
+        isTouchDevice || isDownloading
+          ? "opacity-100"
+          : "pointer-events-none opacity-0 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100",
+      )}
+    >
+      <Tooltip
+        content={isDownloading ? "Saving preview image" : "Download preview image"}
+        placement="top"
+      >
+        <button
+          type="button"
+          className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-[opacity,colors] focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={handleDownloadPreview}
+          disabled={isDownloading}
+          aria-label={isDownloading ? "Saving preview image" : "Download preview image"}
+        >
+          <ImageDownIcon size={14} />
+          <span className="sr-only">{isDownloading ? "Saving Image" : "Save Image"}</span>
+        </button>
+      </Tooltip>
+
+      <Tooltip content="Clear recipe" placement="top-end">
+        <button
+          type="button"
+          className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-[opacity,colors] focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={handleClearRecipe}
+          disabled={!hasFilledSlots}
+          aria-label="Clear recipe"
+        >
+          <EraserIcon size={14} />
+          <span className="sr-only">Clear Recipe</span>
+        </button>
+      </Tooltip>
+    </div>
+  );
+
   return (
     <div className="minecraft-preview-slots flex w-full flex-col">
-      <div className="w-full">
-        <div className="mx-auto w-fit max-w-full min-w-0">
-          <div className="group relative w-fit max-w-full min-w-0">
-            <div ref={previewRef} className="w-fit max-w-full min-w-0">
-              {preview}
-            </div>
-
-            <div
-              className={cn(
-                "absolute right-2 bottom-2 z-10 flex items-center gap-1 transition-opacity",
-                isTouchDevice || isDownloading
-                  ? "opacity-100"
-                  : "pointer-events-none opacity-0 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100",
-              )}
-            >
-              <Tooltip
-                content={isDownloading ? "Saving preview image" : "Download preview image"}
-                placement="top"
-              >
-                <button
-                  type="button"
-                  className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-[opacity,colors] focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
-                  onClick={handleDownloadPreview}
-                  disabled={isDownloading}
-                  aria-label={isDownloading ? "Saving preview image" : "Download preview image"}
-                >
-                  <ImageDownIcon size={14} />
-                  <span className="sr-only">{isDownloading ? "Saving Image" : "Save Image"}</span>
-                </button>
-              </Tooltip>
-
-              <Tooltip content="Clear recipe" placement="top-end">
-                <button
-                  type="button"
-                  className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-[opacity,colors] focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
-                  onClick={handleClearRecipe}
-                  disabled={!hasFilledSlots}
-                  aria-label="Clear recipe"
-                >
-                  <EraserIcon size={14} />
-                  <span className="sr-only">Clear Recipe</span>
-                </button>
-              </Tooltip>
-            </div>
-          </div>
-        </div>
-      </div>
+      <PreviewContent previewRef={previewRef} controls={previewControls} />
 
       {selection ? (
         <div className="mt-3 flex flex-col gap-2">
@@ -179,34 +162,109 @@ export const Preview = memo(() => {
 
 Preview.displayName = "Preview";
 
-type RenderPreviewOptions = {
-  previewKind: PreviewKind;
-  slots: NonNullable<ReturnType<typeof selectCurrentRecipe>>["slots"] | {};
-  fuelDisabled: boolean;
-  twoByTwo: boolean;
+type PreviewViewportProps = {
+  children: ReactNode;
+  previewRef: Ref<HTMLDivElement>;
+  preferredWidth: number;
+  minWidth: number;
+  controls: ReactNode;
 };
 
-function renderPreview({ previewKind, slots, fuelDisabled, twoByTwo }: RenderPreviewOptions) {
+function PreviewViewport({
+  children,
+  previewRef,
+  preferredWidth,
+  minWidth,
+  controls,
+}: PreviewViewportProps) {
+  return (
+    <div className="w-full min-w-0">
+      <div className="scrollbar-app scrollbar-app-thin max-w-full overflow-x-auto pb-2">
+        <div
+          className="group relative mx-auto max-w-full"
+          style={{ minWidth, width: preferredWidth }}
+        >
+          <div ref={previewRef}>{children}</div>
+          {controls}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+type PreviewContentProps = {
+  controls: ReactNode;
+  previewRef: Ref<HTMLDivElement>;
+};
+
+function PreviewContent({ controls, previewRef }: PreviewContentProps) {
+  const recipeType = useRecipeStore(selectCurrentRecipeType);
+  const recipe = useRecipeStore(selectCurrentRecipe);
+  const selection = useItemSelection();
+  const previewKind = recipeType ? getRecipeDefinition(recipeType).previewKind : undefined;
+
+  if (!previewKind) return null;
+
+  const slots = recipe?.slots ?? {};
+
   switch (previewKind) {
-    case "crafting":
+    case "crafting": {
+      const twoByTwo = recipe?.crafting.twoByTwo === true;
+
       return (
-        <CraftingPreviewSurface
-          slots={slots}
-          twoByTwo={twoByTwo}
-          renderSlot={renderCreatorPreviewSlot}
-        />
+        <PreviewViewport
+          previewRef={previewRef}
+          preferredWidth={twoByTwo ? 316 : 352}
+          minWidth={twoByTwo ? 236 : 256}
+          controls={controls}
+        >
+          <CraftingPreviewSurface
+            slots={slots}
+            twoByTwo={twoByTwo}
+            renderSlot={renderCreatorPreviewSlot}
+          />
+        </PreviewViewport>
       );
+    }
+
     case "furnace":
       return (
-        <FurnacePreviewSurface
-          slots={slots}
-          fuelDisabled={fuelDisabled}
-          renderSlot={renderCreatorPreviewSlot}
-        />
+        <PreviewViewport
+          previewRef={previewRef}
+          preferredWidth={352}
+          minWidth={188}
+          controls={controls}
+        >
+          <FurnacePreviewSurface
+            slots={slots}
+            fuelDisabled={selection !== undefined}
+            renderSlot={renderCreatorPreviewSlot}
+          />
+        </PreviewViewport>
       );
-    case "smithing":
-      return <SmithingPreviewSurface slots={slots} renderSlot={renderCreatorPreviewSlot} />;
+
     case "stonecutter":
-      return <StonecutterPreviewSurface slots={slots} renderSlot={renderCreatorPreviewSlot} />;
+      return (
+        <PreviewViewport
+          previewRef={previewRef}
+          preferredWidth={352}
+          minWidth={336}
+          controls={controls}
+        >
+          <StonecutterPreviewSurface slots={slots} renderSlot={renderCreatorPreviewSlot} />
+        </PreviewViewport>
+      );
+
+    case "smithing":
+      return (
+        <PreviewViewport
+          previewRef={previewRef}
+          preferredWidth={352}
+          minWidth={242}
+          controls={controls}
+        >
+          <SmithingPreviewSurface slots={slots} renderSlot={renderCreatorPreviewSlot} />
+        </PreviewViewport>
+      );
   }
 }
