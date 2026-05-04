@@ -136,14 +136,14 @@ export const ItemsSection = ({
       )}
 
       {filteredCustomItems.length > 0 && (
-        <div className="scrollbar-app scrollbar-app-thin flex max-w-full shrink-0 gap-2 overflow-x-auto pr-2 pb-1 lg:grid lg:max-h-[33%] lg:grid-cols-2 lg:content-start lg:gap-2 lg:overflow-x-hidden lg:overflow-y-auto lg:pr-0 lg:pb-0">
+        <div className="scrollbar-app scrollbar-app-thin flex max-w-full shrink-0 gap-2 overflow-x-auto pr-2 pb-1 contain-[layout_paint_style]">
           {filteredCustomItems.map((item) => (
             <CustomItemEditor
               key={item.uid}
               item={item}
               isExpanded={false}
               onToggle={() => setExpandedItemUid(item.uid)}
-              className="w-[180px] shrink-0 snap-start lg:w-auto lg:min-w-0 lg:shrink"
+              className="w-max min-w-[180px] shrink-0 snap-start"
             />
           ))}
         </div>

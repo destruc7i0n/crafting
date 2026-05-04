@@ -23,11 +23,14 @@ export const IngredientCard = ({
 }: IngredientCardProps) => {
   const content = (
     <>
-      <span className="truncate text-xs font-medium sm:text-sm" title={label}>
+      <span className="text-xs font-medium whitespace-nowrap sm:text-sm" title={label}>
         {label}
       </span>
       {sublabel && (
-        <span className="text-muted-foreground truncate text-[10px] sm:text-xs" title={sublabel}>
+        <span
+          className="text-muted-foreground text-[10px] whitespace-nowrap sm:text-xs"
+          title={sublabel}
+        >
           {sublabel}
         </span>
       )}
@@ -47,7 +50,7 @@ export const IngredientCard = ({
         <button
           type="button"
           className={cn(
-            "flex min-w-0 flex-1 cursor-pointer flex-col overflow-hidden text-left",
+            "flex min-w-0 flex-1 cursor-pointer flex-col text-left",
             sublabel && "pt-0.5",
           )}
           onClick={onClick}
@@ -55,9 +58,7 @@ export const IngredientCard = ({
           {content}
         </button>
       ) : (
-        <div className={cn("flex min-w-0 flex-1 flex-col overflow-hidden", sublabel && "pt-0.5")}>
-          {content}
-        </div>
+        <div className={cn("flex min-w-0 flex-1 flex-col", sublabel && "pt-0.5")}>{content}</div>
       )}
 
       {actions && <div className="flex shrink-0 items-center gap-0.5 self-center">{actions}</div>}
