@@ -11,7 +11,7 @@ import {
   SmithingPreviewSurface,
   StonecutterPreviewSurface,
 } from "@/components/preview/recipe-preview-surface";
-import { Slot } from "@/components/slot/slot";
+import { LARGE_SLOT_SIZE, SLOT_SIZE, Slot } from "@/components/slot/slot";
 import { ItemTooltip } from "@/components/tooltip/item-tooltip";
 import { NoTextureTexture } from "@/data/constants";
 import { getFullId } from "@/data/models/identifier/utilities";
@@ -80,14 +80,16 @@ export function RecipeCatalogPreview({ entry, resources }: RecipeCatalogPreviewP
 
 function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewSlotOptions) {
   const presentation = value ? getCatalogSlotPresentation(value, resources) : undefined;
+  const compact = options?.compact !== false;
+  const size = compact ? SLOT_SIZE : LARGE_SLOT_SIZE;
 
   if (!presentation) {
-    return <Slot width={options?.width} height={options?.height} className="relative" />;
+    return <Slot width={size} height={size} className="relative" />;
   }
 
   if (isCyclingPresentation(presentation)) {
     return (
-      <Slot width={options?.width} height={options?.height} className="relative">
+      <Slot width={size} height={size} className="relative">
         <CyclingItemPreview
           alt={presentation.label}
           itemIds={presentation.preview.itemIds}
@@ -104,7 +106,7 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
             >
               {preview}
               {presentation.count && presentation.count > 1 ? (
-                <ItemCount count={presentation.count} compact={(options?.width ?? 36) <= 36} />
+                <ItemCount count={presentation.count} compact={compact} />
               ) : null}
             </ItemTooltip>
           )}
@@ -114,7 +116,7 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
   }
 
   return (
-    <Slot width={options?.width} height={options?.height} className="relative">
+    <Slot width={size} height={size} className="relative">
       <ItemTooltip
         title={presentation.label}
         description={presentation.description}
@@ -129,7 +131,7 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
           decoding="async"
         />
         {presentation.count && presentation.count > 1 ? (
-          <ItemCount count={presentation.count} compact={(options?.width ?? 36) <= 36} />
+          <ItemCount count={presentation.count} compact={compact} />
         ) : null}
       </ItemTooltip>
     </Slot>

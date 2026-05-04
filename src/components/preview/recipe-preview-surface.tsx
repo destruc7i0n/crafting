@@ -1,13 +1,21 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
+
+import { cn } from "@/lib/utils";
 
 import type { RecipeSlot } from "@/recipes/slots";
 
-import { Slot } from "../slot/slot";
-import { MinecraftUiLabel } from "./minecraft-ui-label";
+import { Slot, SLOT_SIZE } from "../slot/slot";
+import {
+  CraftingArrow,
+  FurnaceFire,
+  MinecraftUiFrame,
+  MinecraftUiLabel,
+  SmithingHammer,
+  StonecutterSelectionUi,
+} from "./minecraft-ui";
 
 export type PreviewSlotRenderOptions = {
-  width?: number;
-  height?: number;
+  compact?: boolean;
 };
 
 export type PreviewSlotRenderer<TSlotValue> = (
@@ -21,21 +29,36 @@ type PreviewSurfaceProps<TSlotValue> = {
   renderSlot: PreviewSlotRenderer<TSlotValue>;
 };
 
-const craftingSlotStyles = {
-  "crafting.1": { position: "absolute", top: 32, left: 58 },
-  "crafting.2": { position: "absolute", top: 32, left: 58 + 36 },
-  "crafting.3": { position: "absolute", top: 32, left: 58 + 36 * 2 },
-  "crafting.4": { position: "absolute", top: 32 + 36, left: 58 },
-  "crafting.5": { position: "absolute", top: 32 + 36, left: 58 + 36 },
-  "crafting.6": { position: "absolute", top: 32 + 36, left: 58 + 36 * 2 },
-  "crafting.7": { position: "absolute", top: 32 + 36 * 2, left: 58 },
-  "crafting.8": { position: "absolute", top: 32 + 36 * 2, left: 58 + 36 },
-  "crafting.9": { position: "absolute", top: 32 + 36 * 2, left: 58 + 36 * 2 },
-} as const satisfies Record<string, CSSProperties>;
+const FRAME_PADDING = {
+  top: 8,
+  right: 12,
+  bottom: 14,
+  left: 12,
+} as const;
 
-type CraftingGridSlot = keyof typeof craftingSlotStyles;
+type PreviewFrameAlign = "center" | "start";
+type CraftingGridSlot =
+  | "crafting.1"
+  | "crafting.2"
+  | "crafting.3"
+  | "crafting.4"
+  | "crafting.5"
+  | "crafting.6"
+  | "crafting.7"
+  | "crafting.8"
+  | "crafting.9";
 
-const threeByThreeCraftingSlots = Object.keys(craftingSlotStyles) as CraftingGridSlot[];
+const threeByThreeCraftingSlots = [
+  "crafting.1",
+  "crafting.2",
+  "crafting.3",
+  "crafting.4",
+  "crafting.5",
+  "crafting.6",
+  "crafting.7",
+  "crafting.8",
+  "crafting.9",
+] as const satisfies readonly CraftingGridSlot[];
 const twoByTwoCraftingSlots = [
   "crafting.1",
   "crafting.2",
@@ -51,53 +74,47 @@ export function CraftingPreviewSurface<TSlotValue>({
   twoByTwo: boolean;
 }) {
   const visibleSlots = twoByTwo ? twoByTwoCraftingSlots : threeByThreeCraftingSlots;
-
-  if (twoByTwo) {
-    return (
-      <div
-        className="relative mx-auto h-[136px] w-[316px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
-        style={{ backgroundImage: "url(/assets/ui/crafting_table_2x2.png)" }}
-      >
-        <MinecraftUiLabel top={8} left={58}>
-          Crafting
-        </MinecraftUiLabel>
-
-        {visibleSlots.map((slot) => (
-          <PositionedSlot key={slot} style={{ ...craftingSlotStyles[slot], zIndex: 1 }}>
-            {renderSlot(slot, slots[slot])}
-          </PositionedSlot>
-        ))}
-
-        <div style={{ position: "absolute", top: 53, left: 150, zIndex: 1 }}>
-          <CraftingArrow />
-        </div>
-
-        <PositionedSlot style={{ position: "absolute", top: 42, right: 46, zIndex: 1 }}>
-          {renderSlot("crafting.result", slots["crafting.result"], { width: 52, height: 52 })}
-        </PositionedSlot>
-      </div>
-    );
-  }
+  const columns = twoByTwo ? 2 : 3;
 
   return (
-    <div
-      className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
-      style={{ backgroundImage: "url(/assets/ui/crafting_table.png)" }}
+    <PreviewSurfaceFrame
+      align="center"
+      preferredWidth={twoByTwo ? 316 : 352}
+      minWidth={twoByTwo ? 236 : 256}
     >
-      <MinecraftUiLabel top={8} left={58}>
-        Crafting
-      </MinecraftUiLabel>
+      <div>
+        <MinecraftUiLabel>Crafting</MinecraftUiLabel>
 
-      {visibleSlots.map((slot) => (
-        <PositionedSlot key={slot} style={craftingSlotStyles[slot]}>
-          {renderSlot(slot, slots[slot])}
-        </PositionedSlot>
-      ))}
+        <div className="mt-1.5 flex items-center">
+          <div
+            className="grid shrink-0"
+            style={{
+              gridTemplateColumns: `repeat(${columns}, ${SLOT_SIZE}px)`,
+            }}
+          >
+            {visibleSlots.map((slot) => (
+              <div key={slot}>{renderSlot(slot, slots[slot])}</div>
+            ))}
+          </div>
 
-      <PositionedSlot style={{ position: "absolute", top: 60, right: 62 }}>
-        {renderSlot("crafting.result", slots["crafting.result"], { width: 52, height: 52 })}
-      </PositionedSlot>
-    </div>
+          <div
+            className="shrink-0"
+            style={{
+              height: 30,
+              marginLeft: twoByTwo ? 20 : 14,
+              marginRight: twoByTwo ? 24 : 14,
+              // in the game ui the arrow is 1px above flex center
+              transform: twoByTwo ? undefined : "translateY(-1px)",
+              width: 44,
+            }}
+          >
+            <CraftingArrow />
+          </div>
+
+          {renderSlot("crafting.result", slots["crafting.result"], { compact: false })}
+        </div>
+      </div>
+    </PreviewSurfaceFrame>
   );
 }
 
@@ -109,26 +126,39 @@ export function FurnacePreviewSurface<TSlotValue>({
   fuelDisabled: boolean;
 }) {
   return (
-    <div
-      className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
-      style={{ backgroundImage: "url(/assets/ui/furnace.png)" }}
-    >
-      <MinecraftUiLabel top={8} center>
-        Furnace
-      </MinecraftUiLabel>
+    <PreviewSurfaceFrame align="center" preferredWidth={352} minWidth={188}>
+      <div>
+        <MinecraftUiLabel center>Furnace</MinecraftUiLabel>
 
-      <PositionedSlot style={{ position: "absolute", top: 32, left: 110 }}>
-        {renderSlot("cooking.ingredient", slots["cooking.ingredient"])}
-      </PositionedSlot>
+        <div className="mt-1.5 ml-8 flex items-center">
+          <div className="flex shrink-0 flex-col items-center" style={{ gap: 4 }}>
+            {renderSlot("cooking.ingredient", slots["cooking.ingredient"])}
 
-      <PositionedSlot style={{ position: "absolute", top: 104, left: 110 }}>
-        <Slot data-fuel-slot inert disabled={fuelDisabled} />
-      </PositionedSlot>
+            <div style={{ height: 28, width: 28 }}>
+              <FurnaceFire />
+            </div>
 
-      <PositionedSlot style={{ position: "absolute", top: 60, right: 78 }}>
-        {renderSlot("cooking.result", slots["cooking.result"], { width: 52, height: 52 })}
-      </PositionedSlot>
-    </div>
+            <Slot data-fuel-slot inert disabled={fuelDisabled} />
+          </div>
+
+          <div
+            className="shrink-0"
+            style={{
+              height: 30,
+              marginLeft: 14,
+              marginRight: 18,
+              // in the game ui the arrow is 1px above flex center
+              transform: "translateY(-1px)",
+              width: 44,
+            }}
+          >
+            <CraftingArrow />
+          </div>
+
+          {renderSlot("cooking.result", slots["cooking.result"], { compact: false })}
+        </div>
+      </div>
+    </PreviewSurfaceFrame>
   );
 }
 
@@ -137,22 +167,23 @@ export function StonecutterPreviewSurface<TSlotValue>({
   renderSlot,
 }: PreviewSurfaceProps<TSlotValue>) {
   return (
-    <div
-      className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
-      style={{ backgroundImage: "url(/assets/ui/stonecutter.png)" }}
-    >
-      <MinecraftUiLabel top={8} left={16}>
-        Stonecutter
-      </MinecraftUiLabel>
+    <PreviewSurfaceFrame align="start" preferredWidth={352} minWidth={336}>
+      <div className="relative" style={{ height: 132, width: 312 }}>
+        <MinecraftUiLabel>Stonecutter</MinecraftUiLabel>
 
-      <PositionedSlot style={{ position: "absolute", top: 64, left: 38 }}>
-        {renderSlot("stonecutter.ingredient", slots["stonecutter.ingredient"])}
-      </PositionedSlot>
+        <div className="absolute" style={{ height: 112, left: 86, top: 20, width: 162 }}>
+          <StonecutterSelectionUi />
+        </div>
 
-      <PositionedSlot style={{ position: "absolute", top: 56, right: 24 }}>
-        {renderSlot("stonecutter.result", slots["stonecutter.result"], { width: 52, height: 52 })}
-      </PositionedSlot>
-    </div>
+        <div className="absolute" style={{ left: 22, top: 56 }}>
+          {renderSlot("stonecutter.ingredient", slots["stonecutter.ingredient"])}
+        </div>
+
+        <div className="absolute" style={{ left: 260, top: 48 }}>
+          {renderSlot("stonecutter.result", slots["stonecutter.result"], { compact: false })}
+        </div>
+      </div>
+    </PreviewSurfaceFrame>
   );
 }
 
@@ -161,39 +192,65 @@ export function SmithingPreviewSurface<TSlotValue>({
   renderSlot,
 }: PreviewSurfaceProps<TSlotValue>) {
   return (
-    <div
-      className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
-      style={{ backgroundImage: "url(/assets/ui/smithing.png)" }}
-    >
-      <MinecraftUiLabel top={24} left={88}>
-        Upgrade Gear
-      </MinecraftUiLabel>
+    <PreviewSurfaceFrame align="start" preferredWidth={352} minWidth={242}>
+      <div className="relative" style={{ height: 122, width: 218 }}>
+        <div className="absolute" style={{ height: 62, left: 2, top: 6, width: 60 }}>
+          <SmithingHammer />
+        </div>
 
-      <PositionedSlot style={{ position: "absolute", bottom: 42, left: 14 }}>
-        {renderSlot("smithing.template", slots["smithing.template"])}
-      </PositionedSlot>
-      <PositionedSlot style={{ position: "absolute", bottom: 42, left: 14 + 36 }}>
-        {renderSlot("smithing.base", slots["smithing.base"])}
-      </PositionedSlot>
-      <PositionedSlot style={{ position: "absolute", bottom: 42, left: 14 + 36 * 2 }}>
-        {renderSlot("smithing.addition", slots["smithing.addition"])}
-      </PositionedSlot>
+        <div className="absolute" style={{ left: 76, top: 16 }}>
+          <MinecraftUiLabel>Upgrade Gear</MinecraftUiLabel>
+        </div>
 
-      <PositionedSlot style={{ position: "absolute", bottom: 42, left: 194 }}>
-        {renderSlot("smithing.result", slots["smithing.result"])}
-      </PositionedSlot>
-    </div>
+        <div className="absolute" style={{ left: 2, top: 86 }}>
+          {renderSlot("smithing.template", slots["smithing.template"])}
+        </div>
+
+        <div className="absolute" style={{ left: 2 + SLOT_SIZE, top: 86 }}>
+          {renderSlot("smithing.base", slots["smithing.base"])}
+        </div>
+
+        <div className="absolute" style={{ left: 2 + SLOT_SIZE * 2, top: 86 }}>
+          {renderSlot("smithing.addition", slots["smithing.addition"])}
+        </div>
+
+        <div className="absolute" style={{ height: 30, left: 124, top: 90, width: 44 }}>
+          <CraftingArrow />
+        </div>
+
+        <div className="absolute" style={{ left: 182, top: 86 }}>
+          {renderSlot("smithing.result", slots["smithing.result"])}
+        </div>
+      </div>
+    </PreviewSurfaceFrame>
   );
 }
 
-function PositionedSlot({ children, style }: { children: ReactNode; style: CSSProperties }) {
-  return <div style={style}>{children}</div>;
-}
-
-function CraftingArrow() {
+function PreviewSurfaceFrame({
+  children,
+  align,
+  preferredWidth,
+  minWidth,
+}: {
+  children: ReactNode;
+  align: PreviewFrameAlign;
+  preferredWidth: number;
+  minWidth: number;
+}) {
   return (
-    <svg aria-hidden viewBox="0 0 22 15" className="h-[30px] w-[44px] fill-[#8b8b8b]">
-      <path d="M14 0h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v-6H0V6h14z" />
-    </svg>
+    <div
+      className={cn(
+        "relative mx-auto box-border flex max-w-full overflow-visible [image-rendering:crisp-edges] [image-rendering:pixelated]",
+        align === "center" ? "justify-center" : "justify-start",
+      )}
+      style={{
+        minWidth,
+        padding: `${FRAME_PADDING.top}px ${FRAME_PADDING.right}px ${FRAME_PADDING.bottom}px ${FRAME_PADDING.left}px`,
+        width: preferredWidth,
+      }}
+    >
+      <MinecraftUiFrame />
+      <div className="relative z-1 shrink-0">{children}</div>
+    </div>
   );
 }
