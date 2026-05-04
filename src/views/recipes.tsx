@@ -46,6 +46,10 @@ const recipesRoute = getRouteApi("/recipes/{-$version}");
 
 const navLink = <HeaderNavLink to="/">Generator</HeaderNavLink>;
 
+type SearchableCatalogRecipe = CatalogGridRecipe & {
+  searchText: string;
+};
+
 export function RecipesView() {
   const { version: routeVersion } = recipesRoute.useParams();
   const catalog = recipesRoute.useLoaderData();
@@ -111,29 +115,27 @@ export function RecipesView() {
     return catalogRecipeTypes.filter((recipeType) => presentTypes.has(recipeType));
   }, [catalog]);
 
-  const filteredRecipes = useMemo((): CatalogGridRecipe[] => {
-    const nextRecipes: CatalogGridRecipe[] = [];
-
-    for (const entry of catalog) {
-      if (search.recipeType !== "all" && entry.recipeType !== search.recipeType) {
-        continue;
-      }
-
-      if (
-        deferredQuery.length > 0 &&
-        !getRecipeSearchText(entry, resources).includes(deferredQuery)
-      ) {
-        continue;
-      }
-
-      nextRecipes.push({
+  const searchableRecipes = useMemo(
+    (): SearchableCatalogRecipe[] =>
+      catalog.map((entry) => ({
         entry,
         title: getRecipeCardTitle(entry, resources),
-      });
-    }
+        searchText: getRecipeSearchText(entry, resources),
+      })),
+    [catalog, resources],
+  );
 
-    return nextRecipes;
-  }, [catalog, deferredQuery, resources, search.recipeType]);
+  const filteredRecipes = useMemo(
+    (): CatalogGridRecipe[] =>
+      searchableRecipes.filter(({ entry, searchText }) => {
+        if (search.recipeType !== "all" && entry.recipeType !== search.recipeType) {
+          return false;
+        }
+
+        return deferredQuery.length === 0 || searchText.includes(deferredQuery);
+      }),
+    [deferredQuery, search.recipeType, searchableRecipes],
+  );
 
   return (
     <AppShell
