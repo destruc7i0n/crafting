@@ -58,7 +58,7 @@ export function CraftingPreviewSurface<TSlotValue>({
         className="relative mx-auto h-[136px] w-[316px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
         style={{ backgroundImage: "url(/assets/ui/crafting_table_2x2.png)" }}
       >
-        <MinecraftUiLabel top={10} left={58}>
+        <MinecraftUiLabel top={8} left={58}>
           Crafting
         </MinecraftUiLabel>
 
@@ -84,7 +84,7 @@ export function CraftingPreviewSurface<TSlotValue>({
       className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
       style={{ backgroundImage: "url(/assets/ui/crafting_table.png)" }}
     >
-      <MinecraftUiLabel top={10} left={58}>
+      <MinecraftUiLabel top={8} left={58}>
         Crafting
       </MinecraftUiLabel>
 
@@ -113,7 +113,7 @@ export function FurnacePreviewSurface<TSlotValue>({
       className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
       style={{ backgroundImage: "url(/assets/ui/furnace.png)" }}
     >
-      <MinecraftUiLabel top={10} center>
+      <MinecraftUiLabel top={8} center>
         Furnace
       </MinecraftUiLabel>
 
@@ -141,7 +141,7 @@ export function StonecutterPreviewSurface<TSlotValue>({
       className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
       style={{ backgroundImage: "url(/assets/ui/stonecutter.png)" }}
     >
-      <MinecraftUiLabel top={10} left={16}>
+      <MinecraftUiLabel top={8} left={16}>
         Stonecutter
       </MinecraftUiLabel>
 
@@ -165,7 +165,7 @@ export function SmithingPreviewSurface<TSlotValue>({
       className="relative h-[172px] w-[352px] bg-contain bg-center bg-no-repeat [image-rendering:crisp-edges] [image-rendering:pixelated]"
       style={{ backgroundImage: "url(/assets/ui/smithing.png)" }}
     >
-      <MinecraftUiLabel top={42} left={88}>
+      <MinecraftUiLabel top={24} left={88}>
         Upgrade Gear
       </MinecraftUiLabel>
 
