@@ -1,8 +1,10 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
+
+import { cn } from "@/lib/utils";
 
 import type { RecipeSlot } from "@/recipes/slots";
 
-import { LARGE_SLOT_SIZE, SLOT_SIZE } from "../slot/slot";
+import { SLOT_SIZE } from "../slot/slot";
 import { SlotDropTarget } from "../slot/slot-drop-target";
 import {
   CraftingArrow,
@@ -28,46 +30,36 @@ type PreviewSurfaceProps<TSlotValue> = {
   renderSlot: PreviewSlotRenderer<TSlotValue>;
 };
 
-type SurfaceMetrics = {
-  width: number;
-  height: number;
-};
+const FRAME_PADDING = {
+  top: 8,
+  right: 12,
+  bottom: 14,
+  left: 12,
+} as const;
 
-type SlotPosition = {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-  width?: number;
-  height?: number;
-  zIndex?: number;
-};
+type PreviewFrameAlign = "center" | "start";
+type CraftingGridSlot =
+  | "crafting.1"
+  | "crafting.2"
+  | "crafting.3"
+  | "crafting.4"
+  | "crafting.5"
+  | "crafting.6"
+  | "crafting.7"
+  | "crafting.8"
+  | "crafting.9";
 
-const fullSurface = {
-  width: 352,
-  height: 172,
-} as const satisfies SurfaceMetrics;
-
-const twoByTwoSurface = {
-  width: 316,
-  height: 136,
-} as const satisfies SurfaceMetrics;
-
-const craftingSlotPositions = {
-  "crafting.1": { top: 32, left: 58 },
-  "crafting.2": { top: 32, left: 58 + SLOT_SIZE },
-  "crafting.3": { top: 32, left: 58 + SLOT_SIZE * 2 },
-  "crafting.4": { top: 32 + SLOT_SIZE, left: 58 },
-  "crafting.5": { top: 32 + SLOT_SIZE, left: 58 + SLOT_SIZE },
-  "crafting.6": { top: 32 + SLOT_SIZE, left: 58 + SLOT_SIZE * 2 },
-  "crafting.7": { top: 32 + SLOT_SIZE * 2, left: 58 },
-  "crafting.8": { top: 32 + SLOT_SIZE * 2, left: 58 + SLOT_SIZE },
-  "crafting.9": { top: 32 + SLOT_SIZE * 2, left: 58 + SLOT_SIZE * 2 },
-} as const satisfies Record<string, SlotPosition>;
-
-type CraftingGridSlot = keyof typeof craftingSlotPositions;
-
-const threeByThreeCraftingSlots = Object.keys(craftingSlotPositions) as CraftingGridSlot[];
+const threeByThreeCraftingSlots = [
+  "crafting.1",
+  "crafting.2",
+  "crafting.3",
+  "crafting.4",
+  "crafting.5",
+  "crafting.6",
+  "crafting.7",
+  "crafting.8",
+  "crafting.9",
+] as const satisfies readonly CraftingGridSlot[];
 const twoByTwoCraftingSlots = [
   "crafting.1",
   "crafting.2",
@@ -83,80 +75,42 @@ export function CraftingPreviewSurface<TSlotValue>({
   twoByTwo: boolean;
 }) {
   const visibleSlots = twoByTwo ? twoByTwoCraftingSlots : threeByThreeCraftingSlots;
-
-  if (twoByTwo) {
-    return (
-      <PreviewSurfaceFrame surface={twoByTwoSurface}>
-        <MinecraftUiLabel top={8} left={58} surface={twoByTwoSurface}>
-          Crafting
-        </MinecraftUiLabel>
-
-        {visibleSlots.map((slot) => (
-          <PositionedSlot
-            key={slot}
-            surface={twoByTwoSurface}
-            position={{ ...craftingSlotPositions[slot], zIndex: 1 }}
-          >
-            {renderSlot(slot, slots[slot])}
-          </PositionedSlot>
-        ))}
-
-        <div
-          style={getPositionedStyle(twoByTwoSurface, {
-            top: 53,
-            left: 150,
-            width: 44,
-            height: 30,
-          })}
-        >
-          <CraftingArrow />
-        </div>
-
-        <PositionedSlot
-          surface={twoByTwoSurface}
-          position={{
-            top: 42,
-            right: 46,
-            width: LARGE_SLOT_SIZE,
-            height: LARGE_SLOT_SIZE,
-            zIndex: 1,
-          }}
-        >
-          {renderSlot("crafting.result", slots["crafting.result"], { compact: false })}
-        </PositionedSlot>
-      </PreviewSurfaceFrame>
-    );
-  }
+  const columns = twoByTwo ? 2 : 3;
 
   return (
-    <PreviewSurfaceFrame surface={fullSurface}>
-      <MinecraftUiLabel top={8} left={58} surface={fullSurface}>
-        Crafting
-      </MinecraftUiLabel>
+    <PreviewSurfaceFrame align="center" maxWidth={twoByTwo ? 316 : 352}>
+      <div>
+        <MinecraftUiLabel>Crafting</MinecraftUiLabel>
 
-      {visibleSlots.map((slot) => (
-        <PositionedSlot key={slot} surface={fullSurface} position={craftingSlotPositions[slot]}>
-          {renderSlot(slot, slots[slot])}
-        </PositionedSlot>
-      ))}
+        <div className="mt-1.5 flex items-center">
+          <div
+            className="grid shrink-0"
+            style={{
+              gridTemplateColumns: `repeat(${columns}, ${SLOT_SIZE}px)`,
+            }}
+          >
+            {visibleSlots.map((slot) => (
+              <div key={slot}>{renderSlot(slot, slots[slot])}</div>
+            ))}
+          </div>
 
-      <div
-        style={getPositionedStyle(fullSurface, {
-          top: 70,
-          left: 180,
-          width: 44,
-          height: 30,
-        })}
-      >
-        <CraftingArrow />
+          <div
+            className="shrink-0"
+            style={{
+              height: 30,
+              marginLeft: twoByTwo ? 20 : 14,
+              marginRight: twoByTwo ? 24 : 14,
+              // in the game ui the arrow is 1px above flex center
+              transform: twoByTwo ? undefined : "translateY(-1px)",
+              width: 44,
+            }}
+          >
+            <CraftingArrow />
+          </div>
+
+          {renderSlot("crafting.result", slots["crafting.result"], { compact: false })}
+        </div>
       </div>
-
-      <PositionedSlot
-        surface={fullSurface}
-        position={{ top: 60, right: 62, width: LARGE_SLOT_SIZE, height: LARGE_SLOT_SIZE }}
-      >
-        {renderSlot("crafting.result", slots["crafting.result"], { compact: false })}
-      </PositionedSlot>
     </PreviewSurfaceFrame>
   );
 }
@@ -169,47 +123,38 @@ export function FurnacePreviewSurface<TSlotValue>({
   fuelDisabled: boolean;
 }) {
   return (
-    <PreviewSurfaceFrame surface={fullSurface}>
-      <div style={getPositionedStyle(fullSurface, { top: 72, left: 114, width: 28, height: 28 })}>
-        <FurnaceFire />
+    <PreviewSurfaceFrame align="center" maxWidth={352}>
+      <div>
+        <MinecraftUiLabel center>Furnace</MinecraftUiLabel>
+
+        <div className="mt-1.5 flex items-center">
+          <div className="flex shrink-0 flex-col items-center" style={{ gap: 4 }}>
+            {renderSlot("cooking.ingredient", slots["cooking.ingredient"])}
+
+            <div style={{ height: 28, width: 28 }}>
+              <FurnaceFire />
+            </div>
+
+            <SlotDropTarget canDrop={() => false} data-fuel-slot inert disabled={fuelDisabled} />
+          </div>
+
+          <div
+            className="shrink-0"
+            style={{
+              height: 30,
+              marginLeft: 14,
+              marginRight: 18,
+              // in the game ui the arrow is 1px above flex center
+              transform: "translateY(-1px)",
+              width: 44,
+            }}
+          >
+            <CraftingArrow />
+          </div>
+
+          {renderSlot("cooking.result", slots["cooking.result"], { compact: false })}
+        </div>
       </div>
-
-      <MinecraftUiLabel top={8} center surface={fullSurface}>
-        Furnace
-      </MinecraftUiLabel>
-
-      <PositionedSlot surface={fullSurface} position={{ top: 32, left: 110 }}>
-        {renderSlot("cooking.ingredient", slots["cooking.ingredient"])}
-      </PositionedSlot>
-
-      <PositionedSlot surface={fullSurface} position={{ top: 104, left: 110 }}>
-        <SlotDropTarget
-          canDrop={() => false}
-          data-fuel-slot
-          inert
-          disabled={fuelDisabled}
-          width={SLOT_SIZE}
-          height={SLOT_SIZE}
-        />
-      </PositionedSlot>
-
-      <div
-        style={getPositionedStyle(fullSurface, {
-          top: 70,
-          left: 160,
-          width: 44,
-          height: 30,
-        })}
-      >
-        <CraftingArrow />
-      </div>
-
-      <PositionedSlot
-        surface={fullSurface}
-        position={{ top: 60, right: 78, width: LARGE_SLOT_SIZE, height: LARGE_SLOT_SIZE }}
-      >
-        {renderSlot("cooking.result", slots["cooking.result"], { compact: false })}
-      </PositionedSlot>
     </PreviewSurfaceFrame>
   );
 }
@@ -219,32 +164,22 @@ export function StonecutterPreviewSurface<TSlotValue>({
   renderSlot,
 }: PreviewSurfaceProps<TSlotValue>) {
   return (
-    <PreviewSurfaceFrame surface={fullSurface}>
-      <div
-        style={getPositionedStyle(fullSurface, {
-          top: 28,
-          left: 102,
-          width: 162,
-          height: 112,
-        })}
-      >
-        <StonecutterSelectionUi />
+    <PreviewSurfaceFrame align="start" maxWidth={352}>
+      <div className="relative" style={{ height: 132, width: 312 }}>
+        <MinecraftUiLabel>Stonecutter</MinecraftUiLabel>
+
+        <div className="absolute" style={{ height: 112, left: 86, top: 20, width: 162 }}>
+          <StonecutterSelectionUi />
+        </div>
+
+        <div className="absolute" style={{ left: 22, top: 56 }}>
+          {renderSlot("stonecutter.ingredient", slots["stonecutter.ingredient"])}
+        </div>
+
+        <div className="absolute" style={{ left: 260, top: 48 }}>
+          {renderSlot("stonecutter.result", slots["stonecutter.result"], { compact: false })}
+        </div>
       </div>
-
-      <MinecraftUiLabel top={8} left={16} surface={fullSurface}>
-        Stonecutter
-      </MinecraftUiLabel>
-
-      <PositionedSlot surface={fullSurface} position={{ top: 64, left: 38 }}>
-        {renderSlot("stonecutter.ingredient", slots["stonecutter.ingredient"])}
-      </PositionedSlot>
-
-      <PositionedSlot
-        surface={fullSurface}
-        position={{ top: 56, right: 24, width: LARGE_SLOT_SIZE, height: LARGE_SLOT_SIZE }}
-      >
-        {renderSlot("stonecutter.result", slots["stonecutter.result"], { compact: false })}
-      </PositionedSlot>
     </PreviewSurfaceFrame>
   );
 }
@@ -254,106 +189,62 @@ export function SmithingPreviewSurface<TSlotValue>({
   renderSlot,
 }: PreviewSurfaceProps<TSlotValue>) {
   return (
-    <PreviewSurfaceFrame surface={fullSurface}>
-      <div style={getPositionedStyle(fullSurface, { top: 14, left: 14, width: 60, height: 62 })}>
-        <SmithingHammer />
+    <PreviewSurfaceFrame align="start" maxWidth={352}>
+      <div className="relative" style={{ height: 122, width: 218 }}>
+        <div className="absolute" style={{ height: 62, left: 2, top: 6, width: 60 }}>
+          <SmithingHammer />
+        </div>
+
+        <div className="absolute" style={{ left: 76, top: 16 }}>
+          <MinecraftUiLabel>Upgrade Gear</MinecraftUiLabel>
+        </div>
+
+        <div className="absolute" style={{ left: 2, top: 86 }}>
+          {renderSlot("smithing.template", slots["smithing.template"])}
+        </div>
+
+        <div className="absolute" style={{ left: 2 + SLOT_SIZE, top: 86 }}>
+          {renderSlot("smithing.base", slots["smithing.base"])}
+        </div>
+
+        <div className="absolute" style={{ left: 2 + SLOT_SIZE * 2, top: 86 }}>
+          {renderSlot("smithing.addition", slots["smithing.addition"])}
+        </div>
+
+        <div className="absolute" style={{ height: 30, left: 124, top: 90, width: 44 }}>
+          <CraftingArrow />
+        </div>
+
+        <div className="absolute" style={{ left: 182, top: 86 }}>
+          {renderSlot("smithing.result", slots["smithing.result"])}
+        </div>
       </div>
-
-      <MinecraftUiLabel top={24} left={88} surface={fullSurface}>
-        Upgrade Gear
-      </MinecraftUiLabel>
-
-      <PositionedSlot surface={fullSurface} position={{ bottom: 42, left: 14 }}>
-        {renderSlot("smithing.template", slots["smithing.template"])}
-      </PositionedSlot>
-      <PositionedSlot surface={fullSurface} position={{ bottom: 42, left: 14 + SLOT_SIZE }}>
-        {renderSlot("smithing.base", slots["smithing.base"])}
-      </PositionedSlot>
-      <PositionedSlot surface={fullSurface} position={{ bottom: 42, left: 14 + SLOT_SIZE * 2 }}>
-        {renderSlot("smithing.addition", slots["smithing.addition"])}
-      </PositionedSlot>
-
-      <div
-        style={getPositionedStyle(fullSurface, {
-          top: 98,
-          left: 136,
-          width: 44,
-          height: 30,
-        })}
-      >
-        <CraftingArrow />
-      </div>
-
-      <PositionedSlot surface={fullSurface} position={{ bottom: 42, left: 194 }}>
-        {renderSlot("smithing.result", slots["smithing.result"])}
-      </PositionedSlot>
     </PreviewSurfaceFrame>
   );
 }
 
 function PreviewSurfaceFrame({
   children,
-  surface,
+  align,
+  maxWidth,
 }: {
   children: ReactNode;
-  surface: SurfaceMetrics;
+  align: PreviewFrameAlign;
+  maxWidth: number;
 }) {
   return (
     <div
-      className="relative mx-auto w-full max-w-full [image-rendering:crisp-edges] [image-rendering:pixelated]"
-      style={
-        {
-          aspectRatio: `${surface.width} / ${surface.height}`,
-          containerType: "inline-size",
-          maxWidth: "100%",
-          width: surface.width,
-        } as CSSProperties
-      }
+      className={cn(
+        "relative mx-auto box-border flex max-w-full overflow-visible [image-rendering:crisp-edges] [image-rendering:pixelated]",
+        align === "center" ? "justify-center" : "justify-start",
+      )}
+      style={{
+        padding: `${FRAME_PADDING.top}px ${FRAME_PADDING.right}px ${FRAME_PADDING.bottom}px ${FRAME_PADDING.left}px`,
+        width: maxWidth,
+      }}
     >
-      <svg
-        aria-hidden="true"
-        focusable="false"
-        viewBox={`0 0 ${surface.width / 2} ${surface.height / 2}`}
-        shapeRendering="crispEdges"
-        preserveAspectRatio="none"
-        className="absolute inset-0 h-full w-full"
-      >
-        <MinecraftUiFrame width={surface.width / 2} height={surface.height / 2} />
-      </svg>
-      {children}
+      <MinecraftUiFrame />
+      <div className="relative z-1 shrink-0">{children}</div>
     </div>
   );
-}
-
-function PositionedSlot({
-  children,
-  position,
-  surface,
-}: {
-  children: ReactNode;
-  position: SlotPosition;
-  surface: SurfaceMetrics;
-}) {
-  return <div style={getPositionedStyle(surface, position)}>{children}</div>;
-}
-
-function getPositionedStyle(surface: SurfaceMetrics, position: SlotPosition): CSSProperties {
-  return {
-    position: "absolute",
-    ...(position.top !== undefined ? { top: getYPercent(position.top, surface) } : {}),
-    ...(position.right !== undefined ? { right: getXPercent(position.right, surface) } : {}),
-    ...(position.bottom !== undefined ? { bottom: getYPercent(position.bottom, surface) } : {}),
-    ...(position.left !== undefined ? { left: getXPercent(position.left, surface) } : {}),
-    width: getXPercent(position.width ?? SLOT_SIZE, surface),
-    height: getYPercent(position.height ?? SLOT_SIZE, surface),
-    zIndex: position.zIndex,
-  };
-}
-
-function getXPercent(value: number, surface: SurfaceMetrics) {
-  return `${(value / surface.width) * 100}%`;
-}
-
-function getYPercent(value: number, surface: SurfaceMetrics) {
-  return `${(value / surface.height) * 100}%`;
 }

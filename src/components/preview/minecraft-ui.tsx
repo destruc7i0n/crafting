@@ -1,70 +1,50 @@
-type SurfaceSize = {
-  width: number;
-  height: number;
-};
+import { cn } from "@/lib/utils";
 
 type PixelPath = readonly [fill: string, d: string];
 type PixelRun = readonly [x: number, y: number, width: number];
 
-export function MinecraftUiLabel({
-  children,
-  top,
-  left,
-  center,
-  surface,
-}: {
-  children: string;
-  top: number;
-  left?: number;
-  center?: boolean;
-  surface: SurfaceSize;
-}) {
+export function MinecraftUiLabel({ children, center }: { children: string; center?: boolean }) {
   return (
-    <span
+    <div
       aria-hidden="true"
-      className="font-minecraft pointer-events-none absolute z-1 text-[#404040] [-webkit-font-smoothing:none] select-none"
-      style={{
-        fontSize: `clamp(12px, ${(20 / surface.width) * 100}cqw, 20px)`,
-        lineHeight: `clamp(11px, ${(18 / surface.width) * 100}cqw, 18px)`,
-        top: `${(top / surface.height) * 100}%`,
-        ...(center
-          ? { left: "50%", transform: "translateX(-50%)" }
-          : { left: `${((left ?? 0) / surface.width) * 100}%` }),
-      }}
+      className={cn(
+        "font-minecraft pointer-events-none text-[20px] leading-[18px] whitespace-nowrap text-[#404040] [-webkit-font-smoothing:none] select-none",
+        center ? "text-center" : "text-left",
+      )}
     >
       {children}
-    </span>
+    </div>
   );
 }
 
-export function MinecraftUiFrame({ width, height }: SurfaceSize) {
+export function MinecraftUiFrame() {
   return (
-    <>
-      <rect x={3} y={3} width={width - 6} height={height - 6} fill="#c6c6c6" />
-      <rect x={width - 3} y={2} width={1} height={1} fill="#c6c6c6" />
-      <rect x={2} y={height - 3} width={1} height={1} fill="#c6c6c6" />
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      <div className="absolute bg-[#c6c6c6]" style={{ top: 6, right: 6, bottom: 6, left: 6 }} />
+      <div className="absolute bg-[#c6c6c6]" style={{ top: 4, right: 4, width: 2, height: 2 }} />
+      <div className="absolute bg-[#c6c6c6]" style={{ bottom: 4, left: 4, width: 2, height: 2 }} />
 
-      <rect x={2} y={1} width={width - 5} height={1} fill="#ffffff" />
-      <rect x={1} y={2} width={width - 4} height={1} fill="#ffffff" />
-      <rect x={1} y={3} width={3} height={1} fill="#ffffff" />
-      <rect x={1} y={4} width={2} height={height - 7} fill="#ffffff" />
+      <div className="absolute bg-white" style={{ top: 2, right: 6, left: 4, height: 2 }} />
+      <div className="absolute bg-white" style={{ top: 4, right: 6, left: 2, height: 2 }} />
+      <div className="absolute bg-white" style={{ top: 6, left: 2, width: 6, height: 2 }} />
+      <div className="absolute bg-white" style={{ top: 8, bottom: 6, left: 2, width: 4 }} />
 
-      <rect x={width - 3} y={3} width={2} height={height - 7} fill="#555555" />
-      <rect x={width - 4} y={height - 4} width={3} height={1} fill="#555555" />
-      <rect x={3} y={height - 3} width={width - 4} height={1} fill="#555555" />
-      <rect x={3} y={height - 2} width={width - 5} height={1} fill="#555555" />
+      <div className="absolute bg-[#555555]" style={{ top: 6, right: 2, bottom: 8, width: 4 }} />
+      <div className="absolute bg-[#555555]" style={{ right: 2, bottom: 6, width: 6, height: 2 }} />
+      <div className="absolute bg-[#555555]" style={{ right: 2, bottom: 4, left: 6, height: 2 }} />
+      <div className="absolute bg-[#555555]" style={{ right: 4, bottom: 2, left: 6, height: 2 }} />
 
-      <rect x={2} y={0} width={width - 5} height={1} fill="#000000" />
-      <rect x={1} y={1} width={1} height={1} fill="#000000" />
-      <rect x={width - 3} y={1} width={1} height={1} fill="#000000" />
-      <rect x={0} y={2} width={1} height={height - 5} fill="#000000" />
-      <rect x={width - 2} y={2} width={1} height={1} fill="#000000" />
-      <rect x={width - 1} y={3} width={1} height={height - 5} fill="#000000" />
-      <rect x={1} y={height - 3} width={1} height={1} fill="#000000" />
-      <rect x={2} y={height - 2} width={1} height={1} fill="#000000" />
-      <rect x={width - 2} y={height - 2} width={1} height={1} fill="#000000" />
-      <rect x={3} y={height - 1} width={width - 5} height={1} fill="#000000" />
-    </>
+      <div className="absolute bg-black" style={{ top: 0, right: 6, left: 4, height: 2 }} />
+      <div className="absolute bg-black" style={{ top: 2, left: 2, width: 2, height: 2 }} />
+      <div className="absolute bg-black" style={{ top: 2, right: 4, width: 2, height: 2 }} />
+      <div className="absolute bg-black" style={{ top: 4, bottom: 6, left: 0, width: 2 }} />
+      <div className="absolute bg-black" style={{ top: 4, right: 2, width: 2, height: 2 }} />
+      <div className="absolute bg-black" style={{ top: 6, right: 0, bottom: 4, width: 2 }} />
+      <div className="absolute bg-black" style={{ bottom: 4, left: 2, width: 2, height: 2 }} />
+      <div className="absolute bg-black" style={{ bottom: 2, left: 4, width: 2, height: 2 }} />
+      <div className="absolute bg-black" style={{ right: 2, bottom: 2, width: 2, height: 2 }} />
+      <div className="absolute bg-black" style={{ right: 4, bottom: 0, left: 6, height: 2 }} />
+    </div>
   );
 }
 
