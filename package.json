@@ -30,7 +30,7 @@
     "fflate": "^0.8.2",
     "immer": "^11.1.4",
     "lucide-react": "^1.11.0",
-    "minecraft-textures": "^26.1.0",
+    "minecraft-textures": "26.2.0-beta.0",
     "modern-screenshot": "^4.7.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
@@ -53,6 +53,7 @@
     "tailwindcss": "^4.2.4",
     "typescript": "^6.0.3",
     "vite": "^8.0.10",
+    "vite-plugin-static-copy": "4.1.0",
     "vitest": "^4.1.5"
   }
 }

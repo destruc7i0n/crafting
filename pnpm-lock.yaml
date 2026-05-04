@@ -42,8 +42,8 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react@19.2.5)
       minecraft-textures:
-        specifier: ^26.1.0
-        version: 26.1.0
+        specifier: 26.2.0-beta.0
+        version: 26.2.0-beta.0
       modern-screenshot:
         specifier: ^4.7.0
         version: 4.7.0
@@ -105,6 +105,9 @@ importers:
       vite:
         specifier: ^8.0.10
         version: 8.0.10(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.2)
+      vite-plugin-static-copy:
+        specifier: 4.1.0
+        version: 4.1.0(vite@8.0.10(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.2))
       vitest:
         specifier: ^4.1.5
         version: 4.1.5(@types/node@25.6.0)(vite@8.0.10(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.2))
@@ -1340,8 +1343,8 @@ packages:
     resolution: {integrity: sha512-VP79XUPxV2CigYP3jWwAUFSku2aKqBH7uTAapFWCBqutsbmDo96KY5o8uh6U+/YSIn5OxJnXp73beVkpqMIGhA==}
     engines: {node: '>=18'}
 
-  minecraft-textures@26.1.0:
-    resolution: {integrity: sha512-+ovtlvbbJ4uE8uiYsuXQbJ5MT2Bp1hDOcdJ+y9LaMN5HwqffHLKTN/QWpd6xYcjct4nQA98I/pkgKfB84n0uHw==}
+  minecraft-textures@26.2.0-beta.0:
+    resolution: {integrity: sha512-Xz9Yj5399BiW7jYx8lotXHGk2aVqDonaradOIQI5ZxZnW5/Xw177hEcJ4mlrOYXQ7D+tfKtsIoJpyGXtwWeYZA==}
 
   modern-screenshot@4.7.0:
     resolution: {integrity: sha512-9YxN+ddPSMMlhylOv25VHzXrl9u67QRxoh7+SEewGtgUw7t6hHTrjptSDJUSne9oG4Xk/h2cwG15nIt4Hc9ujg==}
@@ -1389,6 +1392,10 @@ packages:
     peerDependenciesMeta:
       oxlint-tsgolint:
         optional: true
+
+  p-map@7.0.4:
+    resolution: {integrity: sha512-tkAQEw8ysMzmkhgw8k+1U/iPhWNhykKnSk4Rd5zLoPJCuJaGRPo6YposrZgaxHKzDHdDWWZvE/Sk7hsL2X/CpQ==}
+    engines: {node: '>=18'}
 
   parse5-htmlparser2-tree-adapter@7.1.0:
     resolution: {integrity: sha512-ruw5xyKs6lrpo9x9rCZqZZnIUntICjQAd0Wsmp396Ul9lN/h+ifgVV1x1gZHi8euej6wTfpqX8j+BFQxF0NS/g==}
@@ -1594,6 +1601,12 @@ packages:
     resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  vite-plugin-static-copy@4.1.0:
+    resolution: {integrity: sha512-9XOarNV7LgP0KBB7AApxdgFikLXx3daZdqjC3AevYsL6MrUH62zphonLUs2a6LZc1HN1GY+vQdheZ8VVJb6dQQ==}
+    engines: {node: ^22.0.0 || >=24.0.0}
+    peerDependencies:
+      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
 
   vite@8.0.10:
     resolution: {integrity: sha512-rZuUu9j6J5uotLDs+cAA4O5H4K1SfPliUlQwqa6YEwSrWDZzP4rhm00oJR5snMewjxF5V/K3D4kctsUTsIU9Mw==}
@@ -2846,7 +2859,7 @@ snapshots:
 
   mimic-function@5.0.1: {}
 
-  minecraft-textures@26.1.0: {}
+  minecraft-textures@26.2.0-beta.0: {}
 
   modern-screenshot@4.7.0: {}
 
@@ -2923,6 +2936,8 @@ snapshots:
       '@oxlint/binding-win32-ia32-msvc': 1.61.0
       '@oxlint/binding-win32-x64-msvc': 1.61.0
       oxlint-tsgolint: 0.22.0
+
+  p-map@7.0.4: {}
 
   parse5-htmlparser2-tree-adapter@7.1.0:
     dependencies:
@@ -3102,6 +3117,14 @@ snapshots:
   use-sync-external-store@1.6.0(react@19.2.5):
     dependencies:
       react: 19.2.5
+
+  vite-plugin-static-copy@4.1.0(vite@8.0.10(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.2)):
+    dependencies:
+      chokidar: 3.6.0
+      p-map: 7.0.4
+      picocolors: 1.1.1
+      tinyglobby: 0.2.16
+      vite: 8.0.10(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.2)
 
   vite@8.0.10(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.2):
     dependencies:

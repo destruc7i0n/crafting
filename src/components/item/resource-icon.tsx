@@ -3,6 +3,8 @@ import { ComponentPropsWithoutRef, memo, useRef } from "react";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { resolveItemId } from "@/lib/resolve-item-id";
 
+import { ItemPreview } from "./item-preview";
+
 type ResourceIconProps = Omit<ComponentPropsWithoutRef<"img">, "src"> & {
   itemId: string;
 };
@@ -21,7 +23,7 @@ export const ResourceIcon = memo(({ itemId, ...props }: ResourceIconProps) => {
     return <div className={props.className} />;
   }
 
-  return <img {...props} src={lastTexture.current} />;
+  return <ItemPreview {...props} texture={lastTexture.current} />;
 });
 
 ResourceIcon.displayName = "ResourceIcon";
