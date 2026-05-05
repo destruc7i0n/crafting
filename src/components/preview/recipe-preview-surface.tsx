@@ -126,7 +126,7 @@ export function FurnacePreviewSurface<TSlotValue>({
         <MinecraftUiLabel center>Furnace</MinecraftUiLabel>
 
         <div className="mt-1.5 ml-8 flex items-center">
-          <div className="flex shrink-0 flex-col items-center" style={{ gap: 4 }}>
+          <div className="flex shrink-0 flex-col items-center gap-1">
             {renderSlot("cooking.ingredient", slots["cooking.ingredient"])}
 
             <div style={{ height: 28, width: 28 }}>
