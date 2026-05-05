@@ -1,3 +1,3 @@
-export const recipeCatalogCardMinWidth = 352;
-export const recipeCatalogCardHeight = 216;
+export const recipeCatalogCardMinWidth = 320;
+export const recipeCatalogCardHeight = 208;
 export const recipeCatalogRowGap = 16;
