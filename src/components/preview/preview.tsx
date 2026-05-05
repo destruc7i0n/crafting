@@ -179,7 +179,7 @@ function PreviewViewport({
 }: PreviewViewportProps) {
   return (
     <div className="w-full min-w-0">
-      <div className="scrollbar-app scrollbar-app-thin max-w-full overflow-x-auto pb-2">
+      <div className="scrollbar-app scrollbar-app-thin max-w-full overflow-x-auto">
         <div
           className="group relative mx-auto max-w-full"
           style={{ minWidth, width: preferredWidth }}
@@ -232,7 +232,7 @@ function PreviewContent({ controls, previewRef }: PreviewContentProps) {
         <PreviewViewport
           previewRef={previewRef}
           preferredWidth={352}
-          minWidth={188}
+          minWidth={220}
           controls={controls}
         >
           <FurnacePreviewSurface

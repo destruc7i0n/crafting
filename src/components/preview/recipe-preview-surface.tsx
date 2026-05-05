@@ -120,7 +120,7 @@ export function FurnacePreviewSurface<TSlotValue>({
   fuelDisabled: boolean;
 }) {
   return (
-    <PreviewSurfaceFrame align="center" preferredWidth={352} minWidth={188}>
+    <PreviewSurfaceFrame align="center" preferredWidth={352} minWidth={220}>
       <div>
         <MinecraftUiLabel center>Furnace</MinecraftUiLabel>
 
