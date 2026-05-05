@@ -240,7 +240,7 @@ function PreviewSurfaceFrame({
   return (
     <div
       className={cn(
-        "relative mx-auto box-border flex max-w-full overflow-visible [image-rendering:crisp-edges] [image-rendering:pixelated]",
+        "relative mx-auto box-border flex max-w-full overflow-visible select-none [image-rendering:crisp-edges] [image-rendering:pixelated]",
         align === "center" ? "justify-center" : "justify-start",
       )}
       style={{
