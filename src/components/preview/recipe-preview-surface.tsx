@@ -8,11 +8,12 @@ import { Slot, SLOT_SIZE } from "../slot/slot";
 import {
   CraftingArrow,
   FurnaceFire,
-  MinecraftUiFrame,
   MinecraftUiLabel,
   SmithingHammer,
   StonecutterSelectionUi,
 } from "./minecraft-ui";
+
+import styles from "./minecraft-ui.module.css";
 
 export type PreviewSlotRenderOptions = {
   compact?: boolean;
@@ -28,13 +29,6 @@ type PreviewSurfaceProps<TSlotValue> = {
   slots: Partial<Record<RecipeSlot, TSlotValue>>;
   renderSlot: PreviewSlotRenderer<TSlotValue>;
 };
-
-const FRAME_PADDING = {
-  top: 8,
-  right: 12,
-  bottom: 14,
-  left: 12,
-} as const;
 
 type PreviewFrameAlign = "center" | "start";
 type CraftingGridSlot =
@@ -240,16 +234,15 @@ function PreviewSurfaceFrame({
   return (
     <div
       className={cn(
-        "relative mx-auto box-border flex max-w-full overflow-visible select-none [image-rendering:crisp-edges] [image-rendering:pixelated]",
+        styles.frame,
+        "relative mx-auto box-border flex max-w-full overflow-visible px-3 pt-2 pb-3 select-none",
         align === "center" ? "justify-center" : "justify-start",
       )}
       style={{
         minWidth,
-        padding: `${FRAME_PADDING.top}px ${FRAME_PADDING.right}px ${FRAME_PADDING.bottom}px ${FRAME_PADDING.left}px`,
         width: preferredWidth,
       }}
     >
-      <MinecraftUiFrame />
       <div className="relative z-1 shrink-0">{children}</div>
     </div>
   );

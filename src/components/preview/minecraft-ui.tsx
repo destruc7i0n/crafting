@@ -14,37 +14,6 @@ export function MinecraftUiLabel({ children, center }: { children: string; cente
   );
 }
 
-export function MinecraftUiFrame() {
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-      <div className="absolute bg-[#c6c6c6]" style={{ top: 6, right: 6, bottom: 6, left: 6 }} />
-      <div className="absolute bg-[#c6c6c6]" style={{ top: 4, right: 4, width: 2, height: 2 }} />
-      <div className="absolute bg-[#c6c6c6]" style={{ bottom: 4, left: 4, width: 2, height: 2 }} />
-
-      <div className="absolute bg-white" style={{ top: 2, right: 6, left: 4, height: 2 }} />
-      <div className="absolute bg-white" style={{ top: 4, right: 6, left: 2, height: 2 }} />
-      <div className="absolute bg-white" style={{ top: 6, left: 2, width: 6, height: 2 }} />
-      <div className="absolute bg-white" style={{ top: 8, bottom: 6, left: 2, width: 4 }} />
-
-      <div className="absolute bg-[#555555]" style={{ top: 6, right: 2, bottom: 8, width: 4 }} />
-      <div className="absolute bg-[#555555]" style={{ right: 2, bottom: 6, width: 6, height: 2 }} />
-      <div className="absolute bg-[#555555]" style={{ right: 2, bottom: 4, left: 6, height: 2 }} />
-      <div className="absolute bg-[#555555]" style={{ right: 4, bottom: 2, left: 6, height: 2 }} />
-
-      <div className="absolute bg-black" style={{ top: 0, right: 6, left: 4, height: 2 }} />
-      <div className="absolute bg-black" style={{ top: 2, left: 2, width: 2, height: 2 }} />
-      <div className="absolute bg-black" style={{ top: 2, right: 4, width: 2, height: 2 }} />
-      <div className="absolute bg-black" style={{ top: 4, bottom: 6, left: 0, width: 2 }} />
-      <div className="absolute bg-black" style={{ top: 4, right: 2, width: 2, height: 2 }} />
-      <div className="absolute bg-black" style={{ top: 6, right: 0, bottom: 4, width: 2 }} />
-      <div className="absolute bg-black" style={{ bottom: 4, left: 2, width: 2, height: 2 }} />
-      <div className="absolute bg-black" style={{ bottom: 2, left: 4, width: 2, height: 2 }} />
-      <div className="absolute bg-black" style={{ right: 2, bottom: 2, width: 2, height: 2 }} />
-      <div className="absolute bg-black" style={{ right: 4, bottom: 0, left: 6, height: 2 }} />
-    </div>
-  );
-}
-
 export function CraftingArrow() {
   return (
     <svg
