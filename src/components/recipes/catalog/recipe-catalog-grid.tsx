@@ -14,6 +14,7 @@ import { RecipeCatalogCard } from "./recipe-catalog-card";
 import { useElementScrollMargin, useElementWidth } from "./use-element-width";
 
 const overscanRows = 1;
+const recipeCatalogMaxColumns = 4;
 
 export type CatalogGridRecipe = {
   entry: GeneratedRecipeCatalogEntry;
@@ -33,11 +34,15 @@ export function RecipeCatalogGrid({ recipes, resources }: RecipeCatalogGridProps
   const measuredScrollMargin = useElementScrollMargin(gridRef);
   const scrollMargin = measuredScrollMargin ?? 0;
 
+  const columnWidthWithGap = recipeCatalogCardMinWidth + recipeCatalogRowGap;
+  // grid-template-columns: repeat(auto-fit, minmax(cardMinWidth, 1fr)).
   const columns = Math.max(
     1,
-    Math.floor(
-      (Math.max(width, recipeCatalogCardMinWidth) + recipeCatalogRowGap) /
-        (recipeCatalogCardMinWidth + recipeCatalogRowGap),
+    Math.min(
+      recipeCatalogMaxColumns,
+      Math.floor(
+        (Math.max(width, recipeCatalogCardMinWidth) + recipeCatalogRowGap) / columnWidthWithGap,
+      ),
     ),
   );
   const columnWidth = (width - recipeCatalogRowGap * (columns - 1)) / columns;

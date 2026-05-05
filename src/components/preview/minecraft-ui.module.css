@@ -1,0 +1,21 @@
+.frame {
+  background:
+    linear-gradient(#000, #000) left 4px top 0 / calc(100% - 10px) 2px no-repeat,
+    linear-gradient(#000, #000) left 2px top 2px / 2px 2px no-repeat,
+    linear-gradient(#000, #000) right 4px top 2px / 2px 2px no-repeat,
+    linear-gradient(#000, #000) left 0 top 4px / 2px calc(100% - 10px) no-repeat,
+    linear-gradient(#000, #000) right 0 top 6px / 2px calc(100% - 10px) no-repeat,
+    linear-gradient(#000, #000) left 6px bottom 0 / calc(100% - 10px) 2px no-repeat,
+    linear-gradient(#555, #555) right 2px top 6px / 4px calc(100% - 14px) no-repeat,
+    linear-gradient(#555, #555) right 2px bottom 6px / 6px 2px no-repeat,
+    linear-gradient(#555, #555) left 6px bottom 4px / calc(100% - 8px) 2px no-repeat,
+    linear-gradient(#555, #555) left 6px bottom 2px / calc(100% - 10px) 2px no-repeat,
+    linear-gradient(#fff, #fff) left 4px top 2px / calc(100% - 10px) 2px no-repeat,
+    linear-gradient(#fff, #fff) left 2px top 4px / calc(100% - 8px) 2px no-repeat,
+    linear-gradient(#fff, #fff) left 2px top 6px / 6px 2px no-repeat,
+    linear-gradient(#fff, #fff) left 2px top 8px / 4px calc(100% - 14px) no-repeat,
+    linear-gradient(#c6c6c6, #c6c6c6) left 6px top 6px / calc(100% - 12px) calc(100% - 12px)
+      no-repeat,
+    linear-gradient(#c6c6c6, #c6c6c6) right 4px top 4px / 2px 2px no-repeat,
+    linear-gradient(#c6c6c6, #c6c6c6) left 4px bottom 4px / 2px 2px no-repeat;
+}

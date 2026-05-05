@@ -2,6 +2,9 @@ import { ComponentPropsWithoutRef, forwardRef } from "react";
 
 import { cn } from "@/lib/utils";
 
+export const SLOT_SIZE = 36;
+export const LARGE_SLOT_SIZE = 52;
+
 export type SlotProps = {
   width?: number;
   height?: number;
@@ -14,7 +17,7 @@ export type SlotProps = {
 import classes from "./slot.module.css";
 
 export const Slot = forwardRef<HTMLDivElement, SlotProps>(
-  ({ width = 36, height = 36, active, inert, disabled, children, ...props }, ref) => {
+  ({ width = SLOT_SIZE, height = SLOT_SIZE, active, inert, disabled, children, ...props }, ref) => {
     return (
       <div
         {...props}
@@ -27,8 +30,8 @@ export const Slot = forwardRef<HTMLDivElement, SlotProps>(
           props.className,
         )}
         style={{
-          width: `${width}px`,
-          height: `${height}px`,
+          width,
+          height,
           ...props["style"],
         }}
       >
