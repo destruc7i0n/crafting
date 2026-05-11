@@ -39,14 +39,11 @@ export const Route = createFileRoute("/recipes/{-$version}")({
       }
 
       if (!isSupportedRecipeCatalogVersion(params.version)) {
-        throw new Error("Unsupported recipe catalog version");
+        return false;
       }
 
       return { version: params.version };
     },
-  },
-  skipRouteOnParseError: {
-    params: true,
   },
   beforeLoad: ({ params, search }) => {
     if (params.version === latestRecipeCatalogVersion) {
