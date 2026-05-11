@@ -4,7 +4,7 @@ import { BedrockBody, BedrockRecipeMeta, JavaRecipe } from "@/recipes/generate/t
 import { RecipeSlot } from "@/recipes/slots";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 
-export type PreviewKind = "crafting" | "furnace" | "smithing" | "stonecutter";
+export type PreviewKind = "crafting" | "furnace" | "smithing" | "stonecutter" | "brewing";
 
 export interface GenerateArgs {
   recipe: Recipe;
@@ -34,7 +34,7 @@ export interface RecipeDefinitionNaming {
 
 export interface BaseRecipeDefinition {
   type: RecipeType;
-  family: "crafting" | "cooking" | "smithing" | "stonecutter";
+  family: "crafting" | "cooking" | "smithing" | "stonecutter" | "brewing";
   label: string;
   iconItemId: string;
   previewKind?: PreviewKind;
@@ -46,17 +46,30 @@ export interface BaseRecipeDefinition {
   slots: RecipeDefinitionSlots;
   naming: RecipeDefinitionNaming;
   validate(recipe: Recipe, version: MinecraftVersion, ctx: SlotContext): string[];
+}
+
+export interface JavaSupportedRecipeDefinition extends BaseRecipeDefinition {
   generateJava(args: GenerateArgs): JavaRecipe;
 }
 
-export interface JavaOnlyRecipeDefinition extends BaseRecipeDefinition {
+export interface JavaOnlyRecipeDefinition extends JavaSupportedRecipeDefinition {
   generateBedrock?: never;
   getBedrockMeta?: never;
 }
 
-export interface BedrockSupportedRecipeDefinition extends BaseRecipeDefinition {
+export interface JavaBedrockRecipeDefinition extends JavaSupportedRecipeDefinition {
   generateBedrock(args: BedrockGenerateArgs): BedrockBody;
   getBedrockMeta(recipe: Recipe): BedrockRecipeMeta;
 }
+
+export interface BedrockOnlyRecipeDefinition extends BaseRecipeDefinition {
+  generateJava?: never;
+  generateBedrock(args: BedrockGenerateArgs): BedrockBody;
+  getBedrockMeta(recipe: Recipe): BedrockRecipeMeta;
+}
+
+export type BedrockSupportedRecipeDefinition =
+  | JavaBedrockRecipeDefinition
+  | BedrockOnlyRecipeDefinition;
 
 export type RecipeDefinition = JavaOnlyRecipeDefinition | BedrockSupportedRecipeDefinition;

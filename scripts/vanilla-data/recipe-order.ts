@@ -22,7 +22,9 @@ export const catalogRecipeTypeOrder = {
   [RecipeType.SmithingTransform]: 6,
   [RecipeType.SmithingTrim]: 7,
   [RecipeType.Stonecutter]: 8,
-  [RecipeType.CraftingTransmute]: 9,
+  [RecipeType.BrewingContainer]: 9,
+  [RecipeType.BrewingMix]: 10,
+  [RecipeType.CraftingTransmute]: 11,
 } satisfies Record<RecipeType, number>;
 
 export function compareRecipeCatalogEntries(

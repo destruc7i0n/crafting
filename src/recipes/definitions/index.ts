@@ -2,6 +2,7 @@ import { MinecraftVersion, RecipeType } from "@/data/types";
 import { RecipeSlot } from "@/recipes/slots";
 import { isVersionAtLeast } from "@/versioning";
 
+import { brewingContainerDefinition, brewingMixDefinition } from "./brewing";
 import {
   blastingDefinition,
   campfireCookingDefinition,
@@ -15,7 +16,11 @@ import {
   smithingTrimDefinition,
 } from "./smithing";
 import { stonecutterDefinition } from "./stonecutter";
-import { BedrockSupportedRecipeDefinition, RecipeDefinition } from "./types";
+import {
+  BedrockSupportedRecipeDefinition,
+  JavaSupportedRecipeDefinition,
+  RecipeDefinition,
+} from "./types";
 
 export type {
   BedrockSupportedRecipeDefinition,
@@ -37,6 +42,8 @@ export const recipeDefinitions = {
   [RecipeType.SmithingTransform]: smithingTransformDefinition,
   [RecipeType.SmithingTrim]: smithingTrimDefinition,
   [RecipeType.CraftingTransmute]: craftingTransmuteDefinition,
+  [RecipeType.BrewingContainer]: brewingContainerDefinition,
+  [RecipeType.BrewingMix]: brewingMixDefinition,
 } satisfies Record<RecipeType, RecipeDefinition>;
 
 const recipeDefinitionValues = Object.values(recipeDefinitions);
@@ -57,10 +64,17 @@ const supportsBedrock = (
   typeof definition.generateBedrock === "function" &&
   typeof definition.getBedrockMeta === "function";
 
+const supportsJava = (definition: RecipeDefinition): definition is JavaSupportedRecipeDefinition =>
+  typeof definition.generateJava === "function";
+
 export function isRecipeTypeSupported(
   definition: RecipeDefinition,
   version: MinecraftVersion.Bedrock,
 ): definition is BedrockSupportedRecipeDefinition;
+export function isRecipeTypeSupported(
+  definition: RecipeDefinition,
+  version: Exclude<MinecraftVersion, MinecraftVersion.Bedrock>,
+): definition is JavaSupportedRecipeDefinition;
 export function isRecipeTypeSupported(
   definition: RecipeDefinition,
   version: MinecraftVersion,
@@ -72,6 +86,10 @@ export function isRecipeTypeSupported(definition: RecipeDefinition, version: Min
 
   if (version === MinecraftVersion.Bedrock) {
     return supportsBedrock(definition);
+  }
+
+  if (!supportsJava(definition)) {
+    return false;
   }
 
   if (!isVersionAtLeast(version, definition.availability.minVersion)) {

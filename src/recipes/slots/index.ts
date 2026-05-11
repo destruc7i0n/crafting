@@ -20,7 +20,14 @@ export type SmithingSlots =
 
 export type StonecutterSlots = "stonecutter.ingredient" | "stonecutter.result";
 
-export type RecipeSlot = CraftingSlots | CookingSlots | SmithingSlots | StonecutterSlots;
+export type BrewingSlots = "brewing.reagent" | "brewing.input" | "brewing.result";
+
+export type RecipeSlot =
+  | CraftingSlots
+  | CookingSlots
+  | SmithingSlots
+  | StonecutterSlots
+  | BrewingSlots;
 
 export const SLOTS = {
   crafting: {
@@ -48,5 +55,10 @@ export const SLOTS = {
   stonecutter: {
     ingredient: "stonecutter.ingredient",
     result: "stonecutter.result",
+  },
+  brewing: {
+    reagent: "brewing.reagent",
+    input: "brewing.input",
+    result: "brewing.result",
   },
 } as const satisfies Record<string, Record<string, RecipeSlot>>;

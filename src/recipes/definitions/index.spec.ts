@@ -18,6 +18,7 @@ describe("recipe definitions", () => {
 
   it("derives result slots from the registry", () => {
     expect(recipeResultSlots.sort()).toEqual([
+      "brewing.result",
       "cooking.result",
       "crafting.result",
       "smithing.result",
@@ -28,6 +29,18 @@ describe("recipe definitions", () => {
   it("keeps disabled recipe types out of supported lists", () => {
     expect(getSupportedRecipeTypesForVersion(MinecraftVersion.V12111)).not.toContain(
       RecipeType.CraftingTransmute,
+    );
+    expect(getSupportedRecipeTypesForVersion(MinecraftVersion.V12111)).not.toContain(
+      RecipeType.BrewingContainer,
+    );
+    expect(getSupportedRecipeTypesForVersion(MinecraftVersion.V12111)).not.toContain(
+      RecipeType.BrewingMix,
+    );
+    expect(getSupportedRecipeTypesForVersion(MinecraftVersion.Bedrock)).not.toContain(
+      RecipeType.BrewingContainer,
+    );
+    expect(getSupportedRecipeTypesForVersion(MinecraftVersion.Bedrock)).not.toContain(
+      RecipeType.BrewingMix,
     );
   });
 

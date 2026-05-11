@@ -15,8 +15,21 @@ export function renderCreatorPreviewSlot(
   const size = options?.compact === false ? LARGE_SLOT_SIZE : SLOT_SIZE;
 
   if (isResultSlot(slot)) {
-    return <ItemPreviewResultSlot slot={slot} compact={options?.compact} />;
+    return (
+      <ItemPreviewResultSlot
+        slot={slot}
+        compact={options?.compact}
+        transparent={options?.transparent}
+      />
+    );
   }
 
-  return <ItemPreviewDropTarget slot={slot} width={size} height={size} />;
+  return (
+    <ItemPreviewDropTarget
+      slot={slot}
+      width={size}
+      height={size}
+      transparent={options?.transparent}
+    />
+  );
 }

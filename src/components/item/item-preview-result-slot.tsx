@@ -13,6 +13,7 @@ type ItemPreviewResultSlotProps = {
 export const ItemPreviewResultSlot = ({
   slot,
   compact,
+  transparent,
   className,
   style,
   ...props
@@ -29,7 +30,7 @@ export const ItemPreviewResultSlot = ({
         ...style,
       }}
     >
-      <ItemPreviewDropTarget slot={slot} width={size} height={size} />
+      <ItemPreviewDropTarget slot={slot} width={size} height={size} transparent={transparent} />
       <EditableItemCount slot={slot} compact={compact !== false} />
     </div>
   );

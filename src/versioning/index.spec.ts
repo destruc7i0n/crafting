@@ -84,6 +84,17 @@ describe("recipeTypeAvailability", () => {
       enabled: false,
     });
   });
+
+  it("keeps brewing recipe types disabled", () => {
+    expect(recipeTypeAvailability[RecipeType.BrewingContainer]).toEqual({
+      minVersion: MinecraftVersion.Bedrock,
+      enabled: false,
+    });
+    expect(recipeTypeAvailability[RecipeType.BrewingMix]).toEqual({
+      minVersion: MinecraftVersion.Bedrock,
+      enabled: false,
+    });
+  });
 });
 
 describe("recipe feature support", () => {

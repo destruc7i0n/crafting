@@ -137,12 +137,19 @@ export interface BedrockSmithingTransformBody {
   result: string;
 }
 
+export interface BedrockBrewingBody {
+  input: string | EmptyObject;
+  reagent: string | EmptyObject;
+  output: string | EmptyObject;
+}
+
 export type BedrockBody =
   | BedrockShapedBody
   | BedrockShapelessBody
   | BedrockFurnaceBody
   | BedrockSmithingTrimBody
-  | BedrockSmithingTransformBody;
+  | BedrockSmithingTransformBody
+  | BedrockBrewingBody;
 
 export type BedrockFormatVersion = "1.20.10";
 
@@ -154,14 +161,17 @@ export type BedrockTag =
   | "campfire"
   | "soul_campfire"
   | "stonecutter"
-  | "smithing_table";
+  | "smithing_table"
+  | "brewing_stand";
 
 export type BedrockWrapperKey =
   | "minecraft:recipe_shaped"
   | "minecraft:recipe_shapeless"
   | "minecraft:recipe_furnace"
   | "minecraft:recipe_smithing_trim"
-  | "minecraft:recipe_smithing_transform";
+  | "minecraft:recipe_smithing_transform"
+  | "minecraft:recipe_brewing_container"
+  | "minecraft:recipe_brewing_mix";
 
 interface BedrockBaseWrapper {
   description: {
@@ -196,12 +206,24 @@ export interface BedrockSmithingTransformRecipe {
   "minecraft:recipe_smithing_transform": BedrockBaseWrapper & BedrockSmithingTransformBody;
 }
 
+export interface BedrockBrewingContainerRecipe {
+  format_version: BedrockFormatVersion;
+  "minecraft:recipe_brewing_container": BedrockBaseWrapper & BedrockBrewingBody;
+}
+
+export interface BedrockBrewingMixRecipe {
+  format_version: BedrockFormatVersion;
+  "minecraft:recipe_brewing_mix": BedrockBaseWrapper & BedrockBrewingBody;
+}
+
 export type BedrockRecipe =
   | BedrockShapedRecipe
   | BedrockShapelessRecipe
   | BedrockFurnaceRecipe
   | BedrockSmithingTrimRecipe
-  | BedrockSmithingTransformRecipe;
+  | BedrockSmithingTransformRecipe
+  | BedrockBrewingContainerRecipe
+  | BedrockBrewingMixRecipe;
 
 export type GeneratedRecipe = JavaRecipe | BedrockRecipe;
 

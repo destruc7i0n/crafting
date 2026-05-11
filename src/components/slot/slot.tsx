@@ -11,13 +11,26 @@ export type SlotProps = {
   active?: boolean;
   inert?: boolean;
   disabled?: boolean;
+  transparent?: boolean;
   children?: React.ReactNode;
 } & ComponentPropsWithoutRef<"div">;
 
 import classes from "./slot.module.css";
 
 export const Slot = forwardRef<HTMLDivElement, SlotProps>(
-  ({ width = SLOT_SIZE, height = SLOT_SIZE, active, inert, disabled, children, ...props }, ref) => {
+  (
+    {
+      width = SLOT_SIZE,
+      height = SLOT_SIZE,
+      active,
+      inert,
+      disabled,
+      transparent,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <div
         {...props}
@@ -27,6 +40,7 @@ export const Slot = forwardRef<HTMLDivElement, SlotProps>(
           active && classes.active,
           inert && classes.inert,
           disabled && classes.disabled,
+          transparent && classes.transparent,
           props.className,
         )}
         style={{

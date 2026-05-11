@@ -14,6 +14,7 @@ import {
   BaseRecipeDefinition,
   BedrockSupportedRecipeDefinition,
   JavaOnlyRecipeDefinition,
+  JavaSupportedRecipeDefinition,
 } from "./types";
 
 const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";
@@ -35,7 +36,7 @@ const createCommonSmithingDefinition = ({
   resultSlot?: RecipeSlot;
   editableResultCount: boolean;
   isDisabled?: BaseRecipeDefinition["slots"]["isDisabled"];
-}): Omit<BaseRecipeDefinition, "availability"> => ({
+}): Omit<JavaSupportedRecipeDefinition, "availability"> => ({
   type,
   family: "smithing",
   label,

@@ -1,12 +1,17 @@
 import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
+import { SLOTS, type RecipeSlot } from "@/recipes/slots";
 
-import type { RecipeSlot } from "@/recipes/slots";
-
-import { SLOT_SIZE } from "../slot/slot";
+import { Slot, SLOT_SIZE } from "../slot/slot";
 import { SlotDropTarget } from "../slot/slot-drop-target";
 import {
+  BrewingArrowDownUi,
+  BrewingBottleUi,
+  BrewingFuelAndBubblesUi,
+  BrewingFuelSlotUi,
+  BrewingReagentSlotUi,
+  BrewingVisualConnectorLinesUi,
   CraftingArrow,
   FurnaceFire,
   MinecraftUiLabel,
@@ -18,6 +23,7 @@ import styles from "./minecraft-ui.module.css";
 
 export type PreviewSlotRenderOptions = {
   compact?: boolean;
+  transparent?: boolean;
 };
 
 export type PreviewSlotRenderer<TSlotValue> = (
@@ -221,6 +227,68 @@ export function SmithingPreviewSurface<TSlotValue>({
 
         <div className="absolute" style={{ left: 182, top: 86 }}>
           {renderSlot("smithing.result", slots["smithing.result"])}
+        </div>
+      </div>
+    </PreviewSurfaceFrame>
+  );
+}
+
+export function BrewingPreviewSurface<TSlotValue>({
+  slots,
+  renderSlot,
+}: PreviewSurfaceProps<TSlotValue>) {
+  const brewingSlotOptions = { transparent: true };
+
+  return (
+    <PreviewSurfaceFrame align="start" preferredWidth={352} minWidth={252}>
+      <div className="relative" style={{ height: 152, width: 228 }}>
+        <div className="pointer-events-none absolute" style={{ left: 20, top: 24 }}>
+          <BrewingFuelSlotUi />
+        </div>
+
+        <div className="pointer-events-none absolute" style={{ left: 144, top: 24 }}>
+          <BrewingReagentSlotUi />
+        </div>
+
+        <div className="pointer-events-none absolute" style={{ left: 56, top: 48 }}>
+          <BrewingVisualConnectorLinesUi />
+        </div>
+
+        <div className="pointer-events-none absolute" style={{ left: 56, top: 22 }}>
+          <BrewingFuelAndBubblesUi />
+        </div>
+
+        <div
+          className="pointer-events-none absolute flex items-start"
+          style={{ left: 98, top: 92 }}
+        >
+          <BrewingBottleUi />
+          <div style={{ marginLeft: 10, marginTop: 14 }}>
+            <BrewingBottleUi />
+          </div>
+          <div style={{ marginLeft: 10 }}>
+            <BrewingBottleUi />
+          </div>
+        </div>
+
+        <div className="pointer-events-none absolute" style={{ left: 184, top: 26 }}>
+          <BrewingArrowDownUi />
+        </div>
+
+        <div className="absolute" style={{ left: 144, top: 24 }}>
+          {renderSlot(SLOTS.brewing.reagent, slots[SLOTS.brewing.reagent], brewingSlotOptions)}
+        </div>
+
+        <div className="absolute" style={{ left: 98, top: 92 }}>
+          {renderSlot(SLOTS.brewing.input, slots[SLOTS.brewing.input], brewingSlotOptions)}
+        </div>
+
+        <div className="absolute" style={{ left: 190, top: 92 }}>
+          {renderSlot(SLOTS.brewing.result, slots[SLOTS.brewing.result], brewingSlotOptions)}
+        </div>
+
+        <div className="absolute" style={{ left: 20, top: 24 }}>
+          <Slot inert transparent />
         </div>
       </div>
     </PreviewSurfaceFrame>

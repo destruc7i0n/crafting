@@ -74,6 +74,14 @@ export const recipeTypeAvailability = {
     minVersion: MinecraftVersion.V1212,
     enabled: false,
   },
+  [RecipeType.BrewingContainer]: {
+    minVersion: MinecraftVersion.Bedrock,
+    enabled: false,
+  },
+  [RecipeType.BrewingMix]: {
+    minVersion: MinecraftVersion.Bedrock,
+    enabled: false,
+  },
 } as const satisfies Record<RecipeType, RecipeTypeAvailability>;
 
 export const getRecipeCategoryOptions = (recipeType: RecipeType): string[] | undefined => {

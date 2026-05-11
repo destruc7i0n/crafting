@@ -41,6 +41,7 @@ describe("isResultSlot", () => {
     expect(isResultSlot("cooking.result")).toBe(true);
     expect(isResultSlot("stonecutter.result")).toBe(true);
     expect(isResultSlot("smithing.result")).toBe(true);
+    expect(isResultSlot("brewing.result")).toBe(true);
   });
 
   it("rejects non-result slots", () => {
@@ -190,6 +191,10 @@ describe("canEditRecipeSlotCount", () => {
 
   it("disallows count editing for smelting result", () => {
     expect(canEditRecipeSlotCount(RecipeType.Smelting, "cooking.result")).toBe(false);
+  });
+
+  it("disallows count editing for brewing result", () => {
+    expect(canEditRecipeSlotCount(RecipeType.BrewingMix, "brewing.result")).toBe(false);
   });
 
   it("disallows count editing for non-result slots", () => {

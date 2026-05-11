@@ -22,6 +22,11 @@
   filter: brightness(0.75);
 }
 
+.transparent {
+  border-color: transparent;
+  background-color: transparent;
+}
+
 .slot:before,
 .slot:after {
   background-color: hsl(var(--minecraft-slot-bg));
@@ -40,4 +45,9 @@
 .slot:after {
   bottom: -2px;
   left: -2px;
+}
+
+.transparent:before,
+.transparent:after {
+  background-color: transparent;
 }

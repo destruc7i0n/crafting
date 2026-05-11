@@ -21,6 +21,7 @@ import { selectMinecraftVersion } from "@/stores/settings/selectors";
 
 import { renderCreatorPreviewSlot } from "./creator-preview-slot";
 import {
+  BrewingPreviewSurface,
   CraftingPreviewSurface,
   FurnacePreviewSurface,
   SmithingPreviewSurface,
@@ -264,6 +265,18 @@ function PreviewContent({ controls, previewRef }: PreviewContentProps) {
           controls={controls}
         >
           <SmithingPreviewSurface slots={slots} renderSlot={renderCreatorPreviewSlot} />
+        </PreviewViewport>
+      );
+
+    case "brewing":
+      return (
+        <PreviewViewport
+          previewRef={previewRef}
+          preferredWidth={352}
+          minWidth={252}
+          controls={controls}
+        >
+          <BrewingPreviewSurface slots={slots} renderSlot={renderCreatorPreviewSlot} />
         </PreviewViewport>
       );
   }

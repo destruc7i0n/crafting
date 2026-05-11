@@ -4,6 +4,7 @@ import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemCount } from "@/components/item/item-count";
 import { ItemPreview } from "@/components/item/item-preview";
 import {
+  BrewingPreviewSurface,
   CraftingPreviewSurface,
   FurnacePreviewSurface,
   type PreviewSlotRenderer,
@@ -73,6 +74,8 @@ export function RecipeCatalogPreview({ entry, resources }: RecipeCatalogPreviewP
       return <StonecutterPreviewSurface slots={entry.slots} renderSlot={renderSlot} />;
     case "smithing":
       return <SmithingPreviewSurface slots={entry.slots} renderSlot={renderSlot} />;
+    case "brewing":
+      return <BrewingPreviewSurface slots={entry.slots} renderSlot={renderSlot} />;
     default:
       return null;
   }
@@ -84,12 +87,14 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
   const size = compact ? SLOT_SIZE : LARGE_SLOT_SIZE;
 
   if (!presentation) {
-    return <Slot width={size} height={size} className="relative" />;
+    return (
+      <Slot width={size} height={size} transparent={options?.transparent} className="relative" />
+    );
   }
 
   if (isCyclingPresentation(presentation)) {
     return (
-      <Slot width={size} height={size} className="relative">
+      <Slot width={size} height={size} transparent={options?.transparent} className="relative">
         <CyclingItemPreview
           alt={presentation.label}
           itemIds={presentation.preview.itemIds}
@@ -116,7 +121,7 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
   }
 
   return (
-    <Slot width={size} height={size} className="relative">
+    <Slot width={size} height={size} transparent={options?.transparent} className="relative">
       <ItemTooltip
         title={presentation.label}
         description={presentation.description}
