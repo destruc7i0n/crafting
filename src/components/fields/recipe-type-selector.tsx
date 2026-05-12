@@ -43,7 +43,11 @@ export const RecipeTypeSelector = () => {
     const container = scrollRef.current;
     if (!container) return;
     const selected = container.querySelector("[data-selected]") as HTMLElement | null;
-    selected?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+    selected?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "nearest",
+      inline: "nearest",
+    });
   }, [recipeType]);
 
   return (
@@ -60,7 +64,7 @@ export const RecipeTypeSelector = () => {
             onClick={() => handleRecipeTypeChange(type)}
             {...(isSelected ? { "data-selected": true } : {})}
             className={cn(
-              "flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1.5 transition-all",
+              "flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1.5 transition-colors duration-150",
               isSelected
                 ? "border-primary bg-primary/10 text-foreground"
                 : "hover:bg-accent active:bg-accent/80 border-transparent",

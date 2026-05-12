@@ -61,8 +61,8 @@ export const ItemsList = () => {
     <div className="bg-muted relative flex shrink-0 items-center self-stretch rounded-md p-0.5 md:self-auto">
       <div
         className={cn(
-          "bg-primary/40 absolute inset-y-0.5 rounded-sm transition-all duration-200 ease-in-out",
-          tab === "tags" ? "right-0.5 left-1/2" : "right-1/2 left-0.5",
+          "bg-primary/40 absolute top-0.5 bottom-0.5 left-0.5 w-[calc(50%_-_0.125rem)] rounded-sm transition-transform duration-200 ease-out will-change-transform motion-reduce:transition-none motion-reduce:will-change-auto",
+          tab === "tags" && "translate-x-full",
         )}
       />
       <button

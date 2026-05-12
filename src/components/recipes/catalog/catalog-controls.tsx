@@ -25,7 +25,7 @@ export function CatalogControls({
   onSearchChange,
 }: CatalogControlsProps) {
   return (
-    <section className="border-border bg-card/95 supports-backdrop-filter:bg-card/85 sticky top-0 z-30 border-b backdrop-blur">
+    <section className="border-border bg-card sticky top-0 z-30 border-b">
       <div className="mx-auto flex w-full max-w-(--app-max-width) flex-col gap-2 p-2 sm:gap-3 md:p-4">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div className="min-w-0">

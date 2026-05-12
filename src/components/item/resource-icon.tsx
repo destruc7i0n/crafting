@@ -21,7 +21,7 @@ export const ResourceIcon = memo(({ itemId, ...props }: ResourceIconProps) => {
     return <div className={props.className} />;
   }
 
-  return <img {...props} src={lastTexture.current} />;
+  return <img decoding="async" {...props} src={lastTexture.current} />;
 });
 
 ResourceIcon.displayName = "ResourceIcon";

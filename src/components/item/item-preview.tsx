@@ -12,6 +12,7 @@ export const ItemPreview = memo(
   forwardRef<HTMLImageElement, IngredientProps>(({ texture, alt, className, ...props }, ref) => {
     return (
       <img
+        decoding="async"
         {...props}
         ref={ref}
         src={texture ?? NoTextureTexture}

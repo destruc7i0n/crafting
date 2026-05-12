@@ -115,7 +115,7 @@ export const Preview = memo(() => {
       >
         <button
           type="button"
-          className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-[opacity,colors] focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
+          className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
           onClick={handleDownloadPreview}
           disabled={isDownloading}
           aria-label={isDownloading ? "Saving preview image" : "Download preview image"}
@@ -128,7 +128,7 @@ export const Preview = memo(() => {
       <Tooltip content="Clear recipe" placement="top-end">
         <button
           type="button"
-          className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-[opacity,colors] focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
+          className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
           onClick={handleClearRecipe}
           disabled={!hasFilledSlots}
           aria-label="Clear recipe"

@@ -143,7 +143,7 @@ export const ItemsSection = ({
               item={item}
               isExpanded={false}
               onToggle={() => setExpandedItemUid(item.uid)}
-              className="w-max min-w-[180px] shrink-0 snap-start"
+              className="w-max min-w-[180px] shrink-0"
             />
           ))}
         </div>
