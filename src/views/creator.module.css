@@ -86,12 +86,11 @@
 }
 
 .sheet-backdrop {
-  @apply absolute inset-0 cursor-pointer bg-black/80;
+  @apply bg-overlay absolute inset-0 cursor-pointer;
 }
 
 .sheet {
   @apply border-border bg-background relative flex h-(--mobile-sheet-height) w-full flex-col rounded-t-2xl border-t;
-  box-shadow: 0 -12px 28px rgb(0 0 0 / 0.2);
 }
 
 .sheet-body {

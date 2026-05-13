@@ -29,7 +29,7 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "theme-color", content: "#222222" },
+      { name: "theme-color", content: "#262626" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },

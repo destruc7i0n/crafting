@@ -212,7 +212,7 @@ export const TagsSection = ({
       )}
 
       {supportsCustomTags && filteredCustomTags.length > 0 && (
-        <div className="scrollbar-app scrollbar-app-thin flex max-w-full shrink-0 gap-2 overflow-x-auto pr-2 pb-1 contain-[layout_paint_style]">
+        <div className="scrollbar-app flex max-w-full shrink-0 gap-2 overflow-x-auto pr-2 pb-1 contain-[layout_paint_style]">
           {filteredCustomTags.map((tag) => {
             const tagItem = customTagItems[tag.uid];
             if (!tagItem) return null;

@@ -64,7 +64,7 @@ const RecipeWarning = ({ content }: { content: ReactNode }) => (
   <div className="border-border flex w-9 shrink-0 items-center justify-center border-l">
     <Disclosure placement="right" content={content}>
       <span className="flex h-full w-full items-center justify-center p-1.5">
-        <TriangleAlertIcon size={14} className="shrink-0 text-amber-500" />
+        <TriangleAlertIcon size={14} className="text-warning shrink-0" />
       </span>
     </Disclosure>
   </div>
@@ -82,7 +82,7 @@ const SidebarTooltipContent = ({
   <div className="max-w-64 space-y-1 whitespace-normal">
     <div className="font-medium">{title}</div>
     {description && <div className="text-muted-foreground">{description}</div>}
-    {warning && <div className="text-amber-300">{warning}</div>}
+    {warning && <div className="text-warning-foreground">{warning}</div>}
   </div>
 );
 
@@ -137,7 +137,7 @@ const CollapsedRecipeButton = ({
             ? "border-primary bg-primary/10"
             : "hover:bg-accent active:bg-accent/80 border-transparent",
           !row.isSupported && "opacity-60",
-          row.hasWarning && !row.isSelected && "border-amber-500/40",
+          row.hasWarning && !row.isSelected && "border-warning/40",
         )}
       >
         <ResourceIcon
@@ -261,7 +261,7 @@ const ExpandedRecipeRow = ({
         row.isSelected
           ? "border-primary bg-primary/10 font-medium"
           : "hover:bg-accent active:bg-accent/80",
-        row.hasWarning && !row.isSelected && "border-amber-500/40",
+        row.hasWarning && !row.isSelected && "border-warning/40",
       )}
     >
       <div className="flex min-w-0 flex-1 items-center">

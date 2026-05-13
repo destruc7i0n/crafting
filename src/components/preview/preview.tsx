@@ -180,7 +180,7 @@ function PreviewViewport({
 }: PreviewViewportProps) {
   return (
     <div className="w-full min-w-0">
-      <div className="scrollbar-app scrollbar-app-thin max-w-full overflow-x-auto">
+      <div className="scrollbar-app max-w-full overflow-x-auto">
         <div
           className="group relative mx-auto max-w-full"
           style={{ minWidth, width: preferredWidth }}

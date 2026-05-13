@@ -136,7 +136,7 @@ export const ItemsList = () => {
       {!isCreating && (
         <input
           type="search"
-          className="border-input bg-background text-foreground placeholder:font-minecraft placeholder:text-muted-foreground hover:bg-accent focus:ring-ring hidden w-full rounded-md border px-3 py-2 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset md:block"
+          className="border-input bg-background text-foreground placeholder:text-muted-foreground hover:bg-accent focus:ring-ring hidden w-full rounded-md border px-3 py-2 text-sm leading-tight outline-hidden transition-colors focus:ring-2 focus:ring-inset md:block"
           placeholder={tab === "tags" ? "Search Tags..." : "Search Items..."}
           value={search}
           autoCapitalize="off"

@@ -35,7 +35,7 @@ export const RecipeCatalogCard = memo(function RecipeCatalogCard({
       </div>
 
       <div className="mt-2 flex flex-1 items-center justify-center overflow-hidden">
-        <div className="scrollbar-app scrollbar-app-thin max-w-full overflow-x-auto">
+        <div className="scrollbar-app max-w-full overflow-x-auto">
           <RecipeCatalogPreview entry={entry} resources={resources} />
         </div>
       </div>

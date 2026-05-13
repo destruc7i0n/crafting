@@ -42,7 +42,7 @@ export function Header({
   );
 
   return (
-    <header className="w-full bg-[hsl(var(--header-bg))] text-[hsl(var(--header-fg))]">
+    <header className="bg-header text-header-foreground w-full">
       <div className="mx-auto flex w-full max-w-(--app-max-width) items-center justify-between px-2 py-2 md:px-4">
         <div className="flex items-center gap-4">
           <div className="flex min-w-0 items-center gap-2">{brandContent}</div>
@@ -54,7 +54,7 @@ export function Header({
             <button
               type="button"
               onClick={onHelpClick}
-              className="flex cursor-pointer items-center gap-1 rounded-md border border-white/20 px-2 py-1 text-sm font-medium transition-colors hover:bg-white/10 active:bg-white/15"
+              className="border-header-foreground/20 hover:bg-header-foreground/10 active:bg-header-foreground/15 flex cursor-pointer items-center gap-1 rounded-md border px-2 py-1 text-sm font-medium transition-colors"
               aria-label="Show help"
               title="Show help"
             >
@@ -73,7 +73,7 @@ export function HeaderNavLink({ children, ...props }: LinkProps & { children: Re
   return (
     <Link
       {...props}
-      className="hidden items-center text-sm font-medium text-[hsl(var(--header-fg)/0.82)] transition-colors outline-none hover:text-[hsl(var(--header-fg)/0.62)] focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-white/60 sm:inline-flex"
+      className="text-header-foreground/80 hover:text-header-foreground/60 focus-visible:ring-header-foreground/60 hidden items-center text-sm font-medium transition-colors outline-none focus-visible:rounded-sm focus-visible:ring-2 sm:inline-flex"
     >
       {children}
     </Link>

@@ -136,7 +136,7 @@ export const ItemsSection = ({
       )}
 
       {filteredCustomItems.length > 0 && (
-        <div className="scrollbar-app scrollbar-app-thin flex max-w-full shrink-0 gap-2 overflow-x-auto pr-2 pb-1 contain-[layout_paint_style]">
+        <div className="scrollbar-app flex max-w-full shrink-0 gap-2 overflow-x-auto pr-2 pb-1 contain-[layout_paint_style]">
           {filteredCustomItems.map((item) => (
             <CustomItemEditor
               key={item.uid}
