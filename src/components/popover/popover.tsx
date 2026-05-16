@@ -19,14 +19,25 @@ type PopoverProps = {
   children: React.ReactNode;
   placement?: Placement;
   className?: string;
+  onOpenChange?: (isOpen: boolean) => void;
 };
 
-export const Popover = ({ content, children, placement = "right", className }: PopoverProps) => {
+export const Popover = ({
+  content,
+  children,
+  placement = "right",
+  className,
+  onOpenChange,
+}: PopoverProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    onOpenChange?.(open);
+  };
 
   const { refs, floatingStyles, isPositioned, context } = useFloating({
     open: isOpen,
-    onOpenChange: setIsOpen,
+    onOpenChange: handleOpenChange,
     placement,
     strategy: "fixed",
     middleware: [offset(8), flip(), shift({ padding: 8 })],

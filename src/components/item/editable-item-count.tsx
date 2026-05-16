@@ -15,12 +15,12 @@ type EditableItemCountProps = {
 };
 
 export const EditableItemCount = ({ slot, compact = false }: EditableItemCountProps) => {
-  const recipeType = useRecipeStore(selectCurrentRecipeType);
-  const slotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
-  const setRecipeSlotCount = useRecipeStore((state) => state.setRecipeSlotCount);
   const [editingCount, setEditingCount] = useState(false);
   const [countDraft, setCountDraft] = useState("1");
   const cancelledRef = useRef(false);
+  const recipeType = useRecipeStore(selectCurrentRecipeType);
+  const slotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
+  const setRecipeSlotCount = useRecipeStore((state) => state.setRecipeSlotCount);
 
   const canEditCount = recipeType ? canEditRecipeSlotCount(recipeType, slot) : false;
 
@@ -78,6 +78,7 @@ export const EditableItemCount = ({ slot, compact = false }: EditableItemCountPr
   return (
     <button
       type="button"
+      data-preview-output-count={count}
       className="pointer-events-none absolute right-0 bottom-0 z-10"
       onClick={(event) => {
         event.stopPropagation();
