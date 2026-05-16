@@ -101,15 +101,15 @@ export function PreviewControls({ previewRef }: PreviewControlsProps) {
         }
         onOpenChange={setIsExportMenuOpen}
       >
-        <Tooltip content="Preview item options" placement="top" disabled={isExportMenuOpen}>
+        <Tooltip content="Preview image" placement="top" disabled={isExportMenuOpen}>
           <button
             type="button"
             className="border-border bg-background/90 text-foreground hover:bg-accent active:bg-accent/80 focus-visible:ring-ring inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50"
             onClick={handleExportButtonClick}
-            aria-label="Preview item options"
+            aria-label="Preview image"
           >
             <ImageDownIcon size={14} />
-            <span className="sr-only">Preview Item Options</span>
+            <span className="sr-only">Preview image</span>
           </button>
         </Tooltip>
       </Popover>

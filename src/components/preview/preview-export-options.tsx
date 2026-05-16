@@ -18,7 +18,7 @@ export function PreviewExportOptions({
 
   return (
     <div className="flex flex-col gap-2" onClick={(event) => event.stopPropagation()}>
-      <div className="text-muted-foreground px-1 text-xs font-medium">Preview item options</div>
+      <div className="text-muted-foreground px-1 text-xs font-medium">Preview Image Options</div>
 
       <label className="text-foreground hover:bg-accent flex cursor-pointer items-center gap-2 rounded-sm px-1 py-1 text-sm transition-colors select-none">
         <input
