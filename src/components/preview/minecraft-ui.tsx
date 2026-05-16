@@ -271,6 +271,28 @@ export function StonecutterSelectionUi() {
   );
 }
 
+export function StonecutterScrollerUi() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 12 15"
+      className="pointer-events-none block h-full w-full"
+      shapeRendering="crispEdges"
+    >
+      <path fill="#FFFFFF" d="M0 0h11v1H0zM0 1h1v13H0z" />
+      <path
+        fill="#C6C6C6"
+        d="M1 1h10v1H1zM1 3h10v1H1zM1 5h10v1H1zM1 7h10v1H1zM1 9h10v1H1zM1 11h10v1H1zM1 13h10v1H1zM1 2h1v1H1zM10 2h1v1h-1zM1 4h1v1H1zM10 4h1v1h-1zM1 6h1v1H1zM10 6h1v1h-1zM1 8h1v1H1zM10 8h1v1h-1zM1 10h1v1H1zM10 10h1v1h-1zM1 12h1v1H1zM10 12h1v1h-1z"
+      />
+      <path
+        fill="#8B8B8B"
+        d="M11 0h1v1h-1zM2 2h8v1H2zM2 4h8v1H2zM2 6h8v1H2zM2 8h8v1H2zM2 10h8v1H2zM2 12h8v1H2zM0 14h1v1H0z"
+      />
+      <path fill="#555555" d="M11 1h1v14h-1zM1 14h10v1H1z" />
+    </svg>
+  );
+}
+
 export function SmithingHammer() {
   return (
     <svg

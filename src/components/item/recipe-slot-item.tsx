@@ -18,6 +18,7 @@ import {
   getTagLabel,
   resolveTagValues,
 } from "@/lib/tags";
+import { cn } from "@/lib/utils";
 import { RecipeSlot } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { selectCustomItemByUid } from "@/stores/custom-item/selectors";
@@ -35,25 +36,20 @@ import { ItemPreview } from "./item-preview";
 type RecipeSlotItemProps = {
   slot: RecipeSlot;
   value: RecipeSlotValue;
+  canDrag?: boolean;
   showCount?: boolean;
 };
 
-type VanillaRecipeSlotItemProps = {
-  slot: RecipeSlot;
+type VanillaRecipeSlotItemProps = Omit<RecipeSlotItemProps, "value"> & {
   value: Extract<RecipeSlotValue, { kind: "item" | "vanilla_tag" }>;
-  showCount?: boolean;
 };
 
-type CustomItemRecipeSlotItemProps = {
-  slot: RecipeSlot;
+type CustomItemRecipeSlotItemProps = Omit<RecipeSlotItemProps, "value"> & {
   value: Extract<RecipeSlotValue, { kind: "custom_item" }>;
-  showCount?: boolean;
 };
 
-type CustomTagRecipeSlotItemProps = {
-  slot: RecipeSlot;
+type CustomTagRecipeSlotItemProps = Omit<RecipeSlotItemProps, "value"> & {
   value: Extract<RecipeSlotValue, { kind: "custom_tag" }>;
-  showCount?: boolean;
 };
 
 type RecipeSlotItemBaseProps = RecipeSlotItemProps & {
@@ -67,6 +63,7 @@ const RecipeSlotItemBase = memo(
   ({
     slot,
     value,
+    canDrag = true,
     showCount,
     label,
     texture,
@@ -118,7 +115,7 @@ const RecipeSlotItemBase = memo(
     }, [identifier, label, previewValues, slot, texture, value]);
 
     useEffect(() => {
-      if (isTouchDevice) {
+      if (isTouchDevice || !canDrag) {
         return;
       }
 
@@ -133,7 +130,7 @@ const RecipeSlotItemBase = memo(
         dndCleanupRef.current?.();
         dndCleanupRef.current = null;
       };
-    }, [isTouchDevice, setupDraggable]);
+    }, [canDrag, isTouchDevice, setupDraggable]);
 
     const description = identifier ? getFullId(identifier) : label;
 
@@ -150,18 +147,18 @@ const RecipeSlotItemBase = memo(
             active
             itemIds={previewValues ?? []}
             ref={ref}
-            draggable={isTouchDevice ? false : undefined}
+            draggable={isTouchDevice || !canDrag ? false : undefined}
             style={{ opacity: dragging ? 0.5 : 1 }}
-            className="touch-action-manipulation cursor-move"
+            className={cn("touch-action-manipulation", canDrag && "cursor-move")}
           />
         ) : (
           <ItemPreview
             alt={label}
             texture={texture}
             ref={ref}
-            draggable={isTouchDevice ? false : undefined}
+            draggable={isTouchDevice || !canDrag ? false : undefined}
             style={{ opacity: dragging ? 0.5 : 1 }}
-            className="touch-action-manipulation cursor-move"
+            className={cn("touch-action-manipulation", canDrag && "cursor-move")}
           />
         )}
         {showCount && <ItemCount count={count ?? 1} />}

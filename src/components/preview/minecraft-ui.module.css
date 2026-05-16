@@ -23,3 +23,63 @@
     linear-gradient(#c6c6c6, #c6c6c6) right 4px top 4px / 2px 2px no-repeat,
     linear-gradient(#c6c6c6, #c6c6c6) left 4px bottom 4px / 2px 2px no-repeat;
 }
+
+.stonecutterListOutput {
+  --stonecutter-recipe-edge-top-left: #e0ca9f;
+  --stonecutter-recipe-edge-right-bottom: #544c3b;
+  --stonecutter-recipe-fill: #a09172;
+
+  position: absolute;
+  left: 88px;
+  top: 22px;
+  width: 32px;
+  height: 36px;
+  pointer-events: auto;
+  cursor: pointer;
+  background:
+    linear-gradient(
+        var(--stonecutter-recipe-edge-top-left),
+        var(--stonecutter-recipe-edge-top-left)
+      )
+      left top / calc(100% - 2px) 2px no-repeat,
+    linear-gradient(
+        var(--stonecutter-recipe-edge-top-left),
+        var(--stonecutter-recipe-edge-top-left)
+      )
+      left top / 2px calc(100% - 2px) no-repeat,
+    linear-gradient(
+        var(--stonecutter-recipe-edge-right-bottom),
+        var(--stonecutter-recipe-edge-right-bottom)
+      )
+      right 0 top 2px / 2px calc(100% - 2px) no-repeat,
+    linear-gradient(
+        var(--stonecutter-recipe-edge-right-bottom),
+        var(--stonecutter-recipe-edge-right-bottom)
+      )
+      left 2px bottom 0 / calc(100% - 2px) 2px no-repeat,
+    linear-gradient(var(--stonecutter-recipe-fill), var(--stonecutter-recipe-fill)) center / 100%
+      100% no-repeat;
+}
+
+.stonecutterListOutput:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+.stonecutterListOutput:hover {
+  --stonecutter-recipe-edge-top-left: #fab9ef;
+  --stonecutter-recipe-edge-right-bottom: #654c61;
+  --stonecutter-recipe-fill: #b688ae;
+}
+
+.stonecutterListOutputSelected,
+.stonecutterListOutputSelected:hover {
+  --stonecutter-recipe-edge-top-left: #211d17;
+  --stonecutter-recipe-edge-right-bottom: #6b614c;
+  --stonecutter-recipe-fill: #51493a;
+}
+
+.stonecutterListOutput > div {
+  width: 32px !important;
+  height: 36px !important;
+}

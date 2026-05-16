@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type KeyboardEvent, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import { SLOTS, type RecipeSlot } from "@/recipes/slots";
@@ -16,6 +16,7 @@ import {
   FurnaceFire,
   MinecraftUiLabel,
   SmithingHammer,
+  StonecutterScrollerUi,
   StonecutterSelectionUi,
 } from "./minecraft-ui";
 
@@ -23,6 +24,7 @@ import styles from "./minecraft-ui.module.css";
 
 export type PreviewSlotRenderOptions = {
   compact?: boolean;
+  staticSlot?: boolean;
   transparent?: boolean;
 };
 
@@ -173,6 +175,26 @@ export function StonecutterPreviewSurface<TSlotValue>({
   slots,
   renderSlot,
 }: PreviewSurfaceProps<TSlotValue>) {
+  const selectedOutput = slots[SLOTS.stonecutter.result];
+  const [isListOutputSelected, setIsListOutputSelected] = useState(false);
+
+  useEffect(() => {
+    setIsListOutputSelected(false);
+  }, [selectedOutput]);
+
+  const toggleListOutput = () => {
+    setIsListOutputSelected((selected) => !selected);
+  };
+
+  const handleListOutputKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return;
+    }
+
+    event.preventDefault();
+    toggleListOutput();
+  };
+
   return (
     <PreviewSurfaceFrame align="start" preferredWidth={352} minWidth={336}>
       <div className="relative" style={{ height: 132, width: 312 }}>
@@ -182,9 +204,36 @@ export function StonecutterPreviewSurface<TSlotValue>({
           <StonecutterSelectionUi />
         </div>
 
+        <div
+          className="pointer-events-none absolute"
+          style={{ height: 30, left: 222, top: 22, width: 24 }}
+        >
+          <StonecutterScrollerUi />
+        </div>
+
         <div className="absolute" style={{ left: 22, top: 56 }}>
           {renderSlot("stonecutter.ingredient", slots["stonecutter.ingredient"])}
         </div>
+
+        {selectedOutput ? (
+          <div
+            role="button"
+            tabIndex={0}
+            className={cn(
+              styles.stonecutterListOutput,
+              isListOutputSelected && styles.stonecutterListOutputSelected,
+            )}
+            aria-label="Toggle stonecutter list output"
+            aria-pressed={isListOutputSelected}
+            onClick={toggleListOutput}
+            onKeyDown={handleListOutputKeyDown}
+          >
+            {renderSlot(SLOTS.stonecutter.result, selectedOutput, {
+              staticSlot: true,
+              transparent: true,
+            })}
+          </div>
+        ) : null}
 
         <div className="absolute" style={{ left: 260, top: 48 }}>
           {renderSlot("stonecutter.result", slots["stonecutter.result"], { compact: false })}
