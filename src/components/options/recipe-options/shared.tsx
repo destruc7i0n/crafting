@@ -57,7 +57,7 @@ interface FieldProps {
 }
 
 export const Field = ({ label, children, htmlFor, tooltip, error, className }: FieldProps) => (
-  <div className={cn("text-foreground flex flex-col gap-1 text-sm", className)}>
+  <div className={cn("text-foreground flex min-w-0 flex-col gap-1 text-sm", className)}>
     <div className="flex items-center gap-1.5">
       {htmlFor ? <label htmlFor={htmlFor}>{label}</label> : <span>{label}</span>}
       {tooltip && <HelpTooltip content={tooltip} />}
