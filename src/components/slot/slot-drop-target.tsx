@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import {
   dropTargetForElements,
   monitorForElements,
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
-import invariant from "tiny-invariant";
 
 import { isItemDraggableData } from "@/lib/dnd";
 
@@ -28,23 +27,22 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
   const [isDraggedOver, setIsDraggedOver] = useState(false);
   const [isInvalidTarget, setIsInvalidTarget] = useState(false);
 
-  // refs keep canDrop and data current without triggering listener recreation.
-  const canDropRef = useRef(canDrop);
-  canDropRef.current = canDrop;
-
-  const dataRef = useRef(data);
-  dataRef.current = data;
+  const getDropData = useEffectEvent(() => data);
+  const canDropItem = useEffectEvent(({ source }: { source: { data: unknown } }) => {
+    return isItemDraggableData(source.data) && (canDrop?.({ source }) ?? true);
+  });
 
   useEffect(() => {
     const el = ref.current;
-    invariant(el);
+    if (!el) {
+      return;
+    }
 
     return combine(
       dropTargetForElements({
         element: el,
-        canDrop: ({ source }) =>
-          isItemDraggableData(source.data) && (canDropRef.current?.({ source }) ?? true),
-        getData: () => dataRef.current,
+        canDrop: canDropItem,
+        getData: getDropData,
         onDragEnter: () => setIsDraggedOver(true),
         onDragLeave: () => setIsDraggedOver(false),
         onDrop: () => {
@@ -54,9 +52,7 @@ export const SlotDropTarget = <T extends Record<string, unknown>>({
       }),
       monitorForElements({
         onDragStart: ({ source }) => {
-          const canAccept =
-            isItemDraggableData(source.data) && (canDropRef.current?.({ source }) ?? true);
-          setIsInvalidTarget(!canAccept);
+          setIsInvalidTarget(!canDropItem({ source }));
         },
         onDrop: () => setIsInvalidTarget(false),
       }),

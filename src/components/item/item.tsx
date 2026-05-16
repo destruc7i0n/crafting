@@ -1,10 +1,9 @@
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { createRoot } from "react-dom/client";
 
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { centerUnderPointer } from "@atlaskit/pragmatic-drag-and-drop/element/center-under-pointer";
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
-import invariant from "tiny-invariant";
 
 import { getFullId, getRawId } from "@/data/models/identifier/utilities";
 import { IngredientItem } from "@/data/models/types";
@@ -29,8 +28,6 @@ type IngredientProps = {
 };
 
 export const Item = memo(({ item, showCount }: IngredientProps) => {
-  const ref = useRef<HTMLImageElement | null>(null);
-  const dndCleanupRef = useRef<(() => void) | null>(null);
   const [dragging, setDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const isTouchDevice = useIsTouchDevice();
@@ -38,56 +35,57 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
   const isSelectedFromIngredients =
     selection?.type === "ingredient" && isSameIngredient(selection.item, item);
 
-  const setupDraggable = useCallback(() => {
-    if (dndCleanupRef.current) return;
+  const previewRef = useCallback(
+    (el: HTMLImageElement | null) => {
+      if (!el || isTouchDevice) return;
 
-    const el = ref.current;
-    invariant(el);
+      let dndCleanup: (() => void) | undefined;
 
-    dndCleanupRef.current = draggable({
-      element: el,
-      getInitialData: () => ({ type: "palette-item", item }) satisfies ItemDraggableData,
-      getInitialDataForExternal: () => ({ "text/plain": getRawId(item.id) }),
-      onDragStart: () => {
-        useUIStore.getState().clearInteractionState();
-        setDragging(true);
-      },
-      onDrop: () => setDragging(false),
-      onGenerateDragPreview: ({ nativeSetDragImage }) => {
-        setCustomNativeDragPreview({
-          getOffset: centerUnderPointer,
-          render({ container }) {
-            const root = createRoot(container);
-            root.render(
-              item.type === "tag_item" ? (
-                <CyclingItemPreview itemIds={item.values} alt={item.displayName} active={false} />
-              ) : (
-                <ItemPreview texture={item.texture} alt={item.displayName} />
-              ),
-            );
-            return () => root.unmount();
+      const setupDraggable = () => {
+        if (dndCleanup) return;
+
+        dndCleanup = draggable({
+          element: el,
+          getInitialData: () => ({ type: "palette-item", item }) satisfies ItemDraggableData,
+          getInitialDataForExternal: () => ({ "text/plain": getRawId(item.id) }),
+          onDragStart: () => {
+            useUIStore.getState().clearInteractionState();
+            setDragging(true);
           },
-          nativeSetDragImage,
+          onDrop: () => setDragging(false),
+          onGenerateDragPreview: ({ nativeSetDragImage }) => {
+            setCustomNativeDragPreview({
+              getOffset: centerUnderPointer,
+              render({ container }) {
+                const root = createRoot(container);
+                root.render(
+                  item.type === "tag_item" ? (
+                    <CyclingItemPreview
+                      itemIds={item.values}
+                      alt={item.displayName}
+                      active={false}
+                    />
+                  ) : (
+                    <ItemPreview texture={item.texture} alt={item.displayName} />
+                  ),
+                );
+                return () => root.unmount();
+              },
+              nativeSetDragImage,
+            });
+          },
         });
-      },
-    });
-  }, [item]);
+      };
 
-  useEffect(() => {
-    if (isTouchDevice) return;
+      el.addEventListener("pointerenter", setupDraggable, { once: true });
 
-    const el = ref.current;
-    if (!el) return;
-
-    const handlePointerEnter = () => setupDraggable();
-    el.addEventListener("pointerenter", handlePointerEnter, { once: true });
-
-    return () => {
-      el.removeEventListener("pointerenter", handlePointerEnter);
-      dndCleanupRef.current?.();
-      dndCleanupRef.current = null;
-    };
-  }, [isTouchDevice, setupDraggable]);
+      return () => {
+        el.removeEventListener("pointerenter", setupDraggable);
+        dndCleanup?.();
+      };
+    },
+    [isTouchDevice, item],
+  );
 
   const handleDoubleClick = () => {
     if (isTouchDevice) return;
@@ -122,7 +120,7 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
         alt={item.displayName}
         active={isTagPreviewActive}
         itemIds={item.values}
-        ref={ref}
+        ref={previewRef}
         draggable={isTouchDevice ? false : undefined}
         style={{ opacity: dragging ? 0.5 : 1 }}
         className={cn("touch-action-manipulation", !isTouchDevice && "cursor-move")}
@@ -135,7 +133,7 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
       <ItemPreview
         alt={item.displayName}
         texture={item.texture}
-        ref={ref}
+        ref={previewRef}
         draggable={isTouchDevice ? false : undefined}
         style={{ opacity: dragging ? 0.5 : 1 }}
         className={cn("touch-action-manipulation", !isTouchDevice && "cursor-move")}

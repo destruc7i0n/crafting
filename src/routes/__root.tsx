@@ -43,6 +43,13 @@ export const Route = createRootRoute({
       { rel: "icon", type: "image/png", href: "/icons/icon-192.png" },
       { rel: "apple-touch-icon", href: "/icons/icon-192.png" },
       { rel: "manifest", href: "/manifest.json" },
+      {
+        rel: "preload",
+        href: "/fonts/Minecraft.woff",
+        as: "font",
+        type: "font/woff",
+        crossOrigin: "anonymous",
+      },
       { rel: "stylesheet", href: "/fonts/minecraft-font.css" },
     ],
   }),

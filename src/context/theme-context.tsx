@@ -70,8 +70,8 @@ export function ThemeProvider({
   const value = useMemo(() => ({ theme, setTheme: handleSetTheme }), [theme, handleSetTheme]);
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
+    <ThemeProviderContext {...props} value={value}>
       {children}
-    </ThemeProviderContext.Provider>
+    </ThemeProviderContext>
   );
 }

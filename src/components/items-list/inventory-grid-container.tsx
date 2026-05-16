@@ -1,11 +1,11 @@
-import { ComponentPropsWithoutRef, forwardRef } from "react";
+import type { ComponentPropsWithRef } from "react";
 
 import { cn } from "@/lib/utils";
 
-type InventoryGridContainerProps = ComponentPropsWithoutRef<"div">;
+type InventoryGridContainerProps = ComponentPropsWithRef<"div">;
 
-export const InventoryGridContainer = forwardRef<HTMLDivElement, InventoryGridContainerProps>(
-  ({ className, ...props }, ref) => (
+export function InventoryGridContainer({ ref, className, ...props }: InventoryGridContainerProps) {
+  return (
     <div
       {...props}
       ref={ref}
@@ -14,7 +14,5 @@ export const InventoryGridContainer = forwardRef<HTMLDivElement, InventoryGridCo
         className,
       )}
     />
-  ),
-);
-
-InventoryGridContainer.displayName = "InventoryGridContainer";
+  );
+}

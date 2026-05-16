@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, forwardRef, memo, useMemo, type ReactNode } from "react";
+import { memo, useMemo, type ComponentPropsWithRef, type ReactNode } from "react";
 
 import { NoTextureTexture } from "@/data/constants";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
@@ -13,7 +13,7 @@ type CyclingItemPreviewProps = {
   itemsById?: Record<string, Item>;
   active?: boolean;
   render?: (state: { currentItem: Item | undefined; preview: ReactNode }) => ReactNode;
-} & Omit<ComponentPropsWithoutRef<typeof ItemPreview>, "texture">;
+} & Omit<ComponentPropsWithRef<typeof ItemPreview>, "texture">;
 
 type UseCyclingItemPreviewStateArgs = {
   itemIds: string[];
@@ -49,15 +49,17 @@ function useCyclingItemPreviewState({
   };
 }
 
-export const CyclingItemPreview = memo(
-  forwardRef<HTMLImageElement, CyclingItemPreviewProps>(
-    ({ itemIds, itemsById, alt, active = true, render, ...props }, ref) => {
-      const { currentItem, texture } = useCyclingItemPreviewState({ itemIds, itemsById, active });
-      const preview = <ItemPreview {...props} ref={ref} alt={alt} texture={texture} />;
+export const CyclingItemPreview = memo(function CyclingItemPreview({
+  ref,
+  itemIds,
+  itemsById,
+  alt,
+  active = true,
+  render,
+  ...props
+}: CyclingItemPreviewProps) {
+  const { currentItem, texture } = useCyclingItemPreviewState({ itemIds, itemsById, active });
+  const preview = <ItemPreview {...props} ref={ref} alt={alt} texture={texture} />;
 
-      return render ? render({ currentItem, preview }) : preview;
-    },
-  ),
-);
-
-CyclingItemPreview.displayName = "CyclingItemPreview";
+  return render ? render({ currentItem, preview }) : preview;
+});

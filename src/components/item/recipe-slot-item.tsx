@@ -1,11 +1,10 @@
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { createRoot } from "react-dom/client";
 
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { centerUnderPointer } from "@atlaskit/pragmatic-drag-and-drop/element/center-under-pointer";
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unhandled";
-import invariant from "tiny-invariant";
 
 import { NoTextureTexture } from "@/data/constants";
 import { getFullId, getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
@@ -70,67 +69,66 @@ const RecipeSlotItemBase = memo(
     identifier,
     previewValues,
   }: RecipeSlotItemBaseProps) => {
-    const ref = useRef<HTMLImageElement | null>(null);
-    const dndCleanupRef = useRef<(() => void) | null>(null);
     const [dragging, setDragging] = useState(false);
     const isTouchDevice = useIsTouchDevice();
     const count = value.kind === "item" || value.kind === "custom_item" ? value.count : undefined;
 
-    const setupDraggable = useCallback(() => {
-      if (dndCleanupRef.current) return;
+    const previewRef = useCallback(
+      (el: HTMLImageElement | null) => {
+        if (!el || isTouchDevice || !canDrag) {
+          return;
+        }
 
-      const el = ref.current;
-      invariant(el);
+        let dndCleanup: (() => void) | undefined;
 
-      dndCleanupRef.current = draggable({
-        element: el,
-        getInitialData: () => ({ type: "recipe-slot", slot, value }),
-        getInitialDataForExternal: () => ({
-          "text/plain": identifier ? getRawId(identifier) : label,
-        }),
-        onDragStart: () => {
-          preventUnhandled.start();
-          useUIStore.getState().clearInteractionState();
-          setDragging(true);
-        },
-        onDrop: () => setDragging(false),
-        onGenerateDragPreview: ({ nativeSetDragImage }) => {
-          setCustomNativeDragPreview({
-            getOffset: centerUnderPointer,
-            render({ container }) {
-              const root = createRoot(container);
-              root.render(
-                isTagSlotValue(value) ? (
-                  <CyclingItemPreview itemIds={previewValues ?? []} alt={label} active={false} />
-                ) : (
-                  <ItemPreview texture={texture} alt={label} />
-                ),
-              );
-              return () => root.unmount();
+        const setupDraggable = () => {
+          if (dndCleanup) return;
+
+          dndCleanup = draggable({
+            element: el,
+            getInitialData: () => ({ type: "recipe-slot", slot, value }),
+            getInitialDataForExternal: () => ({
+              "text/plain": identifier ? getRawId(identifier) : label,
+            }),
+            onDragStart: () => {
+              preventUnhandled.start();
+              useUIStore.getState().clearInteractionState();
+              setDragging(true);
             },
-            nativeSetDragImage,
+            onDrop: () => setDragging(false),
+            onGenerateDragPreview: ({ nativeSetDragImage }) => {
+              setCustomNativeDragPreview({
+                getOffset: centerUnderPointer,
+                render({ container }) {
+                  const root = createRoot(container);
+                  root.render(
+                    isTagSlotValue(value) ? (
+                      <CyclingItemPreview
+                        itemIds={previewValues ?? []}
+                        alt={label}
+                        active={false}
+                      />
+                    ) : (
+                      <ItemPreview texture={texture} alt={label} />
+                    ),
+                  );
+                  return () => root.unmount();
+                },
+                nativeSetDragImage,
+              });
+            },
           });
-        },
-      });
-    }, [identifier, label, previewValues, slot, texture, value]);
+        };
 
-    useEffect(() => {
-      if (isTouchDevice || !canDrag) {
-        return;
-      }
+        el.addEventListener("pointerenter", setupDraggable, { once: true });
 
-      const el = ref.current;
-      if (!el) return;
-
-      const handlePointerEnter = () => setupDraggable();
-      el.addEventListener("pointerenter", handlePointerEnter, { once: true });
-
-      return () => {
-        el.removeEventListener("pointerenter", handlePointerEnter);
-        dndCleanupRef.current?.();
-        dndCleanupRef.current = null;
-      };
-    }, [canDrag, isTouchDevice, setupDraggable]);
+        return () => {
+          el.removeEventListener("pointerenter", setupDraggable);
+          dndCleanup?.();
+        };
+      },
+      [canDrag, identifier, isTouchDevice, label, previewValues, slot, texture, value],
+    );
 
     const description = identifier ? getFullId(identifier) : label;
 
@@ -146,7 +144,7 @@ const RecipeSlotItemBase = memo(
             alt={label}
             active
             itemIds={previewValues ?? []}
-            ref={ref}
+            ref={previewRef}
             draggable={isTouchDevice || !canDrag ? false : undefined}
             style={{ opacity: dragging ? 0.5 : 1 }}
             className={cn("touch-action-manipulation", canDrag && "cursor-move")}
@@ -155,7 +153,7 @@ const RecipeSlotItemBase = memo(
           <ItemPreview
             alt={label}
             texture={texture}
-            ref={ref}
+            ref={previewRef}
             draggable={isTouchDevice || !canDrag ? false : undefined}
             style={{ opacity: dragging ? 0.5 : 1 }}
             className={cn("touch-action-manipulation", canDrag && "cursor-move")}

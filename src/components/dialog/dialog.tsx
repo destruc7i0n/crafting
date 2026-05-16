@@ -1,4 +1,4 @@
-import { useEffect, useId } from "react";
+import { useEffect, useEffectEvent, useId } from "react";
 import { createPortal } from "react-dom";
 
 import { XIcon } from "lucide-react";
@@ -56,6 +56,9 @@ export const Dialog = ({
 }: DialogProps) => {
   const titleId = useId();
   const descriptionId = description ? useId() : undefined;
+  const close = useEffectEvent(() => {
+    onClose();
+  });
 
   useEffect(() => {
     if (!open) {
@@ -64,7 +67,7 @@ export const Dialog = ({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        onClose();
+        close();
       }
     };
 
@@ -85,7 +88,7 @@ export const Dialog = ({
         bodyOverflowBeforeLock = null;
       }
     };
-  }, [onClose, open]);
+  }, [open]);
 
   if (!open || typeof document === "undefined") {
     return null;
