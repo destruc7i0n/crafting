@@ -42,8 +42,8 @@ importers:
         specifier: ^1.16.0
         version: 1.16.0(react@19.2.6)
       minecraft-textures:
-        specifier: 26.2.0-beta.2
-        version: 26.2.0-beta.2
+        specifier: 26.2.0-beta.3
+        version: 26.2.0-beta.3
       modern-screenshot:
         specifier: ^4.7.0
         version: 4.7.0
@@ -1359,8 +1359,8 @@ packages:
     resolution: {integrity: sha512-VP79XUPxV2CigYP3jWwAUFSku2aKqBH7uTAapFWCBqutsbmDo96KY5o8uh6U+/YSIn5OxJnXp73beVkpqMIGhA==}
     engines: {node: '>=18'}
 
-  minecraft-textures@26.2.0-beta.2:
-    resolution: {integrity: sha512-iNONJoVMZ57eaCEFL9Y/0qssn9yPBGI8i0XDxwufjC18f7KXxM9MTVXHLojxu++x7r/qFGGhmmpVxYMZV6+mSw==}
+  minecraft-textures@26.2.0-beta.3:
+    resolution: {integrity: sha512-pBdwTg7hhyhRakcM7vxcJbO5RfA5HzTM4+TfY1wXuxbiSZM3ATBs0qHivimmCtr4sNIBysSMQDvCEJHM+6Mm0g==}
 
   modern-screenshot@4.7.0:
     resolution: {integrity: sha512-9YxN+ddPSMMlhylOv25VHzXrl9u67QRxoh7+SEewGtgUw7t6hHTrjptSDJUSne9oG4Xk/h2cwG15nIt4Hc9ujg==}
@@ -2884,7 +2884,7 @@ snapshots:
 
   mimic-function@5.0.1: {}
 
-  minecraft-textures@26.2.0-beta.2: {}
+  minecraft-textures@26.2.0-beta.3: {}
 
   modern-screenshot@4.7.0: {}
 
