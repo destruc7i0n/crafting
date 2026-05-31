@@ -1,4 +1,4 @@
-import { latestMinecraftVersion } from "@/data/constants";
+import { latestMinecraftVersion, minecraftTextureAssetPath } from "@/data/constants";
 import manifest from "@/data/generated/vanilla-tags/manifest.json";
 import {
   getRawId,
@@ -29,7 +29,7 @@ type TextureManifestItem = {
 
 const vanillaTagsManifest = manifest as GeneratedVanillaTagsManifest;
 const supportedVanillaTagVersions = new Set(vanillaTagsManifest.versions);
-const minecraftTextureAssetBaseUrl = `${import.meta.env.BASE_URL}assets/textures/`;
+const minecraftTextureAssetBaseUrl = `${import.meta.env.BASE_URL}${minecraftTextureAssetPath}`;
 
 function resolveMinecraftTextureUrl(texture: string): string {
   return `${minecraftTextureAssetBaseUrl}${texture}`;

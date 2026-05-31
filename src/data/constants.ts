@@ -1,4 +1,5 @@
 import textureManifestIndex from "minecraft-textures/manifest/index.json";
+import texturePackageJson from "minecraft-textures/package.json";
 
 import type {
   latestVersion as packageLatestMinecraftTextureVersion,
@@ -14,6 +15,8 @@ const { latestVersion: latestMinecraftTexturesVersion, versions: minecraftTextur
     latestVersion: typeof packageLatestMinecraftTextureVersion;
     versions: typeof packageMinecraftTextureVersions;
   };
+export const minecraftTexturesPackageVersion = (texturePackageJson as { version: string }).version;
+export const minecraftTextureAssetPath = `assets/textures/${minecraftTexturesPackageVersion}/`;
 
 type Assert<T extends true> = T;
 type IsExact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;

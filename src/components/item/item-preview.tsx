@@ -14,6 +14,8 @@ export const ItemPreview = memo(function ItemPreview({
   alt,
   className,
   decoding,
+  width,
+  height,
   onError,
   ...props
 }: ItemPreviewProps) {
@@ -23,6 +25,8 @@ export const ItemPreview = memo(function ItemPreview({
       ref={ref}
       src={texture || NoTextureTexture}
       alt={alt}
+      width={width ?? 32}
+      height={height ?? 32}
       decoding={decoding ?? "async"}
       onError={(event) => {
         if (event.currentTarget.src !== NoTextureTexture) {

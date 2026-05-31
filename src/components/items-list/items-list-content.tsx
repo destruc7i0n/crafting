@@ -3,6 +3,8 @@ import type { Dispatch, SetStateAction } from "react";
 import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 
+import type { Item } from "@/data/models/types";
+
 import { ItemsSection } from "./item/items-section";
 import { TagsSection } from "./tag/tags-section";
 
@@ -18,6 +20,8 @@ interface ItemsListContentProps {
   supportsCustomTags: boolean;
 }
 
+const EMPTY_ITEMS: Item[] = [];
+
 export const ItemsListContent = ({
   tab,
   search,
@@ -30,7 +34,9 @@ export const ItemsListContent = ({
   supportsCustomTags,
 }: ItemsListContentProps) => {
   const { resources } = useResourcesForVersion();
-  const items = useFuzzySearch(resources?.items ?? [], search, (item) => [item.displayName]);
+  const items = useFuzzySearch(resources?.items ?? EMPTY_ITEMS, search, (item) => [
+    item.displayName,
+  ]);
 
   return (
     <div className="flex min-h-0 w-full flex-1 flex-col gap-2 rounded-md md:gap-0">
