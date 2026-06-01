@@ -1,4 +1,4 @@
-import { lazy, Suspense, useDeferredValue, useState } from "react";
+import { useDeferredValue, useState } from "react";
 
 import { PlusIcon } from "lucide-react";
 
@@ -8,15 +8,7 @@ import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useUIStore } from "@/stores/ui";
 import { supportsCustomTags, supportsItemTags } from "@/versioning";
 
-const ItemsListContent = lazy(() =>
-  import("./items-list-content").then(({ ItemsListContent }) => ({ default: ItemsListContent })),
-);
-
-const ItemsListContentFallback = () => (
-  <div aria-hidden="true" className="flex min-h-0 w-full flex-1 flex-col gap-2 rounded-md md:gap-0">
-    <div className="bg-minecraft-inventory-bg ring-border/70 min-h-0 flex-1 rounded-md ring-1 ring-inset" />
-  </div>
-);
+import { ItemsListContent } from "./items-list-content";
 
 export const ItemsList = () => {
   const version = useSettingsStore(selectMinecraftVersion);
@@ -146,19 +138,17 @@ export const ItemsList = () => {
         />
       )}
 
-      <Suspense fallback={<ItemsListContentFallback />}>
-        <ItemsListContent
-          tab={tab}
-          search={deferredSearch}
-          expandedTagUid={expandedTagUid}
-          setExpandedTagUid={setExpandedTagUid}
-          showAddItemForm={showAddItemForm}
-          showAddTagForm={showAddTagForm}
-          onCloseAddItemForm={() => setShowAddItemForm(false)}
-          onCloseAddTagForm={() => setShowAddTagForm(false)}
-          supportsCustomTags={canCreateTags}
-        />
-      </Suspense>
+      <ItemsListContent
+        tab={tab}
+        search={deferredSearch}
+        expandedTagUid={expandedTagUid}
+        setExpandedTagUid={setExpandedTagUid}
+        showAddItemForm={showAddItemForm}
+        showAddTagForm={showAddTagForm}
+        onCloseAddItemForm={() => setShowAddItemForm(false)}
+        onCloseAddTagForm={() => setShowAddTagForm(false)}
+        supportsCustomTags={canCreateTags}
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
-import type { TexturesType as MinecraftTexturesType } from "minecraft-textures";
+import type { TexturesType } from "minecraft-textures";
 
-import { latestMinecraftVersion } from "@/data/constants";
+import { latestMinecraftVersion, minecraftTextureAssetPath } from "@/data/constants";
 import manifest from "@/data/generated/vanilla-tags/manifest.json";
 import {
   getRawId,
@@ -19,10 +19,14 @@ type GeneratedVanillaTagsManifest = {
 
 const vanillaTagsManifest = manifest as GeneratedVanillaTagsManifest;
 const supportedVanillaTagVersions = new Set(vanillaTagsManifest.versions);
+const minecraftTextureAssetBaseUrl = `${import.meta.env.BASE_URL}${minecraftTextureAssetPath}`;
 
-const textureLoaders = import.meta.glob<{ default: MinecraftTexturesType }>(
-  // match 1.20.json but not 1.20.id.json
-  "/node_modules/minecraft-textures/dist/textures/json/[0-9]*[0-9].json",
+function resolveMinecraftTextureUrl(texture: string): string {
+  return `${minecraftTextureAssetBaseUrl}${texture}`;
+}
+
+const textureLoaders = import.meta.glob<{ default: TexturesType }>(
+  "/node_modules/minecraft-textures/dist/textures/manifest/[0-9]*[0-9].json",
 );
 const tagLoaders = import.meta.glob<{ default: Record<string, string[]> }>([
   "/src/data/generated/vanilla-tags/*.json",
@@ -34,19 +38,19 @@ const loadingVersions = new Set<MinecraftVersion>();
 
 async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void> {
   const textureVersion = version === MinecraftVersion.Bedrock ? latestMinecraftVersion : version;
-  const texturePath = `/node_modules/minecraft-textures/dist/textures/json/${textureVersion}.json`;
+  const texturePath = `/node_modules/minecraft-textures/dist/textures/manifest/${textureVersion}.json`;
 
-  const loadTextureModule =
-    textureLoaders[texturePath] ??
-    textureLoaders[
-      `/node_modules/minecraft-textures/dist/textures/json/${latestMinecraftVersion}.json`
-    ];
+  const loadTextureModule = textureLoaders[texturePath];
 
   if (!loadTextureModule) {
-    throw new Error(`No texture dataset found for version ${textureVersion}`);
+    throw new Error(`No texture manifest found for Minecraft version ${textureVersion}`);
   }
 
   const module = (await loadTextureModule()).default;
+  const mcTexturesItems = module.items.map((item) => ({
+    ...item,
+    texture: resolveMinecraftTextureUrl(item.texture),
+  }));
   let vanillaTags: Record<string, string[]> = {};
 
   const tagPath =
@@ -58,7 +62,6 @@ async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void
     vanillaTags = (await loadTagModule()).default;
   }
 
-  const mcTexturesItems = module.items;
   const items: Item[] = [];
   const itemsById: Record<string, Item> = {};
 

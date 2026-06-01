@@ -15,6 +15,7 @@ import { AddItemForm } from "./add-item-form";
 import { CustomItemEditor } from "./custom-item-editor";
 
 const SLOT_SIZE = 36;
+const itemGridOverscanRows = (isTouchDevice: boolean) => (isTouchDevice ? 2 : 3);
 
 const getGridContentWidth = (element: HTMLDivElement) => {
   const styles = getComputedStyle(element);
@@ -53,14 +54,15 @@ const VirtualizedItemGrid = ({ items }: { items: ItemType[] }) => {
     return () => observer.disconnect();
   }, []);
 
-  const itemsPerRow = Math.max(1, Math.floor(containerWidth / SLOT_SIZE));
-  const rowCount = Math.ceil(items.length / itemsPerRow);
+  const hasMeasuredWidth = containerWidth > 0;
+  const itemsPerRow = hasMeasuredWidth ? Math.max(1, Math.floor(containerWidth / SLOT_SIZE)) : 1;
+  const rowCount = hasMeasuredWidth ? Math.ceil(items.length / itemsPerRow) : 0;
 
   const virtualizer = useVirtualizer({
     count: rowCount,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => SLOT_SIZE,
-    overscan: isTouchDevice ? 3 : 10,
+    overscan: itemGridOverscanRows(isTouchDevice),
   });
 
   return (

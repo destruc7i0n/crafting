@@ -115,7 +115,6 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
           itemsById={resources?.itemsById}
           draggable={false}
           loading="lazy"
-          decoding="async"
           render={({ currentItem, preview }) => (
             <ItemTooltip
               title={getCyclingLabel(currentItem, presentation)}
@@ -153,7 +152,6 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
           texture={presentation.preview.texture}
           draggable={false}
           loading="lazy"
-          decoding="async"
         />
         {showCount && presentation.count && presentation.count > 1 ? (
           <ItemCount count={presentation.count} compact={compact} />
