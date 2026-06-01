@@ -1,4 +1,4 @@
-import textureManifestIndex from "minecraft-textures/manifest/index.json";
+import { latestVersion, versions } from "minecraft-textures";
 
 import { MinecraftVersion } from "@/data/types";
 
@@ -6,8 +6,6 @@ import { fetchBedrockTags } from "./bedrock-tags";
 import { cleanupMcmetaRepo, cloneMcmetaRepo } from "./mcmeta-repo";
 import { generateJavaRecipeCatalogs } from "./recipes";
 import { generateJavaVanillaTags, writeVanillaTagsManifest } from "./tags";
-
-const { latestVersion, versions } = textureManifestIndex;
 
 if (latestVersion !== versions.at(-1)) {
   throw new Error("minecraft-textures latestVersion did not match the final versions entry");

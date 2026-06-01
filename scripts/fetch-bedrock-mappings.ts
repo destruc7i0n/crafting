@@ -3,9 +3,7 @@
 
 import path from "node:path";
 
-import textureManifestIndex from "minecraft-textures/manifest/index.json";
-
-const { latestVersion } = textureManifestIndex;
+import { latestVersion } from "minecraft-textures";
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const outputPath = path.join(repoRoot, "src/data/generated/bedrock-mappings.json");

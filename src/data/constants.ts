@@ -1,20 +1,10 @@
-import textureManifestIndex from "minecraft-textures/manifest/index.json";
+import { latestVersion, versions } from "minecraft-textures";
 import texturePackageJson from "minecraft-textures/package.json";
-
-import type {
-  latestVersion as packageLatestMinecraftTextureVersion,
-  versions as packageMinecraftTextureVersions,
-} from "minecraft-textures";
 
 import { MinecraftVersion } from "./types";
 
 type JavaMinecraftVersion = `${Exclude<MinecraftVersion, MinecraftVersion.Bedrock>}`;
 
-const { latestVersion: latestMinecraftTexturesVersion, versions: minecraftTextureVersions } =
-  textureManifestIndex as unknown as {
-    latestVersion: typeof packageLatestMinecraftTextureVersion;
-    versions: typeof packageMinecraftTextureVersions;
-  };
 export const minecraftTexturesPackageVersion = (texturePackageJson as { version: string }).version;
 export const minecraftTextureAssetPath = `assets/textures/${minecraftTexturesPackageVersion}/`;
 
@@ -43,7 +33,7 @@ export const javaMinecraftVersions = [
 ] as const satisfies readonly Exclude<MinecraftVersion, MinecraftVersion.Bedrock>[];
 
 export type TextureVersionsMatchMinecraftVersions = Assert<
-  IsExact<(typeof minecraftTextureVersions)[number], JavaMinecraftVersion>
+  IsExact<(typeof versions)[number], JavaMinecraftVersion>
 >;
 
 export const NoTextureTexture =
@@ -51,4 +41,4 @@ export const NoTextureTexture =
 
 export const defaultMinecraftVersions = [MinecraftVersion.Bedrock, ...javaMinecraftVersions];
 
-export const latestMinecraftVersion = latestMinecraftTexturesVersion as MinecraftVersion;
+export const latestMinecraftVersion = latestVersion as MinecraftVersion;

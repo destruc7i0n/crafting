@@ -1,16 +1,12 @@
+import type { Item as MinecraftTexturesItem } from "minecraft-textures";
+
 import { MinecraftVersion } from "@/data/types";
 
 import { parseStringToMinecraftIdentifier } from "../identifier/utilities";
 import { BaseItem, IngredientItem, Item } from "../types";
 
-type MinecraftTexturesItemLike = {
-  readable: string;
-  id: string;
-  texture: string;
-};
-
 export function transformMinecraftTexturesItem(
-  item: MinecraftTexturesItemLike,
+  item: MinecraftTexturesItem,
   version: MinecraftVersion,
 ): Item {
   return {

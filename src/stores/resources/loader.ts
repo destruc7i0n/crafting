@@ -1,3 +1,5 @@
+import type { TexturesType } from "minecraft-textures";
+
 import { latestMinecraftVersion, minecraftTextureAssetPath } from "@/data/constants";
 import manifest from "@/data/generated/vanilla-tags/manifest.json";
 import {
@@ -15,18 +17,6 @@ type GeneratedVanillaTagsManifest = {
   versions: MinecraftVersion[];
 };
 
-type TextureManifestType = {
-  comment: string;
-  version: string;
-  items: TextureManifestItem[];
-};
-
-type TextureManifestItem = {
-  id: string;
-  readable: string;
-  texture: string;
-};
-
 const vanillaTagsManifest = manifest as GeneratedVanillaTagsManifest;
 const supportedVanillaTagVersions = new Set(vanillaTagsManifest.versions);
 const minecraftTextureAssetBaseUrl = `${import.meta.env.BASE_URL}${minecraftTextureAssetPath}`;
@@ -35,7 +25,7 @@ function resolveMinecraftTextureUrl(texture: string): string {
   return `${minecraftTextureAssetBaseUrl}${texture}`;
 }
 
-const textureLoaders = import.meta.glob<{ default: TextureManifestType }>(
+const textureLoaders = import.meta.glob<{ default: TexturesType }>(
   "/node_modules/minecraft-textures/dist/textures/manifest/[0-9]*[0-9].json",
 );
 const tagLoaders = import.meta.glob<{ default: Record<string, string[]> }>([
