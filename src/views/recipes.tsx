@@ -30,6 +30,7 @@ import { mergeRecipesSearch } from "@/recipes/catalog/routing";
 
 import type { MinecraftVersion } from "@/data/types";
 import type { RecipesSearch } from "@/recipes/catalog/routing";
+import type { GeneratedRecipeCatalogEntry } from "@/recipes/catalog/types";
 
 const catalogRecipeTypes = [
   RecipeType.Crafting,
@@ -45,10 +46,6 @@ const catalogRecipeTypes = [
 const recipesRoute = getRouteApi("/recipes/{-$version}");
 
 const navLink = <HeaderNavLink to="/">Generator</HeaderNavLink>;
-
-type SearchableCatalogRecipe = CatalogGridRecipe & {
-  searchText: string;
-};
 
 export function RecipesView() {
   const { version: routeVersion } = recipesRoute.useParams();
@@ -115,26 +112,45 @@ export function RecipesView() {
     return catalogRecipeTypes.filter((recipeType) => presentTypes.has(recipeType));
   }, [catalog]);
 
-  const searchableRecipes = useMemo(
-    (): SearchableCatalogRecipe[] =>
+  const gridRecipes = useMemo(
+    (): CatalogGridRecipe[] =>
       catalog.map((entry) => ({
         entry,
         title: getRecipeCardTitle(entry, resources),
-        searchText: getRecipeSearchText(entry, resources),
       })),
     [catalog, resources],
   );
 
+  // getRecipeSearchText expands tag slots, so compute lazily and cache per entry.
+  const getSearchText = useMemo(() => {
+    const cache = new Map<GeneratedRecipeCatalogEntry, string>();
+    return (entry: GeneratedRecipeCatalogEntry): string => {
+      if (!resources) {
+        return "";
+      }
+      let text = cache.get(entry);
+      if (text === undefined) {
+        text = getRecipeSearchText(entry, resources);
+        cache.set(entry, text);
+      }
+      return text;
+    };
+  }, [resources]);
+
   const filteredRecipes = useMemo(
     (): CatalogGridRecipe[] =>
-      searchableRecipes.filter(({ entry, searchText }) => {
+      gridRecipes.filter(({ entry }) => {
         if (search.recipeType !== "all" && entry.recipeType !== search.recipeType) {
           return false;
         }
 
-        return deferredQuery.length === 0 || searchText.includes(deferredQuery);
+        if (deferredQuery.length === 0) {
+          return true;
+        }
+
+        return getSearchText(entry).includes(deferredQuery);
       }),
-    [deferredQuery, search.recipeType, searchableRecipes],
+    [deferredQuery, search.recipeType, gridRecipes, getSearchText],
   );
 
   return (

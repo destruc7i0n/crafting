@@ -364,6 +364,11 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   );
   const packState = buildSidebarPackState(minecraftVersion, invalidRecipesById.size);
 
+  const recipesById = useMemo(
+    () => new Map(recipes.map((recipe) => [recipe.id, recipe] as const)),
+    [recipes],
+  );
+
   const handleCloseSidebar = () => {
     setMobileRecipeSidebarOpen(false);
   };
@@ -386,7 +391,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
   };
 
   const handleCloneRecipe = (id: string) => {
-    const recipe = recipes.find((value) => value.id === id);
+    const recipe = recipesById.get(id);
 
     cloneRecipeAndClearInteraction(id);
 
@@ -405,7 +410,7 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
       return;
     }
 
-    const recipe = recipes.find((value) => value.id === id);
+    const recipe = recipesById.get(id);
     deleteRecipeAndClearInteraction(id);
 
     if (recipe) {
