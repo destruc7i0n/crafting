@@ -1,10 +1,12 @@
+import { CustomItem, Tag } from "@/data/models/types";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
-import { recipeStateDefaults } from "@/stores/recipe/types";
-import { makeRecipe } from "@/test/recipe-fixtures";
+import { recipeStateDefaults, SlotContext } from "@/stores/recipe/types";
+import { customItemSlot, customTagSlot, itemSlot, makeRecipe } from "@/test/recipe-fixtures";
 
 import { buildBedrock, buildJava, extractCraftingInput } from "./crafting";
 import { createRecipeFormatter } from "./format/recipe-formatter";
+import { ShapedCraftingRecipe } from "./types";
 
 const makeDefaultItem = (id: string, version: MinecraftVersion) => ({
   type: "default_item" as const,
@@ -71,6 +73,14 @@ const buildBedrockRecipe = (
 
   return buildBedrock(extractCraftingInput(recipe), formatter, slotContext);
 };
+
+const slotContextWith = (
+  version: MinecraftVersion,
+  overrides: Partial<SlotContext>,
+): SlotContext => ({
+  ...createEmptySlotContext(version),
+  ...overrides,
+});
 
 describe("generate crafting", () => {
   describe("1.12", () => {
@@ -765,6 +775,190 @@ describe("generate crafting", () => {
           result: { item: "minecraft:cobblestone" },
         });
       });
+
+      it("cascades to the next word's initial, then a free character, on collisions", () => {
+        const recipeSlice = makeShapedRecipeSlice(MinecraftVersion.V114, {
+          "crafting.1": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.2": makeDefaultItem("andesite", MinecraftVersion.V114),
+          "crafting.3": makeDefaultItem("apple", MinecraftVersion.V114),
+          "crafting.4": makeDefaultItem("acacia_planks", MinecraftVersion.V114),
+        });
+
+        // stone->#, andesite->A, apple->a, acacia_planks: "acacia" (A/a taken) -> "planks" -> P
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: ["#Aa", "P  "],
+          key: {
+            "#": { item: "minecraft:stone" },
+            A: { item: "minecraft:andesite" },
+            a: { item: "minecraft:apple" },
+            P: { item: "minecraft:acacia_planks" },
+          },
+          result: { item: "minecraft:cobblestone" },
+        });
+      });
+
+      // empty id must not crash, just gets a fallback char
+      it("assigns a fallback character without throwing when an id has no usable letter", () => {
+        const recipeSlice = makeShapedRecipeSlice(MinecraftVersion.V114, {
+          "crafting.1": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.2": makeDefaultItem("", MinecraftVersion.V114),
+        });
+
+        const result = buildJavaRecipe(recipeSlice, MinecraftVersion.V114) as ShapedCraftingRecipe;
+
+        expect(Object.keys(result.key)).toEqual(["#", "A"]);
+      });
+
+      it("gives # to the most-used ingredient, not the first slot", () => {
+        const recipeSlice = makeShapedRecipeSlice(MinecraftVersion.V114, {
+          "crafting.1": makeDefaultItem("stick", MinecraftVersion.V114),
+          "crafting.2": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.3": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.4": makeDefaultItem("stone", MinecraftVersion.V114),
+        });
+
+        // stone appears 3x so it claims "#" even though stick is first
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: ["/##", "#  "],
+          key: {
+            "/": { item: "minecraft:stick" },
+            "#": { item: "minecraft:stone" },
+          },
+          result: { item: "minecraft:cobblestone" },
+        });
+      });
+
+      it("chooses keys from the path regardless of namespace", () => {
+        const recipeSlice = makeShapedRecipeSlice(MinecraftVersion.V114, {
+          "crafting.1": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.2": {
+            type: "default_item" as const,
+            id: { id: "apple", namespace: "mymod" },
+            displayName: "apple",
+            texture: "",
+            _version: MinecraftVersion.V114,
+          },
+        });
+
+        // "mymod:apple" picks "A" from the path, not "M" from the namespace
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: ["#A"],
+          key: {
+            "#": { item: "minecraft:stone" },
+            A: { item: "mymod:apple" },
+          },
+          result: { item: "minecraft:cobblestone" },
+        });
+      });
+
+      it("falls back to a later letter of the id when initials collide", () => {
+        const recipeSlice = makeShapedRecipeSlice(MinecraftVersion.V114, {
+          "crafting.1": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.2": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.3": makeDefaultItem("andesite", MinecraftVersion.V114),
+          "crafting.4": makeDefaultItem("apple", MinecraftVersion.V114),
+          "crafting.5": makeDefaultItem("acacia", MinecraftVersion.V114),
+        });
+
+        // stone->#, andesite->A, apple->a, acacia: "A"/"a" taken -> next letter "C"
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: ["##A", "aC "],
+          key: {
+            "#": { item: "minecraft:stone" },
+            A: { item: "minecraft:andesite" },
+            a: { item: "minecraft:apple" },
+            C: { item: "minecraft:acacia" },
+          },
+          result: { item: "minecraft:cobblestone" },
+        });
+      });
+
+      it("resolves a custom item in the grid and keys it from its path", () => {
+        const customItem: CustomItem = {
+          type: "custom_item",
+          uid: "ci-ruby",
+          id: { namespace: "mypack", id: "ruby" },
+          displayName: "Ruby",
+          texture: "",
+          _version: MinecraftVersion.V114,
+        };
+        const slotContext = slotContextWith(MinecraftVersion.V114, {
+          customItemsByUid: { "ci-ruby": customItem },
+        });
+        const recipe = makeRecipe({
+          recipeType: RecipeType.Crafting,
+          group: "",
+          slots: {
+            "crafting.1": itemSlot({ namespace: "minecraft", id: "stone" }),
+            "crafting.2": customItemSlot("ci-ruby"),
+            "crafting.result": itemSlot({ namespace: "minecraft", id: "cobblestone" }),
+          },
+          crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
+          cooking: { time: 0, experience: 0 },
+        });
+
+        expect(buildJavaRecipe(recipe, MinecraftVersion.V114, slotContext)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: ["#R"],
+          key: {
+            "#": { item: "minecraft:stone" },
+            R: { item: "mypack:ruby" },
+          },
+          result: { item: "minecraft:cobblestone" },
+        });
+      });
+
+      it("resolves a custom tag in the grid (no dinnerbone char for tags)", () => {
+        const tag: Tag = { uid: "ct-gems", id: "mypack:gems", values: [] };
+        const slotContext = slotContextWith(MinecraftVersion.V114, {
+          tagsByUid: { "ct-gems": tag },
+        });
+        const recipe = makeRecipe({
+          recipeType: RecipeType.Crafting,
+          group: "",
+          slots: {
+            "crafting.1": itemSlot({ namespace: "minecraft", id: "stone" }),
+            "crafting.2": customTagSlot("ct-gems"),
+            "crafting.result": itemSlot({ namespace: "minecraft", id: "cobblestone" }),
+          },
+          crafting: { ...recipeStateDefaults.crafting, shapeless: false, keepWhitespace: false },
+          cooking: { time: 0, experience: 0 },
+        });
+
+        expect(buildJavaRecipe(recipe, MinecraftVersion.V114, slotContext)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: ["#G"],
+          key: {
+            "#": { item: "minecraft:stone" },
+            G: { tag: "mypack:gems" },
+          },
+          result: { item: "minecraft:cobblestone" },
+        });
+      });
+
+      it("breaks # ties toward the earliest ingredient in the grid", () => {
+        const recipeSlice = makeShapedRecipeSlice(MinecraftVersion.V114, {
+          "crafting.1": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.2": makeDefaultItem("stone", MinecraftVersion.V114),
+          "crafting.3": makeDefaultItem("dirt", MinecraftVersion.V114),
+          "crafting.4": makeDefaultItem("dirt", MinecraftVersion.V114),
+        });
+
+        // stone and dirt both appear twice; stone is first so it claims "#"
+        expect(buildJavaRecipe(recipeSlice, MinecraftVersion.V114)).toEqual({
+          type: "minecraft:crafting_shaped",
+          pattern: ["##D", "D  "],
+          key: {
+            "#": { item: "minecraft:stone" },
+            D: { item: "minecraft:dirt" },
+          },
+          result: { item: "minecraft:cobblestone" },
+        });
+      });
     });
   });
 
@@ -973,5 +1167,24 @@ describe("generate crafting", () => {
         createEmptySlotContext(MinecraftVersion.V121),
       ),
     ).toThrow("Cannot generate output for unresolved custom_item reference");
+  });
+
+  it("excludes 2x2-disabled slots from the extracted grid", () => {
+    const recipe = makeRecipe({
+      recipeType: RecipeType.Crafting,
+      slots: {
+        "crafting.1": itemSlot({ namespace: "minecraft", id: "stone" }), // index 0, enabled
+        "crafting.3": itemSlot({ namespace: "minecraft", id: "dirt" }), // index 2, disabled
+        "crafting.5": itemSlot({ namespace: "minecraft", id: "sand" }), // index 4, enabled
+        "crafting.7": itemSlot({ namespace: "minecraft", id: "gravel" }), // index 6, disabled
+      },
+      crafting: { ...recipeStateDefaults.crafting, twoByTwo: true },
+    });
+
+    const { grid } = extractCraftingInput(recipe);
+    expect(grid[2]).toBeUndefined();
+    expect(grid[6]).toBeUndefined();
+    expect(grid[0]).toEqual({ kind: "item", id: { namespace: "minecraft", id: "stone" } });
+    expect(grid[4]).toEqual({ kind: "item", id: { namespace: "minecraft", id: "sand" } });
   });
 });

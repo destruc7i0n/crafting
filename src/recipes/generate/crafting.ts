@@ -27,6 +27,20 @@ const TWO_BY_TWO_DISABLED_INDICES = new Set([2, 5, 6, 7, 8]);
 // oxlint-disable-next-line typescript/no-misused-spread
 const PATTERN_CHARACTERS = ["#", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ", ..."abcdefghijklmnopqrstuvwxyz"];
 
+// reverse-map key + path, shared by getPattern and getKeyForGrid so they agree
+function resolveSlotKeyInfo(
+  item: RecipeSlotValue,
+  slotContext: SlotContext,
+): { reverseKey: string; path: string } {
+  const identifier = getSlotIdentifier(item, slotContext);
+  if (identifier) {
+    return { reverseKey: getRawId(identifier), path: identifier.id };
+  }
+
+  const uid = item.kind === "custom_item" || item.kind === "custom_tag" ? item.uid : "";
+  return { reverseKey: `${item.kind}:${uid}`, path: uid };
+}
+
 function getPattern({
   grid,
   reverseMap,
@@ -44,8 +58,7 @@ function getPattern({
     const rowIndex = Math.floor(index / 3);
     pattern[rowIndex] = pattern[rowIndex] || "";
     if (item) {
-      const identifier = getSlotIdentifier(item, slotContext);
-      const reverseKey = identifier ? getRawId(identifier) : item.kind;
+      const { reverseKey } = resolveSlotKeyInfo(item, slotContext);
       pattern[rowIndex] += reverseMap[reverseKey] ?? "#";
     } else {
       pattern[rowIndex] += " ";
@@ -95,71 +108,55 @@ function getPattern({
   return pattern;
 }
 
+// thematic key chars by keyword, first match wins
+const DINNERBONE_RULES: { char: string; keywords: string[] }[] = [
+  { char: "/", keywords: ["stick", "rod", "torch", "arrow", "bone"] },
+  { char: "_", keywords: ["slab", "carpet", "paper", "map"] },
+  { char: "=", keywords: ["ingot", "brick"] },
+  { char: ".", keywords: ["nugget", "dust", "powder", "seed", "redstone"] },
+  { char: "o", keywords: ["diamond", "emerald", "quartz", "shard", "pearl", "ball", "egg"] },
+  { char: "~", keywords: ["string", "vine"] },
+  { char: ")", keywords: ["bow"] },
+  { char: "u", keywords: ["bucket", "bottle"] },
+];
+
 function dinnerboneChallenge(itemId: string, isTag: boolean): string | null {
   if (isTag) {
     return null;
   }
 
   const normalizedId = itemId.toLowerCase();
-
-  if (
-    normalizedId.includes("stick") ||
-    normalizedId.includes("rod") ||
-    normalizedId.includes("torch") ||
-    normalizedId.includes("arrow") ||
-    normalizedId.includes("bone")
-  ) {
-    return "/";
-  }
-
-  if (
-    normalizedId.includes("slab") ||
-    normalizedId.includes("carpet") ||
-    normalizedId.includes("paper") ||
-    normalizedId.includes("map")
-  ) {
-    return "_";
-  }
-
-  if (normalizedId.includes("ingot") || normalizedId.includes("brick")) {
-    return "=";
-  }
-
-  if (
-    normalizedId.includes("nugget") ||
-    normalizedId.includes("dust") ||
-    normalizedId.includes("powder") ||
-    normalizedId.includes("seed") ||
-    normalizedId.includes("redstone")
-  ) {
-    return ".";
-  }
-
-  if (
-    normalizedId.includes("diamond") ||
-    normalizedId.includes("emerald") ||
-    normalizedId.includes("quartz") ||
-    normalizedId.includes("shard") ||
-    normalizedId.includes("pearl") ||
-    normalizedId.includes("ball") ||
-    normalizedId.includes("egg")
-  ) {
-    return "o";
-  }
-
-  if (normalizedId.includes("string") || normalizedId.includes("vine")) {
-    return "~";
-  }
-
-  if (normalizedId.includes("bow")) {
-    return ")";
-  }
-
-  if (normalizedId.includes("bucket") || normalizedId.includes("bottle")) {
-    return "u";
+  for (const { char, keywords } of DINNERBONE_RULES) {
+    if (keywords.some((keyword) => normalizedId.includes(keyword))) {
+      return char;
+    }
   }
 
   return null;
+}
+
+// key for a non-primary ingredient: dinnerbone char -> word initials -> any other
+// letter -> first free char
+function pickKeyName(path: string, item: RecipeSlotValue, usedKeys: Set<string>): string {
+  const candidates = [dinnerboneChallenge(path, isTagSlotValue(item))];
+  // letter runs (words), split on _ / : -> initial of each
+  for (const word of path.match(/[a-zA-Z]+/g) ?? []) {
+    candidates.push(word[0].toUpperCase(), word[0].toLowerCase());
+  }
+  // every individual letter, as a fallback
+  for (const letter of path.match(/[a-zA-Z]/g) ?? []) {
+    candidates.push(letter.toUpperCase(), letter.toLowerCase());
+  }
+
+  for (const candidate of candidates) {
+    if (candidate && !usedKeys.has(candidate)) {
+      return candidate;
+    }
+  }
+
+  const next = PATTERN_CHARACTERS.find((c) => !usedKeys.has(c));
+  if (!next) throw new Error("Ran out of pattern characters");
+  return next;
 }
 
 function getKeyForGrid(
@@ -169,53 +166,36 @@ function getKeyForGrid(
   key: Record<string, RecipeSlotValue>;
   reverse: Record<string, string>;
 } {
-  const key: Record<string, RecipeSlotValue> = {};
-  const reverse: Record<string, string> = {};
+  // most-used ingredient claims "#", ties go to the earliest in the grid
+  const cells: { reverseKey: string; path: string; item: RecipeSlotValue }[] = [];
+  const counts = new Map<string, number>();
+  let primary: string | undefined;
+  let primaryCount = 0;
 
   for (const item of grid) {
     if (!item) continue;
-    const identifier = getSlotIdentifier(item, slotContext);
-    const reverseKey = identifier
-      ? getRawId(identifier)
-      : `${item.kind}:${item.kind === "custom_item" || item.kind === "custom_tag" ? item.uid : ""}`;
+    const { reverseKey, path } = resolveSlotKeyInfo(item, slotContext);
+    cells.push({ reverseKey, path, item });
+
+    const count = (counts.get(reverseKey) ?? 0) + 1;
+    counts.set(reverseKey, count);
+    if (count > primaryCount) {
+      primary = reverseKey;
+      primaryCount = count;
+    }
+  }
+
+  const key: Record<string, RecipeSlotValue> = {};
+  const reverse: Record<string, string> = {};
+  const usedKeys = new Set<string>(["#"]); // reserved for the primary
+
+  for (const { reverseKey, path, item } of cells) {
     if (reverse[reverseKey]) continue;
 
-    const id = reverseKey.startsWith("minecraft:")
-      ? reverseKey.slice("minecraft:".length)
-      : reverseKey || item.kind;
-
-    let keyName = "#";
-    if (keyName in key) {
-      let found = false;
-
-      const firstChar = id[0];
-      const upper = firstChar.toUpperCase();
-      const lower = firstChar.toLowerCase();
-
-      const possibilities = [
-        dinnerboneChallenge(id, isTagSlotValue(item)),
-        upper,
-        lower,
-        PATTERN_CHARACTERS[id.length % PATTERN_CHARACTERS.length],
-      ];
-
-      for (const possibility of possibilities) {
-        if (possibility && !(possibility in key)) {
-          keyName = possibility;
-          found = true;
-          break;
-        }
-      }
-
-      if (!found) {
-        const next = PATTERN_CHARACTERS.find((c) => !(c in key));
-        if (!next) throw new Error("Ran out of pattern characters");
-        keyName = next;
-      }
-    }
-
+    const keyName = reverseKey === primary ? "#" : pickKeyName(path, item, usedKeys);
     key[keyName] = item;
     reverse[reverseKey] = keyName;
+    usedKeys.add(keyName);
   }
 
   return { key, reverse };

@@ -1,7 +1,7 @@
 import { MinecraftVersion } from "@/data/types";
 import { getRecipeDefinition, getSupportedRecipeTypesForVersion } from "@/recipes/definitions";
 import { isResultSlot } from "@/recipes/slots/utils";
-import { hasMissingCustomRef, isTagSlotValue } from "@/stores/recipe/slot-value";
+import { getSlotIdentifier, hasMissingCustomRef, isTagSlotValue } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 import { getMinecraftVersionLabel, supportsItemTags } from "@/versioning";
 
@@ -44,6 +44,19 @@ const validateCommonRecipeRules = (
 
   if (invalidTagResultSlots.length > 0) {
     errors.push("Result slots must contain items, not tags");
+  }
+
+  // resource locations can't be empty or contain whitespace
+  const isInvalidPart = (part: string) => part.trim().length === 0 || /\s/.test(part);
+  const hasInvalidIdentifier = Object.values(recipe.slots).some((value) => {
+    const identifier = getSlotIdentifier(value, slotContext);
+    return (
+      identifier !== undefined &&
+      (isInvalidPart(identifier.namespace) || isInvalidPart(identifier.id))
+    );
+  });
+  if (hasInvalidIdentifier) {
+    errors.push("Recipe contains an item with an invalid identifier");
   }
 
   return errors;

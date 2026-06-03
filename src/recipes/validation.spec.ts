@@ -73,6 +73,42 @@ describe("validateRecipe", () => {
     });
   });
 
+  it("rejects items with an empty identifier", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": { kind: "item", id: { namespace: "minecraft", id: "" } },
+      "crafting.result": createItem("minecraft:stick"),
+    });
+
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
+      valid: false,
+      errors: ["Recipe contains an item with an invalid identifier"],
+    });
+  });
+
+  it("rejects items whose identifier contains whitespace", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": { kind: "item", id: { namespace: "minecraft", id: "oak log" } },
+      "crafting.result": createItem("minecraft:stick"),
+    });
+
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
+      valid: false,
+      errors: ["Recipe contains an item with an invalid identifier"],
+    });
+  });
+
+  it("accepts custom (non-minecraft) namespaced items", () => {
+    const recipe = createRecipe(RecipeType.Crafting, {
+      "crafting.1": createItem("mymod:copper_ingot"),
+      "crafting.result": createItem("mymod:copper_block"),
+    });
+
+    expect(validate(recipe, MinecraftVersion.V121)).toEqual({
+      valid: true,
+      errors: [],
+    });
+  });
+
   it("ignores disabled 2x2 slots when validating crafting", () => {
     const recipe = createRecipe(
       RecipeType.Crafting,
