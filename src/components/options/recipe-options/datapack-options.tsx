@@ -63,8 +63,8 @@ const FileNameField = () => {
 
         {isManual ? (
           <IconActionButton
+            attached
             label="Use auto file name"
-            className="border-input -ml-px rounded-l-none"
             onClick={() => {
               setRecipeName("");
               setRecipeNameMode("auto");
@@ -74,8 +74,8 @@ const FileNameField = () => {
           </IconActionButton>
         ) : (
           <IconActionButton
+            attached
             label="Customize file name"
-            className="border-input -ml-px rounded-l-none"
             onClick={() => {
               setRecipeName(resolvedJavaName);
               setRecipeNameMode("manual");

@@ -111,8 +111,8 @@ const NameField = () => {
             />
 
             <IconActionButton
+              attached
               label="Use auto name"
-              className="border-input -ml-px rounded-l-none"
               onClick={() => {
                 setRecipeBedrockIdentifierName("");
                 setRecipeBedrockIdentifierMode("auto");
@@ -127,8 +127,8 @@ const NameField = () => {
             <ReadonlyValueRow value={bedrockName} badge="Auto" className="rounded-r-none" />
 
             <IconActionButton
+              attached
               label="Customize name"
-              className="border-input -ml-px rounded-l-none"
               onClick={() => {
                 setRecipeBedrockIdentifierName(bedrockName);
                 setRecipeBedrockIdentifierMode("manual");

@@ -500,6 +500,38 @@ describe("generate cooking", () => {
     });
   });
 
+  it("resolves auto (null) cooking time to the per-type default", () => {
+    const makeAutoRecipe = (recipeType: RecipeType) =>
+      makeRecipe({
+        ...recipeStateDefaults,
+        recipeType,
+        slots: {
+          "cooking.ingredient": {
+            type: "default_item",
+            id: { id: "iron_ore", namespace: "minecraft" },
+            displayName: "iron_ore",
+            texture: "",
+            _version: MinecraftVersion.V121,
+          },
+          "cooking.result": {
+            type: "default_item",
+            id: { id: "iron_ingot", namespace: "minecraft" },
+            displayName: "iron_ingot",
+            texture: "",
+            _version: MinecraftVersion.V121,
+          },
+        },
+        cooking: { time: null, experience: 0 },
+      });
+
+    expect(
+      buildJavaRecipe(makeAutoRecipe(RecipeType.Smelting), MinecraftVersion.V121),
+    ).toMatchObject({ cookingtime: 200 });
+    expect(
+      buildJavaRecipe(makeAutoRecipe(RecipeType.Blasting), MinecraftVersion.V121),
+    ).toMatchObject({ cookingtime: 100 });
+  });
+
   it("throws when a placed custom result ref cannot be resolved", () => {
     const recipeSlice = makeRecipe({
       recipeType: RecipeType.Smelting,

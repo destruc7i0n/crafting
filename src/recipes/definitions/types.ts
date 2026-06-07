@@ -34,7 +34,6 @@ export interface RecipeDefinitionNaming {
 
 export interface BaseRecipeDefinition {
   type: RecipeType;
-  family: "crafting" | "cooking" | "smithing" | "stonecutter" | "brewing";
   label: string;
   iconItemId: string;
   previewKind?: PreviewKind;

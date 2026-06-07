@@ -21,7 +21,8 @@ interface RecipeFields {
     twoByTwo: boolean;
   };
   cooking: {
-    time: number;
+    // null = auto
+    time: number | null;
     experience: number;
   };
   bedrock: {
@@ -80,7 +81,7 @@ export const recipeStateDefaults: Recipe = {
     twoByTwo: false,
   },
   cooking: {
-    time: 0,
+    time: null,
     experience: 0,
   },
   bedrock: {

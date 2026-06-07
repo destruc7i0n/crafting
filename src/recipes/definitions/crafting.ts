@@ -68,7 +68,6 @@ const getCraftingBedrockMeta = (recipe: Recipe): BedrockRecipeMeta => ({
 
 export const craftingDefinition: BedrockSupportedRecipeDefinition = {
   type: RecipeType.Crafting,
-  family: "crafting",
   label: "Crafting",
   iconItemId: "minecraft:crafting_table",
   previewKind: "crafting",
@@ -100,7 +99,6 @@ export const craftingDefinition: BedrockSupportedRecipeDefinition = {
 
 export const craftingTransmuteDefinition: JavaOnlyRecipeDefinition = {
   type: RecipeType.CraftingTransmute,
-  family: "crafting",
   label: "Crafting Transmute",
   iconItemId: "minecraft:crafting_table",
   availability: recipeTypeAvailability[RecipeType.CraftingTransmute],

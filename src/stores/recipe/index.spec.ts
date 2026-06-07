@@ -25,7 +25,7 @@ const createRecipe = (id: string): Recipe => ({
     twoByTwo: false,
   },
   cooking: {
-    time: 0,
+    time: null,
     experience: 0,
   },
   bedrock: {
@@ -345,6 +345,27 @@ describe("recipe store", () => {
       kind: "item",
       id: { namespace: "minecraft", id: "netherite_upgrade_smithing_template" },
     });
+  });
+
+  it("keeps cooking time as 'auto' across type switches and preserves explicit values", () => {
+    const store = useRecipeStore.getState();
+    const cookingTime = () => useRecipeStore.getState().recipes[0]?.cooking.time;
+
+    // fresh recipe is auto (null); switching types never mutates it
+    store.setRecipeType(RecipeType.Smelting);
+    expect(cookingTime()).toBeNull();
+    store.setRecipeType(RecipeType.Blasting);
+    expect(cookingTime()).toBeNull();
+
+    // explicit value is kept across any switch, even via a non-cooking type
+    store.setRecipeCookingTime(350);
+    store.setRecipeType(RecipeType.Crafting);
+    store.setRecipeType(RecipeType.Smoking);
+    expect(cookingTime()).toBe(350);
+
+    // reset goes back to auto
+    store.setRecipeCookingTime(null);
+    expect(cookingTime()).toBeNull();
   });
 
   it("updates counts only for item-like slot refs", () => {

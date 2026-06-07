@@ -38,7 +38,6 @@ const createCommonSmithingDefinition = ({
   isDisabled?: BaseRecipeDefinition["slots"]["isDisabled"];
 }): Omit<JavaSupportedRecipeDefinition, "availability"> => ({
   type,
-  family: "smithing",
   label,
   iconItemId: "minecraft:smithing_table",
   previewKind: "smithing",

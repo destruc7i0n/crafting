@@ -1,3 +1,4 @@
+import { resolveCookingTime } from "@/data/cooking";
 import { getFullId } from "@/data/models/identifier/utilities";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { SLOTS } from "@/recipes/slots";
@@ -83,16 +84,20 @@ export const buildBedrock = (state: CookingInput, slotContext: SlotContext): Bed
   } satisfies BedrockFurnaceBody;
 };
 
-export const extractCookingInput = (state: Recipe): CookingInput => ({
-  recipeType: state.recipeType as CookingInput["recipeType"],
-  ingredient: state.slots[SLOTS.cooking.ingredient],
-  result: state.slots[SLOTS.cooking.result],
-  time: state.cooking.time,
-  experience: state.cooking.experience,
-  group: state.group,
-  category: state.category || undefined,
-  showNotification: state.showNotification,
-});
+export const extractCookingInput = (state: Recipe): CookingInput => {
+  const recipeType = state.recipeType as CookingInput["recipeType"];
+
+  return {
+    recipeType,
+    ingredient: state.slots[SLOTS.cooking.ingredient],
+    result: state.slots[SLOTS.cooking.result],
+    time: resolveCookingTime(recipeType, state.cooking.time),
+    experience: state.cooking.experience,
+    group: state.group,
+    category: state.category || undefined,
+    showNotification: state.showNotification,
+  };
+};
 
 export const validateCooking = (state: Recipe, version?: MinecraftVersion): string[] => {
   const input = extractCookingInput(state);

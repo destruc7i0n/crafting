@@ -26,7 +26,7 @@ export interface PersistedRecipe {
     twoByTwo: boolean;
   };
   cooking: {
-    time: number;
+    time: number | null;
     experience: number;
   };
   bedrock: {

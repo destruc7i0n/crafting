@@ -1,3 +1,4 @@
+import { CookingRecipeType } from "@/data/cooking";
 import { RecipeType } from "@/data/types";
 import {
   buildBedrock as buildBedrockCooking,
@@ -28,14 +29,13 @@ const createCookingDefinition = ({
   availability,
   bedrockTags,
 }: {
-  type: RecipeType.Smelting | RecipeType.Blasting | RecipeType.CampfireCooking | RecipeType.Smoking;
+  type: CookingRecipeType;
   label: string;
   iconItemId: string;
   availability: RecipeTypeAvailability;
   bedrockTags: BedrockTag[];
 }): BedrockSupportedRecipeDefinition => ({
   type,
-  family: "cooking",
   label,
   iconItemId,
   previewKind: "furnace",

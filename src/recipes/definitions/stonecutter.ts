@@ -16,7 +16,6 @@ const BEDROCK_FORMAT_VERSION: BedrockFormatVersion = "1.20.10";
 
 export const stonecutterDefinition: BedrockSupportedRecipeDefinition = {
   type: RecipeType.Stonecutter,
-  family: "stonecutter",
   label: "Stonecutting",
   iconItemId: "minecraft:stonecutter",
   previewKind: "stonecutter",

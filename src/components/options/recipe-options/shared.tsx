@@ -125,6 +125,8 @@ export const InputControl = ({
 
 interface IconActionButtonProps extends ComponentProps<"button"> {
   label: string;
+  // attach flush to the right of a preceding input
+  attached?: boolean;
 }
 
 export const IconActionButton = ({
@@ -132,6 +134,7 @@ export const IconActionButton = ({
   className,
   children,
   type = "button",
+  attached,
   ...props
 }: IconActionButtonProps) => (
   <Disclosure content={label} placement="top">
@@ -140,6 +143,7 @@ export const IconActionButton = ({
       type={type}
       className={cn(
         "border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground active:bg-accent/80 inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+        attached && "border-input -ml-px rounded-l-none",
         className,
       )}
     >

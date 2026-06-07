@@ -22,7 +22,6 @@ const createBrewingDefinition = ({
   label: string;
 }): BedrockOnlyRecipeDefinition => ({
   type,
-  family: "brewing",
   label,
   iconItemId: "minecraft:brewing_stand",
   previewKind: "brewing",
