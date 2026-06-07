@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💡 Feature request / idea
+    url: https://github.com/destruc7i0n/crafting/discussions/new?category=ideas
+    about: Suggest and discuss new features or ideas here instead of opening an issue.
+  - name: 💬 Question / help
+    url: https://github.com/destruc7i0n/crafting/discussions/new?category=q-a
+    about: Have a question about using the generator? Ask in Discussions.

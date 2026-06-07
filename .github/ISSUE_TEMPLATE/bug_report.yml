@@ -1,0 +1,47 @@
+name: 🐛 Bug report
+description: Report incorrect output or a broken behavior in the generator.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a feature idea or a question? Please post in [Discussions](https://github.com/destruc7i0n/crafting/discussions) instead.
+  - type: textarea
+    id: description
+    attributes:
+      label: What's wrong?
+      description: What happened, and what did you expect? If the recipe doesn't work in-game, say what Minecraft does (e.g. recipe doesn't show up, datapack won't load).
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Version, recipe type
+        2. What you placed in the grid / slots
+        3. Exported as JSON / datapack / behavior pack
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: e.g. Java 1.21, Bedrock
+    validations:
+      required: true
+  - type: textarea
+    id: json
+    attributes:
+      label: Generated JSON
+      description: Paste what the generator produced, if relevant.
+      render: json
+    validations:
+      required: false
+  - type: input
+    id: environment
+    attributes:
+      label: Browser & OS
+      placeholder: e.g. Chrome on macOS, Safari on iOS
+    validations:
+      required: false
