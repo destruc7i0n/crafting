@@ -362,7 +362,10 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
       supportedRecipeTypes,
     ],
   );
-  const packState = buildSidebarPackState(minecraftVersion, invalidRecipesById.size);
+  const packState = useMemo(
+    () => buildSidebarPackState(minecraftVersion, invalidRecipesById.size),
+    [minecraftVersion, invalidRecipesById],
+  );
 
   const recipesById = useMemo(
     () => new Map(recipes.map((recipe) => [recipe.id, recipe] as const)),

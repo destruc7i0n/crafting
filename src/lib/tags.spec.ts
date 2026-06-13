@@ -80,6 +80,25 @@ describe("resolveTagValues", () => {
     expect(result).toEqual(["minecraft:stone"]);
   });
 
+  it("resolves the full union for every tag in a cycle", () => {
+    const tagA: Tag = {
+      uid: "a",
+      id: "crafting:tag_a",
+      values: [makeTagValue("crafting", "tag_b"), makeItemValue("iron_ingot")],
+    };
+    const tagB: Tag = {
+      uid: "b",
+      id: "crafting:tag_b",
+      values: [makeTagValue("crafting", "tag_a"), makeItemValue("stone")],
+    };
+
+    const resultA = resolveTagValues([makeTagValue("crafting", "tag_a")], [tagA, tagB], {});
+    const resultB = resolveTagValues([makeTagValue("crafting", "tag_b")], [tagA, tagB], {});
+
+    expect(resultA.sort()).toEqual(["minecraft:iron_ingot", "minecraft:stone"]);
+    expect(resultB.sort()).toEqual(["minecraft:iron_ingot", "minecraft:stone"]);
+  });
+
   it("returns empty for unknown tag references", () => {
     const values: TagValue[] = [makeTagValue("minecraft", "nonexistent")];
     const result = resolveTagValues(values, [], {});

@@ -40,39 +40,48 @@ export const assertUniqueTagId = (tags: Tag[], rawId: string, ignoreUid?: string
   }
 };
 
+type DfsResult = { values: string[]; complete: boolean };
+
 export const resolveTagGraph = (graph: TagGraph): TagGraph => {
   const memo = new Map<string, string[]>();
 
-  const dfs = (nodeId: string, visited = new Set<string>()): string[] => {
+  const dfs = (nodeId: string, visited = new Set<string>()): DfsResult => {
     const cachedValues = memo.get(nodeId);
     if (cachedValues) {
-      return cachedValues;
+      return { values: cachedValues, complete: true };
     }
 
     if (visited.has(nodeId)) {
-      return [];
+      return { values: [], complete: false };
     }
 
     const nextStack = new Set(visited);
     nextStack.add(nodeId);
 
+    let complete = true;
     const neighbors = graph[nodeId] ?? [];
     const flattenedValues = neighbors.flatMap((neighbor) => {
       if (!neighbor.startsWith("#")) {
         return [neighbor];
       }
 
-      return dfs(fromTagRef(neighbor), nextStack);
+      const result = dfs(fromTagRef(neighbor), nextStack);
+      complete &&= result.complete;
+      return result.values;
     });
 
     const uniqueValues = [...new Set(flattenedValues)];
-    memo.set(nodeId, uniqueValues);
-    return uniqueValues;
+    // Results computed while a cycle excluded part of the graph are partial;
+    // caching them would poison later lookups of the same node
+    if (complete) {
+      memo.set(nodeId, uniqueValues);
+    }
+    return { values: uniqueValues, complete };
   };
 
   const sortedNodeIds = Object.keys(graph).sort((left, right) => left.localeCompare(right));
 
-  return Object.fromEntries(sortedNodeIds.map((nodeId) => [nodeId, dfs(nodeId)]));
+  return Object.fromEntries(sortedNodeIds.map((nodeId) => [nodeId, dfs(nodeId).values]));
 };
 
 export const createEmptyTag = (existingTags: Tag[]): Tag => {

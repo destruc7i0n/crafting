@@ -82,5 +82,7 @@ export const downloadBlob = (blob: Blob, fileName: string) => {
   link.download = fileName;
   link.click();
 
-  URL.revokeObjectURL(url);
+  // Revoking synchronously races the browser's async fetch of the blob URL
+  // and breaks downloads on Safari/iOS.
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 };

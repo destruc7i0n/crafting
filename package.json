@@ -1,7 +1,7 @@
 {
   "name": "crafting",
   "version": "2.0.0",
-  "private": false,
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite dev",
@@ -15,7 +15,7 @@
     "format:fix": "oxfmt .",
     "preview": "vite preview",
     "test": "vitest run",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit && tsc -p scripts --noEmit",
     "prepare": "husky"
   },
   "dependencies": {

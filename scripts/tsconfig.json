@@ -5,6 +5,9 @@
     "moduleResolution": "bundler",
     "types": ["@types/bun"],
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "isolatedModules": true,
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -13,5 +16,5 @@
       "@/*": ["../src/*"]
     }
   },
-  "include": ["./**/*.ts", "../src/**/*.ts"]
+  "include": ["./**/*.ts"]
 }
