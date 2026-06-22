@@ -12,6 +12,7 @@ type Assert<T extends true> = T;
 type IsExact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
 
 export const javaMinecraftVersions = [
+  MinecraftVersion.V262,
   MinecraftVersion.V261,
   MinecraftVersion.V12111,
   MinecraftVersion.V1219,

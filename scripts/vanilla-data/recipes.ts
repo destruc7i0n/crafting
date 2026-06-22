@@ -7,16 +7,14 @@ import { getJavaPackMetadata } from "@/versioning";
 
 import type {
   GeneratedRecipeCatalog,
+  GeneratedRecipeCatalogEntry,
   GeneratedRecipeCatalogManifest,
 } from "@/recipes/catalog/types";
 
-import { loadItemGroupOrder } from "./item-group-order";
 import { exportMcmetaTree } from "./mcmeta-repo";
 import { buildRecipeCatalogEntry } from "./recipe-handlers";
-import { compareRecipeCatalogEntries } from "./recipe-order";
 
-import type { ItemGroupOrder } from "./item-group-order";
-import type { RecipeCatalogSortEntry } from "./recipe-order";
+type RecipeCatalogSortEntry = { id: string; entry: GeneratedRecipeCatalogEntry };
 
 const repoRoot = path.resolve(import.meta.dirname, "../..");
 const outputDir = path.join(repoRoot, "src/data/generated/vanilla-recipes");
@@ -34,8 +32,6 @@ export async function generateJavaRecipeCatalogs(gitDir: string): Promise<void> 
     `Starting Java recipe catalog generation for ${recipeCatalogVersions.length} versions`,
   );
 
-  const itemGroupOrder = await loadItemGroupOrder();
-
   await prepareOutputDir();
 
   for (const [index, version] of recipeCatalogVersions.entries()) {
@@ -43,7 +39,7 @@ export async function generateJavaRecipeCatalogs(gitDir: string): Promise<void> 
       `Generating Java recipe catalog for ${version} (${index + 1}/${recipeCatalogVersions.length})`,
     );
 
-    await generateJavaRecipeCatalog(gitDir, version, itemGroupOrder);
+    await generateJavaRecipeCatalog(gitDir, version);
   }
 
   await writeRecipeCatalogManifest();
@@ -65,7 +61,6 @@ async function prepareOutputDir(): Promise<void> {
 async function generateJavaRecipeCatalog(
   gitDir: string,
   version: Exclude<MinecraftVersion, MinecraftVersion.Bedrock>,
-  itemGroupOrder: ItemGroupOrder,
 ): Promise<void> {
   const metadata = getJavaPackMetadata(version);
   const ref = `${version}-data-json`;
@@ -91,7 +86,7 @@ async function generateJavaRecipeCatalog(
 
     const catalog = recipes
       .filter((entry): entry is RecipeCatalogSortEntry => entry !== null)
-      .sort((a, b) => compareRecipeCatalogEntries(itemGroupOrder, a, b))
+      .sort((a, b) => a.id.localeCompare(b.id))
       .map(({ entry }) => entry) satisfies GeneratedRecipeCatalog;
 
     console.log(`Rendered ${catalog.length}/${files.length} recipes for ${version}`);

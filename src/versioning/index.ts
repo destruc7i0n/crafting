@@ -169,6 +169,7 @@ const minecraftVersionLabels = {
   [MinecraftVersion.V1219]: "Java 1.21.9",
   [MinecraftVersion.V12111]: "Java 1.21.11",
   [MinecraftVersion.V261]: "Java 26.1",
+  [MinecraftVersion.V262]: "Java 26.2",
 } as const satisfies Record<MinecraftVersion, string>;
 
 export const getMinecraftVersionLabel = (version: MinecraftVersion): string =>
@@ -257,6 +258,11 @@ export const javaPackMetadata = {
   },
   [MinecraftVersion.V261]: {
     packFormat: [101, 1],
+    recipeDir: "recipe",
+    tagDir: "tags/item",
+  },
+  [MinecraftVersion.V262]: {
+    packFormat: [107, 1],
     recipeDir: "recipe",
     tagDir: "tags/item",
   },
