@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: oven-sh/setup-bun@v2
       - uses: pnpm/action-setup@v6
         with:
           version: 11
@@ -21,8 +20,14 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm format
-      - run: pnpm type-check
-      - run: pnpm test
-      - run: pnpm build
+      - parallel:
+          - name: Lint
+            run: pnpm lint
+          - name: Format
+            run: pnpm format
+          - name: Type check
+            run: pnpm type-check
+          - name: Test
+            run: pnpm test
+          - name: Build
+            run: pnpm build
