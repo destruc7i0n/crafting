@@ -5,10 +5,6 @@ import texturePackageJson from "minecraft-textures/package.json";
 import { normalizePath } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
-type StaticCopyPlugin = ReturnType<typeof viteStaticCopy>[number] & {
-  buildApp?: unknown;
-};
-
 const manifestIndexPath = fileURLToPath(
   import.meta.resolve("minecraft-textures/manifest/index.json"),
 );
@@ -24,7 +20,8 @@ function renameTextureAsset(_name: string, _extension: string, fullPath: string)
   } as const;
 }
 
-const [serveTextures] = viteStaticCopy({
+// serve textures in dev and copy them into the client build (dist/client/assets/textures/<version>)
+export const minecraftTextures = viteStaticCopy({
   targets: [
     {
       src: textureFiles,
@@ -33,27 +30,4 @@ const [serveTextures] = viteStaticCopy({
     },
   ],
   environment: "client",
-}) as StaticCopyPlugin[];
-
-const [, copyTextures] = viteStaticCopy({
-  targets: [
-    {
-      src: textureFiles,
-      dest: `../client/${textureAssetsDest}`,
-      rename: renameTextureAsset,
-    },
-  ],
-  environment: "client",
-  hook: "buildApp",
-}) as StaticCopyPlugin[];
-
-const buildApp = copyTextures.buildApp;
-
-if (typeof buildApp === "function") {
-  copyTextures.buildApp = {
-    order: "post",
-    handler: buildApp,
-  };
-}
-
-export const minecraftTextures = [serveTextures, copyTextures];
+});
