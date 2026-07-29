@@ -1,13 +1,11 @@
 import { useMemo } from "react";
 
+import { toByUidMap } from "@/lib/tags";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { SlotContext } from "@/stores/recipe/types";
 import { useTagStore } from "@/stores/tag";
 
 import { useResourcesForVersion } from "./use-resources-for-version";
-
-const toByUidMap = <T extends { uid: string }>(values: T[]): Record<string, T> =>
-  Object.fromEntries(values.map((value) => [value.uid, value]));
 
 export const useSlotContext = (): SlotContext => {
   const { resources, version } = useResourcesForVersion();

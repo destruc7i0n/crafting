@@ -1,3 +1,4 @@
+import { getCustomTagIdentifier } from "@/lib/tags";
 import { RecipeSlot } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { useRecipeStore } from "@/stores/recipe";
@@ -12,6 +13,13 @@ export const deleteCustomItemAndClearRecipeRefs = (uid: string) => {
 };
 
 export const deleteTagAndClearRecipeRefs = (uid: string) => {
+  const tag = useTagStore.getState().tags.find((currentTag) => currentTag.uid === uid);
+
+  // other tags keep pointing at the id, as they did before refs were uid-based
+  if (tag) {
+    useTagStore.getState().materializeCustomTagValues(uid, getCustomTagIdentifier(tag));
+  }
+
   useTagStore.getState().removeTag(uid);
   useRecipeStore
     .getState()

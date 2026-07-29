@@ -181,7 +181,7 @@ export const getSlotDisplay = (
 
       const identifier = getCustomTagIdentifier(tag);
       const rawId = getRawId(identifier);
-      const previewValues = resolveTagValues(tag.values, ctx.allTags, ctx.vanillaTags);
+      const previewValues = resolveTagValues(tag.values, ctx);
 
       return {
         label: getTagLabel(rawId),

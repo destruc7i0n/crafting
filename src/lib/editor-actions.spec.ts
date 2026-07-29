@@ -150,6 +150,52 @@ describe("editor actions", () => {
     expect(useRecipeStore.getState().recipes[1]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
   });
 
+  it("materializes uid refs to a deleted tag into its identifier", () => {
+    useTagStore.setState((state) => ({
+      ...state,
+      tags: [
+        { uid: "tag-1", id: "crafting:gems", values: [] },
+        { uid: "tag-2", id: "crafting:parent", values: [{ type: "custom_tag", uid: "tag-1" }] },
+      ],
+    }));
+
+    deleteTagAndClearRecipeRefs("tag-1");
+
+    // the reference survives as the id it used to resolve to, and still exports
+    expect(useTagStore.getState().tags).toEqual([
+      {
+        uid: "tag-2",
+        id: "crafting:parent",
+        values: [{ type: "tag", id: { namespace: "crafting", id: "gems" } }],
+      },
+    ]);
+  });
+
+  it("drops the materialized ref when it collides with one already in the tag", () => {
+    useTagStore.setState((state) => ({
+      ...state,
+      tags: [
+        { uid: "tag-1", id: "crafting:gems", values: [] },
+        {
+          uid: "tag-2",
+          id: "crafting:parent",
+          values: [
+            { type: "tag", id: { namespace: "crafting", id: "gems" } },
+            { type: "custom_tag", uid: "tag-1" },
+            { type: "item", id: { namespace: "minecraft", id: "stone" } },
+          ],
+        },
+      ],
+    }));
+
+    deleteTagAndClearRecipeRefs("tag-1");
+
+    expect(useTagStore.getState().tags[0]?.values).toEqual([
+      { type: "tag", id: { namespace: "crafting", id: "gems" } },
+      { type: "item", id: { namespace: "minecraft", id: "stone" } },
+    ]);
+  });
+
   it("clears interaction state when switching to a different recipe", () => {
     setIngredientInteractionState();
 
