@@ -164,7 +164,10 @@ export const getSlotDisplay = (
 
       return {
         label: getTagLabel(rawId),
-        texture: getFirstAvailableTexture(previewValues, ctx.resources?.itemsById),
+        texture: getFirstAvailableTexture(previewValues, {
+          itemsById: ctx.resources?.itemsById,
+          customItemsById: ctx.customItemsById,
+        }),
         previewValues,
       };
     }
@@ -185,7 +188,10 @@ export const getSlotDisplay = (
 
       return {
         label: getTagLabel(rawId),
-        texture: getFirstAvailableTexture(previewValues, ctx.resources?.itemsById),
+        texture: getFirstAvailableTexture(previewValues, {
+          itemsById: ctx.resources?.itemsById,
+          customItemsById: ctx.customItemsById,
+        }),
         previewValues,
       };
     }
@@ -196,6 +202,7 @@ export const createEmptySlotContext = (version: MinecraftVersion): SlotContext =
   version,
   resources: undefined,
   customItemsByUid: {},
+  customItemsById: {},
   tagsByUid: {},
   allTags: [],
   vanillaTags: {},

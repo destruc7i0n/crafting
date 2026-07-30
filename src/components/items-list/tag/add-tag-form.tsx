@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import { ArrowLeftIcon } from "lucide-react";
 
-import { Item, TagItem, TagValue } from "@/data/models/types";
+import { CustomItem, Item, TagItem, TagValue } from "@/data/models/types";
 import { trackCustomTag } from "@/lib/analytics";
 import {
   isValidJavaNamespacedIdentifier,
@@ -11,6 +11,7 @@ import {
 import {
   getDuplicateTagIdErrorMessage,
   hasDuplicateTagId,
+  ItemLookup,
   TagContext,
   tagValueKey,
   toTagValue,
@@ -24,8 +25,9 @@ import { ValueList, ValueOption } from "./value-list";
 
 interface AddTagFormProps {
   onClose: () => void;
+  customItems: CustomItem[];
   items: Item[];
-  itemsById?: Record<string, Item>;
+  lookup?: ItemLookup;
   tagCtx: TagContext;
   vanillaTagItems: TagItem[];
   customTagItems: Record<string, TagItem>;
@@ -33,8 +35,9 @@ interface AddTagFormProps {
 
 export const AddTagForm = ({
   onClose,
+  customItems,
   items,
-  itemsById,
+  lookup,
   tagCtx,
   vanillaTagItems,
   customTagItems,
@@ -98,6 +101,7 @@ export const AddTagForm = ({
   );
 
   const filteredValues = useFilteredValueOptions({
+    customItems,
     items,
     vanillaTagItems,
     customTagItems: allCustomTagItems,
@@ -148,7 +152,7 @@ export const AddTagForm = ({
 
         <TagValueGrid
           values={draftValues}
-          itemsById={itemsById}
+          lookup={lookup}
           tagCtx={tagCtx}
           onClick={handleRemoveValue}
         />

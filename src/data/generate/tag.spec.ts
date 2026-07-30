@@ -2,7 +2,7 @@ import { TagContext } from "@/lib/tags";
 
 import { generateTag } from "./tag";
 
-const NO_REFS: TagContext = { tagsByUid: {}, allTags: [], vanillaTags: {} };
+const NO_REFS: TagContext = { customItemsByUid: {}, tagsByUid: {}, allTags: [], vanillaTags: {} };
 
 describe("generateTag", () => {
   it("maps mixed item and tag values into datapack tag output", () => {

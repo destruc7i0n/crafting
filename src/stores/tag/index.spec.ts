@@ -2,19 +2,21 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { generateTag } from "@/data/generate/tag";
 import { parseStringToMinecraftIdentifier } from "@/data/models/identifier/utilities";
-import { Tag, TagValue } from "@/data/models/types";
-import { RecipeType } from "@/data/types";
+import { CustomItem, Tag, TagValue } from "@/data/models/types";
+import { MinecraftVersion, RecipeType } from "@/data/types";
 import {
   getDuplicateTagIdErrorMessage,
   resolveTagValues,
   TagContext,
   toByUidMap,
+  toTagValue,
 } from "@/lib/tags";
 import { useRecipeStore } from "@/stores/recipe";
 
 import { useTagStore } from "./index";
 
 const ctx = (allTags: Tag[]): TagContext => ({
+  customItemsByUid: {},
   tagsByUid: toByUidMap(allTags),
   allTags,
   vanillaTags: {},
@@ -243,6 +245,34 @@ describe("tag store", () => {
     expect(tags[0]?.values).toEqual(valuesBefore);
     expect(resolveTagValues(tags[0]?.values ?? [], ctx(tags))).toEqual(["minecraft:diamond"]);
     expect(generateTag(tags[0]!, ctx(tags)).values).toEqual(["#crafting:renamed"]);
+  });
+
+  it("stores a custom item as a uid ref that follows its rename", () => {
+    const customItem: CustomItem = {
+      type: "custom_item",
+      uid: "ci-1",
+      id: { namespace: "mymod", id: "ruby" },
+      displayName: "Ruby",
+      texture: "ruby.png",
+      _version: MinecraftVersion.V121,
+    };
+
+    useTagStore.setState((state) => ({ ...state, tags: [createTag("tag-a", "crafting:gems")] }));
+    expect(useTagStore.getState().addValueToTag("tag-a", toTagValue(customItem))).toBe(true);
+
+    const stored = useTagStore.getState().tags[0]!;
+    expect(stored.values).toEqual([{ type: "custom_item", uid: "ci-1" }]);
+
+    const withRefs = (item: CustomItem): TagContext => ({
+      ...ctx([stored]),
+      customItemsByUid: { "ci-1": item },
+    });
+
+    expect(generateTag(stored, withRefs(customItem)).values).toEqual(["mymod:ruby"]);
+    // renaming the item changes the export with no stored value being rewritten
+    const renamed = { ...customItem, id: { namespace: "mymod", id: "red_gem" } };
+    expect(generateTag(stored, withRefs(renamed)).values).toEqual(["mymod:red_gem"]);
+    expect(useTagStore.getState().tags[0]?.values).toEqual([{ type: "custom_item", uid: "ci-1" }]);
   });
 
   it("keeps nested tag resolution working after renaming a referenced child tag", () => {

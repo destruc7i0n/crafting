@@ -11,6 +11,7 @@ import {
 } from "@/data/models/identifier/utilities";
 import { Item } from "@/data/models/types";
 import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
+import { useItemLookup } from "@/hooks/use-item-lookup";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { trackCustomTag } from "@/lib/analytics";
 import { deleteTagAndClearRecipeRefs } from "@/lib/editor-actions";
@@ -18,10 +19,12 @@ import {
   createTagItem,
   getCustomTagIdentifier,
   getTagLabel,
+  ItemLookup,
   resolveTagValues,
   TagContext,
   toByUidMap,
 } from "@/lib/tags";
+import { useCustomItemStore } from "@/stores/custom-item";
 import { useTagStore } from "@/stores/tag";
 import { supportsVanillaTagList } from "@/versioning";
 
@@ -60,16 +63,22 @@ export const TagsSection = ({
   const vanillaTags = resources?.vanillaTags ?? EMPTY_TAGS;
   const items = resources?.items ?? EMPTY_ITEMS;
   const itemsById = resources?.itemsById;
+  // vanilla tags can only contain vanilla ids, so they resolve against the vanilla map alone —
+  // keying them on the custom lookup would rebuild 200+ unvirtualized chips on any custom item edit
+  const vanillaLookup = useMemo<ItemLookup>(() => ({ itemsById }), [itemsById]);
   const tagsByUid = useMemo(() => toByUidMap(tags), [tags]);
   const showVanillaTagList = supportsVanillaTagList(version);
 
+  const customItems = useCustomItemStore((state) => state.customItems);
+  const lookup = useItemLookup();
   const tagCtx = useMemo<TagContext>(
     () => ({
+      customItemsByUid: toByUidMap(customItems),
       tagsByUid,
       allTags: tags,
       vanillaTags,
     }),
-    [tags, tagsByUid, vanillaTags],
+    [customItems, tags, tagsByUid, vanillaTags],
   );
 
   const customTagItems = useMemo(
@@ -86,18 +95,16 @@ export const TagsSection = ({
               displayName: getTagLabel(getRawId(identifier)),
               values: resolvedValues,
               version,
-              itemsById,
+              lookup,
               tagSource: "custom",
               uid: tag.uid,
             }),
           ];
         }),
       ),
-    [itemsById, tagCtx, tags, version],
+    [lookup, tagCtx, tags, version],
   );
 
-  // deliberately not keyed on tagCtx: vanilla tags can only ever contain vanilla ids, so rebuilding
-  // this list (200+ entries, rendered unvirtualized) when a custom item changes would be pure waste
   const vanillaTagItems = useMemo(
     () =>
       Object.entries(vanillaTags).map(([rawId, values]) =>
@@ -105,11 +112,11 @@ export const TagsSection = ({
           rawId,
           values,
           version,
-          itemsById,
+          lookup: vanillaLookup,
           tagSource: "vanilla",
         }),
       ),
-    [itemsById, vanillaTags, version],
+    [vanillaLookup, vanillaTags, version],
   );
 
   const filteredCustomTags = useFuzzySearch(tags, search, (tag) => [tag.id]);
@@ -151,7 +158,8 @@ export const TagsSection = ({
         <AddTagForm
           onClose={onCloseAddTagForm}
           items={items}
-          itemsById={itemsById}
+          customItems={customItems}
+          lookup={lookup}
           tagCtx={tagCtx}
           vanillaTagItems={vanillaTagItems}
           customTagItems={customTagItems}
@@ -212,7 +220,8 @@ export const TagsSection = ({
           key={expandedTag.uid} // resets TagEditor state when the selected tag changes
           tag={expandedTag}
           items={items}
-          itemsById={itemsById}
+          customItems={customItems}
+          lookup={lookup}
           tagCtx={tagCtx}
           vanillaTagItems={vanillaTagItems}
           customTagItems={customTagItems}

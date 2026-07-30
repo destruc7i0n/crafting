@@ -4,7 +4,7 @@ import {
   identifierUniqueKey,
   parseStringToMinecraftIdentifier,
 } from "@/data/models/identifier/utilities";
-import { IngredientItem, Item, Tag, TagItem, TagValue } from "@/data/models/types";
+import { CustomItem, IngredientItem, Item, Tag, TagItem, TagValue } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { generateUid } from "@/lib/utils";
 
@@ -30,6 +30,7 @@ export type TagGraph = Record<string, string[]>;
  * directly.
  */
 export interface TagContext {
+  customItemsByUid: Record<string, CustomItem>;
   tagsByUid: Record<string, Tag>;
   allTags: Tag[];
   vanillaTags: Record<string, string[]>;
@@ -37,6 +38,27 @@ export interface TagContext {
 
 export const toByUidMap = <T extends { uid: string }>(values: T[]): Record<string, T> =>
   Object.fromEntries(values.map((value) => [value.uid, value]));
+
+/**
+ * Resolves a resolved item id to the entity that owns it, for display. Vanilla and custom items stay
+ * in separate maps rather than merged: `itemsById` holds ~1500 entries and callers resolve per recipe
+ * slot, so copying it would be wasteful.
+ *
+ * Distinct from `TagContext`, which resolves *references*: this is keyed by identifier, that by uid.
+ */
+export interface ItemLookup {
+  itemsById?: Record<string, Item>;
+  customItemsById?: Record<string, CustomItem>;
+}
+
+// vanilla wins on a shadowed id: a custom item named minecraft:stone exports as vanilla stone
+export const lookupItem = (
+  lookup: ItemLookup | undefined,
+  key: string,
+): Item | CustomItem | undefined => lookup?.itemsById?.[key] ?? lookup?.customItemsById?.[key];
+
+export const buildCustomItemsById = (customItems: CustomItem[]): Record<string, CustomItem> =>
+  Object.fromEntries(customItems.map((item) => [identifierUniqueKey(item.id), item]));
 
 export const hasDuplicateTagId = (tags: Tag[], rawId: string, ignoreUid?: string) => {
   const nextKey = identifierUniqueKey(parseStringToMinecraftIdentifier(rawId));
@@ -125,6 +147,10 @@ const tagValueRawId = (value: TagValue, ctx: TagContext): string | undefined => 
     case "item":
     case "tag":
       return getRawId(value.id);
+    case "custom_item": {
+      const item = ctx.customItemsByUid[value.uid];
+      return item && getRawId(item.id);
+    }
     case "custom_tag": {
       const tag = ctx.tagsByUid[value.uid];
       return tag && getRawId(getCustomTagIdentifier(tag));
@@ -140,7 +166,7 @@ const isTagRefValue = (value: TagValue) => value.type === "tag" || value.type ==
  * across renames of the entity they point at.
  */
 export const tagValueKey = (value: TagValue): string =>
-  value.type === "custom_tag"
+  value.type === "custom_item" || value.type === "custom_tag"
     ? `${value.type}:${value.uid}`
     : `${value.type}:${getRawId(value.id)}`;
 
@@ -173,6 +199,10 @@ const tagValueLookupKeys = (value: TagValue, resolved: TagGraph, ctx: TagContext
  * become uid refs, everything else keeps its identifier.
  */
 export const toTagValue = (item: IngredientItem): TagValue => {
+  if (item.type === "custom_item") {
+    return { type: "custom_item", uid: item.uid };
+  }
+
   if (item.type === "tag_item") {
     return item.tagSource === "custom" && item.uid
       ? { type: "custom_tag", uid: item.uid }
@@ -208,7 +238,7 @@ export const upgradeLegacyTagRefs = (tags: Tag[]): Tag[] => {
 
 /** Strips any data value, so stored tag values satisfy the invariant above by construction. */
 export const normalizeTagValue = (value: TagValue): TagValue =>
-  value.type === "custom_tag"
+  value.type === "custom_item" || value.type === "custom_tag"
     ? value
     : { type: value.type, id: { namespace: value.id.namespace, id: value.id.id } };
 
@@ -239,14 +269,14 @@ export const resolveTagValues = (values: TagValue[], ctx: TagContext): string[] 
 
 export const getFirstAvailableTexture = (
   valueIds: string[],
-  itemsById: Record<string, Item> | undefined,
+  lookup: ItemLookup | undefined,
 ): string => {
-  if (!itemsById) {
+  if (!lookup) {
     return NoTextureTexture;
   }
 
   for (const valueId of valueIds) {
-    const item = itemsById[valueId];
+    const item = lookupItem(lookup, valueId);
     if (item?.texture) {
       return item.texture;
     }
@@ -260,7 +290,7 @@ type CreateTagItemInput = {
   displayName?: string;
   values: string[];
   version: MinecraftVersion;
-  itemsById?: Record<string, Item>;
+  lookup?: ItemLookup;
   tagSource: TagItem["tagSource"];
   uid?: string;
 };
@@ -270,7 +300,7 @@ export const createTagItem = ({
   displayName,
   values,
   version,
-  itemsById,
+  lookup,
   tagSource,
   uid,
 }: CreateTagItemInput): TagItem => {
@@ -280,7 +310,7 @@ export const createTagItem = ({
     type: "tag_item",
     id: parseStringToMinecraftIdentifier(rawId),
     displayName: displayName ?? getTagLabel(rawId),
-    texture: getFirstAvailableTexture(uniqueValues, itemsById),
+    texture: getFirstAvailableTexture(uniqueValues, lookup),
     _version: version,
     tagSource,
     uid,

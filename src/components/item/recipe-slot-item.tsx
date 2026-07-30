@@ -10,6 +10,7 @@ import { NoTextureTexture } from "@/data/constants";
 import { getFullId, getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { MinecraftIdentifier } from "@/data/models/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
+import { useItemLookup } from "@/hooks/use-item-lookup";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import {
   getCustomTagIdentifier,
@@ -22,7 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 import { RecipeSlot } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
-import { selectCustomItemByUid } from "@/stores/custom-item/selectors";
+import { selectCustomItemByUid, selectCustomItems } from "@/stores/custom-item/selectors";
 import { isTagSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";
 import { useTagStore } from "@/stores/tag";
@@ -194,7 +195,8 @@ const VanillaRecipeSlotItem = memo(({ value, ...props }: VanillaRecipeSlotItemPr
       {...props}
       value={value}
       label={getTagLabel(rawId)}
-      texture={getFirstAvailableTexture(previewValues, resources?.itemsById)}
+      // a vanilla tag can only contain vanilla ids
+      texture={getFirstAvailableTexture(previewValues, { itemsById: resources?.itemsById })}
       identifier={value.id}
       previewValues={previewValues}
     />
@@ -222,14 +224,17 @@ CustomItemRecipeSlotItem.displayName = "CustomItemRecipeSlotItem";
 const CustomTagRecipeSlotItem = memo(({ value, ...props }: CustomTagRecipeSlotItemProps) => {
   const { resources } = useResourcesForVersion();
   const tags = useTagStore((state) => state.tags);
+  const customItems = useCustomItemStore(selectCustomItems);
+  const lookup = useItemLookup();
   const tag = useTagStore(selectTagByUid(value.uid));
   const tagCtx = useMemo<TagContext>(
     () => ({
+      customItemsByUid: toByUidMap(customItems),
       tagsByUid: toByUidMap(tags),
       allTags: tags,
       vanillaTags: resources?.vanillaTags ?? {},
     }),
-    [resources, tags],
+    [customItems, resources, tags],
   );
 
   if (!tag) {
@@ -253,7 +258,7 @@ const CustomTagRecipeSlotItem = memo(({ value, ...props }: CustomTagRecipeSlotIt
       {...props}
       value={value}
       label={getTagLabel(rawId)}
-      texture={getFirstAvailableTexture(previewValues, resources?.itemsById)}
+      texture={getFirstAvailableTexture(previewValues, lookup)}
       identifier={identifier}
       previewValues={previewValues}
     />

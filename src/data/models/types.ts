@@ -46,4 +46,5 @@ export interface Tag {
 export type TagValue =
   | { type: "item"; id: MinecraftIdentifier }
   | { type: "tag"; id: MinecraftIdentifier }
+  | { type: "custom_item"; uid: string }
   | { type: "custom_tag"; uid: string };
