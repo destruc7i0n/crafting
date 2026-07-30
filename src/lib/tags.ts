@@ -24,6 +24,20 @@ export const getDuplicateTagIdErrorMessage = (rawId: string) => `Duplicate tag i
 
 export type TagGraph = Record<string, string[]>;
 
+/**
+ * Everything needed to resolve a tag value: the vanilla tag graph plus the user-authored entities a
+ * value may point at. `SlotContext` satisfies this structurally, so anything holding one passes it
+ * directly.
+ */
+export interface TagContext {
+  tagsByUid: Record<string, Tag>;
+  allTags: Tag[];
+  vanillaTags: Record<string, string[]>;
+}
+
+export const toByUidMap = <T extends { uid: string }>(values: T[]): Record<string, T> =>
+  Object.fromEntries(values.map((value) => [value.uid, value]));
+
 export const hasDuplicateTagId = (tags: Tag[], rawId: string, ignoreUid?: string) => {
   const nextKey = identifierUniqueKey(parseStringToMinecraftIdentifier(rawId));
 
@@ -98,17 +112,113 @@ export const createEmptyTag = (existingTags: Tag[]): Tag => {
   };
 };
 
-export const resolveTagValues = (
-  values: TagValue[],
-  customTags: Tag[],
-  vanillaTags: Record<string, string[]>,
-): string[] => {
-  const graph: TagGraph = { ...vanillaTags };
-  for (const tag of customTags) {
+/**
+ * A tag value is identified by its raw id, never including a data value.
+ *
+ * Nothing reachable can supply one: `data` is only ever set for Bedrock items (`resolveItemId`), and
+ * `supportsCustomTags` excludes Bedrock. Ignoring it on read and stripping it on write is therefore
+ * defence against hand-edited storage, and keeps in-app resolution in agreement with the exported
+ * JSON, which can only emit `namespace:id` — `data` in a 1.13+ tag file is invalid.
+ */
+const tagValueRawId = (value: TagValue, ctx: TagContext): string | undefined => {
+  switch (value.type) {
+    case "item":
+    case "tag":
+      return getRawId(value.id);
+    case "custom_tag": {
+      const tag = ctx.tagsByUid[value.uid];
+      return tag && getRawId(getCustomTagIdentifier(tag));
+    }
+  }
+};
+
+const isTagRefValue = (value: TagValue) => value.type === "tag" || value.type === "custom_tag";
+
+/**
+ * Identity of a tag value, namespaced by its discriminant. An item and a tag can legitimately share
+ * a raw id, so a bare identifier is not a usable key. uid arms key on the uid, which is stable
+ * across renames of the entity they point at.
+ */
+export const tagValueKey = (value: TagValue): string =>
+  value.type === "custom_tag"
+    ? `${value.type}:${value.uid}`
+    : `${value.type}:${getRawId(value.id)}`;
+
+/**
+ * The string this value contributes to a datapack tag file, and — because both sides agree on the
+ * raw id — the same string it contributes as a node in the tag graph. `undefined` when a uid points
+ * at nothing; callers drop it rather than emitting a broken ref.
+ */
+export const tagValueExportRef = (value: TagValue, ctx: TagContext): string | undefined => {
+  const rawId = tagValueRawId(value, ctx);
+  if (rawId === undefined) {
+    return undefined;
+  }
+
+  return isTagRefValue(value) ? toTagRef(rawId) : rawId;
+};
+
+/** The resolved item ids this value stands for, given an already-resolved tag graph. */
+const tagValueLookupKeys = (value: TagValue, resolved: TagGraph, ctx: TagContext): string[] => {
+  const rawId = tagValueRawId(value, ctx);
+  if (rawId === undefined) {
+    return [];
+  }
+
+  return isTagRefValue(value) ? (resolved[rawId] ?? []) : [rawId];
+};
+
+/**
+ * Builds the tag value for a picked ingredient. Mirrors `toRecipeSlotValue`: user-authored entities
+ * become uid refs, everything else keeps its identifier.
+ */
+export const toTagValue = (item: IngredientItem): TagValue => {
+  if (item.type === "tag_item") {
+    return item.tagSource === "custom" && item.uid
+      ? { type: "custom_tag", uid: item.uid }
+      : { type: "tag", id: { ...item.id } };
+  }
+
+  return { type: "item", id: { ...item.id } };
+};
+
+/**
+ * Re-points tag references stored by identifier at the referenced tag's uid.
+ *
+ * Unconditional, because `resolveTagValues` builds the graph from vanilla tags and *then* overwrites
+ * with custom ones — a custom tag already shadows a same-named vanilla tag, so this reproduces the
+ * previous resolution exactly. Item values are untouched: an item that happens to share a tag's id
+ * is still an item.
+ */
+export const upgradeLegacyTagRefs = (tags: Tag[]): Tag[] => {
+  const uidByRawId = new Map(tags.map((tag) => [getRawId(getCustomTagIdentifier(tag)), tag.uid]));
+
+  return tags.map((tag) => ({
+    ...tag,
+    values: tag.values.map((value): TagValue => {
+      if (value.type !== "tag") {
+        return value;
+      }
+
+      const uid = uidByRawId.get(getRawId(value.id));
+      return uid ? { type: "custom_tag", uid } : value;
+    }),
+  }));
+};
+
+/** Strips any data value, so stored tag values satisfy the invariant above by construction. */
+export const normalizeTagValue = (value: TagValue): TagValue =>
+  value.type === "custom_tag"
+    ? value
+    : { type: value.type, id: { namespace: value.id.namespace, id: value.id.id } };
+
+export const resolveTagValues = (values: TagValue[], ctx: TagContext): string[] => {
+  const graph: TagGraph = { ...ctx.vanillaTags };
+  for (const tag of ctx.allTags) {
     const rawId = getRawId(getCustomTagIdentifier(tag));
-    graph[rawId] = tag.values.map((v) =>
-      v.type === "tag" ? toTagRef(getRawId(v.id)) : identifierUniqueKey(v.id),
-    );
+    graph[rawId] = tag.values
+      .map((value) => tagValueExportRef(value, ctx))
+      .filter((ref): ref is string => ref !== undefined);
   }
 
   const resolved = resolveTagGraph(graph);
@@ -116,10 +226,7 @@ export const resolveTagValues = (
   const results: string[] = [];
   const seen = new Set<string>();
   for (const value of values) {
-    const items =
-      value.type === "item"
-        ? [identifierUniqueKey(value.id)]
-        : (resolved[getRawId(value.id)] ?? []);
+    const items = tagValueLookupKeys(value, resolved, ctx);
     for (const item of items) {
       if (!seen.has(item)) {
         seen.add(item);

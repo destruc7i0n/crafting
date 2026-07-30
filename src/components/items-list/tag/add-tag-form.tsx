@@ -2,14 +2,19 @@ import { useMemo, useState } from "react";
 
 import { ArrowLeftIcon } from "lucide-react";
 
-import { identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, TagItem, TagValue } from "@/data/models/types";
 import { trackCustomTag } from "@/lib/analytics";
 import {
   isValidJavaNamespacedIdentifier,
   javaNamespacedIdentifierHint,
 } from "@/lib/minecraft-identifier";
-import { getDuplicateTagIdErrorMessage, hasDuplicateTagId } from "@/lib/tags";
+import {
+  getDuplicateTagIdErrorMessage,
+  hasDuplicateTagId,
+  TagContext,
+  tagValueKey,
+  toTagValue,
+} from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
@@ -21,18 +26,18 @@ interface AddTagFormProps {
   onClose: () => void;
   items: Item[];
   itemsById?: Record<string, Item>;
+  tagCtx: TagContext;
   vanillaTagItems: TagItem[];
   customTagItems: Record<string, TagItem>;
-  vanillaTags: Record<string, string[]>;
 }
 
 export const AddTagForm = ({
   onClose,
   items,
   itemsById,
+  tagCtx,
   vanillaTagItems,
   customTagItems,
-  vanillaTags,
 }: AddTagFormProps) => {
   const tags = useTagStore((state) => state.tags);
   const createTag = useTagStore((state) => state.createTag);
@@ -55,15 +60,11 @@ export const AddTagForm = ({
   const canCreate = hasValidTagId && duplicateError === undefined && draftValues.length > 0;
 
   const handleAddValue = (option: ValueOption) => {
-    const value: TagValue =
-      option.kind === "item"
-        ? { type: "item", id: option.item.id }
-        : { type: "tag", id: option.tagItem.id };
-
     setDraftValues((prev) => {
-      if (prev.some((v) => identifierUniqueKey(v.id) === identifierUniqueKey(value.id)))
-        return prev;
-      return [...prev, value];
+      const nextValue = toTagValue(option.kind === "item" ? option.item : option.tagItem);
+      const nextKey = tagValueKey(nextValue);
+      if (prev.some((v) => tagValueKey(v) === nextKey)) return prev;
+      return [...prev, nextValue];
     });
   };
 
@@ -89,10 +90,7 @@ export const AddTagForm = ({
     }
   };
 
-  const existingValueIds = useMemo(
-    () => new Set(draftValues.map((v) => identifierUniqueKey(v.id))),
-    [draftValues],
-  );
+  const existingValueIds = useMemo(() => new Set(draftValues.map(tagValueKey)), [draftValues]);
 
   const allCustomTagItems = useMemo(
     () => tags.map((t) => customTagItems[t.uid]).filter(Boolean),
@@ -150,9 +148,8 @@ export const AddTagForm = ({
 
         <TagValueGrid
           values={draftValues}
-          tags={tags}
-          vanillaTags={vanillaTags}
           itemsById={itemsById}
+          tagCtx={tagCtx}
           onClick={handleRemoveValue}
         />
       </div>

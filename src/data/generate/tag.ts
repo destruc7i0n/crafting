@@ -1,5 +1,4 @@
-import { getRawId } from "@/data/models/identifier/utilities";
-import { toTagRef } from "@/lib/tags";
+import { TagContext, tagValueExportRef } from "@/lib/tags";
 
 import { Tag } from "../models/types";
 
@@ -8,11 +7,11 @@ interface OutputTag {
   values: string[];
 }
 
-export function generateTag(tag: Tag): OutputTag {
+export function generateTag(tag: Tag, ctx: TagContext): OutputTag {
   return {
     replace: false,
-    values: tag.values.map((value) =>
-      value.type === "tag" ? toTagRef(getRawId(value.id)) : getRawId(value.id),
-    ),
+    values: tag.values
+      .map((value) => tagValueExportRef(value, ctx))
+      .filter((ref): ref is string => ref !== undefined),
   };
 }

@@ -1,10 +1,10 @@
 import { strToU8, zipSync } from "fflate";
 
+import { TagContext } from "@/lib/tags";
 import { getJavaPackMetadata } from "@/versioning";
 
 import { generateTag } from "./generate/tag";
 import { parseStringToMinecraftIdentifier } from "./models/identifier/utilities";
-import { Tag } from "./models/types";
 import { MinecraftVersion } from "./types";
 
 export interface DatapackRecipeFile {
@@ -26,14 +26,14 @@ const getPackMetadata = (version: MinecraftVersion): PackMetadata => {
   return { pack_format: packFormat };
 };
 
-const generateTagFiles = (tags: Tag[]) => {
-  return tags.map((tag) => {
+const generateTagFiles = (ctx: TagContext) => {
+  return ctx.allTags.map((tag) => {
     const identifier = parseStringToMinecraftIdentifier(tag.id);
 
     return {
       namespace: identifier.namespace,
       id: identifier.id,
-      data: generateTag(tag),
+      data: generateTag(tag, ctx),
     };
   });
 };
@@ -41,7 +41,7 @@ const generateTagFiles = (tags: Tag[]) => {
 export const createDatapackBlob = (
   version: MinecraftVersion,
   recipeFiles: DatapackRecipeFile[],
-  tags: Tag[],
+  ctx: TagContext,
 ): Blob => {
   const files: Record<string, Uint8Array> = {};
   const { recipeDir, tagDir } = getJavaPackMetadata(version);
@@ -65,7 +65,7 @@ export const createDatapackBlob = (
     );
   }
 
-  for (const tag of generateTagFiles(tags)) {
+  for (const tag of generateTagFiles(ctx)) {
     files[`data/${tag.namespace}/${tagDir}/${tag.id}.json`] = strToU8(
       JSON.stringify(tag.data, null, 2),
     );

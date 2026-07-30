@@ -14,7 +14,14 @@ import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import { trackCustomTag } from "@/lib/analytics";
 import { deleteTagAndClearRecipeRefs } from "@/lib/editor-actions";
-import { createTagItem, getCustomTagIdentifier, getTagLabel, resolveTagValues } from "@/lib/tags";
+import {
+  createTagItem,
+  getCustomTagIdentifier,
+  getTagLabel,
+  resolveTagValues,
+  TagContext,
+  toByUidMap,
+} from "@/lib/tags";
 import { useTagStore } from "@/stores/tag";
 import { supportsVanillaTagList } from "@/versioning";
 
@@ -53,15 +60,24 @@ export const TagsSection = ({
   const vanillaTags = resources?.vanillaTags ?? EMPTY_TAGS;
   const items = resources?.items ?? EMPTY_ITEMS;
   const itemsById = resources?.itemsById;
-  const tagsByUid = useMemo(() => Object.fromEntries(tags.map((tag) => [tag.uid, tag])), [tags]);
+  const tagsByUid = useMemo(() => toByUidMap(tags), [tags]);
   const showVanillaTagList = supportsVanillaTagList(version);
+
+  const tagCtx = useMemo<TagContext>(
+    () => ({
+      tagsByUid,
+      allTags: tags,
+      vanillaTags,
+    }),
+    [tags, tagsByUid, vanillaTags],
+  );
 
   const customTagItems = useMemo(
     () =>
       Object.fromEntries(
         tags.map((tag) => {
           const identifier = getCustomTagIdentifier(tag);
-          const resolvedValues = resolveTagValues(tag.values, tags, vanillaTags);
+          const resolvedValues = resolveTagValues(tag.values, tagCtx);
 
           return [
             tag.uid,
@@ -77,9 +93,11 @@ export const TagsSection = ({
           ];
         }),
       ),
-    [itemsById, tags, vanillaTags, version],
+    [itemsById, tagCtx, tags, version],
   );
 
+  // deliberately not keyed on tagCtx: vanilla tags can only ever contain vanilla ids, so rebuilding
+  // this list (200+ entries, rendered unvirtualized) when a custom item changes would be pure waste
   const vanillaTagItems = useMemo(
     () =>
       Object.entries(vanillaTags).map(([rawId, values]) =>
@@ -120,7 +138,7 @@ export const TagsSection = ({
     const tag = tagsByUid[tagUid];
     if (!tag) return;
 
-    const json = generateTag(tag);
+    const json = generateTag(tag, tagCtx);
     const blob = new Blob([JSON.stringify(json, null, 2)], {
       type: "application/json",
     });
@@ -134,9 +152,9 @@ export const TagsSection = ({
           onClose={onCloseAddTagForm}
           items={items}
           itemsById={itemsById}
+          tagCtx={tagCtx}
           vanillaTagItems={vanillaTagItems}
           customTagItems={customTagItems}
-          vanillaTags={vanillaTags}
         />
       </div>
     );
@@ -195,9 +213,9 @@ export const TagsSection = ({
           tag={expandedTag}
           items={items}
           itemsById={itemsById}
+          tagCtx={tagCtx}
           vanillaTagItems={vanillaTagItems}
           customTagItems={customTagItems}
-          vanillaTags={vanillaTags}
         />
       </div>
     );
