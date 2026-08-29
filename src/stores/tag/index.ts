@@ -77,11 +77,8 @@ export const useTagStore = create<TagState & TagActions>()(
         });
       },
 
-      /**
-       * Converts refs to an entity that is about to be deleted into the plain identifier they used
-       * to resolve to, so a reference survives the deletion and still exports rather than silently
-       * dropping a value the user never touched.
-       */
+      // turns refs to a soon-to-be-deleted entity into the identifier they resolved to, so the
+      // reference survives instead of silently dropping a value the user never touched
       materializeCustomRefs: (kind, uid, identifier) => {
         const literalType = kind === "custom_tag" ? "tag" : "item";
         const matches = (value: TagValue) => value.type === kind && value.uid === uid;
@@ -98,7 +95,9 @@ export const useTagStore = create<TagState & TagActions>()(
             tag.values = tag.values
               .map(
                 (value): TagValue =>
-                  matches(value) ? { type: literalType, id: { ...identifier } } : value,
+                  matches(value)
+                    ? normalizeTagValue({ type: literalType, id: { ...identifier } })
+                    : value,
               )
               .filter((value) => {
                 const key = tagValueKey(value);

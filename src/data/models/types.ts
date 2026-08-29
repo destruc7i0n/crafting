@@ -38,11 +38,8 @@ export interface Tag {
   values: TagValue[];
 }
 
-/**
- * Vanilla entities are referenced by identifier because that is what a tag file contains and what
- * maps across versions and editions. User-authored entities are referenced by uid because their
- * identifier is mutable — the same split `RecipeSlotValue` makes.
- */
+// vanilla by identifier (what a tag file holds), user-authored by uid (their id is mutable)
+// the same split RecipeSlotValue makes
 export type TagValue =
   | { type: "item"; id: MinecraftIdentifier }
   | { type: "tag"; id: MinecraftIdentifier }

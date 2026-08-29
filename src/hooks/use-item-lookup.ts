@@ -5,10 +5,7 @@ import { useCustomItemStore } from "@/stores/custom-item";
 
 import { useResourcesForVersion } from "./use-resources-for-version";
 
-/**
- * Resolves item ids to either a vanilla or a custom item. Only the small custom item list is
- * mapped, so this stays cheap enough to call from per-slot components.
- */
+// only the small custom item list is mapped, so this is cheap enough to call per slot
 export const useItemLookup = (): ItemLookup => {
   const { resources } = useResourcesForVersion();
   const customItems = useCustomItemStore((state) => state.customItems);

@@ -6,10 +6,8 @@ import { useFuzzySearch } from "@/hooks/use-fuzzy-search";
 
 import { ValueOption } from "./value-list";
 
-/**
- * Single source of truth for what may be added to a custom tag. Kept pure and separate from the
- * hook so it can be tested — custom items were silently dropped from this list once already.
- */
+// single source of truth for what may be added to a tag; kept pure so it can be tested, after
+// custom items were silently dropped from this list once already
 export function buildTagValueOptions({
   customItems,
   items,

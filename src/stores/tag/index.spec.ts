@@ -295,4 +295,20 @@ describe("tag store", () => {
     expect(tags[1]?.values[0]).toEqual({ type: "custom_tag", uid: "tag-c" });
     expect(resolveTagValues(tags[0]?.values ?? [], ctx(tags))).toEqual(["minecraft:diamond"]);
   });
+
+  // every other write path normalizes; this one spreads the caller's identifier, so it must too
+  it("strips a data value when materializing a ref", () => {
+    useTagStore.setState((state) => ({
+      ...state,
+      tags: [createTag("tag-1", "crafting:gems", [{ type: "custom_item", uid: "ci-1" }])],
+    }));
+
+    useTagStore
+      .getState()
+      .materializeCustomRefs("custom_item", "ci-1", { namespace: "mymod", id: "ruby", data: 3 });
+
+    expect(useTagStore.getState().tags[0]?.values).toEqual([
+      { type: "item", id: { namespace: "mymod", id: "ruby" } },
+    ]);
+  });
 });

@@ -26,7 +26,7 @@ interface TagValueGridProps {
 type ValuePresentation = {
   label: string;
   description: string;
-  /** set for a value that shows a single fixed texture; otherwise the preview cycles itemIds */
+  // set for a value showing one fixed texture; otherwise the preview cycles itemIds
   texture?: string;
   itemIds: string[];
 };
@@ -90,6 +90,14 @@ const presentValue = (
             itemIds: [],
           };
     }
+    default:
+      // a value shape this build does not know; render it rather than crash the grid
+      return {
+        label: "Unknown value",
+        description: "This value is not supported in this version of the editor",
+        texture: NoTextureTexture,
+        itemIds: [],
+      };
   }
 };
 

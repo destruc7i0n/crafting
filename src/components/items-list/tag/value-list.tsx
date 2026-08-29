@@ -15,10 +15,7 @@ export type ValueOption =
   | { kind: "item"; item: Item | CustomItem }
   | { kind: "tag"; tagItem: TagItem; rawId: string };
 
-/**
- * Emits the same key space as `tagValueKey`, so an option can be matched against a tag's existing
- * values without either side reaching for a bare identifier.
- */
+// same key space as tagValueKey, so an option matches a tag's values without a bare id
 const valueOptionKey = (option: ValueOption): string =>
   tagValueKey(toTagValue(option.kind === "item" ? option.item : option.tagItem));
 

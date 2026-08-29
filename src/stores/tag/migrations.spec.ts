@@ -61,4 +61,50 @@ describe("migrateTagState", () => {
 
     expect(Math.max(...versions)).toBe(TAG_STORE_VERSION);
   });
+
+  // a throw here lands in zustand's rehydrate catch and hydrates the store empty, which the next
+  // edit then persists over the user's real tags
+  it("drops malformed tag entries instead of throwing", () => {
+    const migrated = migrateTagState(
+      {
+        tags: [
+          { uid: "tag-a", id: "crafting:a", values: null },
+          null,
+          { uid: "tag-b", id: "crafting:b" },
+          { uid: 7, id: "crafting:c", values: [] },
+          { uid: "tag-d", id: "crafting:d", values: [] },
+        ],
+      },
+      0,
+    );
+
+    expect(migrated.tags).toEqual([
+      { uid: "tag-a", id: "crafting:a", values: [] },
+      { uid: "tag-b", id: "crafting:b", values: [] },
+      { uid: "tag-d", id: "crafting:d", values: [] },
+    ]);
+  });
+
+  it("drops non-object values inside an otherwise valid tag", () => {
+    const migrated = migrateTagState(
+      {
+        tags: [
+          {
+            uid: "tag-a",
+            id: "crafting:a",
+            values: [
+              null,
+              "minecraft:stone",
+              { type: "item", id: { namespace: "minecraft", id: "stone" } },
+            ],
+          },
+        ],
+      },
+      0,
+    );
+
+    expect(migrated.tags[0]?.values).toEqual([
+      { type: "item", id: { namespace: "minecraft", id: "stone" } },
+    ]);
+  });
 });
