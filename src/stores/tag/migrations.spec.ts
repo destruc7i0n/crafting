@@ -107,4 +107,39 @@ describe("migrateTagState", () => {
       { type: "item", id: { namespace: "minecraft", id: "stone" } },
     ]);
   });
+
+  // the sanitizer exists to stop exactly this from throwing inside rehydrate
+  it("drops a known arm that is missing its payload", () => {
+    const migrated = migrateTagState(
+      {
+        tags: [
+          {
+            uid: "tag-a",
+            id: "crafting:a",
+            values: [
+              { type: "tag" },
+              { type: "item", id: { namespace: 1 } },
+              { type: "custom_tag" },
+              { type: "item", id: { namespace: "minecraft", id: "stone" } },
+            ],
+          },
+        ],
+      },
+      0,
+    );
+
+    expect(migrated.tags[0]?.values).toEqual([
+      { type: "item", id: { namespace: "minecraft", id: "stone" } },
+    ]);
+  });
+
+  // a newer build's arm must survive a downgrade rather than be silently discarded
+  it("keeps a value shape it does not recognise", () => {
+    const migrated = migrateTagState(
+      { tags: [{ uid: "tag-a", id: "crafting:a", values: [{ type: "future_thing", uid: "x" }] }] },
+      0,
+    );
+
+    expect(migrated.tags[0]?.values).toEqual([{ type: "future_thing", uid: "x" }]);
+  });
 });

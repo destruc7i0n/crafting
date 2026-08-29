@@ -21,8 +21,29 @@ export const tagMigrations: TagMigrations = {
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
 
-const toTagValues = (values: unknown[]): TagValue[] =>
-  values.filter((value): value is TagValue => isObject(value) && typeof value.type === "string");
+const isIdentifier = (value: unknown) =>
+  isObject(value) && typeof value.namespace === "string" && typeof value.id === "string";
+
+// known arms have to be well-formed or upgradeLegacyTagRefs throws on them; an arm this build does
+// not know is left alone rather than dropped, so rolling back a version does not lose values
+const isTagValue = (value: unknown): value is TagValue => {
+  if (!isObject(value) || typeof value.type !== "string") {
+    return false;
+  }
+
+  switch (value.type) {
+    case "item":
+    case "tag":
+      return isIdentifier(value.id);
+    case "custom_item":
+    case "custom_tag":
+      return typeof value.uid === "string";
+    default:
+      return true;
+  }
+};
+
+const toTagValues = (values: unknown[]): TagValue[] => values.filter(isTagValue);
 
 // one corrupt entry would otherwise throw inside rehydrate, and zustand's catch leaves the
 // store empty - which the user's next edit then persists over their real tags
