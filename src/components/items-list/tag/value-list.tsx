@@ -5,20 +5,17 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemPreview } from "@/components/item/item-preview";
 import { getFullId } from "@/data/models/identifier/utilities";
-import { Item, TagItem } from "@/data/models/types";
+import { CustomItem, Item, TagItem } from "@/data/models/types";
 import { getTagLabel, tagValueKey, toTagValue } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 
 import { Slot } from "../../slot/slot";
 
 export type ValueOption =
-  | { kind: "item"; item: Item }
+  | { kind: "item"; item: Item | CustomItem }
   | { kind: "tag"; tagItem: TagItem; rawId: string };
 
-/**
- * Emits the same key space as `tagValueKey`, so an option can be matched against a tag's existing
- * values without either side reaching for a bare identifier.
- */
+// same key space as tagValueKey, so an option matches a tag's values without a bare id
 const valueOptionKey = (option: ValueOption): string =>
   tagValueKey(toTagValue(option.kind === "item" ? option.item : option.tagItem));
 

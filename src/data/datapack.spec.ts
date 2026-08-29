@@ -7,6 +7,7 @@ import { createDatapackBlob } from "./datapack";
 import { MinecraftVersion } from "./types";
 
 const ctxWith = (allTags: Tag[] = []): TagContext => ({
+  customItemsByUid: {},
   tagsByUid: toByUidMap(allTags),
   allTags,
   vanillaTags: {},
