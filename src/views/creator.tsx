@@ -13,6 +13,7 @@ import { Preview } from "@/components/preview/preview";
 import { MobileRecipeSwitcher } from "@/components/recipes/sidebar/mobile-recipe-switcher";
 import { RecipeSidebar } from "@/components/recipes/sidebar/recipe-sidebar";
 import { useDndMonitor } from "@/hooks/use-dnd-monitor";
+import { useWebMcpTools } from "@/hooks/use-webmcp-tools";
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/stores/ui";
 
@@ -30,6 +31,7 @@ const navLink = (
 
 export function CreatorView() {
   useDndMonitor();
+  useWebMcpTools();
   const isMobileRecipeSidebarOpen = useUIStore((state) => state.isMobileRecipeSidebarOpen);
   const isRecipeSidebarExpanded = useUIStore((state) => state.isRecipeSidebarExpanded);
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);

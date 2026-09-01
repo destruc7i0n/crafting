@@ -1,13 +1,11 @@
 import { useMemo } from "react";
 
+import { createSlotContext } from "@/lib/slot-context";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { SlotContext } from "@/stores/recipe/types";
 import { useTagStore } from "@/stores/tag";
 
 import { useResourcesForVersion } from "./use-resources-for-version";
-
-const toByUidMap = <T extends { uid: string }>(values: T[]): Record<string, T> =>
-  Object.fromEntries(values.map((value) => [value.uid, value]));
 
 export const useSlotContext = (): SlotContext => {
   const { resources, version } = useResourcesForVersion();
@@ -15,14 +13,7 @@ export const useSlotContext = (): SlotContext => {
   const tags = useTagStore((state) => state.tags);
 
   return useMemo(
-    () => ({
-      version,
-      resources,
-      customItemsByUid: toByUidMap(customItems),
-      tagsByUid: toByUidMap(tags),
-      allTags: tags,
-      vanillaTags: resources?.vanillaTags ?? {},
-    }),
+    () => createSlotContext({ version, resources, customItems, tags }),
     [customItems, resources, tags, version],
   );
 };

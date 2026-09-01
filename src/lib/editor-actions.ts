@@ -1,6 +1,9 @@
+import { MinecraftVersion } from "@/data/types";
+import { trackMinecraftVersionChange } from "@/lib/analytics";
 import { RecipeSlot } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { useRecipeStore } from "@/stores/recipe";
+import { useSettingsStore } from "@/stores/settings";
 import { useTagStore } from "@/stores/tag";
 import { useUIStore } from "@/stores/ui";
 
@@ -63,4 +66,26 @@ export const deleteRecipeAndClearInteraction = (id: string) => {
 export const clearRecipeSlotAndSelection = (slot: RecipeSlot) => {
   useRecipeStore.getState().setRecipeSlot(slot, undefined);
   useUIStore.getState().clearInteractionState();
+};
+
+export const isCrossPlatformVersionSwitch = (prev: MinecraftVersion, next: MinecraftVersion) =>
+  (prev === MinecraftVersion.Bedrock) !== (next === MinecraftVersion.Bedrock);
+
+export const applyMinecraftVersionChange = (nextVersion: MinecraftVersion) => {
+  const prevVersion = useSettingsStore.getState().minecraftVersion;
+
+  if (nextVersion === prevVersion) {
+    return;
+  }
+
+  if (isCrossPlatformVersionSwitch(prevVersion, nextVersion)) {
+    useRecipeStore.getState().clearAllSlots();
+    useUIStore.getState().clearInteractionState();
+  }
+
+  trackMinecraftVersionChange({
+    prev_minecraft_version: prevVersion,
+    minecraft_version: nextVersion,
+  });
+  useSettingsStore.getState().setMinecraftVersion(nextVersion);
 };

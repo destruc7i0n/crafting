@@ -1,0 +1,64 @@
+# Crafting Generator
+
+> Generate JSON recipes for Minecraft Java (1.12+) and Bedrock with a drag and drop interface. Everything runs in the browser; nothing is sent to a server. On the editor page the site also exposes WebMCP tools so browser agents can build recipes through the same actions the UI uses.
+
+## Pages
+
+- `/` - Recipe editor. Drag and drop items into crafting, furnace (smelting, blasting, smoking, campfire cooking), stonecutter and smithing recipes; edit custom items and tags; export a single recipe JSON, a Java datapack or a Bedrock behavior pack.
+- `/recipes` - Read-only catalog of vanilla recipes for the current version. `/recipes/<version>` shows a specific version.
+- All editor state (recipes, custom items, tags, selected version) lives in the browser's localStorage.
+
+## Agent tools (WebMCP)
+
+The editor page (`/`) registers tools on `document.modelContext` (older Chrome: `navigator.modelContext`) per the W3C WebMCP draft. Tools are only present on `/`, and only in browsers that support the API (Chrome 146+; developers can enable `chrome://flags/#webmcp-for-testing`). Every tool goes through the same store actions and validation as a click, so the UI updates live and invalid input is rejected with a descriptive error. Nothing is sent to a server.
+
+### Ingredient references
+
+A string grammar accepted everywhere an item is expected, and returned by `search_items` and `get_editor_state`:
+
+- `minecraft:stick` or `stick` - vanilla item (namespace defaults to `minecraft`)
+- `minecraft:wool:3` - Bedrock/legacy data value
+- `#minecraft:planks` - vanilla tag
+- `#crafting:my_tag` - custom tag
+- `mymod:ruby` - custom item by identifier (vanilla wins on collision)
+
+Unknown references fail with up to 5 suggestions.
+
+### Slots
+
+- Crafting: `crafting.1`-`crafting.3` top row (left to right), `crafting.4`-`crafting.6` middle row, `crafting.7`-`crafting.9` bottom row, `crafting.result` output.
+- Cooking (smelting, blasting, smoking, campfire_cooking): `cooking.ingredient`, `cooking.result`.
+- Stonecutter: `stonecutter.ingredient`, `stonecutter.result`.
+- Smithing: `smithing.template`, `smithing.base`, `smithing.addition`, `smithing.result` (smithing_trim has no result slot).
+
+### Tools
+
+Read-only:
+
+- `get_editor_state` - Version, Bedrock namespace, supported recipe types, all recipes (id, title, type, selected, valid) and the selected recipe in full (options, slots with refs and labels, slot layout, validation errors). Call this first.
+- `search_items` - `{ query, limit?, kinds? }`. Fuzzy search over vanilla items, custom items and tags for the current version; returns refs.
+- `get_recipe_json` - `{ recipeId? }`. Generated recipe JSON, file name and validation errors; same output as the Output panel.
+
+Mutating:
+
+- `set_minecraft_version` - `{ version, confirmClearAllSlots? }`. Switching between Java and Bedrock clears every slot in every recipe and requires `confirmClearAllSlots: true`.
+- `create_recipe` - `{ recipeType?, name? }`. Creates and selects a recipe.
+- `select_recipe` - `{ recipeId }`.
+- `delete_recipe` - `{ recipeId }`. Irreversible; the last recipe cannot be deleted.
+- `update_recipe` - Partial options for the selected recipe: `recipeType`, `name` (null = auto), `group`, `category`, `showNotification`, `crafting { shapeless, keepWhitespace, twoByTwo }`, `cooking { time (null = auto), experience }`, `smithing { trimPattern }`, `bedrock { identifierName (null = auto), priority }`.
+- `set_slots` - `{ slots: { "<slot>": ref | { item: ref, count? } | null } }`. Sets or clears several slots at once for any recipe type; `null` clears.
+- `set_crafting_pattern` - `{ pattern, key, result, resultCount?, shapeless? }` using vanilla recipe-JSON shape, e.g. `pattern: ["###", " / ", " / "]`, `key: { "#": "#minecraft:planks", "/": "stick" }`, `result: "wooden_pickaxe"`. Replaces the whole crafting grid and switches the recipe to crafting if needed.
+- `clear_recipe_slots` - Clears the selected recipe's slots.
+- `create_custom_item` - `{ id, displayName, texture? }`. Registers a modded item so it can be used as a ref.
+
+### Typical flow
+
+1. `get_editor_state` to learn the version, recipe types and current recipes.
+2. `search_items` if unsure of an item or tag id.
+3. `create_recipe` (or `select_recipe`).
+4. `set_crafting_pattern` for crafting recipes, or `set_slots` for any type; `update_recipe` for options.
+5. `get_recipe_json` to read back the result and any validation errors.
+
+## Source
+
+- https://crafting.thedestruc7i0n.ca - open source, MIT licensed.

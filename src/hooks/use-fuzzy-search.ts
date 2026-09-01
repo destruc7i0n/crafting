@@ -1,17 +1,6 @@
 import { useMemo, useRef } from "react";
 
-import createFuzzySearchModule, {
-  type FuzzySearcher,
-  type FuzzySearchOptions,
-} from "@nozbe/microfuzz";
-
-type CreateFuzzySearch = <T>(items: T[], options?: FuzzySearchOptions) => FuzzySearcher<T>;
-
-const createFuzzySearch = (
-  typeof createFuzzySearchModule === "function"
-    ? createFuzzySearchModule
-    : (createFuzzySearchModule as unknown as { default: CreateFuzzySearch }).default
-) as CreateFuzzySearch;
+import { createFuzzySearch } from "@/lib/fuzzy-search";
 
 export function useFuzzySearch<T>(
   items: T[],

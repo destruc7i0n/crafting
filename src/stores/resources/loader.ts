@@ -11,7 +11,7 @@ import { transformMinecraftTexturesItem } from "@/data/models/item/utilities";
 import { Item } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { resolveItemId } from "@/lib/resolve-item-id";
-import { useResourcesStore } from "@/stores/resources";
+import { VersionResourceData, useResourcesStore } from "@/stores/resources";
 
 type GeneratedVanillaTagsManifest = {
   versions: MinecraftVersion[];
@@ -34,9 +34,9 @@ const tagLoaders = import.meta.glob<{ default: Record<string, string[]> }>([
 ]);
 
 // track in-flight loads - prevents double-fetch
-const loadingVersions = new Set<MinecraftVersion>();
+const inFlightLoads = new Map<MinecraftVersion, Promise<VersionResourceData>>();
 
-async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void> {
+async function fetchResourcesForVersion(version: MinecraftVersion): Promise<VersionResourceData> {
   const textureVersion = version === MinecraftVersion.Bedrock ? latestMinecraftVersion : version;
   const texturePath = `/node_modules/minecraft-textures/dist/textures/manifest/${textureVersion}.json`;
 
@@ -91,14 +91,32 @@ async function fetchResourcesForVersion(version: MinecraftVersion): Promise<void
     }
   }
 
-  useResourcesStore.getState().setResourceData(version, { items, itemsById, vanillaTags });
+  const data: VersionResourceData = { items, itemsById, vanillaTags };
+  useResourcesStore.getState().setResourceData(version, data);
+
+  return data;
+}
+
+/**
+ * Resolves with the resources for a version, loading them if needed.
+ * Concurrent calls for the same version share a single fetch; failed loads can be retried.
+ */
+export function ensureResources(version: MinecraftVersion): Promise<VersionResourceData> {
+  const loaded = useResourcesStore.getState()[version];
+  if (loaded) return Promise.resolve(loaded);
+
+  const inFlight = inFlightLoads.get(version);
+  if (inFlight) return inFlight;
+
+  const load = fetchResourcesForVersion(version).finally(() => {
+    // the store holds the data on success; on failure, clearing allows a retry
+    inFlightLoads.delete(version);
+  });
+  inFlightLoads.set(version, load);
+
+  return load;
 }
 
 export function loadResources(version: MinecraftVersion): void {
-  if (useResourcesStore.getState()[version] || loadingVersions.has(version)) return;
-  loadingVersions.add(version);
-  fetchResourcesForVersion(version).catch((error) => {
-    loadingVersions.delete(version);
-    console.error(error);
-  });
+  void ensureResources(version).catch(console.error);
 }

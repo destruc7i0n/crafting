@@ -5,15 +5,18 @@ import { MinecraftVersion, RecipeType } from "@/data/types";
 import { SLOTS } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { useRecipeStore } from "@/stores/recipe";
+import { useSettingsStore } from "@/stores/settings";
 import { useTagStore } from "@/stores/tag";
 import { useUIStore } from "@/stores/ui";
 
 import {
+  applyMinecraftVersionChange,
   cloneRecipeAndClearInteraction,
   createRecipeAndClearInteraction,
   deleteCustomItemAndClearRecipeRefs,
   deleteRecipeAndClearInteraction,
   deleteTagAndClearRecipeRefs,
+  isCrossPlatformVersionSwitch,
   selectRecipeAndClearInteraction,
 } from "./editor-actions";
 
@@ -53,6 +56,21 @@ const ingredientItem: IngredientItem = {
   _version: MinecraftVersion.V121,
 };
 
+const stoneSlot = {
+  kind: "item" as const,
+  id: { namespace: "minecraft", id: "stone" },
+};
+
+const fillAllRecipeSlots = () => {
+  useRecipeStore.setState((state) => ({
+    ...state,
+    recipes: state.recipes.map((recipe) => ({
+      ...recipe,
+      slots: { [SLOTS.crafting.slot1]: stoneSlot, [SLOTS.crafting.result]: stoneSlot },
+    })),
+  }));
+};
+
 const setIngredientInteractionState = () => {
   useUIStore.setState({
     selection: { type: "ingredient", item: ingredientItem },
@@ -84,6 +102,8 @@ describe("editor actions", () => {
       selection: undefined,
       lastPlacedSlot: undefined,
     });
+
+    useSettingsStore.setState({ minecraftVersion: MinecraftVersion.V121 });
   });
 
   it("deletes a custom item and clears matching recipe refs in all recipes", () => {
@@ -239,6 +259,59 @@ describe("editor actions", () => {
       type: "ingredient",
       item: ingredientItem,
     });
+    expect(useUIStore.getState().lastPlacedSlot).toBe(SLOTS.crafting.slot1);
+  });
+
+  it("detects cross-platform version switches", () => {
+    expect(isCrossPlatformVersionSwitch(MinecraftVersion.V121, MinecraftVersion.Bedrock)).toBe(
+      true,
+    );
+    expect(isCrossPlatformVersionSwitch(MinecraftVersion.Bedrock, MinecraftVersion.V121)).toBe(
+      true,
+    );
+    expect(isCrossPlatformVersionSwitch(MinecraftVersion.V121, MinecraftVersion.V120)).toBe(false);
+    expect(isCrossPlatformVersionSwitch(MinecraftVersion.Bedrock, MinecraftVersion.Bedrock)).toBe(
+      false,
+    );
+  });
+
+  it("clears slots of all recipes and interaction state when switching platforms", () => {
+    fillAllRecipeSlots();
+    setIngredientInteractionState();
+
+    applyMinecraftVersionChange(MinecraftVersion.Bedrock);
+
+    expect(useSettingsStore.getState().minecraftVersion).toBe(MinecraftVersion.Bedrock);
+    expect(useRecipeStore.getState().recipes[0]?.slots).toEqual({});
+    expect(useRecipeStore.getState().recipes[1]?.slots).toEqual({});
+    expect(useUIStore.getState().selection).toBeUndefined();
+    expect(useUIStore.getState().lastPlacedSlot).toBeUndefined();
+  });
+
+  it("keeps recipe slots when switching versions within the same platform", () => {
+    fillAllRecipeSlots();
+    setIngredientInteractionState();
+
+    applyMinecraftVersionChange(MinecraftVersion.V120);
+
+    expect(useSettingsStore.getState().minecraftVersion).toBe(MinecraftVersion.V120);
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toEqual(stoneSlot);
+    expect(useRecipeStore.getState().recipes[1]?.slots[SLOTS.crafting.result]).toEqual(stoneSlot);
+    expect(useUIStore.getState().selection).toEqual({
+      type: "ingredient",
+      item: ingredientItem,
+    });
+  });
+
+  it("does nothing when applying the current version", () => {
+    fillAllRecipeSlots();
+    setIngredientInteractionState();
+    const recipesBefore = useRecipeStore.getState().recipes;
+
+    applyMinecraftVersionChange(MinecraftVersion.V121);
+
+    expect(useSettingsStore.getState().minecraftVersion).toBe(MinecraftVersion.V121);
+    expect(useRecipeStore.getState().recipes).toBe(recipesBefore);
     expect(useUIStore.getState().lastPlacedSlot).toBe(SLOTS.crafting.slot1);
   });
 });

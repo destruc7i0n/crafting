@@ -80,6 +80,11 @@ type RecipeStartedCheck = {
   inputMethod: RecipeStartInputMethod;
 };
 
+export type WebMcpToolCallProperties = {
+  tool_name: string;
+  success: boolean;
+};
+
 type PageViewProperties = {
   page_location: string;
   page_referrer: string;
@@ -98,6 +103,7 @@ type AnalyticsEventProperties = {
   copy_recipe_json: CopyRecipeJsonProperties;
   recipe_action: RecipeActionProperties;
   recipe_started: RecipeStartedProperties;
+  webmcp_tool_call: WebMcpToolCallProperties;
 };
 
 type AnalyticsEventName = keyof AnalyticsEventProperties;
@@ -207,6 +213,10 @@ export function trackRecipeAction(properties: RecipeActionProperties) {
 
 export function trackRecipeStarted(properties: RecipeStartedProperties) {
   sendEvent("recipe_started", properties);
+}
+
+export function trackWebMcpToolCall(properties: WebMcpToolCallProperties) {
+  sendEvent("webmcp_tool_call", properties);
 }
 
 const getFilledSlotCountForRecipeType = (recipe: Recipe | undefined) => {

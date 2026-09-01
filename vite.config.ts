@@ -80,6 +80,9 @@ export default defineConfig({
       "@": path.resolve(projectRoot, "./src"),
     },
   },
+  server: {
+    allowedHosts: true,
+  },
   ssr: {
     noExternal: ["@atlaskit/pragmatic-drag-and-drop", "@nozbe/microfuzz"],
   },
