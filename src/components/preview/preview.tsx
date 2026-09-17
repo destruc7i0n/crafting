@@ -6,10 +6,10 @@ import { getRecipeDefinition } from "@/recipes/definitions";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
 
+import { BrewingEditor } from "./brewing-editor";
 import { renderCreatorPreviewSlot } from "./creator-preview-slot";
 import { PreviewControls } from "./preview-controls";
 import {
-  BrewingPreviewSurface,
   CraftingPreviewSurface,
   FurnacePreviewSurface,
   SmithingPreviewSurface,
@@ -157,15 +157,6 @@ function PreviewContent({ controls, previewRef }: PreviewContentProps) {
       );
 
     case "brewing":
-      return (
-        <PreviewViewport
-          previewRef={previewRef}
-          preferredWidth={352}
-          minWidth={252}
-          controls={controls}
-        >
-          <BrewingPreviewSurface slots={slots} renderSlot={renderCreatorPreviewSlot} />
-        </PreviewViewport>
-      );
+      return <BrewingEditor previewRef={previewRef} controls={controls} />;
   }
 }

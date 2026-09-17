@@ -3,7 +3,8 @@
 
 import path from "node:path";
 
-import { latestVersion } from "minecraft-textures";
+import { getOrdinaryTextureVersion } from "@/data/constants";
+import { MinecraftVersion } from "@/data/types";
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const outputPath = path.join(repoRoot, "src/data/generated/bedrock-mappings.json");
@@ -88,8 +89,10 @@ const fetchBedrockMappings = async () => {
     raw[javaId] = { bedrock_identifier: "minecraft:filled_map", bedrock_data: data };
   }
   const mojangData = (await mojangResponse.json()) as BedrockSamplesMojangItemsFile;
+  // bedrock mappings follow the latest public texture version
+  const textureVersion = getOrdinaryTextureVersion(MinecraftVersion.Bedrock);
   const textureData = (
-    await import(`minecraft-textures/manifest/${latestVersion}.json`, {
+    await import(`minecraft-textures/manifest/${textureVersion}.json`, {
       with: { type: "json" },
     })
   ).default as MinecraftTexturesFile;

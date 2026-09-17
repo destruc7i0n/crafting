@@ -83,3 +83,65 @@
   width: 32px !important;
   height: 36px !important;
 }
+
+.brewingSprite {
+  position: absolute;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+.brewingProgress {
+  clip-path: inset(0 0 100%);
+}
+
+.brewingBubbles {
+  /* Vanilla uses 0.7s; slow the same frames down for this continuous preview. */
+  animation: brewingBubbles 2.1s step-end infinite;
+}
+
+[data-brewing="true"] .brewingProgress {
+  animation: brewingProgress 20s steps(28, end) infinite;
+}
+
+@keyframes brewingProgress {
+  from {
+    clip-path: inset(0 0 100%);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+/* Minecraft reveals 0, 6, 11, 16, 20, 24, then 29 pixels of bubbles, at 2x scale. */
+@keyframes brewingBubbles {
+  0% {
+    clip-path: inset(58px 0 0);
+  }
+  14.2857% {
+    clip-path: inset(46px 0 0);
+  }
+  28.5714% {
+    clip-path: inset(36px 0 0);
+  }
+  42.8571% {
+    clip-path: inset(26px 0 0);
+  }
+  57.1429% {
+    clip-path: inset(18px 0 0);
+  }
+  71.4286% {
+    clip-path: inset(10px 0 0);
+  }
+  85.7143%,
+  100% {
+    clip-path: inset(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-brewing="true"] .brewingProgress,
+  .brewingBubbles {
+    animation: none;
+    clip-path: inset(0);
+  }
+}

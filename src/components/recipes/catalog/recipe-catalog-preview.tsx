@@ -16,6 +16,7 @@ import { LARGE_SLOT_SIZE, SLOT_SIZE, Slot } from "@/components/slot/slot";
 import { ItemTooltip } from "@/components/tooltip/item-tooltip";
 import { NoTextureTexture } from "@/data/constants";
 import { getFullId } from "@/data/models/identifier/utilities";
+import { lookupPotion, type PotionCatalog } from "@/data/potions";
 import { getTagLabel } from "@/lib/tags";
 import { getRecipeDefinition } from "@/recipes/definitions";
 
@@ -30,11 +31,13 @@ import type { VersionResourceData } from "@/stores/resources";
 type RecipeCatalogPreviewProps = {
   entry: GeneratedRecipeCatalogEntry;
   resources?: VersionResourceData;
+  potionCatalog?: PotionCatalog;
 };
 
 type CatalogPreviewSlotOptions = {
   value?: CatalogSlotValue;
   resources?: VersionResourceData;
+  potionCatalog?: PotionCatalog;
   options?: PreviewSlotRenderOptions;
 };
 
@@ -42,6 +45,7 @@ type BaseCatalogSlotPresentation = {
   label: string;
   description: string;
   count?: number;
+  tooltipLines?: readonly string[];
 };
 
 type StaticCatalogSlotPresentation = BaseCatalogSlotPresentation & {
@@ -54,10 +58,15 @@ type CyclingCatalogSlotPresentation = BaseCatalogSlotPresentation & {
 
 type CatalogSlotPresentation = StaticCatalogSlotPresentation | CyclingCatalogSlotPresentation;
 
-export function RecipeCatalogPreview({ entry, resources }: RecipeCatalogPreviewProps) {
+export function RecipeCatalogPreview({
+  entry,
+  resources,
+  potionCatalog,
+}: RecipeCatalogPreviewProps) {
   const renderSlot = useCallback<PreviewSlotRenderer<CatalogSlotValue>>(
-    (_slot, value, options) => renderCatalogPreviewSlot({ value, resources, options }),
-    [resources],
+    (_slot, value, options) =>
+      renderCatalogPreviewSlot({ value, resources, potionCatalog, options }),
+    [resources, potionCatalog],
   );
   const previewKind = getRecipeDefinition(entry.recipeType).previewKind;
 
@@ -75,14 +84,27 @@ export function RecipeCatalogPreview({ entry, resources }: RecipeCatalogPreviewP
     case "smithing":
       return <SmithingPreviewSurface slots={entry.slots} renderSlot={renderSlot} />;
     case "brewing":
-      return <BrewingPreviewSurface slots={entry.slots} renderSlot={renderSlot} />;
+      return (
+        <BrewingPreviewSurface
+          slots={entry.slots}
+          renderSlot={renderSlot}
+          fuelTexture={resources?.itemsById["minecraft:blaze_powder"]?.texture}
+        />
+      );
     default:
       return null;
   }
 }
 
-function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewSlotOptions) {
-  const presentation = value ? getCatalogSlotPresentation(value, resources) : undefined;
+function renderCatalogPreviewSlot({
+  value,
+  resources,
+  potionCatalog,
+  options,
+}: CatalogPreviewSlotOptions) {
+  const presentation = value
+    ? getCatalogSlotPresentation(value, resources, potionCatalog)
+    : undefined;
   const compact = options?.compact !== false;
   const isStaticSlot = options?.staticSlot === true;
   const showCount = !isStaticSlot;
@@ -119,6 +141,7 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
             <ItemTooltip
               title={getCyclingLabel(currentItem, presentation)}
               description={getCyclingDescription(currentItem, presentation)}
+              tooltipLines={presentation.tooltipLines}
               touchBehavior="tap"
               className="absolute -inset-0.5 flex items-center justify-center"
             >
@@ -144,6 +167,7 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
       <ItemTooltip
         title={presentation.label}
         description={presentation.description}
+        tooltipLines={presentation.tooltipLines}
         touchBehavior="tap"
         className="absolute -inset-0.5 flex items-center justify-center"
       >
@@ -184,15 +208,21 @@ function isCyclingPresentation(
 function getCatalogSlotPresentation(
   value: CatalogSlotValue,
   resources?: VersionResourceData,
+  potionCatalog?: PotionCatalog,
 ): CatalogSlotPresentation {
   if (value.kind === "item") {
     const item = resources?.itemsById[value.id];
+    const potion =
+      value.potion && potionCatalog
+        ? lookupPotion(potionCatalog, { id: value.id, potion: value.potion })
+        : undefined;
     const description = getCatalogResourceDisplayId(value.id);
 
     return {
-      label: item?.displayName ?? value.id,
+      label: potion?.readable ?? item?.displayName ?? value.id,
       description,
-      preview: { kind: "item", texture: item?.texture ?? NoTextureTexture },
+      tooltipLines: potion?.tooltip,
+      preview: { kind: "item", texture: potion?.texture ?? item?.texture ?? NoTextureTexture },
       count: value.count,
     };
   }

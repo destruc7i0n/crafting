@@ -87,10 +87,20 @@ const normalizeRecipeSlotValue = (raw: unknown): RecipeSlotValue | undefined => 
         return undefined;
       }
 
+      // a present potion field is part of the slot value's discriminated data
+      // reject the complete slot when it is malformed; absent remains absent
+      if (
+        Object.prototype.hasOwnProperty.call(value, "potion") &&
+        !isNonEmptyString(value.potion)
+      ) {
+        return undefined;
+      }
+
       return {
         kind: "item",
         id,
         ...(isFiniteNumber(value.count) ? { count: value.count } : {}),
+        ...(isNonEmptyString(value.potion) ? { potion: value.potion } : {}),
       };
     }
     case "custom_item":

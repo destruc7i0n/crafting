@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^2.0.1",
+    "@base-ui/react": "1.8.0",
     "@floating-ui/react": "^0.27.20",
     "@jongwooo/prism-theme-github": "^1.15.1",
     "@nozbe/microfuzz": "^1.0.0",

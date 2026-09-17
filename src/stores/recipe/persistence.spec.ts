@@ -105,6 +105,42 @@ describe("recipe persistence", () => {
     });
   });
 
+  it("round trips nonempty potion values and drops malformed present potion fields", () => {
+    const state = normalizePersistedRecipeState({
+      recipes: [
+        {
+          id: "recipe-1",
+          slots: {
+            [SLOTS.crafting.slot1]: {
+              kind: "item",
+              id: { namespace: "minecraft", id: "potion" },
+              potion: "minecraft:night_vision",
+            },
+            [SLOTS.crafting.slot2]: {
+              kind: "item",
+              id: { namespace: "minecraft", id: "potion" },
+              potion: "",
+            },
+            [SLOTS.crafting.slot3]: {
+              kind: "item",
+              id: { namespace: "minecraft", id: "potion" },
+              potion: 42,
+            },
+          },
+        },
+      ],
+      selectedRecipeId: "recipe-1",
+    });
+
+    expect(state.recipes[0]?.slots).toEqual({
+      [SLOTS.crafting.slot1]: {
+        kind: "item",
+        id: { namespace: "minecraft", id: "potion" },
+        potion: "minecraft:night_vision",
+      },
+    });
+  });
+
   it("falls back to one default recipe when persisted recipes are empty or invalid", () => {
     const emptyState = normalizePersistedRecipeState({
       recipes: [],

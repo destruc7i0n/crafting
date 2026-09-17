@@ -1,5 +1,6 @@
 import { MinecraftVersion } from "@/data/types";
 import { getRecipeDefinition, getSupportedRecipeTypesForVersion } from "@/recipes/definitions";
+import { getUnsupportedPotionSlotErrors } from "@/recipes/potion-slot-validation";
 import { isResultSlot } from "@/recipes/slots/utils";
 import { getSlotIdentifier, hasMissingCustomRef, isTagSlotValue } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
@@ -15,7 +16,7 @@ const validateCommonRecipeRules = (
   version: MinecraftVersion,
   slotContext: SlotContext,
 ): string[] => {
-  const errors: string[] = [];
+  const errors: string[] = getUnsupportedPotionSlotErrors(recipe);
 
   if (!getSupportedRecipeTypesForVersion(version).includes(recipe.recipeType)) {
     errors.push(`Recipe type is not available in ${getMinecraftVersionLabel(version)}`);

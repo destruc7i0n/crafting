@@ -15,6 +15,9 @@ const siteUrl = (process.env.VITE_SITE_URL ?? "https://crafting.thedestruc7i0n.c
 );
 
 export default defineConfig({
+  server: {
+    allowedHosts: true,
+  },
   build: {
     target: "es2020",
   },

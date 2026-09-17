@@ -37,6 +37,7 @@ export enum RecipeType {
   SmithingTrim = "smithing_trim",
   SmithingTransform = "smithing_transform",
 
+  Brewing = "brewing",
   BrewingContainer = "brewing_container",
   BrewingMix = "brewing_mix",
 }

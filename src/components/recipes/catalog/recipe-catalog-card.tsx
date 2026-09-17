@@ -4,6 +4,7 @@ import { recipeCatalogCardHeight } from "@/components/recipes/catalog/constants"
 import { RecipeCatalogPreview } from "@/components/recipes/catalog/recipe-catalog-preview";
 import { getRecipeTypeLabel } from "@/recipes/definitions";
 
+import type { PotionCatalog } from "@/data/potions";
 import type { GeneratedRecipeCatalogEntry } from "@/recipes/catalog/types";
 import type { VersionResourceData } from "@/stores/resources";
 
@@ -11,12 +12,14 @@ type RecipeCatalogCardProps = {
   entry: GeneratedRecipeCatalogEntry;
   title: string;
   resources?: VersionResourceData;
+  potionCatalog?: PotionCatalog;
 };
 
 export const RecipeCatalogCard = memo(function RecipeCatalogCard({
   entry,
   title,
   resources,
+  potionCatalog,
 }: RecipeCatalogCardProps) {
   return (
     <article
@@ -36,7 +39,7 @@ export const RecipeCatalogCard = memo(function RecipeCatalogCard({
 
       <div className="mt-2 flex flex-1 items-center justify-center overflow-hidden">
         <div className="scrollbar-app max-w-full overflow-x-auto">
-          <RecipeCatalogPreview entry={entry} resources={resources} />
+          <RecipeCatalogPreview entry={entry} resources={resources} potionCatalog={potionCatalog} />
         </div>
       </div>
     </article>

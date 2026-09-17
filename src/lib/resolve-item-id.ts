@@ -1,4 +1,5 @@
 import bedrockMappings from "@/data/generated/bedrock-mappings.json";
+import bedrockPotionMappings from "@/data/generated/bedrock-potion-mappings.json";
 import { MinecraftVersion } from "@/data/types";
 
 export type ResolvedItemId = { id: string; data?: number };
@@ -21,4 +22,10 @@ export function resolveItemId(javaId: string, version: MinecraftVersion): Resolv
     id: translation.id ?? javaId,
     ...(translation.data !== undefined ? { data: translation.data } : {}),
   };
+}
+
+/** Resolves named Bedrock variants without storing numeric data in recipes. */
+export function resolveBedrockPotionItem(id: string, potion: string): ResolvedItemId | null {
+  const mappings: Record<string, ResolvedItemId> = bedrockPotionMappings.items;
+  return mappings[`${id}|${potion}`] ?? null;
 }

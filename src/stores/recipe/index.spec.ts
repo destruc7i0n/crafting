@@ -112,6 +112,26 @@ describe("recipe store", () => {
     expect(useRecipeStore.getState().recipes[1]?.crafting.shapeless).toBe(true);
   });
 
+  it("sets and clears potion metadata on item slots", () => {
+    useRecipeStore.getState().setRecipeSlot(SLOTS.crafting.slot1, {
+      kind: "item",
+      id: { namespace: "minecraft", id: "potion" },
+    });
+
+    useRecipeStore.getState().setRecipeSlotPotion(SLOTS.crafting.slot1, "minecraft:healing");
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toEqual({
+      kind: "item",
+      id: { namespace: "minecraft", id: "potion" },
+      potion: "minecraft:healing",
+    });
+
+    useRecipeStore.getState().setRecipeSlotPotion(SLOTS.crafting.slot1);
+    expect(useRecipeStore.getState().recipes[0]?.slots[SLOTS.crafting.slot1]).toEqual({
+      kind: "item",
+      id: { namespace: "minecraft", id: "potion" },
+    });
+  });
+
   it("inserts a cloned recipe immediately after the source and selects it", () => {
     useRecipeStore.setState((state) => ({
       ...state,
@@ -431,5 +451,134 @@ describe("recipe store", () => {
       kind: "item",
       id: { namespace: "minecraft", id: "granite" },
     });
+  });
+});
+
+describe("brewing picker updates", () => {
+  const potion = (id: string, contents?: string): Extract<RecipeSlotValue, { kind: "item" }> => ({
+    kind: "item",
+    id: { namespace: "minecraft", id },
+    ...(contents ? { potion: contents } : {}),
+  });
+  beforeEach(() => {
+    useRecipeStore.setState({
+      recipes: [{ ...createRecipe("brewing"), recipeType: RecipeType.BrewingMix }],
+      selectedRecipeId: "brewing",
+    });
+  });
+  it("creates an explicit choice and keeps the other empty slot empty", () => {
+    useRecipeStore.getState().setBrewingChoice({
+      recipeId: "brewing",
+      recipeType: RecipeType.BrewingMix,
+      slot: SLOTS.brewing.input,
+      value: potion("potion", "minecraft:water"),
+    });
+    expect(useRecipeStore.getState().recipes[0].slots).toEqual({
+      [SLOTS.brewing.input]: potion("potion", "minecraft:water"),
+    });
+  });
+  it("changes mix bottle forms together without replacing the other potion", () => {
+    const store = useRecipeStore.getState();
+    store.setRecipeSlot(SLOTS.brewing.result, potion("potion", "minecraft:awkward"));
+    store.setBrewingChoice({
+      recipeId: "brewing",
+      recipeType: RecipeType.BrewingMix,
+      slot: SLOTS.brewing.input,
+      value: potion("splash_potion", "minecraft:water"),
+    });
+    expect(useRecipeStore.getState().recipes[0].slots[SLOTS.brewing.result]).toEqual(
+      potion("splash_potion", "minecraft:awkward"),
+    );
+  });
+  it("clears a choice without filling either slot with defaults", () => {
+    const store = useRecipeStore.getState();
+    store.setRecipeSlot(SLOTS.brewing.input, potion("potion", "minecraft:water"));
+    store.setBrewingChoice({
+      recipeId: "brewing",
+      recipeType: RecipeType.BrewingMix,
+      slot: SLOTS.brewing.input,
+    });
+    expect(useRecipeStore.getState().recipes[0].slots[SLOTS.brewing.input]).toBeUndefined();
+    expect(useRecipeStore.getState().recipes[0].slots[SLOTS.brewing.result]).toBeUndefined();
+  });
+  it("ignores stale picker writes after changing recipe type or recipe", () => {
+    const store = useRecipeStore.getState();
+    store.setRecipeType(RecipeType.BrewingContainer);
+    store.setBrewingChoice({
+      recipeId: "brewing",
+      recipeType: RecipeType.BrewingMix,
+      slot: SLOTS.brewing.input,
+      value: potion("potion", "minecraft:water"),
+    });
+    store.setBrewingChoice({
+      recipeId: "old-recipe",
+      recipeType: RecipeType.BrewingContainer,
+      slot: SLOTS.brewing.input,
+      value: potion("potion"),
+    });
+    expect(useRecipeStore.getState().recipes[0].slots).toEqual({});
+  });
+  it("replaces stale contents and count when selecting a container bottle", () => {
+    const store = useRecipeStore.getState();
+    store.setRecipeType(RecipeType.BrewingContainer);
+    store.setRecipeSlot(SLOTS.brewing.input, { ...potion("potion", "minecraft:water"), count: 5 });
+    store.setBrewingChoice({
+      recipeId: "brewing",
+      recipeType: RecipeType.BrewingContainer,
+      slot: SLOTS.brewing.input,
+      value: potion("splash_potion"),
+    });
+    expect(useRecipeStore.getState().recipes[0].slots[SLOTS.brewing.input]).toEqual(
+      potion("splash_potion"),
+    );
+  });
+  it("does not replace a mix input bottle when choosing an arrow result", () => {
+    const store = useRecipeStore.getState();
+    store.setRecipeSlot(SLOTS.brewing.input, potion("splash_potion", "minecraft:water"));
+    store.setBrewingChoice({
+      recipeId: "brewing",
+      recipeType: RecipeType.BrewingMix,
+      slot: SLOTS.brewing.result,
+      value: potion("arrow", "minecraft:healing"),
+    });
+    expect(useRecipeStore.getState().recipes[0].slots[SLOTS.brewing.input]).toEqual(
+      potion("splash_potion", "minecraft:water"),
+    );
+    store.setBrewingChoice({
+      recipeId: "brewing",
+      recipeType: RecipeType.BrewingMix,
+      slot: SLOTS.brewing.input,
+      value: potion("potion", "minecraft:water"),
+    });
+    expect(useRecipeStore.getState().recipes[0].slots[SLOTS.brewing.result]).toEqual(
+      potion("arrow", "minecraft:healing"),
+    );
+  });
+  it("preserves Java arrow count across effects and clears it for bottles", () => {
+    const store = useRecipeStore.getState();
+    store.setRecipeType(RecipeType.Brewing);
+    store.setRecipeSlot(SLOTS.brewing.result, {
+      ...potion("tipped_arrow", "minecraft:healing"),
+      count: 64,
+    });
+    store.setBrewingChoice({
+      recipeId: "brewing",
+      recipeType: RecipeType.Brewing,
+      slot: SLOTS.brewing.result,
+      value: potion("tipped_arrow", "minecraft:strength"),
+    });
+    expect(useRecipeStore.getState().recipes[0].slots[SLOTS.brewing.result]).toEqual({
+      ...potion("tipped_arrow", "minecraft:strength"),
+      count: 64,
+    });
+    store.setBrewingChoice({
+      recipeId: "brewing",
+      recipeType: RecipeType.Brewing,
+      slot: SLOTS.brewing.result,
+      value: potion("potion", "minecraft:water"),
+    });
+    expect(useRecipeStore.getState().recipes[0].slots[SLOTS.brewing.result]).toEqual(
+      potion("potion", "minecraft:water"),
+    );
   });
 });

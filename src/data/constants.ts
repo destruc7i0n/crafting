@@ -1,4 +1,3 @@
-import { latestVersion } from "minecraft-textures";
 import texturePackageJson from "minecraft-textures/package.json";
 
 import { MinecraftVersion } from "./types";
@@ -34,4 +33,9 @@ export const NoTextureTexture =
 
 export const defaultMinecraftVersions = [MinecraftVersion.Bedrock, ...javaMinecraftVersions];
 
-export const latestMinecraftVersion = latestVersion as MinecraftVersion;
+export const latestMinecraftVersion = javaMinecraftVersions[0] as MinecraftVersion;
+
+export const getOrdinaryTextureVersion = (version: MinecraftVersion): MinecraftVersion => {
+  if (version === MinecraftVersion.Bedrock) return latestMinecraftVersion;
+  return version;
+};
