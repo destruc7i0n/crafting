@@ -1,4 +1,5 @@
 {
+  "minecraft:abandoned_camp_map": null,
   "minecraft:black_banner": {
     "id": "minecraft:banner",
     "data": 0
@@ -26,6 +27,22 @@
     "id": "minecraft:bed",
     "data": 12
   },
+  "minecraft:buried_ancient_city_map": {
+    "id": "minecraft:filled_map",
+    "data": 23
+  },
+  "minecraft:buried_mineshaft_map": {
+    "id": "minecraft:filled_map",
+    "data": 24
+  },
+  "minecraft:buried_treasure_map": {
+    "id": "minecraft:filled_map",
+    "data": 5
+  },
+  "minecraft:buried_trial_chambers_map": {
+    "id": "minecraft:filled_map",
+    "data": 14
+  },
   "minecraft:cobblestone_stairs": {
     "id": "minecraft:stone_stairs",
     "data": 0
@@ -45,6 +62,14 @@
     "id": "minecraft:deadbush"
   },
   "minecraft:debug_stick": null,
+  "minecraft:desert_pyramid_map": {
+    "id": "minecraft:filled_map",
+    "data": 25
+  },
+  "minecraft:desert_village_map": {
+    "id": "minecraft:filled_map",
+    "data": 11
+  },
   "minecraft:dirt_path": {
     "id": "minecraft:grass_path"
   },
@@ -85,6 +110,10 @@
   },
   "minecraft:jack_o_lantern": {
     "id": "minecraft:lit_pumpkin"
+  },
+  "minecraft:jungle_pyramid_map": {
+    "id": "minecraft:filled_map",
+    "data": 12
   },
   "minecraft:knowledge_book": null,
   "minecraft:light": null,
@@ -160,6 +189,10 @@
   "minecraft:oak_trapdoor": {
     "id": "minecraft:trapdoor"
   },
+  "minecraft:ocean_monument_map": {
+    "id": "minecraft:filled_map",
+    "data": 3
+  },
   "minecraft:orange_banner": {
     "id": "minecraft:banner",
     "data": 14
@@ -175,6 +208,10 @@
   "minecraft:pink_bed": {
     "id": "minecraft:bed",
     "data": 6
+  },
+  "minecraft:plains_village_map": {
+    "id": "minecraft:filled_map",
+    "data": 9
   },
   "minecraft:powered_rail": {
     "id": "minecraft:golden_rail"
@@ -204,6 +241,10 @@
   "minecraft:rooted_dirt": {
     "id": "minecraft:dirt_with_roots"
   },
+  "minecraft:savanna_village_map": {
+    "id": "minecraft:filled_map",
+    "data": 10
+  },
   "minecraft:shulker_box": {
     "id": "minecraft:undyed_shulker_box"
   },
@@ -217,6 +258,10 @@
     "id": "minecraft:snow",
     "data": 0
   },
+  "minecraft:snowy_village_map": {
+    "id": "minecraft:filled_map",
+    "data": 7
+  },
   "minecraft:spawner": {
     "id": "minecraft:mob_spawner"
   },
@@ -227,6 +272,14 @@
   "minecraft:stonecutter": {
     "id": "minecraft:stonecutter_block"
   },
+  "minecraft:swamp_hut_map": {
+    "id": "minecraft:filled_map",
+    "data": 13
+  },
+  "minecraft:taiga_village_map": {
+    "id": "minecraft:filled_map",
+    "data": 8
+  },
   "minecraft:terracotta": {
     "id": "minecraft:hardened_clay"
   },
@@ -235,6 +288,10 @@
   "minecraft:tipped_arrow": {
     "id": "minecraft:arrow",
     "data": 0
+  },
+  "minecraft:warm_ocean_ruins_map": {
+    "id": "minecraft:filled_map",
+    "data": 26
   },
   "minecraft:waxed_copper_block": {
     "id": "minecraft:waxed_copper"
@@ -246,6 +303,10 @@
   "minecraft:white_bed": {
     "id": "minecraft:bed",
     "data": 0
+  },
+  "minecraft:woodland_mansion_map": {
+    "id": "minecraft:filled_map",
+    "data": 4
   },
   "minecraft:yellow_banner": {
     "id": "minecraft:banner",
