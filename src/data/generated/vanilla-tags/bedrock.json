@@ -561,6 +561,10 @@
     "minecraft:gold_nugget",
     "minecraft:iron_nugget"
   ],
+  "minecraft:mushrooms_for_stew": [
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom"
+  ],
   "minecraft:music_disc": [
     "minecraft:music_disc_11",
     "minecraft:music_disc_13",
@@ -1008,7 +1012,6 @@
     "minecraft:mud_bricks",
     "minecraft:nether_brick",
     "minecraft:netherrack",
-    "minecraft:observer",
     "minecraft:obsidian",
     "minecraft:orange_concrete",
     "minecraft:orange_glazed_terracotta",
@@ -1042,7 +1045,6 @@
     "minecraft:red_nether_brick",
     "minecraft:red_sandstone",
     "minecraft:red_terracotta",
-    "minecraft:redstone_lamp",
     "minecraft:redstone_ore",
     "minecraft:sandstone",
     "minecraft:sea_lantern",

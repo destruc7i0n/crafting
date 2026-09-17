@@ -28,6 +28,9 @@ export const wrapBedrockRecipe = ({
       identifier: options.identifier,
     },
     tags,
+    ...(wrapperKey === "minecraft:recipe_shaped" || wrapperKey === "minecraft:recipe_shapeless"
+      ? { unlock: { context: "AlwaysUnlocked" } }
+      : {}),
     ...(options.priority !== 0 ? { priority: options.priority } : {}),
     ...inner,
   };

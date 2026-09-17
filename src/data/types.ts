@@ -19,6 +19,7 @@ export enum MinecraftVersion {
   V12111 = "1.21.11",
   V261 = "26.1",
   V262 = "26.2",
+  V263 = "26.3",
 }
 
 export enum RecipeType {

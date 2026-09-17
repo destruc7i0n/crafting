@@ -42,8 +42,8 @@ importers:
         specifier: ^1.25.0
         version: 1.25.0(react@19.2.8)
       minecraft-textures:
-        specifier: 26.2.1
-        version: 26.2.1
+        specifier: 26.3.0
+        version: 26.3.0
       modern-screenshot:
         specifier: ^4.7.0
         version: 4.7.0
@@ -1435,8 +1435,8 @@ packages:
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
-  minecraft-textures@26.2.1:
-    resolution: {integrity: sha512-F3HZR91x0RrgK91QUcVTELj5r0arK5TrJebZxhdd9RVLx/Yj1SnhmhvxoGUJCJn2UdyvJNzysm6K64yAvhrW6w==}
+  minecraft-textures@26.3.0:
+    resolution: {integrity: sha512-6T8mutuOKbxxYKDdPyFK3hHr/kP65yFTw3ShXw//irDF9We3NrjwJTc0CbS5Nk31rRxyReMME9Kg9raQSNoXhA==}
 
   modern-screenshot@4.7.0:
     resolution: {integrity: sha512-9YxN+ddPSMMlhylOv25VHzXrl9u67QRxoh7+SEewGtgUw7t6hHTrjptSDJUSne9oG4Xk/h2cwG15nIt4Hc9ujg==}
@@ -2914,7 +2914,7 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  minecraft-textures@26.2.1: {}
+  minecraft-textures@26.3.0: {}
 
   modern-screenshot@4.7.0: {}
 
