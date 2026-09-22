@@ -49,7 +49,7 @@ const createCookingDefinition = ({
   validate: (recipe, version) => validateCooking(recipe, version),
   generateJava: ({ recipe, formatter, version, slotContext }) =>
     buildJavaCooking({
-      state: extractCookingInput(recipe),
+      state: extractCookingInput(recipe, version),
       formatter,
       version,
       slotContext,

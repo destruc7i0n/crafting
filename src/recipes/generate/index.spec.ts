@@ -178,6 +178,7 @@ describe("generate orchestrator", () => {
       }),
     ).toMatchObject({
       "minecraft:recipe_shapeless": {
+        unlock: { context: "AlwaysUnlocked" },
         priority: 2,
       },
     });
@@ -273,4 +274,37 @@ describe("generate orchestrator", () => {
       }),
     ).toThrow('Recipe type "smithing" is not available in Bedrock');
   });
+});
+
+describe("bedrock crafting recipe loading", () => {
+  it.each([false, true])(
+    "unlocks crafting recipes and retains map data (shapeless: %s)",
+    (shapeless) => {
+      const state = makeRecipe({
+        recipeType: RecipeType.Crafting,
+        crafting: { shapeless },
+        slots: {
+          "crafting.1": { kind: "item", id: { namespace: "minecraft", id: "paper" } },
+          "crafting.result": {
+            kind: "item",
+            id: { namespace: "minecraft", id: "filled_map", data: 3 },
+          },
+        },
+      });
+      const key = shapeless ? "minecraft:recipe_shapeless" : "minecraft:recipe_shaped";
+      expect(
+        generate({
+          state,
+          version: MinecraftVersion.Bedrock,
+          options: { bedrockIdentifier: "crafting:map" },
+        }),
+      ).toMatchObject({
+        format_version: "1.20.10",
+        [key]: {
+          unlock: { context: "AlwaysUnlocked" },
+          result: { item: "minecraft:filled_map", data: 3 },
+        },
+      });
+    },
+  );
 });

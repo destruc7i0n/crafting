@@ -2,7 +2,7 @@ import { RotateCcwIcon } from "lucide-react";
 
 import {
   CookingRecipeType,
-  defaultCookingTime,
+  getCookingSpeed,
   isCookingRecipeType,
   resolveCookingTime,
 } from "@/data/cooking";
@@ -43,15 +43,21 @@ const CookingTimeField = ({ recipeType }: { recipeType: CookingRecipeType }) => 
   const storedTime = useRecipeStore((state) => selectCurrentRecipe(state)?.cooking.time ?? null);
   const setRecipeCookingTime = useRecipeStore((state) => state.setRecipeCookingTime);
 
-  const defaultTime = defaultCookingTime[recipeType];
+  const version = useSettingsStore(selectMinecraftVersion);
+  const speed = getCookingSpeed(recipeType, version);
+  const defaultTime = resolveCookingTime(recipeType, null, version);
   // null = auto
-  const displayTime = resolveCookingTime(recipeType, storedTime);
+  const displayTime = resolveCookingTime(recipeType, storedTime, version);
 
   return (
     <Field
       label="Cooking time"
       htmlFor="recipe-cooking-time"
-      tooltip="How long the item takes to cook, in ticks."
+      tooltip={
+        speed === 2
+          ? "Recipe time in ticks. Java 26.3+ cooks these recipes at 2× speed. Double an older recipe’s tick value to keep the same duration."
+          : "How long the item takes to cook, in ticks."
+      }
     >
       <div className="flex">
         <InputControl
@@ -76,7 +82,8 @@ const CookingTimeField = ({ recipeType }: { recipeType: CookingRecipeType }) => 
         </IconActionButton>
       </div>
       <p className="text-muted-foreground text-xs">
-        {displayTime} ticks = {Number((displayTime / 20).toFixed(2))}s
+        {displayTime} ticks = {Number((displayTime / (20 * speed)).toFixed(2))}s
+        {speed === 2 && " at vanilla 2× speed"}
       </p>
     </Field>
   );

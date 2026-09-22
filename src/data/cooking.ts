@@ -1,4 +1,6 @@
-import { RecipeType } from "./types";
+import { isVersionAtLeast } from "@/versioning";
+
+import { MinecraftVersion, RecipeType } from "./types";
 
 export const cookingRecipeTypes = [
   RecipeType.Smelting,
@@ -20,6 +22,18 @@ export const defaultCookingTime: Record<CookingRecipeType, number> = {
   [RecipeType.Smoking]: 100,
 };
 
+// vanilla speed applied to the recipe's cookingtime value
+export const getCookingSpeed = (type: CookingRecipeType, version?: MinecraftVersion): number =>
+  version &&
+  version !== MinecraftVersion.Bedrock &&
+  isVersionAtLeast(version, MinecraftVersion.V263) &&
+  (type === RecipeType.Blasting || type === RecipeType.Smoking)
+    ? 2
+    : 1;
+
 // null = use default
-export const resolveCookingTime = (type: CookingRecipeType, time: number | null): number =>
-  time ?? defaultCookingTime[type];
+export const resolveCookingTime = (
+  type: CookingRecipeType,
+  time: number | null,
+  version?: MinecraftVersion,
+): number => time ?? defaultCookingTime[type] * getCookingSpeed(type, version);
