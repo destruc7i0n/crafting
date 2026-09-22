@@ -1,24 +1,24 @@
-import { useState } from "react";
-import { createPortal } from "react-dom";
+import { isValidElement, useState, type ReactNode } from "react";
 
-import {
-  flip,
-  offset,
-  shift,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  type Placement,
-} from "@floating-ui/react";
+import { Popover as BasePopover } from "@base-ui/react/popover";
 
 import { cn } from "@/lib/utils";
 
+export const popoverSurfaceClassName =
+  "border-border bg-popover text-popover-foreground rounded-md border shadow-md";
+
+type Placement =
+  | "top"
+  | "bottom"
+  | "left"
+  | "right"
+  | `${"top" | "bottom" | "left" | "right"}-${"start" | "end"}`;
 type PopoverProps = {
-  content: React.ReactNode;
-  children: React.ReactNode;
+  content: ReactNode;
+  children: ReactNode;
   placement?: Placement;
   className?: string;
+  open?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
 };
 
@@ -27,46 +27,38 @@ export const Popover = ({
   children,
   placement = "right",
   className,
+  open,
   onOpenChange,
 }: PopoverProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
-    onOpenChange?.(open);
-  };
-
-  const { refs, floatingStyles, isPositioned, context } = useFloating({
-    open: isOpen,
-    onOpenChange: handleOpenChange,
-    placement,
-    strategy: "fixed",
-    middleware: [offset(8), flip(), shift({ padding: 8 })],
-  });
-
-  const click = useClick(context);
-  const dismiss = useDismiss(context, { ancestorScroll: true });
-  const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss]);
-
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const [side, align = "center"] = placement.split("-") as [
+    "top" | "bottom" | "left" | "right",
+    ("start" | "end" | "center")?,
+  ];
+  const trigger = isValidElement(children) ? children : <span>{children}</span>;
   return (
-    <span ref={refs.setReference} {...getReferenceProps()}>
-      {children}
-
-      {isOpen &&
-        typeof document !== "undefined" &&
-        createPortal(
-          <div
-            ref={refs.setFloating}
-            className={cn(
-              "border-border bg-popover text-popover-foreground fixed z-50 rounded-md border shadow-md",
-              className,
-            )}
-            style={{ ...floatingStyles, ...(!isPositioned ? { visibility: "hidden" } : {}) }}
-            {...getFloatingProps()}
-          >
+    <BasePopover.Root
+      open={open ?? uncontrolledOpen}
+      modal={false}
+      onOpenChange={(next) => {
+        setUncontrolledOpen(next);
+        onOpenChange?.(next);
+      }}
+    >
+      <BasePopover.Trigger render={trigger} nativeButton={trigger.type === "button"} />
+      <BasePopover.Portal>
+        <BasePopover.Positioner
+          side={side}
+          align={align}
+          sideOffset={8}
+          collisionPadding={8}
+          className="z-50"
+        >
+          <BasePopover.Popup className={cn(popoverSurfaceClassName, className)}>
             {content}
-          </div>,
-          document.body,
-        )}
-    </span>
+          </BasePopover.Popup>
+        </BasePopover.Positioner>
+      </BasePopover.Portal>
+    </BasePopover.Root>
   );
 };

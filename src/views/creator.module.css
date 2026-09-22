@@ -15,8 +15,6 @@
   --recipes-panel-width-desktop: 320px;
   /* 52px - collapsed recipe sidebar, icon-only column */
   --recipes-panel-width-collapsed: 52px;
-  /* mobile bottom tray expanded: 45% of viewport height */
-  --mobile-tray-height-expanded: 45svh;
   /* mobile recipe sheet: 90% of viewport height */
   --mobile-sheet-height: 90svh;
 }
@@ -55,30 +53,8 @@
 }
 
 .items-column {
-  @apply bg-card border-border/70 flex min-h-0 min-w-0 flex-col overflow-hidden rounded-t-2xl border-t;
+  @apply flex min-h-0 min-w-0 flex-col;
   grid-area: items;
-}
-
-.items-column-expanded {
-  max-height: var(--mobile-tray-height-expanded);
-}
-
-.tray-toggle {
-  @apply border-border/70 text-foreground flex cursor-pointer items-center justify-center gap-1 border-b px-4 py-2 text-center text-sm font-semibold transition-colors duration-150;
-
-  &:hover {
-    @apply bg-muted/50;
-  }
-
-  &:active {
-    @apply bg-muted;
-  }
-}
-
-.items-body {
-  @apply scrollbar-app min-h-0 flex-1 overflow-x-clip overflow-y-auto;
-  overscroll-behavior-y: contain;
-  padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom));
 }
 
 .sheet-overlay {
@@ -121,19 +97,6 @@
   .items-column {
     @apply sticky top-4 mx-0 min-h-0 w-auto self-start overflow-hidden rounded-none border-0 bg-transparent shadow-none;
     height: calc(100svh - var(--app-header-height) - 2rem);
-  }
-
-  .items-column-collapsed,
-  .items-column-expanded {
-    @apply max-h-none;
-  }
-
-  .tray-toggle {
-    @apply hidden;
-  }
-
-  .items-body {
-    @apply p-0;
   }
 }
 

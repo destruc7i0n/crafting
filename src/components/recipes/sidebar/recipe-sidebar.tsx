@@ -63,7 +63,10 @@ const UNSUPPORTED_RECIPE_MESSAGE = "Recipe type is not available in this version
 const RecipeWarning = ({ content }: { content: ReactNode }) => (
   <div className="border-border flex w-9 shrink-0 items-center justify-center border-l">
     <Disclosure placement="right" content={content}>
-      <span className="flex h-full w-full items-center justify-center p-1.5">
+      <span
+        aria-label="Recipe issue"
+        className="flex h-full w-full items-center justify-center p-1.5"
+      >
         <TriangleAlertIcon size={14} className="text-warning shrink-0" />
       </span>
     </Disclosure>
