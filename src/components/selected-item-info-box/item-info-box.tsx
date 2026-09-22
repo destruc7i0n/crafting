@@ -67,6 +67,11 @@ export const ItemInfoBox = (props: ItemInfoBoxProps) => {
           {title}
         </span>
         {content}
+        {display?.tooltipLines?.map((line) => (
+          <span key={line} className="text-muted-foreground truncate text-[10px] leading-tight">
+            {line}
+          </span>
+        ))}
       </div>
       <div className="flex flex-wrap items-center justify-end gap-1 pt-0.5 sm:flex-nowrap sm:pt-0.5">
         {isSlotSelection && (

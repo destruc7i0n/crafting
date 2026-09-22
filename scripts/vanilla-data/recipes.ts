@@ -102,8 +102,8 @@ async function generateJavaRecipeCatalog(
 
 async function writeRecipeCatalogManifest(): Promise<void> {
   const manifest = {
-    versions: [...recipeCatalogVersions],
-    latestVersion: recipeCatalogVersions[0],
+    versions: recipeCatalogVersions,
+    latestVersion: javaMinecraftVersions[0],
   } satisfies GeneratedRecipeCatalogManifest;
 
   await Bun.write(path.join(outputDir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);

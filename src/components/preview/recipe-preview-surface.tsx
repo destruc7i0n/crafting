@@ -3,13 +3,13 @@ import { useEffect, useState, type KeyboardEvent, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { SLOTS, type RecipeSlot } from "@/recipes/slots";
 
-import { Slot, SLOT_SIZE } from "../slot/slot";
+import { ItemPreview } from "../item/item-preview";
+import { SLOT_SIZE } from "../slot/slot";
 import { SlotDropTarget } from "../slot/slot-drop-target";
 import {
   BrewingArrowDownUi,
   BrewingBottleUi,
   BrewingFuelAndBubblesUi,
-  BrewingFuelSlotUi,
   BrewingReagentSlotUi,
   BrewingVisualConnectorLinesUi,
   CraftingArrow,
@@ -285,14 +285,30 @@ export function SmithingPreviewSurface<TSlotValue>({
 export function BrewingPreviewSurface<TSlotValue>({
   slots,
   renderSlot,
-}: PreviewSurfaceProps<TSlotValue>) {
+  fuelTexture,
+  fuelDisabled = false,
+}: PreviewSurfaceProps<TSlotValue> & { fuelTexture?: string; fuelDisabled?: boolean }) {
   const brewingSlotOptions = { transparent: true };
 
   return (
     <PreviewSurfaceFrame align="start" preferredWidth={352} minWidth={252}>
-      <div className="relative" style={{ height: 152, width: 228 }}>
-        <div className="pointer-events-none absolute" style={{ left: 20, top: 24 }}>
-          <BrewingFuelSlotUi />
+      <div
+        className="relative"
+        style={{ height: 152, width: 228 }}
+        data-brewing={Boolean(
+          slots[SLOTS.brewing.input] && slots[SLOTS.brewing.reagent] && slots[SLOTS.brewing.result],
+        )}
+      >
+        <div className="absolute" style={{ left: 20, top: 24 }}>
+          <SlotDropTarget
+            data-fuel-slot
+            data={{ type: "inert-fuel-slot-target" }}
+            inert
+            disabled={fuelDisabled}
+            canDrop={() => false}
+          >
+            <ItemPreview texture={fuelTexture} alt="Blaze Powder" draggable={false} />
+          </SlotDropTarget>
         </div>
 
         <div className="pointer-events-none absolute" style={{ left: 144, top: 24 }}>
@@ -313,7 +329,19 @@ export function BrewingPreviewSurface<TSlotValue>({
         >
           <BrewingBottleUi />
           <div style={{ marginLeft: 10, marginTop: 14 }}>
-            <BrewingBottleUi />
+            <SlotDropTarget
+              data-unused-bottle-slot
+              data={{ type: "inert-bottle-slot-target" }}
+              className="pointer-events-auto"
+              inert
+              transparent
+              disabled={fuelDisabled}
+              canDrop={() => false}
+            >
+              <div className="absolute -inset-0.5">
+                <BrewingBottleUi />
+              </div>
+            </SlotDropTarget>
           </div>
           <div style={{ marginLeft: 10 }}>
             <BrewingBottleUi />
@@ -323,6 +351,34 @@ export function BrewingPreviewSurface<TSlotValue>({
         <div className="pointer-events-none absolute" style={{ left: 184, top: 26 }}>
           <BrewingArrowDownUi />
         </div>
+
+        <img
+          aria-hidden
+          alt=""
+          src={`${import.meta.env.BASE_URL}assets/ui/brewing/fuel_length.png`}
+          className={styles.brewingSprite}
+          style={{ left: 108, top: 80 }}
+          width={36}
+          height={8}
+        />
+        <img
+          aria-hidden
+          alt=""
+          src={`${import.meta.env.BASE_URL}assets/ui/brewing/brew_progress.png`}
+          className={cn(styles.brewingSprite, styles.brewingProgress)}
+          style={{ left: 182, top: 24 }}
+          width={18}
+          height={56}
+        />
+        <img
+          aria-hidden
+          alt=""
+          src={`${import.meta.env.BASE_URL}assets/ui/brewing/bubbles.png`}
+          className={cn(styles.brewingSprite, styles.brewingBubbles)}
+          style={{ left: 114, top: 20 }}
+          width={24}
+          height={58}
+        />
 
         <div className="absolute" style={{ left: 144, top: 24 }}>
           {renderSlot(SLOTS.brewing.reagent, slots[SLOTS.brewing.reagent], brewingSlotOptions)}
@@ -334,10 +390,6 @@ export function BrewingPreviewSurface<TSlotValue>({
 
         <div className="absolute" style={{ left: 190, top: 92 }}>
           {renderSlot(SLOTS.brewing.result, slots[SLOTS.brewing.result], brewingSlotOptions)}
-        </div>
-
-        <div className="absolute" style={{ left: 20, top: 24 }}>
-          <Slot inert transparent />
         </div>
       </div>
     </PreviewSurfaceFrame>

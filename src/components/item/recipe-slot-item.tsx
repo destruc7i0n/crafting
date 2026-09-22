@@ -11,6 +11,7 @@ import { getFullId, getRawId, identifierUniqueKey } from "@/data/models/identifi
 import { MinecraftIdentifier } from "@/data/models/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
+import { useSlotContext } from "@/hooks/use-slot-context";
 import {
   getCustomTagIdentifier,
   getFirstAvailableTexture,
@@ -21,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { RecipeSlot } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { selectCustomItemByUid } from "@/stores/custom-item/selectors";
-import { isTagSlotValue } from "@/stores/recipe/slot-value";
+import { getSlotDisplay, isTagSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";
 import { useTagStore } from "@/stores/tag";
 import { selectTagByUid } from "@/stores/tag/selectors";
@@ -56,6 +57,7 @@ type RecipeSlotItemBaseProps = RecipeSlotItemProps & {
   texture: string;
   identifier?: MinecraftIdentifier;
   previewValues?: string[];
+  tooltipLines?: readonly string[];
 };
 
 const RecipeSlotItemBase = memo(
@@ -68,6 +70,7 @@ const RecipeSlotItemBase = memo(
     texture,
     identifier,
     previewValues,
+    tooltipLines,
   }: RecipeSlotItemBaseProps) => {
     const [dragging, setDragging] = useState(false);
     const isTouchDevice = useIsTouchDevice();
@@ -136,6 +139,7 @@ const RecipeSlotItemBase = memo(
       <ItemTooltip
         title={label}
         description={description}
+        tooltipLines={tooltipLines}
         visible={!dragging}
         className="absolute -inset-0.5 flex items-center justify-center"
       >
@@ -169,17 +173,20 @@ RecipeSlotItemBase.displayName = "RecipeSlotItemBase";
 
 const VanillaRecipeSlotItem = memo(({ value, ...props }: VanillaRecipeSlotItemProps) => {
   const { resources } = useResourcesForVersion();
+  const slotContext = useSlotContext();
 
   if (value.kind === "item") {
+    const display = getSlotDisplay(value, slotContext);
     const item = resources?.itemsById[identifierUniqueKey(value.id)];
 
     return (
       <RecipeSlotItemBase
         {...props}
         value={value}
-        label={item?.displayName ?? value.id.id}
-        texture={item?.texture ?? NoTextureTexture}
+        label={display?.label ?? item?.displayName ?? value.id.id}
+        texture={display?.texture ?? item?.texture ?? NoTextureTexture}
         identifier={value.id}
+        tooltipLines={display?.tooltipLines}
       />
     );
   }

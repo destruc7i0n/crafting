@@ -20,6 +20,7 @@ import {
 } from "@/components/recipes/catalog/recipe-catalog-grid";
 import { RecipeType } from "@/data/types";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { usePotionCatalogForMinecraftVersion } from "@/hooks/use-potion-catalog-for-version";
 import { useResourcesForMinecraftVersion } from "@/hooks/use-resources-for-version";
 import { getRecipeCardTitle, getRecipeSearchText } from "@/recipes/catalog/display";
 import {
@@ -41,6 +42,7 @@ const catalogRecipeTypes = [
   RecipeType.Stonecutter,
   RecipeType.Smithing,
   RecipeType.SmithingTransform,
+  RecipeType.Brewing,
 ] as const;
 
 const recipesRoute = getRouteApi("/recipes/{-$version}");
@@ -58,6 +60,7 @@ export function RecipesView() {
   const [searchInput, setSearchInput] = useState(search.q);
 
   const { resources } = useResourcesForMinecraftVersion(version);
+  const { catalog: potionCatalog } = usePotionCatalogForMinecraftVersion(version);
   const debouncedSearchInput = useDebouncedValue(searchInput, 200);
   const deferredQuery = useDeferredValue(debouncedSearchInput.trim().toLowerCase());
 
@@ -116,9 +119,9 @@ export function RecipesView() {
     (): CatalogGridRecipe[] =>
       catalog.map((entry) => ({
         entry,
-        title: getRecipeCardTitle(entry, resources),
+        title: getRecipeCardTitle(entry, resources, potionCatalog),
       })),
-    [catalog, resources],
+    [catalog, resources, potionCatalog],
   );
 
   // getRecipeSearchText expands tag slots, so compute lazily and cache per entry.
@@ -130,12 +133,12 @@ export function RecipesView() {
       }
       let text = cache.get(entry);
       if (text === undefined) {
-        text = getRecipeSearchText(entry, resources);
+        text = getRecipeSearchText(entry, resources, potionCatalog);
         cache.set(entry, text);
       }
       return text;
     };
-  }, [resources]);
+  }, [resources, potionCatalog]);
 
   const filteredRecipes = useMemo(
     (): CatalogGridRecipe[] =>
@@ -181,7 +184,11 @@ export function RecipesView() {
           {filteredRecipes.length === 0 ? (
             <CatalogEmptyState>No recipes match the current search.</CatalogEmptyState>
           ) : (
-            <RecipeCatalogGrid recipes={filteredRecipes} resources={resources} />
+            <RecipeCatalogGrid
+              recipes={filteredRecipes}
+              resources={resources}
+              potionCatalog={potionCatalog}
+            />
           )}
         </section>
       </main>

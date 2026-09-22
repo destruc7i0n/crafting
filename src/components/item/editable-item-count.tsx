@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 
+import { RecipeType } from "@/data/types";
 import { cn } from "@/lib/utils";
+import { brewingCountLimit } from "@/recipes/brewing/options";
 import { RecipeSlot } from "@/recipes/slots";
 import { canEditRecipeSlotCount } from "@/recipes/slots/utils";
 import { useRecipeStore } from "@/stores/recipe";
@@ -24,7 +26,11 @@ export const EditableItemCount = ({ slot, compact = false }: EditableItemCountPr
 
   const canEditCount = recipeType ? canEditRecipeSlotCount(recipeType, slot) : false;
 
-  if (!canEditCount || !canEditSlotCount(slotValue)) {
+  if (
+    !canEditCount ||
+    !canEditSlotCount(slotValue) ||
+    (recipeType === RecipeType.Brewing && brewingCountLimit(recipeType, slot, slotValue) === 1)
+  ) {
     return null;
   }
 
@@ -41,8 +47,13 @@ export const EditableItemCount = ({ slot, compact = false }: EditableItemCountPr
       cancelledRef.current = false;
       return;
     }
-    const parsed = Number.parseInt(countDraft, 10);
-    if (Number.isNaN(parsed)) {
+    const parsed =
+      recipeType === RecipeType.Brewing ? Number(countDraft) : Number.parseInt(countDraft, 10);
+    if (
+      Number.isNaN(parsed) ||
+      (recipeType === RecipeType.Brewing &&
+        (!Number.isInteger(parsed) || parsed < 1 || parsed > 64))
+    ) {
       cancelCount();
       return;
     }

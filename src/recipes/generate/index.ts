@@ -3,6 +3,7 @@ import {
   bedrockIdentifierHint,
   isValidBedrockNamespacedIdentifier,
 } from "@/lib/minecraft-identifier";
+import { getUnsupportedPotionSlotErrors } from "@/recipes/brewing/validation";
 import { getRecipeDefinition, isRecipeTypeSupported } from "@/recipes/definitions";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
@@ -27,6 +28,9 @@ export function generate({
   slotContext?: SlotContext;
   options?: GenerateOptions;
 }): GeneratedRecipe {
+  const potionErrors = getUnsupportedPotionSlotErrors(state);
+  if (potionErrors.length) throw new Error(potionErrors[0]);
+
   const definition = getRecipeDefinition(state.recipeType);
 
   if (version === MinecraftVersion.Bedrock) {

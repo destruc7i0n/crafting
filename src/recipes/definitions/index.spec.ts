@@ -36,10 +36,10 @@ describe("recipe definitions", () => {
     expect(getSupportedRecipeTypesForVersion(MinecraftVersion.V12111)).not.toContain(
       RecipeType.BrewingMix,
     );
-    expect(getSupportedRecipeTypesForVersion(MinecraftVersion.Bedrock)).not.toContain(
+    expect(getSupportedRecipeTypesForVersion(MinecraftVersion.Bedrock)).toContain(
       RecipeType.BrewingContainer,
     );
-    expect(getSupportedRecipeTypesForVersion(MinecraftVersion.Bedrock)).not.toContain(
+    expect(getSupportedRecipeTypesForVersion(MinecraftVersion.Bedrock)).toContain(
       RecipeType.BrewingMix,
     );
   });

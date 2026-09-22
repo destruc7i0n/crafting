@@ -1,6 +1,7 @@
 import { NoTextureTexture } from "@/data/constants";
 import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { IngredientItem, type MinecraftIdentifier } from "@/data/models/types";
+import { lookupPotion } from "@/data/potions";
 import { MinecraftVersion } from "@/data/types";
 import {
   getCustomTagIdentifier,
@@ -20,6 +21,7 @@ export const cloneRecipeSlotValue = (value: RecipeSlotValue): RecipeSlotValue =>
         kind: "item",
         id: cloneIdentifier(value.id),
         ...(value.count !== undefined ? { count: value.count } : {}),
+        ...(value.potion !== undefined ? { potion: value.potion } : {}),
       };
     case "custom_item":
       return {
@@ -138,6 +140,38 @@ export const getSlotDisplay = (
   switch (value.kind) {
     case "item": {
       const item = ctx.resources?.itemsById[identifierUniqueKey(value.id)];
+
+      const itemId = `${value.id.namespace}:${value.id.id}`;
+      const potion =
+        value.potion && ctx.potionCatalog
+          ? lookupPotion(
+              ctx.potionCatalog,
+              { id: itemId, potion: value.potion },
+              ctx.version === MinecraftVersion.Bedrock,
+            )
+          : undefined;
+      if (potion) {
+        return {
+          label: potion.readable,
+          texture: potion.texture || item?.texture || NoTextureTexture,
+          tooltipLines: potion.tooltip,
+        };
+      }
+
+      if (value.potion) {
+        const potionId = value.potion.includes(":")
+          ? value.potion.split(":").at(-1)!
+          : value.potion;
+        const readablePotion = potionId
+          .split("_")
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join(" ");
+        return {
+          label: `${item?.displayName ?? value.id.id} (${readablePotion})`,
+          texture: item?.texture ?? NoTextureTexture,
+          missing: true,
+        };
+      }
 
       return {
         label: item?.displayName ?? value.id.id,
