@@ -1,8 +1,9 @@
 import { MinecraftVersion, RecipeType } from "@/data/types";
 import { createEmptySlotContext } from "@/stores/recipe/slot-value";
 import { recipeStateDefaults } from "@/stores/recipe/types";
-import { makeRecipe } from "@/test/recipe-fixtures";
+import { itemSlot, makeRecipe } from "@/test/recipe-fixtures";
 
+import { generate } from ".";
 import { buildBedrock, buildJava, extractCookingInput } from "./cooking";
 import { createRecipeFormatter } from "./format/recipe-formatter";
 
@@ -16,7 +17,7 @@ const buildJavaRecipe = (
   const formatter = createRecipeFormatter(version);
 
   return buildJava({
-    state: extractCookingInput(recipe),
+    state: extractCookingInput(recipe, version),
     formatter,
     version,
     slotContext,
@@ -555,5 +556,31 @@ describe("generate cooking", () => {
         createEmptySlotContext(MinecraftVersion.V121),
       ),
     ).toThrow("Cannot generate output for unresolved custom_item reference");
+  });
+});
+
+describe("26.3 cooking output", () => {
+  it.each([
+    [RecipeType.Smelting, 200, 200],
+    [RecipeType.Blasting, 100, 200],
+    [RecipeType.Smoking, 100, 200],
+    [RecipeType.CampfireCooking, 100, 100],
+  ] as const)("writes required cookingtime for %s", (recipeType, previousTime, currentTime) => {
+    const state = makeRecipe({
+      recipeType,
+      slots: {
+        "cooking.ingredient": itemSlot({ namespace: "minecraft", id: "beef" }),
+        "cooking.result": itemSlot({ namespace: "minecraft", id: "cooked_beef" }),
+      },
+      cooking: { time: null },
+    });
+    expect(generate({ state, version: MinecraftVersion.V262 })).toMatchObject({
+      cookingtime: previousTime,
+    });
+    expect(generate({ state, version: MinecraftVersion.V263 })).toMatchObject({
+      cookingtime: currentTime,
+    });
+    state.cooking.time = 80;
+    expect(generate({ state, version: MinecraftVersion.V263 })).toMatchObject({ cookingtime: 80 });
   });
 });

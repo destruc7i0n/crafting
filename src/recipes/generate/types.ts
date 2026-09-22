@@ -178,6 +178,7 @@ interface BedrockBaseWrapper {
     identifier: string;
   };
   tags: BedrockTag[];
+  unlock?: { context: "AlwaysUnlocked" };
   priority?: number;
 }
 

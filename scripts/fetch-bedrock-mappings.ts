@@ -13,7 +13,7 @@ const mojangBedrockSamplesUrl =
 
 type GeyserItemMapping = {
   bedrock_identifier: string;
-  bedrock_data: number;
+  bedrock_data?: number;
 };
 
 type BedrockSamplesMojangItem = {
@@ -34,13 +34,35 @@ type BedrockTranslation = {
   data?: number;
 };
 
-// Java items that have no real Bedrock equivalent (GeyserMC maps these to existing Bedrock items as fallbacks)
+// java items without an equivalent that this recipe generator can represent
 const ignoredJavaIds = new Set([
+  // bedrock camp maps require a biome-specific variant; Java has one generic item
+  "minecraft:abandoned_camp_map",
   "minecraft:debug_stick",
   "minecraft:furnace_minecart",
   "minecraft:knowledge_book",
   "minecraft:spectral_arrow",
 ]);
+
+// bedrock's map_filled variants in Mojang/bedrock-samples, resource_pack/textures/item_texture.json
+// https://github.com/Mojang/bedrock-samples/blob/46ba6ea985fb5a92d79a9419198f10dda14c199d/resource_pack/textures/item_texture.json#L445
+const explorerMapData: Record<string, number> = {
+  "minecraft:ocean_monument_map": 3,
+  "minecraft:woodland_mansion_map": 4,
+  "minecraft:buried_treasure_map": 5,
+  "minecraft:snowy_village_map": 7,
+  "minecraft:taiga_village_map": 8,
+  "minecraft:plains_village_map": 9,
+  "minecraft:savanna_village_map": 10,
+  "minecraft:desert_village_map": 11,
+  "minecraft:jungle_pyramid_map": 12,
+  "minecraft:swamp_hut_map": 13,
+  "minecraft:buried_trial_chambers_map": 14,
+  "minecraft:buried_ancient_city_map": 23,
+  "minecraft:buried_mineshaft_map": 24,
+  "minecraft:desert_pyramid_map": 25,
+  "minecraft:warm_ocean_ruins_map": 26,
+};
 
 const fetchBedrockMappings = async () => {
   console.log("Fetching mappings...");
@@ -62,6 +84,9 @@ const fetchBedrockMappings = async () => {
   }
 
   const raw = (await geyserResponse.json()) as Record<string, GeyserItemMapping>;
+  for (const [javaId, data] of Object.entries(explorerMapData)) {
+    raw[javaId] = { bedrock_identifier: "minecraft:filled_map", bedrock_data: data };
+  }
   const mojangData = (await mojangResponse.json()) as BedrockSamplesMojangItemsFile;
   const textureData = (
     await import(`minecraft-textures/manifest/${latestVersion}.json`, {
@@ -70,7 +95,9 @@ const fetchBedrockMappings = async () => {
   ).default as MinecraftTexturesFile;
   const validBedrockIds = new Set(mojangData.data_items.map((item) => item.name));
   const textureItemIds = new Set(textureData.items.map((item) => item.id));
-  const translations: Record<string, BedrockTranslation | null> = {};
+  const translations: Record<string, BedrockTranslation | null> = Object.fromEntries(
+    [...ignoredJavaIds].map((id) => [id, null]),
+  );
   const candidates: Array<{
     javaId: string;
     bedrockId: string;
@@ -83,7 +110,6 @@ const fetchBedrockMappings = async () => {
     }
 
     if (ignoredJavaIds.has(javaId)) {
-      translations[javaId] = null;
       continue;
     }
 
@@ -102,7 +128,7 @@ const fetchBedrockMappings = async () => {
     candidates.push({
       javaId,
       bedrockId: entry.bedrock_identifier,
-      bedrockData: entry.bedrock_data,
+      bedrockData: entry.bedrock_data ?? 0,
     });
   }
 
