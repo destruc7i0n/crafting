@@ -20,18 +20,18 @@ type TooltipProps = {
   disabled?: boolean;
 };
 
-const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) => {
+const TooltipInner = ({ content, children, placement = "right", disabled }: TooltipProps) => {
   const [isHovering, setIsHovering] = useState(false);
 
   const { refs, floatingStyles, isPositioned, context } = useFloating({
-    open: isHovering,
+    open: isHovering && !disabled,
     onOpenChange: setIsHovering,
     placement,
     strategy: "fixed",
     middleware: [offset(8), flip(), shift({ padding: 8 })],
   });
 
-  const hover = useHover(context);
+  const hover = useHover(context, { enabled: !disabled });
   const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
 
   return (
@@ -39,6 +39,7 @@ const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) 
       {children}
 
       {isHovering &&
+        !disabled &&
         typeof document !== "undefined" &&
         createPortal(
           <div
@@ -58,7 +59,7 @@ const TooltipInner = ({ content, children, placement = "right" }: TooltipProps) 
 export const Tooltip = (props: TooltipProps) => {
   const isTouchDevice = useIsTouchDevice();
 
-  if (isTouchDevice || props.disabled) {
+  if (isTouchDevice) {
     return <>{props.children}</>;
   }
 
