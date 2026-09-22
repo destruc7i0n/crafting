@@ -2,6 +2,7 @@ import { useRef } from "react";
 
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 
+import type { PotionCatalog } from "@/data/potions";
 import type { GeneratedRecipeCatalogEntry } from "@/recipes/catalog/types";
 import type { VersionResourceData } from "@/stores/resources";
 
@@ -24,9 +25,10 @@ export type CatalogGridRecipe = {
 type RecipeCatalogGridProps = {
   recipes: readonly CatalogGridRecipe[];
   resources?: VersionResourceData;
+  potionCatalog?: PotionCatalog;
 };
 
-export function RecipeCatalogGrid({ recipes, resources }: RecipeCatalogGridProps) {
+export function RecipeCatalogGrid({ recipes, resources, potionCatalog }: RecipeCatalogGridProps) {
   const gridRef = useRef<HTMLDivElement | null>(null);
 
   const width = useElementWidth(gridRef, recipeCatalogCardMinWidth);
@@ -78,7 +80,12 @@ export function RecipeCatalogGrid({ recipes, resources }: RecipeCatalogGridProps
               }px, ${virtualItem.start - scrollMargin}px, 0)`,
             }}
           >
-            <RecipeCatalogCard entry={recipe.entry} title={recipe.title} resources={resources} />
+            <RecipeCatalogCard
+              entry={recipe.entry}
+              title={recipe.title}
+              resources={resources}
+              potionCatalog={potionCatalog}
+            />
           </div>
         );
       })}

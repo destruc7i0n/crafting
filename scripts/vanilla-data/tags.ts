@@ -55,7 +55,7 @@ export async function generateJavaVanillaTags(gitDir: string): Promise<Minecraft
 
 export async function writeVanillaTagsManifest(versions: MinecraftVersion[]): Promise<void> {
   const manifest = {
-    versions: [...versions],
+    versions,
   } satisfies GeneratedVanillaTagsManifest;
 
   await Bun.write(path.join(outputDir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);

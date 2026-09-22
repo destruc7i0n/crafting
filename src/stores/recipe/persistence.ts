@@ -87,10 +87,19 @@ const normalizeRecipeSlotValue = (raw: unknown): RecipeSlotValue | undefined => 
         return undefined;
       }
 
+      // reject malformed potion metadata instead of silently dropping it
+      if (
+        Object.prototype.hasOwnProperty.call(value, "potion") &&
+        !isNonEmptyString(value.potion)
+      ) {
+        return undefined;
+      }
+
       return {
         kind: "item",
         id,
         ...(isFiniteNumber(value.count) ? { count: value.count } : {}),
+        ...(isNonEmptyString(value.potion) ? { potion: value.potion } : {}),
       };
     }
     case "custom_item":

@@ -98,7 +98,24 @@ export interface CraftingTransmuteRecipe {
   result: ObjectResultRef | EmptyObject;
 }
 
+export interface JavaItemComponents {
+  "minecraft:potion_contents"?: { potion: string };
+}
+
+export interface JavaBrewingIngredient {
+  item: string;
+  potion_contents?: { potions: string };
+}
+
+export interface JavaBrewingRecipe {
+  type: "minecraft:brewing";
+  input: JavaBrewingIngredient;
+  reagent: JavaBrewingIngredient;
+  output: { id: string; count?: number; components?: JavaItemComponents };
+}
+
 export type JavaRecipe =
+  | JavaBrewingRecipe
   | ShapedCraftingRecipe
   | ShapelessCraftingRecipe
   | CookingRecipe

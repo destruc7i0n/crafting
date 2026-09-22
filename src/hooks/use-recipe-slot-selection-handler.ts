@@ -8,15 +8,11 @@ import {
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeSlot } from "@/stores/recipe/selectors";
 import { cloneRecipeSlotValue } from "@/stores/recipe/slot-value";
-import { RecipeSlotValue } from "@/stores/recipe/types";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
 import { useUIStore } from "@/stores/ui";
 
-export const useRecipeSlotSelectionHandler = (
-  slot: RecipeSlot,
-  rawSlotValue: RecipeSlotValue | undefined,
-) => {
+export const useRecipeSlotSelectionHandler = (slot: RecipeSlot) => {
   const isTouchDevice = useIsTouchDevice();
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const setRecipeSlot = useRecipeStore((state) => state.setRecipeSlot);
@@ -37,6 +33,8 @@ export const useRecipeSlotSelectionHandler = (
 
     const { selection, lastPlacedSlot, selectIngredient, selectSlot, clearInteractionState } =
       useUIStore.getState();
+    // read current slots to avoid stale values during rapid moves and swaps
+    const rawSlotValue = selectCurrentRecipeSlot(slot)(useRecipeStore.getState());
 
     // tap same selected recipe slot -> deselect
     if (selection?.type === "slot" && selection.slot === slot) {
@@ -67,18 +65,20 @@ export const useRecipeSlotSelectionHandler = (
     }
 
     if (selection?.type === "slot") {
-      if (!canRecipeSlotAcceptSlotValue(slot, selection.value)) return;
+      const sourceSlotValue = selectCurrentRecipeSlot(selection.slot)(useRecipeStore.getState());
+      if (!sourceSlotValue) return;
+      if (!canRecipeSlotAcceptSlotValue(slot, sourceSlotValue)) return;
       if (rawSlotValue) {
         // swap: destination gets selected item, source gets displaced item
-        setRecipeSlot(slot, cloneRecipeSlotValue(selection.value));
+        setRecipeSlot(slot, cloneRecipeSlotValue(sourceSlotValue));
         setRecipeSlot(selection.slot, cloneRecipeSlotValue(rawSlotValue));
       } else {
         // empty slot: move
-        setRecipeSlot(slot, cloneRecipeSlotValue(selection.value));
+        setRecipeSlot(slot, cloneRecipeSlotValue(sourceSlotValue));
         setRecipeSlot(selection.slot, undefined);
       }
       trackStartedAfterMutation();
-      selectSlot(slot, cloneRecipeSlotValue(selection.value));
+      selectSlot(slot, cloneRecipeSlotValue(sourceSlotValue));
       return;
     }
 
