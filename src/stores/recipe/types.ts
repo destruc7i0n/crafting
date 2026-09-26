@@ -4,6 +4,9 @@ import { generateUid } from "@/lib/utils";
 import { RecipeSlot } from "@/recipes/slots";
 import { VersionResourceData } from "@/stores/resources";
 
+import type { ItemComponents } from "@/data/item-components";
+import type { PotionCatalog } from "@/data/potions";
+
 interface RecipeFields {
   id: string;
   nameMode: "auto" | "manual";
@@ -33,7 +36,7 @@ interface RecipeFields {
 }
 
 export type RecipeSlotValue =
-  | { kind: "item"; id: MinecraftIdentifier; count?: number }
+  | { kind: "item"; id: MinecraftIdentifier; count?: number; components?: ItemComponents }
   | { kind: "custom_item"; uid: string; count?: number }
   | { kind: "vanilla_tag"; id: MinecraftIdentifier }
   | { kind: "custom_tag"; uid: string };
@@ -50,6 +53,7 @@ export interface RecipeState {
 export interface SlotDisplay {
   label: string;
   texture: string;
+  tooltipLines?: string[];
   previewValues?: string[];
   missing?: boolean;
 }
@@ -57,6 +61,8 @@ export interface SlotDisplay {
 export interface SlotContext {
   version: MinecraftVersion;
   resources?: VersionResourceData;
+  potionCatalog?: PotionCatalog;
+  potionCatalogError?: string;
   customItemsByUid: Record<string, CustomItem>;
   tagsByUid: Record<string, Tag>;
   allTags: Tag[];

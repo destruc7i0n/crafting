@@ -21,6 +21,7 @@ import { TooltipDisplay } from "./tooltip-display";
 type TooltipProps = {
   title: string;
   description: string;
+  tooltipLines?: readonly string[];
   visible?: boolean;
   className?: string;
   touchBehavior?: "disabled" | "tap";
@@ -35,6 +36,7 @@ type TooltipInnerProps = TooltipProps & {
 const TooltipInner = ({
   title,
   description,
+  tooltipLines,
   children,
   visible = true,
   className,
@@ -82,6 +84,7 @@ const TooltipInner = ({
             ref={refs.setFloating}
             title={title}
             description={description}
+            tooltipLines={tooltipLines}
             style={{ ...floatingStyles, ...(!isPositioned ? { visibility: "hidden" } : {}) }}
             {...getFloatingProps()}
           />,

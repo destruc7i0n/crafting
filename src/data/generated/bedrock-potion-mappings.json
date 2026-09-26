@@ -1,0 +1,193 @@
+{
+  "version": "1.26.45",
+  "items": {
+    "minecraft:arrow|minecraft:awkward": {
+      "id": "minecraft:arrow",
+      "data": 5
+    },
+    "minecraft:arrow|minecraft:fire_resistance": {
+      "id": "minecraft:arrow",
+      "data": 13
+    },
+    "minecraft:arrow|minecraft:harming": {
+      "id": "minecraft:arrow",
+      "data": 24
+    },
+    "minecraft:arrow|minecraft:healing": {
+      "id": "minecraft:arrow",
+      "data": 22
+    },
+    "minecraft:arrow|minecraft:infested": {
+      "id": "minecraft:arrow",
+      "data": 47
+    },
+    "minecraft:arrow|minecraft:invisibility": {
+      "id": "minecraft:arrow",
+      "data": 8
+    },
+    "minecraft:arrow|minecraft:leaping": {
+      "id": "minecraft:arrow",
+      "data": 10
+    },
+    "minecraft:arrow|minecraft:long_fire_resistance": {
+      "id": "minecraft:arrow",
+      "data": 14
+    },
+    "minecraft:arrow|minecraft:long_invisibility": {
+      "id": "minecraft:arrow",
+      "data": 9
+    },
+    "minecraft:arrow|minecraft:long_leaping": {
+      "id": "minecraft:arrow",
+      "data": 11
+    },
+    "minecraft:arrow|minecraft:long_mundane": {
+      "id": "minecraft:arrow",
+      "data": 3
+    },
+    "minecraft:arrow|minecraft:long_nightvision": {
+      "id": "minecraft:arrow",
+      "data": 7
+    },
+    "minecraft:arrow|minecraft:long_poison": {
+      "id": "minecraft:arrow",
+      "data": 27
+    },
+    "minecraft:arrow|minecraft:long_regeneration": {
+      "id": "minecraft:arrow",
+      "data": 30
+    },
+    "minecraft:arrow|minecraft:long_slow_falling": {
+      "id": "minecraft:arrow",
+      "data": 42
+    },
+    "minecraft:arrow|minecraft:long_slowness": {
+      "id": "minecraft:arrow",
+      "data": 19
+    },
+    "minecraft:arrow|minecraft:long_strength": {
+      "id": "minecraft:arrow",
+      "data": 33
+    },
+    "minecraft:arrow|minecraft:long_swiftness": {
+      "id": "minecraft:arrow",
+      "data": 16
+    },
+    "minecraft:arrow|minecraft:long_turtle_master": {
+      "id": "minecraft:arrow",
+      "data": 39
+    },
+    "minecraft:arrow|minecraft:long_water_breathing": {
+      "id": "minecraft:arrow",
+      "data": 21
+    },
+    "minecraft:arrow|minecraft:long_weakness": {
+      "id": "minecraft:arrow",
+      "data": 36
+    },
+    "minecraft:arrow|minecraft:mundane": {
+      "id": "minecraft:arrow",
+      "data": 2
+    },
+    "minecraft:arrow|minecraft:nightvision": {
+      "id": "minecraft:arrow",
+      "data": 6
+    },
+    "minecraft:arrow|minecraft:oozing": {
+      "id": "minecraft:arrow",
+      "data": 46
+    },
+    "minecraft:arrow|minecraft:poison": {
+      "id": "minecraft:arrow",
+      "data": 26
+    },
+    "minecraft:arrow|minecraft:regeneration": {
+      "id": "minecraft:arrow",
+      "data": 29
+    },
+    "minecraft:arrow|minecraft:slow_falling": {
+      "id": "minecraft:arrow",
+      "data": 41
+    },
+    "minecraft:arrow|minecraft:slowness": {
+      "id": "minecraft:arrow",
+      "data": 18
+    },
+    "minecraft:arrow|minecraft:strength": {
+      "id": "minecraft:arrow",
+      "data": 32
+    },
+    "minecraft:arrow|minecraft:strong_harming": {
+      "id": "minecraft:arrow",
+      "data": 25
+    },
+    "minecraft:arrow|minecraft:strong_healing": {
+      "id": "minecraft:arrow",
+      "data": 23
+    },
+    "minecraft:arrow|minecraft:strong_leaping": {
+      "id": "minecraft:arrow",
+      "data": 12
+    },
+    "minecraft:arrow|minecraft:strong_poison": {
+      "id": "minecraft:arrow",
+      "data": 28
+    },
+    "minecraft:arrow|minecraft:strong_regeneration": {
+      "id": "minecraft:arrow",
+      "data": 31
+    },
+    "minecraft:arrow|minecraft:strong_slowness": {
+      "id": "minecraft:arrow",
+      "data": 43
+    },
+    "minecraft:arrow|minecraft:strong_strength": {
+      "id": "minecraft:arrow",
+      "data": 34
+    },
+    "minecraft:arrow|minecraft:strong_swiftness": {
+      "id": "minecraft:arrow",
+      "data": 17
+    },
+    "minecraft:arrow|minecraft:strong_turtle_master": {
+      "id": "minecraft:arrow",
+      "data": 40
+    },
+    "minecraft:arrow|minecraft:swiftness": {
+      "id": "minecraft:arrow",
+      "data": 15
+    },
+    "minecraft:arrow|minecraft:thick": {
+      "id": "minecraft:arrow",
+      "data": 4
+    },
+    "minecraft:arrow|minecraft:turtle_master": {
+      "id": "minecraft:arrow",
+      "data": 38
+    },
+    "minecraft:arrow|minecraft:water": {
+      "id": "minecraft:arrow",
+      "data": 1
+    },
+    "minecraft:arrow|minecraft:water_breathing": {
+      "id": "minecraft:arrow",
+      "data": 20
+    },
+    "minecraft:arrow|minecraft:weakness": {
+      "id": "minecraft:arrow",
+      "data": 35
+    },
+    "minecraft:arrow|minecraft:weaving": {
+      "id": "minecraft:arrow",
+      "data": 45
+    },
+    "minecraft:arrow|minecraft:wind_charged": {
+      "id": "minecraft:arrow",
+      "data": 44
+    },
+    "minecraft:arrow|minecraft:wither": {
+      "id": "minecraft:arrow",
+      "data": 37
+    }
+  }
+}

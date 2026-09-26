@@ -38,9 +38,22 @@
   border-image: linear-gradient(rgba(80, 0, 255, 0.31), rgba(40, 0, 127, 0.31)) 1;
 }
 
-.tooltip > .tooltip-description {
+.tooltip > .tooltipDescription {
   font-size: 16px;
   color: #555555;
   display: block;
   margin-top: 2px;
+}
+
+.tooltip {
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.65);
+}
+.tooltipTitle {
+  margin-bottom: 4px;
+}
+.tooltipEffect {
+  color: #5555ff;
+}
+.tooltipEffect[data-harmful="true"] {
+  color: #ff5555;
 }

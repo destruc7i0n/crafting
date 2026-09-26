@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { javaMinecraftVersions, defaultMinecraftVersions } from "@/data/constants";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 
 import {
@@ -94,6 +95,14 @@ describe("recipeTypeAvailability", () => {
       minVersion: MinecraftVersion.Bedrock,
       enabled: false,
     });
+  });
+});
+
+describe("public versions", () => {
+  it("exposes 26.3 as the latest public Java version", () => {
+    expect(javaMinecraftVersions[0]).toBe(MinecraftVersion.V263);
+    expect(defaultMinecraftVersions).toContain(MinecraftVersion.V263);
+    expect(defaultMinecraftVersions[1]).toBe(MinecraftVersion.V263);
   });
 });
 
