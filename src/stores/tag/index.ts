@@ -15,7 +15,11 @@ type TagActions = {
   removeTag: (uid: string) => void;
   addValueToTag: (uid: string, value: TagValue) => boolean;
   removeValueFromTagByIndex: (uid: string, index: number) => boolean;
-  materializeCustomTagValues: (uid: string, identifier: MinecraftIdentifier) => void;
+  materializeCustomRefs: (
+    kind: "custom_item" | "custom_tag",
+    uid: string,
+    identifier: MinecraftIdentifier,
+  ) => void;
 };
 
 export const useTagStore = create<TagState & TagActions>()(
@@ -73,15 +77,15 @@ export const useTagStore = create<TagState & TagActions>()(
         });
       },
 
-      /**
-       * Converts refs to a tag that is about to be deleted into the plain identifier they used to
-       * resolve to. Preserves the long-standing behaviour that a reference to a deleted tag survives
-       * and still exports, instead of silently dropping a value the user never touched.
-       */
-      materializeCustomTagValues: (uid, identifier) => {
+      // turns refs to a soon-to-be-deleted entity into the identifier they resolved to, so the
+      // reference survives instead of silently dropping a value the user never touched
+      materializeCustomRefs: (kind, uid, identifier) => {
+        const literalType = kind === "custom_tag" ? "tag" : "item";
+        const matches = (value: TagValue) => value.type === kind && value.uid === uid;
+
         set((state) => {
           for (const tag of state.tags) {
-            if (!tag.values.some((value) => value.type === "custom_tag" && value.uid === uid)) {
+            if (!tag.values.some(matches)) {
               continue;
             }
 
@@ -91,8 +95,8 @@ export const useTagStore = create<TagState & TagActions>()(
             tag.values = tag.values
               .map(
                 (value): TagValue =>
-                  value.type === "custom_tag" && value.uid === uid
-                    ? { type: "tag", id: { ...identifier } }
+                  matches(value)
+                    ? normalizeTagValue({ type: literalType, id: { ...identifier } })
                     : value,
               )
               .filter((value) => {

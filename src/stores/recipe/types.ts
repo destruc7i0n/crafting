@@ -58,6 +58,8 @@ export interface SlotContext {
   version: MinecraftVersion;
   resources?: VersionResourceData;
   customItemsByUid: Record<string, CustomItem>;
+  // keyed by identifier, for resolving a resolved id back to a custom item when rendering
+  customItemsById: Record<string, CustomItem>;
   tagsByUid: Record<string, Tag>;
   allTags: Tag[];
   vanillaTags: Record<string, string[]>;

@@ -5,6 +5,7 @@ import { NamingContext, resolveRecipeNames } from "@/recipes/naming";
 import { Recipe, SlotContext } from "@/stores/recipe/types";
 
 import { validateDatapackExport } from "../validate-datapack-export";
+import { validateTagsForExport } from "../validate-tag-export";
 
 import type { DownloadResult } from "./types";
 
@@ -40,6 +41,17 @@ export const downloadDatapack = async (
   if (invalidRecipes.length > 0) {
     alert(
       `Please finish all recipes before downloading the datapack:\n\n- ${invalidRecipes.join("\n- ")}`,
+    );
+    return { status: "blocked" };
+  }
+
+  const invalidTags = validateTagsForExport(slotContext.allTags, slotContext).map(
+    (tag) => `${tag.name}: ${tag.errors.join(", ")}`,
+  );
+
+  if (invalidTags.length > 0) {
+    alert(
+      `Please fix these tags before downloading the datapack:\n\n- ${invalidTags.join("\n- ")}`,
     );
     return { status: "blocked" };
   }

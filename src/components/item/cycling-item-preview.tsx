@@ -1,18 +1,21 @@
 import { memo, useMemo, type ComponentPropsWithRef, type ReactNode } from "react";
 
 import { NoTextureTexture } from "@/data/constants";
-import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
+import { useItemLookup } from "@/hooks/use-item-lookup";
 import { useTagCycleIndex } from "@/hooks/use-tag-cycle-tick";
+import { lookupItem } from "@/lib/tags";
 
-import type { Item } from "@/data/models/types";
+import type { CustomItem, Item } from "@/data/models/types";
 
 import { ItemPreview } from "./item-preview";
+
+type PreviewItem = Item | CustomItem;
 
 type CyclingItemPreviewProps = {
   itemIds: string[];
   itemsById?: Record<string, Item>;
   active?: boolean;
-  render?: (state: { currentItem: Item | undefined; preview: ReactNode }) => ReactNode;
+  render?: (state: { currentItem: PreviewItem | undefined; preview: ReactNode }) => ReactNode;
 } & Omit<ComponentPropsWithRef<typeof ItemPreview>, "texture">;
 
 type UseCyclingItemPreviewStateArgs = {
@@ -26,18 +29,22 @@ function useCyclingItemPreviewState({
   itemsById,
   active = true,
 }: UseCyclingItemPreviewStateArgs): {
-  currentItem: Item | undefined;
+  currentItem: PreviewItem | undefined;
   texture: string;
 } {
-  const { resources } = useResourcesForVersion();
-  const resolvedItemsById = itemsById ?? resources?.itemsById;
+  // falls back to the shared lookup so custom items inside a tag resolve too
+  const fallbackLookup = useItemLookup();
+  const lookup = useMemo(
+    () => (itemsById ? { itemsById } : fallbackLookup),
+    [itemsById, fallbackLookup],
+  );
 
   const visibleItems = useMemo(
     () =>
       itemIds
-        .map((itemId) => resolvedItemsById?.[itemId])
-        .filter((item): item is Item => item !== undefined),
-    [itemIds, resolvedItemsById],
+        .map((itemId) => lookupItem(lookup, itemId))
+        .filter((item): item is PreviewItem => item !== undefined),
+    [itemIds, lookup],
   );
 
   const cycleIndex = useTagCycleIndex(active ? visibleItems.length : 0);

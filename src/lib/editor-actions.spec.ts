@@ -150,6 +150,35 @@ describe("editor actions", () => {
     expect(useRecipeStore.getState().recipes[1]?.slots[SLOTS.crafting.slot1]).toBeUndefined();
   });
 
+  it("materializes uid refs to a deleted custom item into its identifier", () => {
+    useCustomItemStore.getState().addCustomItem({
+      name: "Ruby",
+      rawId: "mymod:ruby",
+      texture: "",
+      version: MinecraftVersion.V121,
+    });
+    const customItem = useCustomItemStore.getState().customItems[0]!;
+
+    useTagStore.setState((state) => ({
+      ...state,
+      tags: [
+        {
+          uid: "tag-1",
+          id: "crafting:gems",
+          values: [{ type: "custom_item", uid: customItem.uid }],
+        },
+      ],
+    }));
+
+    deleteCustomItemAndClearRecipeRefs(customItem.uid);
+
+    expect(useCustomItemStore.getState().customItems).toEqual([]);
+    // the id is still a valid authored id, so the tag keeps it and still exports it
+    expect(useTagStore.getState().tags[0]?.values).toEqual([
+      { type: "item", id: { namespace: "mymod", id: "ruby" } },
+    ]);
+  });
+
   it("materializes uid refs to a deleted tag into its identifier", () => {
     useTagStore.setState((state) => ({
       ...state,

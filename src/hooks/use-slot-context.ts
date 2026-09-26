@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { toByUidMap } from "@/lib/tags";
+import { buildCustomItemsById, toByUidMap } from "@/lib/tags";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { SlotContext } from "@/stores/recipe/types";
 import { useTagStore } from "@/stores/tag";
@@ -17,6 +17,7 @@ export const useSlotContext = (): SlotContext => {
       version,
       resources,
       customItemsByUid: toByUidMap(customItems),
+      customItemsById: buildCustomItemsById(customItems),
       tagsByUid: toByUidMap(tags),
       allTags: tags,
       vanillaTags: resources?.vanillaTags ?? {},

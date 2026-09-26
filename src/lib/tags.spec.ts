@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { Tag, TagValue } from "@/data/models/types";
+import { CustomItem, Tag, TagValue } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 
 import {
@@ -18,6 +18,7 @@ import {
 } from "./tags";
 
 const ctx = (allTags: Tag[] = [], vanillaTags: Record<string, string[]> = {}): TagContext => ({
+  customItemsByUid: {},
   tagsByUid: toByUidMap(allTags),
   allTags,
   vanillaTags,
@@ -171,6 +172,46 @@ describe("uid-referenced tag values", () => {
     values: [{ type: "item", id: { namespace: "minecraft", id: "diamond" } }],
   };
 
+  const customItem: CustomItem = {
+    type: "custom_item",
+    uid: "ci-1",
+    id: { namespace: "mymod", id: "ruby" },
+    displayName: "Ruby",
+    texture: "ruby.png",
+    _version: MinecraftVersion.V121,
+  };
+
+  const withItems = (customItems: CustomItem[]): TagContext => ({
+    ...ctx([]),
+    customItemsByUid: toByUidMap(customItems),
+  });
+
+  it("resolves a custom_item ref through the entity's current identifier", () => {
+    const value: TagValue = { type: "custom_item", uid: "ci-1" };
+
+    expect(resolveTagValues([value], withItems([customItem]))).toEqual(["mymod:ruby"]);
+    expect(tagValueExportRef(value, withItems([customItem]))).toBe("mymod:ruby");
+  });
+
+  it("follows a custom item rename with no change to the stored value", () => {
+    const value: TagValue = { type: "custom_item", uid: "ci-1" };
+    const renamed = { ...customItem, id: { namespace: "mymod", id: "red_gem" } };
+
+    expect(resolveTagValues([value], withItems([renamed]))).toEqual(["mymod:red_gem"]);
+    expect(tagValueExportRef(value, withItems([renamed]))).toBe("mymod:red_gem");
+  });
+
+  it("emits nothing for a dangling custom item uid", () => {
+    const dangling: TagValue = { type: "custom_item", uid: "gone" };
+
+    expect(resolveTagValues([dangling], withItems([]))).toEqual([]);
+    expect(tagValueExportRef(dangling, withItems([]))).toBeUndefined();
+  });
+
+  it("keys a custom item on its uid, so a rename cannot change its identity", () => {
+    expect(tagValueKey({ type: "custom_item", uid: "ci-1" })).toBe("custom_item:ci-1");
+  });
+
   it("resolves a custom_tag ref to the tag's members", () => {
     const value: TagValue = { type: "custom_tag", uid: "ct-1" };
 
@@ -314,7 +355,7 @@ describe("createTagItem", () => {
       rawId: "minecraft:logs",
       values: ["minecraft:stone"],
       version: MinecraftVersion.V121,
-      itemsById,
+      lookup: { itemsById },
       tagSource: "vanilla",
     });
 

@@ -6,6 +6,13 @@ import { useTagStore } from "@/stores/tag";
 import { useUIStore } from "@/stores/ui";
 
 export const deleteCustomItemAndClearRecipeRefs = (uid: string) => {
+  const item = useCustomItemStore.getState().customItems.find((current) => current.uid === uid);
+
+  // tags keep pointing at the id: it is still a valid authored id and still exports
+  if (item) {
+    useTagStore.getState().materializeCustomRefs("custom_item", uid, item.id);
+  }
+
   useCustomItemStore.getState().deleteCustomItem(uid);
   useRecipeStore
     .getState()
@@ -17,7 +24,7 @@ export const deleteTagAndClearRecipeRefs = (uid: string) => {
 
   // other tags keep pointing at the id, as they did before refs were uid-based
   if (tag) {
-    useTagStore.getState().materializeCustomTagValues(uid, getCustomTagIdentifier(tag));
+    useTagStore.getState().materializeCustomRefs("custom_tag", uid, getCustomTagIdentifier(tag));
   }
 
   useTagStore.getState().removeTag(uid);

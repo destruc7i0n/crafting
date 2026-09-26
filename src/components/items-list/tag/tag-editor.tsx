@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { Item, Tag, TagItem } from "@/data/models/types";
+import { CustomItem, Item, Tag, TagItem } from "@/data/models/types";
 import { trackCustomTag } from "@/lib/analytics";
 import {
   isValidJavaNamespacedIdentifier,
@@ -9,6 +9,7 @@ import {
 import {
   getDuplicateTagIdErrorMessage,
   hasDuplicateTagId,
+  ItemLookup,
   TagContext,
   tagValueKey,
   toTagValue,
@@ -22,8 +23,9 @@ import { ValueList, ValueOption } from "./value-list";
 
 interface TagEditorProps {
   tag: Tag;
+  customItems: CustomItem[];
   items: Item[];
-  itemsById?: Record<string, Item>;
+  lookup?: ItemLookup;
   tagCtx: TagContext;
   vanillaTagItems: TagItem[];
   customTagItems: Record<string, TagItem>;
@@ -34,8 +36,9 @@ const getTagValueCount = (uid: string) =>
 
 export const TagEditor = ({
   tag,
+  customItems,
   items,
-  itemsById,
+  lookup,
   tagCtx,
   vanillaTagItems,
   customTagItems,
@@ -105,6 +108,7 @@ export const TagEditor = ({
   );
 
   const filteredValues = useFilteredValueOptions({
+    customItems,
     items,
     vanillaTagItems,
     customTagItems: eligibleCustomTagItems,
@@ -149,7 +153,7 @@ export const TagEditor = ({
 
         <TagValueGrid
           values={tag.values}
-          itemsById={itemsById}
+          lookup={lookup}
           tagCtx={tagCtx}
           onClick={handleRemoveValue}
         />

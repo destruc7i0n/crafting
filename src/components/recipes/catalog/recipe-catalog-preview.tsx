@@ -19,7 +19,7 @@ import { getFullId } from "@/data/models/identifier/utilities";
 import { getTagLabel } from "@/lib/tags";
 import { getRecipeDefinition } from "@/recipes/definitions";
 
-import type { Item } from "@/data/models/types";
+import type { CustomItem, Item } from "@/data/models/types";
 import type {
   CatalogSlotAlternative,
   CatalogSlotValue,
@@ -162,14 +162,14 @@ function renderCatalogPreviewSlot({ value, resources, options }: CatalogPreviewS
 }
 
 function getCyclingLabel(
-  currentItem: Item | undefined,
+  currentItem: Item | CustomItem | undefined,
   presentation: CyclingCatalogSlotPresentation,
 ): string {
   return currentItem?.displayName ?? presentation.label;
 }
 
 function getCyclingDescription(
-  currentItem: Item | undefined,
+  currentItem: Item | CustomItem | undefined,
   presentation: CyclingCatalogSlotPresentation,
 ): string {
   return currentItem ? getFullId(currentItem.id) : presentation.description;
