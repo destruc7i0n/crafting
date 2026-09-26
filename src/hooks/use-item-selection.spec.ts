@@ -110,3 +110,39 @@ it("exposes only touch ingredient selections to ingredient list items", () => {
   useUIStore.getState().selectSlot(SLOTS.crafting.slot1, stone);
   expect(useIngredientSelection()).toBeUndefined();
 });
+
+it("follows brewing choices and counts on the selected touch slot", () => {
+  harness.touch = true;
+  const recipe = makeRecipe({ id: "selection-test", recipeType: RecipeType.Brewing });
+  useRecipeStore.setState({ recipes: [recipe], selectedRecipeId: recipe.id });
+  const arrow = (potion: string) => ({
+    kind: "item" as const,
+    id: { namespace: "minecraft", id: "tipped_arrow" },
+    components: { "minecraft:potion_contents": { potion: potion } },
+  });
+  const store = useRecipeStore.getState();
+  store.setRecipeSlot(SLOTS.brewing.result, arrow("minecraft:healing"));
+  useUIStore.getState().selectSlot(SLOTS.brewing.result, arrow("minecraft:healing"));
+  useItemSelection();
+  const before = snapshot();
+  store.setRecipeSlot(SLOTS.brewing.input, arrow("minecraft:water"));
+  expect(snapshot()).toBe(before);
+
+  store.setBrewingChoice({
+    recipeId: "selection-test",
+    recipeType: RecipeType.Brewing,
+    slot: SLOTS.brewing.result,
+    value: arrow("minecraft:poison"),
+  });
+  expect(snapshot()).not.toBe(before);
+  expect(useItemSelection()).toMatchObject({
+    value: { components: { "minecraft:potion_contents": { potion: "minecraft:poison" } } },
+  });
+  store.setRecipeSlotCount(SLOTS.brewing.result, 8);
+  expect(useItemSelection()).toMatchObject({
+    value: {
+      components: { "minecraft:potion_contents": { potion: "minecraft:poison" } },
+      count: 8,
+    },
+  });
+});

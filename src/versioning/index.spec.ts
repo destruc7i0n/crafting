@@ -86,14 +86,17 @@ describe("recipeTypeAvailability", () => {
     });
   });
 
-  it("keeps brewing recipe types disabled", () => {
+  it("enables Bedrock brewing and starts Java brewing on 26.3", () => {
     expect(recipeTypeAvailability[RecipeType.BrewingContainer]).toEqual({
       minVersion: MinecraftVersion.Bedrock,
-      enabled: false,
+      enabled: true,
     });
     expect(recipeTypeAvailability[RecipeType.BrewingMix]).toEqual({
       minVersion: MinecraftVersion.Bedrock,
-      enabled: false,
+      enabled: true,
+    });
+    expect(recipeTypeAvailability[RecipeType.Brewing]).toEqual({
+      minVersion: MinecraftVersion.V263,
     });
   });
 });

@@ -1,9 +1,11 @@
+import { getPotionContents, ItemComponents } from "@/data/item-components";
 import { getRawId } from "@/data/models/identifier/utilities";
+import { MinecraftIdentifier } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { toTagRef } from "@/lib/tags";
 import { compareMinecraftVersions, isVersionAtLeast } from "@/versioning";
 
-import { ObjectResultRef } from "../types";
+import { ObjectResultRef, V121Result } from "../types";
 import { RecipeFormatter } from "./types";
 
 type FormatterRange = {
@@ -19,6 +21,19 @@ const withCount = <T extends ObjectResultRef>(
   value: T,
   count?: number,
 ): T | (T & { count: number }) => (hasPositiveCount(count) ? { ...value, count } : value);
+
+const javaItemStack = (
+  identifier: MinecraftIdentifier,
+  count?: number,
+  components?: ItemComponents,
+): V121Result => {
+  const result: V121Result = withCount({ id: getRawId(identifier) }, count);
+  const potion = getPotionContents(components);
+  if (potion !== undefined) {
+    result.components = { "minecraft:potion_contents": { potion } };
+  }
+  return result;
+};
 
 const bareRecipeType = (baseType: string): string => baseType;
 
@@ -68,10 +83,10 @@ export const javaV114RecipeFormatter: RecipeFormatter = {
 
 export const javaV1205RecipeFormatter: RecipeFormatter = {
   ...javaV114RecipeFormatter,
-  objectResult: (identifier, count) => withCount({ id: getRawId(identifier) }, count),
-  cookingResult: (identifier, count) => withCount({ id: getRawId(identifier) }, count),
+  objectResult: javaItemStack,
+  cookingResult: (identifier, count) => javaItemStack(identifier, count),
   stonecutterResult: (identifier, count) => ({
-    result: withCount({ id: getRawId(identifier) }, count),
+    result: javaItemStack(identifier, count),
   }),
 };
 

@@ -1,3 +1,4 @@
+import { ItemComponents } from "@/data/item-components";
 import { MinecraftIdentifier } from "@/data/models/types";
 
 import {
@@ -23,7 +24,11 @@ export interface StonecutterResultShape {
 export interface RecipeFormatter {
   ingredient: (id: MinecraftIdentifier, includeData?: boolean) => FormatIngredient;
   ingredientTag: (tagId: string) => FormatIngredient;
-  objectResult: (id: MinecraftIdentifier, count?: number) => ObjectResultRef;
+  objectResult: (
+    id: MinecraftIdentifier,
+    count?: number,
+    components?: ItemComponents,
+  ) => ObjectResultRef;
   cookingResult: (id: MinecraftIdentifier, count?: number) => ObjectResultRef | string;
   stonecutterResult: (id: MinecraftIdentifier, count?: number) => StonecutterResultShape;
   recipeType: (baseType: string) => string;

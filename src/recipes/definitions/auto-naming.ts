@@ -3,7 +3,7 @@ import { RecipeType } from "@/data/types";
 import { sanitizeBedrockIdentifierPart } from "@/lib/minecraft-identifier";
 import { SLOTS } from "@/recipes/slots";
 import { uniqueNonEmpty } from "@/recipes/utils";
-import { getSlotIdentifier } from "@/stores/recipe/slot-value";
+import { getSlotIdentifier, getSlotPotion } from "@/stores/recipe/slot-value";
 import { Recipe, RecipeSlotValue, SlotContext } from "@/stores/recipe/types";
 
 const FALLBACK_NAME = "recipe";
@@ -135,6 +135,25 @@ export const getStonecuttingAutoNames = (recipe: Recipe, slotContext: SlotContex
   }
 
   return toNames(ensureName(base));
+};
+
+export const getBrewingAutoNames = (recipe: Recipe, slotContext: SlotContext) => {
+  const slug = (slot: RecipeSlotValue | undefined) => {
+    const item = itemSlug(slot, slotContext);
+    const potion = getSlotPotion(slot);
+    return potion
+      ? sanitizeRecipeNameValue(`${potion.replace(/^minecraft:/, "")}_${item ?? "potion"}`)
+      : item;
+  };
+  const result = slug(recipe.slots[SLOTS.brewing.result]);
+  const input = slug(recipe.slots[SLOTS.brewing.input]);
+  const reagent = slug(recipe.slots[SLOTS.brewing.reagent]);
+  return toNames(
+    result ? `${result}_brewing` : undefined,
+    result && reagent ? `${result}_from_${reagent}_brewing` : undefined,
+    input ? `${input}_brewing` : undefined,
+    "brewing_recipe",
+  );
 };
 
 export const getSmithingAutoNames = (recipe: Recipe, slotContext: SlotContext) => {
