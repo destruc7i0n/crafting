@@ -1,7 +1,7 @@
 import { ChevronDownIcon } from "lucide-react";
 
 import { Select } from "@/components/ui/select";
-import { MinecraftVersion } from "@/data/types";
+import { MinecraftVersion, RecipeType } from "@/data/types";
 import { cn } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipe, selectCurrentRecipeType } from "@/stores/recipe/selectors";
@@ -98,7 +98,11 @@ export const AdvancedOptions = ({ open, onToggle }: AdvancedOptionsProps) => {
     (state) => selectCurrentRecipe(state)?.crafting.shapeless ?? false,
   );
 
-  if (minecraftVersion === MinecraftVersion.Bedrock || recipeType === undefined) {
+  if (
+    minecraftVersion === MinecraftVersion.Bedrock ||
+    recipeType === undefined ||
+    recipeType === RecipeType.Brewing
+  ) {
     return null;
   }
 

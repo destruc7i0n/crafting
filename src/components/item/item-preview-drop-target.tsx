@@ -21,7 +21,7 @@ type ItemPreviewDropTargetProps = {
   slot: RecipeSlot;
 } & SlotProps;
 
-export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetProps) => {
+export const ItemPreviewDropTarget = ({ slot, children, ...props }: ItemPreviewDropTargetProps) => {
   const recipe = useRecipeStore(selectCurrentRecipe);
   const slotValue = useRecipeStore(selectCurrentRecipeSlot(slot));
   const isRecipeDisabled = recipe ? isRecipeSlotDisabled(recipe, slot) : false;
@@ -62,13 +62,13 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
       }}
       onClick={(event) => {
         props.onClick?.(event);
-        if (isRecipeDisabled || props.disabled) {
+        if (event.defaultPrevented || isRecipeDisabled || props.disabled) {
           return;
         }
         handleClick();
       }}
     >
-      {slotValue && <RecipeSlotItem slot={slot} value={slotValue} />}
+      {slotValue ? <RecipeSlotItem slot={slot} value={slotValue} /> : children}
     </SlotDropTarget>
   );
 };

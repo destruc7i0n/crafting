@@ -23,13 +23,13 @@ const DESKTOP_NOTES = [
   "Create multiple recipes and export as a datapack or behavior pack.",
   "Use the tabs above the preview to switch recipe type.",
   "Click the result count badge to change the stack size.",
-  "Java item components and custom enchantments are not currently supported.",
+  "Brewing supports named potion contents. Other item components and custom enchantments are not currently supported.",
 ] as const;
 
 const MOBILE_NOTES = [
   "Tap the result count badge to change the stack size.",
   "Use the tabs above the preview to switch recipe type.",
-  "Java item components and custom enchantments are not currently supported.",
+  "Brewing supports named potion contents. Other item components and custom enchantments are not currently supported.",
 ] as const;
 
 const TOUCH_STEPS = [
