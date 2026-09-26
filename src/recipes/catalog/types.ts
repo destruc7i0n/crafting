@@ -14,7 +14,7 @@ export type GeneratedRecipeCatalogEntry = {
 };
 
 export type CatalogSlotValue =
-  | { kind: "item"; id: string; count?: number }
+  | { kind: "item"; id: string; potion?: string; count?: number }
   | { kind: "tag"; id: string }
   | { kind: "alternatives"; values: CatalogSlotAlternative[] };
 

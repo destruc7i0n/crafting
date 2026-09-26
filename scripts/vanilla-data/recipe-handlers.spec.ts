@@ -223,6 +223,55 @@ describe("buildRecipeCatalogEntry", () => {
     ).toBe(RecipeType.SmithingTransform);
   });
 
+  it("parses 26.3 brewing potion contents", () => {
+    expect(
+      buildRecipeCatalogEntry({
+        recipe: {
+          type: "minecraft:brewing",
+          input: { item: "minecraft:potion", potion_contents: { potions: "minecraft:awkward" } },
+          reagent: { item: "minecraft:nether_wart" },
+          output: {
+            id: "minecraft:potion",
+            components: { "minecraft:potion_contents": { potion: "minecraft:water" } },
+          },
+        },
+      }),
+    ).toEqual({
+      recipeType: RecipeType.Brewing,
+      slots: {
+        [SLOTS.brewing.input]: {
+          kind: "item",
+          id: "minecraft:potion",
+          potion: "minecraft:awkward",
+        },
+        [SLOTS.brewing.reagent]: { kind: "item", id: "minecraft:nether_wart" },
+        [SLOTS.brewing.result]: { kind: "item", id: "minecraft:potion", potion: "minecraft:water" },
+      },
+    });
+  });
+
+  it("rejects lossy brewing predicates and component shapes", () => {
+    const recipe = {
+      type: "minecraft:brewing",
+      input: { item: "minecraft:potion", predicate: { foo: "bar" } },
+      reagent: { item: "minecraft:nether_wart" },
+      output: { id: "minecraft:potion", components: { "minecraft:custom_data": {} } },
+    };
+    expect(buildRecipeCatalogEntry({ recipe })).toBeNull();
+    expect(
+      buildRecipeCatalogEntry({
+        recipe: {
+          ...recipe,
+          input: { item: "minecraft:potion" },
+          output: {
+            id: "minecraft:potion",
+            components: { "minecraft:potion_contents": ["minecraft:water"] },
+          },
+        },
+      }),
+    ).toBeNull();
+  });
+
   it("skips unknown, special, malformed, transmute, and no-concrete-output recipes", () => {
     expect(
       buildRecipeCatalogEntry({
