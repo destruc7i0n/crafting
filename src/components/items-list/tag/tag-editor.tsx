@@ -1,13 +1,18 @@
 import { useMemo, useState } from "react";
 
-import { identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { Item, Tag, TagItem } from "@/data/models/types";
 import { trackCustomTag } from "@/lib/analytics";
 import {
   isValidJavaNamespacedIdentifier,
   javaNamespacedIdentifierHint,
 } from "@/lib/minecraft-identifier";
-import { getDuplicateTagIdErrorMessage, hasDuplicateTagId } from "@/lib/tags";
+import {
+  getDuplicateTagIdErrorMessage,
+  hasDuplicateTagId,
+  TagContext,
+  tagValueKey,
+  toTagValue,
+} from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { useTagStore } from "@/stores/tag";
 
@@ -19,9 +24,9 @@ interface TagEditorProps {
   tag: Tag;
   items: Item[];
   itemsById?: Record<string, Item>;
+  tagCtx: TagContext;
   vanillaTagItems: TagItem[];
   customTagItems: Record<string, TagItem>;
-  vanillaTags: Record<string, string[]>;
 }
 
 const getTagValueCount = (uid: string) =>
@@ -31,9 +36,9 @@ export const TagEditor = ({
   tag,
   items,
   itemsById,
+  tagCtx,
   vanillaTagItems,
   customTagItems,
-  vanillaTags,
 }: TagEditorProps) => {
   const tags = useTagStore((state) => state.tags);
   const updateTag = useTagStore((state) => state.updateTag);
@@ -72,10 +77,10 @@ export const TagEditor = ({
   };
 
   const handleAddValue = (option: ValueOption) => {
-    const didUpdate =
-      option.kind === "item"
-        ? addValueToTag(tag.uid, { type: "item", id: option.item.id })
-        : addValueToTag(tag.uid, { type: "tag", id: option.tagItem.id });
+    const didUpdate = addValueToTag(
+      tag.uid,
+      toTagValue(option.kind === "item" ? option.item : option.tagItem),
+    );
 
     if (didUpdate) {
       trackCustomTag({ action: "update", value_count: getTagValueCount(tag.uid) ?? 0 });
@@ -106,10 +111,7 @@ export const TagEditor = ({
     valueSearch,
   });
 
-  const existingValueIds = useMemo(
-    () => new Set(tag.values.map((v) => identifierUniqueKey(v.id))),
-    [tag.values],
-  );
+  const existingValueIds = useMemo(() => new Set(tag.values.map(tagValueKey)), [tag.values]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -147,9 +149,8 @@ export const TagEditor = ({
 
         <TagValueGrid
           values={tag.values}
-          tags={tags}
-          vanillaTags={vanillaTags}
           itemsById={itemsById}
+          tagCtx={tagCtx}
           onClick={handleRemoveValue}
         />
       </div>

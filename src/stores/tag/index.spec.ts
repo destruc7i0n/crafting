@@ -1,12 +1,24 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
+import { generateTag } from "@/data/generate/tag";
 import { parseStringToMinecraftIdentifier } from "@/data/models/identifier/utilities";
 import { Tag, TagValue } from "@/data/models/types";
 import { RecipeType } from "@/data/types";
-import { getDuplicateTagIdErrorMessage, resolveTagValues } from "@/lib/tags";
+import {
+  getDuplicateTagIdErrorMessage,
+  resolveTagValues,
+  TagContext,
+  toByUidMap,
+} from "@/lib/tags";
 import { useRecipeStore } from "@/stores/recipe";
 
 import { useTagStore } from "./index";
+
+const ctx = (allTags: Tag[]): TagContext => ({
+  tagsByUid: toByUidMap(allTags),
+  allTags,
+  vanillaTags: {},
+});
 
 const createItemValue = (id: string): TagValue => ({
   type: "item",
@@ -17,6 +29,9 @@ const createTagValue = (id: string): TagValue => ({
   type: "tag",
   id: parseStringToMinecraftIdentifier(id),
 });
+
+const itemValueId = (value: TagValue | undefined) =>
+  value && (value.type === "item" || value.type === "tag") ? value.id : undefined;
 
 const createTag = (uid: string, id: string, values: TagValue[] = []): Tag => ({
   uid,
@@ -66,13 +81,13 @@ describe("tag store", () => {
     }));
   });
 
-  it("rewrites only matching parent tag references when a child tag is renamed", () => {
-    const parentTag = createTag("tag-a", "crafting:parent", [createTagValue("crafting:child")]);
+  it("renames a tag without rewriting any other tag's values", () => {
+    const parentTag = createTag("tag-a", "crafting:parent", [{ type: "custom_tag", uid: "tag-b" }]);
     const childTag = createTag("tag-b", "crafting:child", [createItemValue("minecraft:stone")]);
     const mixedParentTag = createTag("tag-c", "crafting:mixed_parent", [
       createItemValue("minecraft:dirt"),
-      createTagValue("crafting:child"),
-      createTagValue("crafting:other_child"),
+      { type: "custom_tag", uid: "tag-b" },
+      { type: "custom_tag", uid: "tag-d" },
     ]);
     const otherChildTag = createTag("tag-d", "crafting:other_child");
 
@@ -85,11 +100,13 @@ describe("tag store", () => {
 
     const tags = useTagStore.getState().tags;
     expect(tags[1]?.id).toBe("crafting:renamed_child");
-    expect(tags[0]?.values[0]).toEqual(createTagValue("crafting:renamed_child"));
-    expect(tags[2]?.values).toEqual([
-      createItemValue("minecraft:dirt"),
-      createTagValue("crafting:renamed_child"),
-      createTagValue("crafting:other_child"),
+    expect(tags[0]?.values).toEqual([{ type: "custom_tag", uid: "tag-b" }]);
+    expect(tags[2]?.values).toEqual(mixedParentTag.values);
+    // only the renamed tag's ref changes what it resolves to
+    expect(generateTag(tags[2]!, ctx(tags)).values).toEqual([
+      "minecraft:dirt",
+      "#crafting:renamed_child",
+      "#crafting:other_child",
     ]);
   });
 
@@ -160,12 +177,80 @@ describe("tag store", () => {
     expect(useTagStore.getState().removeValueFromTagByIndex("tag-a", 0)).toBe(false);
   });
 
+  it("accepts an item and a tag that share a raw id", () => {
+    useTagStore.setState((state) => ({
+      ...state,
+      tags: [createTag("tag-a", "crafting:tag")],
+    }));
+
+    // "minecraft:stone" and "#minecraft:stone" are different entries in a tag file
+    expect(useTagStore.getState().addValueToTag("tag-a", createItemValue("minecraft:stone"))).toBe(
+      true,
+    );
+    expect(useTagStore.getState().addValueToTag("tag-a", createTagValue("minecraft:stone"))).toBe(
+      true,
+    );
+    expect(useTagStore.getState().tags[0]?.values).toEqual([
+      createItemValue("minecraft:stone"),
+      createTagValue("minecraft:stone"),
+    ]);
+  });
+
+  it("strips a data value on write, so stored values match what export emits", () => {
+    useTagStore.setState((state) => ({
+      ...state,
+      tags: [createTag("tag-a", "crafting:tag")],
+    }));
+
+    expect(
+      useTagStore.getState().addValueToTag("tag-a", {
+        type: "item",
+        id: { namespace: "mymod", id: "gem", data: 1 },
+      }),
+    ).toBe(true);
+    expect(itemValueId(useTagStore.getState().tags[0]?.values[0])).toEqual({
+      namespace: "mymod",
+      id: "gem",
+    });
+
+    // the data-free form is now a duplicate of it
+    expect(useTagStore.getState().addValueToTag("tag-a", createItemValue("mymod:gem"))).toBe(false);
+  });
+
+  it("strips data values passed through createTag", () => {
+    useTagStore.getState().createTag({
+      id: "crafting:gems",
+      values: [{ type: "item", id: { namespace: "mymod", id: "gem", data: 3 } }],
+    });
+
+    expect(itemValueId(useTagStore.getState().tags[0]?.values[0])).toEqual({
+      namespace: "mymod",
+      id: "gem",
+    });
+  });
+
+  it("resolves a uid ref to the child's new id without touching the parent's values", () => {
+    const childTag = createTag("tag-b", "crafting:child", [createItemValue("minecraft:diamond")]);
+    const parentTag = createTag("tag-a", "crafting:parent", [{ type: "custom_tag", uid: "tag-b" }]);
+
+    useTagStore.setState((state) => ({ ...state, tags: [parentTag, childTag] }));
+
+    const valuesBefore = useTagStore.getState().tags[0]?.values;
+    expect(useTagStore.getState().updateTag("tag-b", { id: "crafting:renamed" })).toBe(true);
+
+    const tags = useTagStore.getState().tags;
+    // the whole point of the refactor: the reference is unchanged, yet resolves to the new id
+    expect(tags[0]?.values).toEqual(valuesBefore);
+    expect(resolveTagValues(tags[0]?.values ?? [], ctx(tags))).toEqual(["minecraft:diamond"]);
+    expect(generateTag(tags[0]!, ctx(tags)).values).toEqual(["#crafting:renamed"]);
+  });
+
   it("keeps nested tag resolution working after renaming a referenced child tag", () => {
     const grandchildTag = createTag("tag-c", "crafting:grandchild", [
       createItemValue("minecraft:diamond"),
     ]);
-    const childTag = createTag("tag-b", "crafting:child", [createTagValue("crafting:grandchild")]);
-    const parentTag = createTag("tag-a", "crafting:parent", [createTagValue("crafting:child")]);
+    const childTag = createTag("tag-b", "crafting:child", [{ type: "custom_tag", uid: "tag-c" }]);
+    const parentTag = createTag("tag-a", "crafting:parent", [{ type: "custom_tag", uid: "tag-b" }]);
 
     useTagStore.setState((state) => ({
       ...state,
@@ -177,7 +262,7 @@ describe("tag store", () => {
     );
 
     const tags = useTagStore.getState().tags;
-    expect(tags[1]?.values[0]).toEqual(createTagValue("crafting:renamed_grandchild"));
-    expect(resolveTagValues(tags[0]?.values ?? [], tags, {})).toEqual(["minecraft:diamond"]);
+    expect(tags[1]?.values[0]).toEqual({ type: "custom_tag", uid: "tag-c" });
+    expect(resolveTagValues(tags[0]?.values ?? [], ctx(tags))).toEqual(["minecraft:diamond"]);
   });
 });

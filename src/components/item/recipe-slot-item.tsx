@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
@@ -16,6 +16,8 @@ import {
   getFirstAvailableTexture,
   getTagLabel,
   resolveTagValues,
+  TagContext,
+  toByUidMap,
 } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 import { RecipeSlot } from "@/recipes/slots";
@@ -221,6 +223,14 @@ const CustomTagRecipeSlotItem = memo(({ value, ...props }: CustomTagRecipeSlotIt
   const { resources } = useResourcesForVersion();
   const tags = useTagStore((state) => state.tags);
   const tag = useTagStore(selectTagByUid(value.uid));
+  const tagCtx = useMemo<TagContext>(
+    () => ({
+      tagsByUid: toByUidMap(tags),
+      allTags: tags,
+      vanillaTags: resources?.vanillaTags ?? {},
+    }),
+    [resources, tags],
+  );
 
   if (!tag) {
     return (
@@ -236,7 +246,7 @@ const CustomTagRecipeSlotItem = memo(({ value, ...props }: CustomTagRecipeSlotIt
 
   const identifier = getCustomTagIdentifier(tag);
   const rawId = getRawId(identifier);
-  const previewValues = resolveTagValues(tag.values, tags, resources?.vanillaTags ?? {});
+  const previewValues = resolveTagValues(tag.values, tagCtx);
 
   return (
     <RecipeSlotItemBase

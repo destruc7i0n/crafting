@@ -1,14 +1,23 @@
 import { strFromU8, unzipSync } from "fflate";
 
+import { Tag } from "@/data/models/types";
+import { TagContext, toByUidMap } from "@/lib/tags";
+
 import { createDatapackBlob } from "./datapack";
 import { MinecraftVersion } from "./types";
+
+const ctxWith = (allTags: Tag[] = []): TagContext => ({
+  tagsByUid: toByUidMap(allTags),
+  allTags,
+  vanillaTags: {},
+});
 
 describe("createDatapackBlob", () => {
   it("uses old recipe paths and pack_format before 1.21", async () => {
     const blob = createDatapackBlob(
       MinecraftVersion.V120,
       [{ name: "example", json: { type: "minecraft:crafting_shapeless" } }],
-      [],
+      ctxWith(),
     );
 
     const files = unzipSync(new Uint8Array(await blob.arrayBuffer()));
@@ -28,13 +37,7 @@ describe("createDatapackBlob", () => {
     const blob = createDatapackBlob(
       MinecraftVersion.V1219,
       [{ name: "example", json: { type: "minecraft:crafting_shapeless" } }],
-      [
-        {
-          uid: "tag-1",
-          id: "crafting:items",
-          values: [],
-        },
-      ],
+      ctxWith([{ uid: "tag-1", id: "crafting:items", values: [] }]),
     );
 
     const files = unzipSync(new Uint8Array(await blob.arrayBuffer()));
@@ -56,13 +59,7 @@ describe("createDatapackBlob", () => {
     const blob = createDatapackBlob(
       MinecraftVersion.V120,
       [],
-      [
-        {
-          uid: "tag-1",
-          id: "crafting:planks",
-          values: [],
-        },
-      ],
+      ctxWith([{ uid: "tag-1", id: "crafting:planks", values: [] }]),
     );
 
     const files = unzipSync(new Uint8Array(await blob.arrayBuffer()));

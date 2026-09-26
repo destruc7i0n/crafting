@@ -451,7 +451,6 @@ export const RecipeSidebar = memo(({ collapsed = false, mobile = false }: Recipe
 
     const tags = useTagStore.getState().tags;
     const result = await downloadDatapack(recipes, minecraftVersion, {
-      tags,
       context: { bedrockNamespace },
       slotContext,
     });

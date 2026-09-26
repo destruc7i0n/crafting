@@ -4,9 +4,9 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 
 import { CyclingItemPreview } from "@/components/item/cycling-item-preview";
 import { ItemPreview } from "@/components/item/item-preview";
-import { getFullId, identifierUniqueKey } from "@/data/models/identifier/utilities";
+import { getFullId } from "@/data/models/identifier/utilities";
 import { Item, TagItem } from "@/data/models/types";
-import { getTagLabel } from "@/lib/tags";
+import { getTagLabel, tagValueKey, toTagValue } from "@/lib/tags";
 import { cn } from "@/lib/utils";
 
 import { Slot } from "../../slot/slot";
@@ -14,6 +14,13 @@ import { Slot } from "../../slot/slot";
 export type ValueOption =
   | { kind: "item"; item: Item }
   | { kind: "tag"; tagItem: TagItem; rawId: string };
+
+/**
+ * Emits the same key space as `tagValueKey`, so an option can be matched against a tag's existing
+ * values without either side reaching for a bare identifier.
+ */
+const valueOptionKey = (option: ValueOption): string =>
+  tagValueKey(toTagValue(option.kind === "item" ? option.item : option.tagItem));
 
 const ROW_HEIGHT = 40;
 const LIST_MAX_ROWS = 6;
@@ -65,11 +72,11 @@ export const ValueList = ({
             const entry = values[virtualRow.index];
 
             if (entry.kind === "tag") {
-              const isAdded = existingValueIds.has(entry.rawId);
+              const isAdded = existingValueIds.has(valueOptionKey(entry));
 
               return (
                 <button
-                  key={`tag-${entry.rawId}`}
+                  key={valueOptionKey(entry)}
                   type="button"
                   disabled={isAdded}
                   className={cn(
@@ -95,11 +102,11 @@ export const ValueList = ({
               );
             }
 
-            const isAdded = existingValueIds.has(identifierUniqueKey(entry.item.id));
+            const isAdded = existingValueIds.has(valueOptionKey(entry));
 
             return (
               <button
-                key={identifierUniqueKey(entry.item.id)}
+                key={valueOptionKey(entry)}
                 type="button"
                 disabled={isAdded}
                 className={cn(

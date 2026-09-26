@@ -1,5 +1,4 @@
 import { createDatapackBlob, downloadBlob } from "@/data/datapack";
-import { Tag } from "@/data/models/types";
 import { MinecraftVersion } from "@/data/types";
 import { generate } from "@/recipes/generate";
 import { NamingContext, resolveRecipeNames } from "@/recipes/naming";
@@ -10,8 +9,8 @@ import { validateDatapackExport } from "../validate-datapack-export";
 import type { DownloadResult } from "./types";
 
 interface DownloadDatapackOptions {
-  tags: Tag[];
   context: NamingContext;
+  // carries the custom tags to emit, as `allTags`, alongside everything needed to resolve them
   slotContext: SlotContext;
 }
 
@@ -20,7 +19,7 @@ export const downloadDatapack = async (
   version: MinecraftVersion,
   options: DownloadDatapackOptions,
 ): Promise<DownloadResult> => {
-  const { tags, context, slotContext } = options;
+  const { context, slotContext } = options;
   if (version === MinecraftVersion.Bedrock) {
     alert("Datapack export is only available for Java versions.");
     return { status: "blocked" };
@@ -71,7 +70,7 @@ export const downloadDatapack = async (
   }
 
   try {
-    const blob = createDatapackBlob(version, recipeFiles, tags);
+    const blob = createDatapackBlob(version, recipeFiles, slotContext);
     downloadBlob(blob, "datapack.zip");
     return { status: "success" };
   } catch (error) {

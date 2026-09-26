@@ -2,16 +2,12 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
-import {
-  identifierUniqueKey,
-  parseStringToMinecraftIdentifier,
-} from "@/data/models/identifier/utilities";
-import { Tag, TagValue } from "@/data/models/types";
-import { assertUniqueTagId, createEmptyTag } from "@/lib/tags";
+import { MinecraftIdentifier, Tag, TagValue } from "@/data/models/types";
+import { assertUniqueTagId, createEmptyTag, normalizeTagValue, tagValueKey } from "@/lib/tags";
 
-export interface TagState {
-  tags: Tag[];
-}
+import { migrateTagState, TAG_STORE_VERSION, type TagState } from "./migrations";
+
+export type { TagState };
 
 type TagActions = {
   createTag: (initial?: Partial<Pick<Tag, "id" | "values">>) => boolean;
@@ -19,6 +15,7 @@ type TagActions = {
   removeTag: (uid: string) => void;
   addValueToTag: (uid: string, value: TagValue) => boolean;
   removeValueFromTagByIndex: (uid: string, index: number) => boolean;
+  materializeCustomTagValues: (uid: string, identifier: MinecraftIdentifier) => void;
 };
 
 export const useTagStore = create<TagState & TagActions>()(
@@ -34,7 +31,7 @@ export const useTagStore = create<TagState & TagActions>()(
           assertUniqueTagId(existingTags, initial.id);
           tag.id = initial.id;
         }
-        if (initial?.values !== undefined) tag.values = initial.values;
+        if (initial?.values !== undefined) tag.values = initial.values.map(normalizeTagValue);
 
         set((state) => {
           state.tags.push(tag);
@@ -61,27 +58,10 @@ export const useTagStore = create<TagState & TagActions>()(
             return;
           }
 
+          // referencing tags point at the uid, so a rename needs no ref rewriting
           if (updates.id !== undefined && updates.id !== tag.id) {
-            // keep parent tag refs in sync when a referenced tag id changes
-            const oldIdentifier = parseStringToMinecraftIdentifier(tag.id);
-            const newIdentifier = parseStringToMinecraftIdentifier(updates.id);
-            const oldKey = identifierUniqueKey(oldIdentifier);
-            const newKey = identifierUniqueKey(newIdentifier);
-
             tag.id = updates.id;
             didUpdate = true;
-
-            if (oldKey === newKey) {
-              return;
-            }
-
-            for (const currentTag of state.tags) {
-              for (const value of currentTag.values) {
-                if (value.type === "tag" && identifierUniqueKey(value.id) === oldKey) {
-                  value.id = newIdentifier;
-                }
-              }
-            }
           }
         });
 
@@ -93,22 +73,52 @@ export const useTagStore = create<TagState & TagActions>()(
         });
       },
 
+      /**
+       * Converts refs to a tag that is about to be deleted into the plain identifier they used to
+       * resolve to. Preserves the long-standing behaviour that a reference to a deleted tag survives
+       * and still exports, instead of silently dropping a value the user never touched.
+       */
+      materializeCustomTagValues: (uid, identifier) => {
+        set((state) => {
+          for (const tag of state.tags) {
+            if (!tag.values.some((value) => value.type === "custom_tag" && value.uid === uid)) {
+              continue;
+            }
+
+            const seen = new Set<string>();
+            // materializing can collide with a literal ref already in this tag, so re-apply the
+            // uniqueness invariant addValueToTag enforces
+            tag.values = tag.values
+              .map(
+                (value): TagValue =>
+                  value.type === "custom_tag" && value.uid === uid
+                    ? { type: "tag", id: { ...identifier } }
+                    : value,
+              )
+              .filter((value) => {
+                const key = tagValueKey(value);
+                if (seen.has(key)) {
+                  return false;
+                }
+                seen.add(key);
+                return true;
+              });
+          }
+        });
+      },
+
       addValueToTag: (uid, value) => {
         let didAdd = false;
+        const nextValue = normalizeTagValue(value);
+        const nextKey = tagValueKey(nextValue);
 
         set((state) => {
           const tag = state.tags.find((currentTag) => currentTag.uid === uid);
-          if (
-            !tag ||
-            tag.values.some(
-              (currentValue) =>
-                identifierUniqueKey(currentValue.id) === identifierUniqueKey(value.id),
-            )
-          ) {
+          if (!tag || tag.values.some((currentValue) => tagValueKey(currentValue) === nextKey)) {
             return;
           }
 
-          tag.values.push(value);
+          tag.values.push(nextValue);
           didAdd = true;
         });
 
@@ -133,8 +143,9 @@ export const useTagStore = create<TagState & TagActions>()(
     })),
     {
       name: "crafting-custom-tags",
-      version: 0,
+      version: TAG_STORE_VERSION,
       partialize: (state) => ({ tags: state.tags }),
+      migrate: migrateTagState,
     },
   ),
 );

@@ -70,7 +70,6 @@ describe("downloadDatapack", () => {
     const slotContext = createEmptySlotContext(MinecraftVersion.V112);
 
     const result = await downloadDatapack([recipe], MinecraftVersion.V112, {
-      tags: [],
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
@@ -91,7 +90,6 @@ describe("downloadDatapack", () => {
     const slotContext = createEmptySlotContext(MinecraftVersion.V121);
 
     const result = await downloadDatapack([recipe], MinecraftVersion.V121, {
-      tags: [],
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
@@ -117,7 +115,6 @@ describe("downloadDatapack", () => {
     createDatapackBlob.mockReturnValue(blob);
 
     const result = await downloadDatapack([recipe], MinecraftVersion.V121, {
-      tags: [],
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
@@ -132,7 +129,7 @@ describe("downloadDatapack", () => {
     expect(createDatapackBlob).toHaveBeenCalledWith(
       MinecraftVersion.V121,
       [{ name: "stone_button", json: generatedRecipe }],
-      [],
+      slotContext,
     );
     expect(downloadBlob).toHaveBeenCalledWith(blob, "datapack.zip");
   });
@@ -149,7 +146,6 @@ describe("downloadDatapack", () => {
     });
 
     const result = await downloadDatapack([recipe], MinecraftVersion.V121, {
-      tags: [],
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
@@ -175,7 +171,6 @@ describe("downloadDatapack", () => {
     });
 
     const result = await downloadDatapack([recipe], MinecraftVersion.V121, {
-      tags: [],
       context: { bedrockNamespace: "crafting" },
       slotContext,
     });
