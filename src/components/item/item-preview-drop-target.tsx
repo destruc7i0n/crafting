@@ -39,7 +39,7 @@ export const ItemPreviewDropTarget = ({ slot, ...props }: ItemPreviewDropTargetP
     [slot],
   );
 
-  const handleClick = useRecipeSlotSelectionHandler(slot, slotValue);
+  const handleClick = useRecipeSlotSelectionHandler(slot);
 
   return (
     <SlotDropTarget<RecipeSlotDropTargetData>
