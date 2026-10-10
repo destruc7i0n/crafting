@@ -8,7 +8,7 @@ import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/el
 import { getFullId, getRawId } from "@/data/models/identifier/utilities";
 import { IngredientItem } from "@/data/models/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
-import { useItemSelection } from "@/hooks/use-item-selection";
+import { useIngredientSelection } from "@/hooks/use-item-selection";
 import { ItemDraggableData } from "@/lib/dnd";
 import { isSameIngredient } from "@/lib/tags";
 import { cn } from "@/lib/utils";
@@ -31,7 +31,7 @@ export const Item = memo(({ item, showCount }: IngredientProps) => {
   const [dragging, setDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const isTouchDevice = useIsTouchDevice();
-  const selection = useItemSelection();
+  const selection = useIngredientSelection();
   const isSelectedFromIngredients =
     selection?.type === "ingredient" && isSameIngredient(selection.item, item);
 

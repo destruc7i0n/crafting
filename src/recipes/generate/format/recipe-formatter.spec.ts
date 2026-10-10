@@ -81,6 +81,29 @@ describe("createRecipeFormatter", () => {
     expect(formatter.ingredientTag("minecraft:logs")).toBe("#minecraft:logs");
   });
 
+  it("translates named potion components without sharing saved objects", () => {
+    const formatter = createRecipeFormatter(MinecraftVersion.V263);
+    const components = { "minecraft:potion_contents": { potion: "minecraft:healing" } };
+    const result = formatter.objectResult({ namespace: "minecraft", id: "potion" }, 1, components);
+    expect(result).toEqual({
+      id: "minecraft:potion",
+      count: 1,
+      components: { "minecraft:potion_contents": { potion: "minecraft:healing" } },
+    });
+    if (!("id" in result)) throw new Error("Expected a modern Java result");
+    expect(result.components).not.toBe(components);
+    expect(result.components?.["minecraft:potion_contents"]).not.toBe(
+      components["minecraft:potion_contents"],
+    );
+    result.components!["minecraft:potion_contents"]!.potion = "minecraft:water";
+    expect(components["minecraft:potion_contents"].potion).toBe("minecraft:healing");
+  });
+
+  it("omits empty components and an absent count", () => {
+    const formatter = createRecipeFormatter(MinecraftVersion.V263);
+    expect(formatter.objectResult(id, undefined, {})).toEqual({ id: "minecraft:stone" });
+  });
+
   it("formats bedrock item refs", () => {
     const formatter = createRecipeFormatter(MinecraftVersion.Bedrock);
 

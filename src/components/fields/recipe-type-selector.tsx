@@ -13,6 +13,7 @@ import { useRecipeStore } from "@/stores/recipe";
 import { selectCurrentRecipeType } from "@/stores/recipe/selectors";
 import { useSettingsStore } from "@/stores/settings";
 import { selectMinecraftVersion } from "@/stores/settings/selectors";
+import { useUIStore } from "@/stores/ui";
 
 export const RecipeTypeSelector = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
@@ -28,6 +29,7 @@ export const RecipeTypeSelector = () => {
     }
 
     const prevRecipeType = recipeType;
+    useUIStore.getState().clearInteractionState();
     setRecipeType(nextRecipeType);
 
     if (prevRecipeType) {

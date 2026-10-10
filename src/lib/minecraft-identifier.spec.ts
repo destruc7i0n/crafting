@@ -8,6 +8,7 @@ import {
   isValidJavaIdentifierNamespace,
   isValidJavaIdentifierPath,
   isValidJavaNamespacedIdentifier,
+  isValidJavaResourceId,
   isValidNamespacedIdentifier,
   parseMinecraftIdentifierInput,
 } from "./minecraft-identifier";
@@ -30,6 +31,16 @@ describe("java identifiers", () => {
     expect(isValidJavaNamespacedIdentifier("crafting:custom/item-1.test")).toBe(true);
     expect(isValidJavaNamespacedIdentifier("crafting/custom:item")).toBe(false);
     expect(isValidJavaNamespacedIdentifier("stone")).toBe(false);
+  });
+
+  it("validates resource ids with an optional namespace", () => {
+    expect(isValidJavaResourceId("minecraft:long_swiftness")).toBe(true);
+    expect(isValidJavaResourceId("nightvision")).toBe(true);
+    expect(isValidJavaResourceId("pack.name:effects/custom")).toBe(true);
+    expect(isValidJavaResourceId(" minecraft:healing")).toBe(false);
+    expect(isValidJavaResourceId("a:b:c")).toBe(false);
+    expect(isValidJavaResourceId("Minecraft:Healing")).toBe(false);
+    expect(isValidJavaResourceId("")).toBe(false);
   });
 
   it("dispatches identifier validation by version", () => {

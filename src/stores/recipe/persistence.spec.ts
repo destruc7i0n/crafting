@@ -105,6 +105,71 @@ describe("recipe persistence", () => {
     });
   });
 
+  it("round trips potion components and drops slots with malformed components", () => {
+    const potion = (components: unknown) => ({
+      kind: "item",
+      id: { namespace: "minecraft", id: "potion" },
+      components,
+    });
+    const malformed = [
+      null,
+      [],
+      "minecraft:healing",
+      { "minecraft:potion_contents": {} },
+      { "minecraft:potion_contents": null },
+      { "minecraft:potion_contents": { potion: "minecraft:healing", custom_color: 1 } },
+      { "minecraft:potion_contents": { potion: 42 } },
+      { "minecraft:potion_contents": { potion: "Not An Id" } },
+      { "minecraft:potion_contents": { potion: "minecraft:healing" }, "minecraft:lore": [] },
+      { "!minecraft:potion_contents": {} },
+    ];
+    const state = normalizePersistedRecipeState({
+      recipes: [
+        {
+          id: "recipe-1",
+          slots: {
+            [SLOTS.crafting.slot1]: potion({
+              "minecraft:potion_contents": { potion: "minecraft:night_vision" },
+            }),
+            [SLOTS.crafting.slot2]: potion({ "minecraft:potion_contents": { potion: "healing" } }),
+            [SLOTS.crafting.slot3]: potion({
+              "minecraft:potion_contents": { potion: "minecraft:future_effect" },
+            }),
+            [SLOTS.crafting.slot4]: potion({}),
+            [SLOTS.crafting.slot5]: { kind: "item", id: { namespace: "minecraft", id: "stone" } },
+            [SLOTS.brewing.input]: potion({ "minecraft:potion_contents": {} }),
+          },
+        },
+      ],
+      selectedRecipeId: "recipe-1",
+    });
+    const item = (components?: object) => ({
+      kind: "item",
+      id: { namespace: "minecraft", id: "potion" },
+      ...(components ? { components } : {}),
+    });
+
+    expect(state.selectedRecipeId).toBe("recipe-1");
+    expect(state.recipes[0]?.slots).toEqual({
+      [SLOTS.crafting.slot1]: item({
+        "minecraft:potion_contents": { potion: "minecraft:night_vision" },
+      }),
+      [SLOTS.crafting.slot2]: item({ "minecraft:potion_contents": { potion: "healing" } }),
+      [SLOTS.crafting.slot3]: item({
+        "minecraft:potion_contents": { potion: "minecraft:future_effect" },
+      }),
+      [SLOTS.crafting.slot4]: item(),
+      [SLOTS.crafting.slot5]: { kind: "item", id: { namespace: "minecraft", id: "stone" } },
+    });
+    for (const components of malformed) {
+      const single = normalizePersistedRecipeState({
+        recipes: [{ id: "r", slots: { [SLOTS.brewing.input]: potion(components) } }],
+        selectedRecipeId: "r",
+      });
+      expect(single.recipes[0]?.slots[SLOTS.brewing.input]).toBeUndefined();
+    }
+  });
+
   it("falls back to one default recipe when persisted recipes are empty or invalid", () => {
     const emptyState = normalizePersistedRecipeState({
       recipes: [],

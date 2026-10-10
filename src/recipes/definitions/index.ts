@@ -2,7 +2,7 @@ import { MinecraftVersion, RecipeType } from "@/data/types";
 import { RecipeSlot } from "@/recipes/slots";
 import { isVersionAtLeast } from "@/versioning";
 
-import { brewingContainerDefinition, brewingMixDefinition } from "./brewing";
+import { brewingDefinition, brewingContainerDefinition, brewingMixDefinition } from "./brewing";
 import {
   blastingDefinition,
   campfireCookingDefinition,
@@ -42,6 +42,7 @@ export const recipeDefinitions = {
   [RecipeType.SmithingTransform]: smithingTransformDefinition,
   [RecipeType.SmithingTrim]: smithingTrimDefinition,
   [RecipeType.CraftingTransmute]: craftingTransmuteDefinition,
+  [RecipeType.Brewing]: brewingDefinition,
   [RecipeType.BrewingContainer]: brewingContainerDefinition,
   [RecipeType.BrewingMix]: brewingMixDefinition,
 } satisfies Record<RecipeType, RecipeDefinition>;

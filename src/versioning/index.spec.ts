@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { javaMinecraftVersions, defaultMinecraftVersions } from "@/data/constants";
 import { MinecraftVersion, RecipeType } from "@/data/types";
 
 import {
@@ -85,15 +86,26 @@ describe("recipeTypeAvailability", () => {
     });
   });
 
-  it("keeps brewing recipe types disabled", () => {
+  it("enables Bedrock brewing and starts Java brewing on 26.3", () => {
     expect(recipeTypeAvailability[RecipeType.BrewingContainer]).toEqual({
       minVersion: MinecraftVersion.Bedrock,
-      enabled: false,
+      enabled: true,
     });
     expect(recipeTypeAvailability[RecipeType.BrewingMix]).toEqual({
       minVersion: MinecraftVersion.Bedrock,
-      enabled: false,
+      enabled: true,
     });
+    expect(recipeTypeAvailability[RecipeType.Brewing]).toEqual({
+      minVersion: MinecraftVersion.V263,
+    });
+  });
+});
+
+describe("public versions", () => {
+  it("exposes 26.3 as the latest public Java version", () => {
+    expect(javaMinecraftVersions[0]).toBe(MinecraftVersion.V263);
+    expect(defaultMinecraftVersions).toContain(MinecraftVersion.V263);
+    expect(defaultMinecraftVersions[1]).toBe(MinecraftVersion.V263);
   });
 });
 

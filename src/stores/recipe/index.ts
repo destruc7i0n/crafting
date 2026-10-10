@@ -2,10 +2,12 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
+import { cloneItemComponents } from "@/data/item-components";
 import { IngredientItem } from "@/data/models/types";
 import { RecipeType } from "@/data/types";
+import { isJavaArrow, isBrewingBottle } from "@/recipes/brewing/options";
 import { getRecipeDefinition } from "@/recipes/definitions";
-import { RecipeSlot } from "@/recipes/slots";
+import { SLOTS, RecipeSlot } from "@/recipes/slots";
 
 import {
   normalizePersistedRecipeState,
@@ -35,6 +37,12 @@ type RecipeActions = {
   setRecipeSlot: (slot: RecipeSlot, value?: RecipeSlotValue) => void;
   setRecipeSlotFromIngredient: (slot: RecipeSlot, item?: IngredientItem) => void;
   setRecipeSlotCount: (slot: RecipeSlot, count: number) => void;
+  setBrewingChoice: (choice: {
+    recipeId: string;
+    recipeType: RecipeType;
+    slot: RecipeSlot;
+    value?: Extract<RecipeSlotValue, { kind: "item" }>;
+  }) => void;
   setRecipeCraftingShapeless: (shapeless: boolean) => void;
   setRecipeCraftingKeepWhitespace: (keepWhitespace: boolean) => void;
   setRecipeCraftingTwoByTwo: (twoByTwo: boolean) => void;
@@ -181,6 +189,56 @@ export const useRecipeStore = create<ImmerState>()(
             }
 
             value.count = count;
+          });
+        },
+        setBrewingChoice: ({ recipeId, recipeType, slot, value }) => {
+          updateSelectedRecipe((recipe) => {
+            if (
+              recipe.id !== recipeId ||
+              recipe.recipeType !== recipeType ||
+              !Object.values(SLOTS.brewing).includes(
+                slot as (typeof SLOTS.brewing)[keyof typeof SLOTS.brewing],
+              )
+            )
+              return;
+            const previous = recipe.slots[slot];
+            const preserveCount =
+              recipe.recipeType === RecipeType.Brewing &&
+              slot === SLOTS.brewing.result &&
+              isJavaArrow(previous) &&
+              isJavaArrow(value);
+            recipe.slots[slot] = value
+              ? {
+                  kind: "item",
+                  id: { ...value.id },
+                  ...(preserveCount &&
+                  previous &&
+                  "count" in previous &&
+                  previous.count !== undefined
+                    ? { count: previous.count }
+                    : {}),
+                  ...(value.components
+                    ? { components: cloneItemComponents(value.components) }
+                    : {}),
+                }
+              : undefined;
+            if (
+              value &&
+              value.id.namespace === "minecraft" &&
+              isBrewingBottle(value.id.id) &&
+              recipeType === RecipeType.BrewingMix &&
+              slot !== SLOTS.brewing.reagent
+            ) {
+              const other =
+                slot === SLOTS.brewing.input ? SLOTS.brewing.result : SLOTS.brewing.input;
+              const otherValue = recipe.slots[other];
+              if (
+                otherValue?.kind === "item" &&
+                otherValue.id.namespace === "minecraft" &&
+                isBrewingBottle(otherValue.id.id)
+              )
+                otherValue.id = { ...value.id };
+            }
           });
         },
         setRecipeCraftingShapeless: (shapeless) => {

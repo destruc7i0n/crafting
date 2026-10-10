@@ -15,6 +15,9 @@ import { useSlotContext } from "@/hooks/use-slot-context";
 import { trackCopyRecipeJson, trackRecipeExport } from "@/lib/analytics";
 import { downloadRecipeJson } from "@/lib/download/recipe";
 import { cn } from "@/lib/utils";
+import { isBrewingRecipeType } from "@/recipes/brewing/options";
+import { getBrewingIssues } from "@/recipes/brewing/validation";
+import { getRecipeDefinition, isRecipeTypeSupported } from "@/recipes/definitions";
 import { generate } from "@/recipes/generate";
 import { toJavaRecipeFileName } from "@/recipes/naming";
 import { useRecipeStore } from "@/stores/recipe";
@@ -34,6 +37,7 @@ export const ItemOutput = () => {
   const minecraftVersion = useSettingsStore(selectMinecraftVersion);
   const recipeState = useRecipeStore(selectCurrentRecipe);
   const slotContext = useSlotContext();
+  const isBrewing = recipeState ? isBrewingRecipeType(recipeState.recipeType) : false;
   const naming = useCurrentRecipeName();
   let downloadTarget: string | undefined;
 
@@ -125,6 +129,14 @@ export const ItemOutput = () => {
     copyTooltip = "Copied";
   }
 
+  // the editor lists brewing issues, anything else is shown as the real error
+  const brewingIncomplete =
+    isBrewing &&
+    !!recipeState &&
+    isRecipeTypeSupported(getRecipeDefinition(recipeState.recipeType), minecraftVersion) &&
+    !!generatedResult.error &&
+    getBrewingIssues(recipeState, minecraftVersion, slotContext).length > 0;
+
   return (
     <div className="bg-card rounded-lg border lg:flex lg:min-h-0 lg:flex-col">
       <div className="flex items-center justify-between px-4 py-2">
@@ -145,6 +157,7 @@ export const ItemOutput = () => {
             <button
               type="button"
               onClick={handleCopy}
+              aria-describedby={isBrewing ? "brewing-readiness" : undefined}
               disabled={!!generatedResult.error}
               className="text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded-md p-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             >
@@ -159,6 +172,7 @@ export const ItemOutput = () => {
           <button
             type="button"
             onClick={handleDownload}
+            aria-describedby={isBrewing ? "brewing-readiness" : undefined}
             disabled={!!generatedResult.error || !downloadTarget}
             className="border-border bg-accent/30 text-foreground hover:bg-accent inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             title="Download JSON"
@@ -172,9 +186,20 @@ export const ItemOutput = () => {
       {!collapsed && (
         <div className="scrollbar-app border-t lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
           {generatedResult.error ? (
-            <div className="border-destructive/40 bg-destructive/10 text-destructive m-3 flex items-start gap-2.5 rounded-md border px-3 py-3 text-sm">
+            <div
+              className={cn(
+                "m-3 flex items-start gap-2.5 rounded-md border px-3 py-3 text-sm",
+                brewingIncomplete
+                  ? "border-border bg-accent/40 text-muted-foreground"
+                  : "border-destructive/40 bg-destructive/10 text-destructive",
+              )}
+            >
               <CircleAlertIcon size={16} className="mt-0.5 shrink-0" />
-              <span>{generatedResult.error}</span>
+              <span>
+                {brewingIncomplete
+                  ? "Complete the choices above to generate this recipe."
+                  : generatedResult.error}
+              </span>
             </div>
           ) : (
             <JsonOutput json={generatedResult.recipe} />

@@ -1,3 +1,4 @@
+import { normalizeItemComponents } from "@/data/item-components";
 import { MinecraftIdentifier } from "@/data/models/types";
 import { RecipeType } from "@/data/types";
 import { RecipeSlot, SLOTS } from "@/recipes/slots";
@@ -87,10 +88,19 @@ const normalizeRecipeSlotValue = (raw: unknown): RecipeSlotValue | undefined => 
         return undefined;
       }
 
+      // a malformed component payload drops the slot instead of exporting an unconstrained item
+      const components = Object.prototype.hasOwnProperty.call(value, "components")
+        ? normalizeItemComponents(value.components)
+        : undefined;
+      if (components === null) {
+        return undefined;
+      }
+
       return {
         kind: "item",
         id,
         ...(isFiniteNumber(value.count) ? { count: value.count } : {}),
+        ...(components ? { components } : {}),
       };
     }
     case "custom_item":

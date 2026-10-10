@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 
+import { RecipeType } from "@/data/types";
 import { cn } from "@/lib/utils";
+import { brewingCountLimit } from "@/recipes/brewing/options";
 import { RecipeSlot } from "@/recipes/slots";
 import { canEditRecipeSlotCount } from "@/recipes/slots/utils";
 import { useRecipeStore } from "@/stores/recipe";
@@ -23,8 +25,10 @@ export const EditableItemCount = ({ slot, compact = false }: EditableItemCountPr
   const setRecipeSlotCount = useRecipeStore((state) => state.setRecipeSlotCount);
 
   const canEditCount = recipeType ? canEditRecipeSlotCount(recipeType, slot) : false;
+  const brewingLimit =
+    recipeType === RecipeType.Brewing ? brewingCountLimit(recipeType, slot, slotValue) : undefined;
 
-  if (!canEditCount || !canEditSlotCount(slotValue)) {
+  if (!canEditCount || !canEditSlotCount(slotValue) || brewingLimit === 1) {
     return null;
   }
 
@@ -41,8 +45,12 @@ export const EditableItemCount = ({ slot, compact = false }: EditableItemCountPr
       cancelledRef.current = false;
       return;
     }
-    const parsed = Number.parseInt(countDraft, 10);
-    if (Number.isNaN(parsed)) {
+    // brewing rejects partial input like 1.5 instead of truncating it
+    const parsed = brewingLimit ? Number(countDraft) : Number.parseInt(countDraft, 10);
+    if (
+      Number.isNaN(parsed) ||
+      (brewingLimit && (!Number.isInteger(parsed) || parsed < 1 || parsed > brewingLimit))
+    ) {
       cancelCount();
       return;
     }
@@ -82,6 +90,8 @@ export const EditableItemCount = ({ slot, compact = false }: EditableItemCountPr
       className="pointer-events-none absolute right-0 bottom-0 z-10"
       onClick={(event) => {
         event.stopPropagation();
+        // the input unmounts without a blur, so a cancel flag from the last edit can linger
+        cancelledRef.current = false;
         setEditingCount(true);
         setCountDraft(String(count));
       }}

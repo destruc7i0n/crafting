@@ -1,6 +1,8 @@
 import { NoTextureTexture } from "@/data/constants";
+import { cloneItemComponents, getPotionContents } from "@/data/item-components";
 import { getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
 import { IngredientItem, type MinecraftIdentifier } from "@/data/models/types";
+import { lookupPotion } from "@/data/potions";
 import { MinecraftVersion } from "@/data/types";
 import {
   getCustomTagIdentifier,
@@ -13,6 +15,10 @@ import { RecipeSlotValue, SlotContext, SlotDisplay } from "./types";
 
 const cloneIdentifier = (id: MinecraftIdentifier): MinecraftIdentifier => ({ ...id });
 
+// named potion contents of a concrete item slot
+export const getSlotPotion = (value: RecipeSlotValue | undefined): string | undefined =>
+  value?.kind === "item" ? getPotionContents(value.components) : undefined;
+
 export const cloneRecipeSlotValue = (value: RecipeSlotValue): RecipeSlotValue => {
   switch (value.kind) {
     case "item":
@@ -20,6 +26,7 @@ export const cloneRecipeSlotValue = (value: RecipeSlotValue): RecipeSlotValue =>
         kind: "item",
         id: cloneIdentifier(value.id),
         ...(value.count !== undefined ? { count: value.count } : {}),
+        ...(value.components ? { components: cloneItemComponents(value.components) } : {}),
       };
     case "custom_item":
       return {
@@ -127,6 +134,51 @@ export const getRequiredSlotIdentifier = (
   return identifier;
 };
 
+// item slots only need resources and the potion catalog, not custom items or tags
+export const getItemSlotDisplay = (
+  value: Extract<RecipeSlotValue, { kind: "item" }>,
+  ctx: Pick<SlotContext, "version" | "resources" | "potionCatalog">,
+): SlotDisplay => {
+  const item = ctx.resources?.itemsById[identifierUniqueKey(value.id)];
+
+  const itemId = `${value.id.namespace}:${value.id.id}`;
+  const potionId = getSlotPotion(value);
+  const potion =
+    potionId && ctx.potionCatalog
+      ? lookupPotion(
+          ctx.potionCatalog,
+          { id: itemId, potion: potionId },
+          ctx.version === MinecraftVersion.Bedrock,
+        )
+      : undefined;
+  if (potion) {
+    return {
+      label: potion.readable,
+      texture: potion.texture || item?.texture || NoTextureTexture,
+      tooltipLines: potion.tooltip,
+    };
+  }
+
+  if (potionId) {
+    const readablePotion = potionId
+      .split(":")
+      .at(-1)!
+      .split("_")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
+    return {
+      label: `${item?.displayName ?? value.id.id} (${readablePotion})`,
+      texture: item?.texture ?? NoTextureTexture,
+      missing: true,
+    };
+  }
+
+  return {
+    label: item?.displayName ?? value.id.id,
+    texture: item?.texture ?? NoTextureTexture,
+  };
+};
+
 export const getSlotDisplay = (
   value: RecipeSlotValue | undefined,
   ctx: SlotContext,
@@ -136,14 +188,8 @@ export const getSlotDisplay = (
   }
 
   switch (value.kind) {
-    case "item": {
-      const item = ctx.resources?.itemsById[identifierUniqueKey(value.id)];
-
-      return {
-        label: item?.displayName ?? value.id.id,
-        texture: item?.texture ?? NoTextureTexture,
-      };
-    }
+    case "item":
+      return getItemSlotDisplay(value, ctx);
     case "custom_item": {
       const item = ctx.customItemsByUid[value.uid];
 

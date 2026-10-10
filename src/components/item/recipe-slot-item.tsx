@@ -7,9 +7,10 @@ import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/el
 import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unhandled";
 
 import { NoTextureTexture } from "@/data/constants";
-import { getFullId, getRawId, identifierUniqueKey } from "@/data/models/identifier/utilities";
+import { getFullId, getRawId } from "@/data/models/identifier/utilities";
 import { MinecraftIdentifier } from "@/data/models/types";
 import { useIsTouchDevice } from "@/hooks/use-is-touch-device";
+import { usePotionCatalogForMinecraftVersion } from "@/hooks/use-potion-catalog-for-version";
 import { useResourcesForVersion } from "@/hooks/use-resources-for-version";
 import {
   getCustomTagIdentifier,
@@ -21,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { RecipeSlot } from "@/recipes/slots";
 import { useCustomItemStore } from "@/stores/custom-item";
 import { selectCustomItemByUid } from "@/stores/custom-item/selectors";
-import { isTagSlotValue } from "@/stores/recipe/slot-value";
+import { getItemSlotDisplay, isTagSlotValue } from "@/stores/recipe/slot-value";
 import { RecipeSlotValue } from "@/stores/recipe/types";
 import { useTagStore } from "@/stores/tag";
 import { selectTagByUid } from "@/stores/tag/selectors";
@@ -56,6 +57,7 @@ type RecipeSlotItemBaseProps = RecipeSlotItemProps & {
   texture: string;
   identifier?: MinecraftIdentifier;
   previewValues?: string[];
+  tooltipLines?: readonly string[];
 };
 
 const RecipeSlotItemBase = memo(
@@ -68,6 +70,7 @@ const RecipeSlotItemBase = memo(
     texture,
     identifier,
     previewValues,
+    tooltipLines,
   }: RecipeSlotItemBaseProps) => {
     const [dragging, setDragging] = useState(false);
     const isTouchDevice = useIsTouchDevice();
@@ -136,6 +139,7 @@ const RecipeSlotItemBase = memo(
       <ItemTooltip
         title={label}
         description={description}
+        tooltipLines={tooltipLines}
         visible={!dragging}
         className="absolute -inset-0.5 flex items-center justify-center"
       >
@@ -168,18 +172,20 @@ const RecipeSlotItemBase = memo(
 RecipeSlotItemBase.displayName = "RecipeSlotItemBase";
 
 const VanillaRecipeSlotItem = memo(({ value, ...props }: VanillaRecipeSlotItemProps) => {
-  const { resources } = useResourcesForVersion();
+  const { resources, version } = useResourcesForVersion();
+  const { catalog: potionCatalog } = usePotionCatalogForMinecraftVersion(version);
 
   if (value.kind === "item") {
-    const item = resources?.itemsById[identifierUniqueKey(value.id)];
+    const display = getItemSlotDisplay(value, { version, resources, potionCatalog });
 
     return (
       <RecipeSlotItemBase
         {...props}
         value={value}
-        label={item?.displayName ?? value.id.id}
-        texture={item?.texture ?? NoTextureTexture}
+        label={display.label}
+        texture={display.texture}
         identifier={value.id}
+        tooltipLines={display.tooltipLines}
       />
     );
   }

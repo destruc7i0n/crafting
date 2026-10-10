@@ -1,4 +1,5 @@
 import { RecipeType } from "@/data/types";
+import { isValidJavaResourceId } from "@/lib/minecraft-identifier";
 import { type RecipeSlot, SLOTS } from "@/recipes/slots";
 
 import type { CatalogSlotValue, GeneratedRecipeCatalogEntry } from "@/recipes/catalog/types";
@@ -8,6 +9,7 @@ import {
   getRecordField,
   isRecord,
   normalizeRecipeType,
+  normalizeResourceId,
   parseIngredient,
   parseResult,
 } from "./recipe-parsing";
@@ -197,6 +199,70 @@ const smithingTransformHandler: RecipeHandler = {
   },
 };
 
+const brewingHandler: RecipeHandler = {
+  recipeType: RecipeType.Brewing,
+  rawTypes: ["brewing"],
+  toEntry: ({ recipe }) => {
+    if (
+      Object.keys(recipe).some(
+        (key) =>
+          ![
+            "type",
+            "input",
+            "reagent",
+            "output",
+            "group",
+            "category",
+            "show_notification",
+          ].includes(key),
+      )
+    )
+      return null;
+    const input = parseBrewingItem(recipe.input);
+    const reagent = parseBrewingItem(recipe.reagent);
+    const output = recipe.output;
+    if (!input || !reagent || !isRecord(output)) return null;
+    if (Object.keys(output).some((key) => key !== "id" && key !== "components" && key !== "count"))
+      return null;
+    if ("count" in output && output.count !== 1) return null;
+    if (typeof output.id !== "string" || !isValidJavaResourceId(output.id)) return null;
+    let potion: string | undefined;
+    if ("components" in output) {
+      const components = output.components;
+      if (
+        !isRecord(components) ||
+        Object.keys(components).some((key) => key !== "minecraft:potion_contents")
+      )
+        return null;
+      const contents = components["minecraft:potion_contents"];
+      if (typeof contents === "string" && isValidJavaResourceId(contents)) {
+        potion = normalizeResourceId(contents);
+      } else {
+        if (
+          !isRecord(contents) ||
+          Object.keys(contents).some((key) => key !== "potion") ||
+          typeof contents.potion !== "string" ||
+          !isValidJavaResourceId(contents.potion)
+        )
+          return null;
+        potion = normalizeResourceId(contents.potion);
+      }
+    }
+    return {
+      recipeType: RecipeType.Brewing,
+      slots: {
+        [SLOTS.brewing.input]: input,
+        [SLOTS.brewing.reagent]: reagent,
+        [SLOTS.brewing.result]: {
+          kind: "item",
+          id: normalizeResourceId(output.id),
+          ...(potion ? { potion } : {}),
+        },
+      },
+    };
+  },
+};
+
 const handlers = [
   craftingShapedHandler,
   craftingShapelessHandler,
@@ -207,6 +273,7 @@ const handlers = [
   stonecuttingHandler,
   smithingHandler,
   smithingTransformHandler,
+  brewingHandler,
 ] satisfies RecipeHandler[];
 
 export function buildRecipeCatalogEntry({
@@ -257,4 +324,27 @@ function createCookingHandler(recipeType: RecipeHandler["recipeType"], rawType: 
       };
     },
   } satisfies RecipeHandler;
+}
+
+function parseBrewingItem(value: unknown): CatalogSlotValue | null {
+  if (
+    !isRecord(value) ||
+    Object.keys(value).some((key) => key !== "item" && key !== "potion_contents")
+  )
+    return null;
+  if (typeof value.item !== "string" || !value.item.length) return null;
+  const isTag = value.item.startsWith("#");
+  const raw = isTag ? value.item.slice(1) : value.item;
+  if (!isValidJavaResourceId(raw)) return null;
+  let potion: string | undefined;
+  if ("potion_contents" in value) {
+    const contents = value.potion_contents;
+    if (isTag || !isRecord(contents) || Object.keys(contents).some((key) => key !== "potions"))
+      return null;
+    if (typeof contents.potions !== "string" || !isValidJavaResourceId(contents.potions))
+      return null;
+    potion = normalizeResourceId(contents.potions);
+  }
+  if (isTag) return { kind: "tag", id: normalizeResourceId(raw) };
+  return { kind: "item", id: normalizeResourceId(raw), ...(potion ? { potion } : {}) };
 }

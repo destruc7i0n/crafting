@@ -14,7 +14,10 @@ export type IngredientRef = V112Ingredient | V113Ingredient | V1212Ingredient | 
 
 export type V112Result = { item: string; data?: number; count?: number };
 export type V113Result = { item: string; count?: number };
-export type V121Result = { id: string; count?: number };
+export type JavaResultComponents = {
+  "minecraft:potion_contents"?: { potion: string };
+};
+export type V121Result = { id: string; count?: number; components?: JavaResultComponents };
 export type BedrockResult = { item: string; data?: number; count?: number };
 
 export type ObjectResultRef = V112Result | V113Result | V121Result | BedrockResult;
@@ -98,7 +101,20 @@ export interface CraftingTransmuteRecipe {
   result: ObjectResultRef | EmptyObject;
 }
 
+export interface JavaBrewingIngredient {
+  item: string;
+  potion_contents?: { potions: string };
+}
+
+export interface JavaBrewingRecipe {
+  type: "minecraft:brewing";
+  input: JavaBrewingIngredient;
+  reagent: JavaBrewingIngredient;
+  output: V121Result;
+}
+
 export type JavaRecipe =
+  | JavaBrewingRecipe
   | ShapedCraftingRecipe
   | ShapelessCraftingRecipe
   | CookingRecipe

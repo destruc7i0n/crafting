@@ -106,6 +106,11 @@ export const isValidBedrockIdentifierPart = (value: string) =>
 export const isValidJavaNamespacedIdentifier = (value: string) =>
   isValidNamespacedIdentifierWith(value, isValidJavaIdentifierNamespace, isValidJavaIdentifierPath);
 
+// a java resource id whose namespace may be omitted, as in vanilla data files
+export const isValidJavaResourceId = (value: string) =>
+  value === value.trim() &&
+  (isValidJavaNamespacedIdentifier(value) || isValidJavaIdentifierPath(value));
+
 export const isValidBedrockNamespacedIdentifier = (value: string) =>
   isValidNamespacedIdentifierWith(
     value,
