@@ -1,0 +1,59 @@
+@reference "@/assets/css/index.css";
+
+.spacer {
+  transition: height 240ms cubic-bezier(0.32, 0.72, 0, 1);
+
+  &[data-collapsing] {
+    transition: none;
+  }
+}
+
+.viewport {
+  @apply pointer-events-none fixed inset-0 z-40 flex items-end;
+  padding-bottom: var(--drawer-keyboard-inset, 0px);
+}
+
+.popup {
+  --items-offset: calc(var(--drawer-snap-point-offset, 0px) + var(--drawer-swipe-movement-y, 0px));
+
+  @apply bg-card border-border/70 pointer-events-auto flex min-h-0 w-full flex-col overflow-hidden rounded-t-2xl border-t shadow-lg;
+  height: 75dvh;
+  max-height: calc(100dvh - var(--drawer-keyboard-inset, 0px));
+  transform: translateY(var(--items-offset));
+  padding-bottom: max(0px, var(--items-offset));
+  transition:
+    transform 240ms cubic-bezier(0.32, 0.72, 0, 1),
+    padding-bottom 240ms cubic-bezier(0.32, 0.72, 0, 1);
+
+  &[data-swiping] {
+    transition: none;
+  }
+}
+
+.handle {
+  @apply text-foreground focus-visible:outline-primary flex h-14 shrink-0 cursor-pointer touch-none flex-col items-center justify-center gap-2 text-sm font-semibold select-none focus-visible:outline-2 focus-visible:-outline-offset-2;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.grip {
+  @apply bg-muted-foreground/40 h-1 w-9 rounded-full;
+}
+
+.body {
+  @apply scrollbar-app flex min-h-0 flex-1 overflow-x-clip overflow-y-auto;
+  overscroll-behavior-y: contain;
+  padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+@media (width >= 48rem) {
+  .body {
+    padding: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spacer,
+  .popup {
+    transition: none;
+  }
+}

@@ -1,10 +1,6 @@
-import { useState } from "react";
-
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-
 import { RecipeTypeSelector } from "@/components/fields/recipe-type-selector";
 import { Footer } from "@/components/footer";
-import { ItemsList } from "@/components/items-list/items-list";
+import { ItemsPanel } from "@/components/items-list/items-panel";
 import { AppShell } from "@/components/layout/app-shell";
 import { HeaderNavLink } from "@/components/layout/header";
 import { RecipeOptions } from "@/components/options/recipe-options";
@@ -33,15 +29,6 @@ export function CreatorView() {
   const isMobileRecipeSidebarOpen = useUIStore((state) => state.isMobileRecipeSidebarOpen);
   const isRecipeSidebarExpanded = useUIStore((state) => state.isRecipeSidebarExpanded);
   const setMobileRecipeSidebarOpen = useUIStore((state) => state.setMobileRecipeSidebarOpen);
-  const [isMobileTrayExpanded, setMobileTrayExpanded] = useState(true);
-
-  const handleMobileTrayToggle = () => {
-    if (isMobileTrayExpanded) {
-      useUIStore.getState().clearInteractionState();
-    }
-
-    setMobileTrayExpanded(!isMobileTrayExpanded);
-  };
 
   return (
     <>
@@ -84,28 +71,8 @@ export function CreatorView() {
             </div>
           </div>
 
-          <div
-            className={cn(styles.itemsColumn, isMobileTrayExpanded && styles.itemsColumnExpanded)}
-          >
-            <button
-              type="button"
-              onClick={handleMobileTrayToggle}
-              className={styles.trayToggle}
-              aria-expanded={isMobileTrayExpanded}
-            >
-              <span>Items & Tags</span>
-              {isMobileTrayExpanded ? (
-                <ChevronDownIcon size={16} className="text-muted-foreground" />
-              ) : (
-                <ChevronUpIcon size={16} className="text-muted-foreground" />
-              )}
-            </button>
-
-            <div
-              className={cn(styles.itemsBody, isMobileTrayExpanded ? "flex" : "hidden", "md:flex")}
-            >
-              <ItemsList />
-            </div>
+          <div className={styles.itemsColumn}>
+            <ItemsPanel />
           </div>
         </div>
 

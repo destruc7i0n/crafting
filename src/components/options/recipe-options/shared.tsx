@@ -11,7 +11,10 @@ interface HelpTooltipProps {
 
 export const HelpTooltip = ({ content }: HelpTooltipProps) => (
   <Disclosure content={content} placement="top">
-    <span className="text-muted-foreground/70 hover:text-foreground shrink-0 transition-colors">
+    <span
+      aria-label="Help"
+      className="text-muted-foreground/70 hover:text-foreground shrink-0 transition-colors"
+    >
       <CircleHelpIcon size={14} />
     </span>
   </Disclosure>

@@ -1,0 +1,39 @@
+.popup {
+  --picker-offset: calc(var(--drawer-snap-point-offset, 0px) + var(--drawer-swipe-movement-y, 0px));
+
+  transform: translateY(var(--picker-offset));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  transition:
+    transform 240ms cubic-bezier(0.32, 0.72, 0, 1),
+    padding-bottom 240ms cubic-bezier(0.32, 0.72, 0, 1);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    transform: translateY(100%);
+  }
+
+  &[data-swiping] {
+    transition: none;
+  }
+}
+
+.resizable {
+  height: 85dvh;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + max(0px, var(--picker-offset)));
+}
+
+.backdrop {
+  transition: opacity 240ms ease;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popup,
+  .backdrop {
+    transition: none;
+  }
+}
